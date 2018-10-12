@@ -1,15 +1,17 @@
 export const enum BooksActionTypes {
-  ADD = '[book] ADD'
+  LOAD = '[book] LOAD',
+  ADD = '[book] ADD',
+  DELETE = '[book] DELETE',
 }
 
 export interface Book {
-  id: number;
-  name: string;
-  cover: string;
-  author: string;
+  id: number
+  name: string
+  cover: string
+  author: string
 }
 
 export interface BooksState {
-  readonly loading: boolean
+  readonly syncTimestamp: number;
   readonly books: Book[]
 }
