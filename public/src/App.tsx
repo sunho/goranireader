@@ -1,9 +1,11 @@
 import * as React from 'react'
-import {StyleSheet, View} from 'react-native'
+import {StyleSheet, Text, View} from 'react-native'
+import locale from './locales'
 
 const App: React.SFC = () => {
   return (
     <View style={styles.container}>
+      <Text> { locale.asdf } </Text>
     </View>
   )
 }
