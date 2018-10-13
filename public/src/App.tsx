@@ -1,17 +1,22 @@
 import * as React from 'react'
-import {StyleSheet, Text, View} from 'react-native'
+import { registerScreens, showAuthScreen } from './screens'
+import { configureStore, ApplicationState } from './store'
+import { Provider } from 'react-redux'
 
-const App: React.SFC = () => {
-  return (
-    <View style={styles.container}>
-    </View>
-  )
-}
+const store = configureStore()
+registerScreens(store, Provider)
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
+export default class App extends React.Component {
+  constructor(props: any) {
+    super(props);
+    store.subscribe(this.onStoreUpdate.bind(this));
+    this.onStoreUpdate()
   }
-})
 
-export default App;
+  onStoreUpdate() {
+    const { logined } = store.getState().auth;
+    if ( !logined ) {
+      showAuthScreen()
+    }
+  }
+}

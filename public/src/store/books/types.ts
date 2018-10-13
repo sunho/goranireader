@@ -1,4 +1,4 @@
-export const enum BooksActionTypes {
+export enum BooksActionTypes {
   LOAD = '[book] LOAD',
   ADD = '[book] ADD',
   DELETE = '[book] DELETE',
@@ -13,5 +13,5 @@ export interface Book {
 
 export interface BooksState {
   readonly syncTimestamp: number;
-  readonly books: Book[]
+  readonly data: Book[]
 }
