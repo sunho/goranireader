@@ -17,11 +17,10 @@ export function showAuthScreen() {
       screen: {
         screen: authName,
         title: 'Login',
-        navigatorStyle: {}
-      },
-      drawer: {},
-      passProps: {},
-      animationType: 'slide-down'
+        navigatorStyle: {
+          navBarHidden: true
+        }
+      }
     }
   )
 }
