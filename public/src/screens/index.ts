@@ -1,21 +1,21 @@
 import { Navigation } from 'react-native-navigation'
 import { Store } from 'redux'
-import AuthScreen from './AuthScreen';
+import LoginScreen from './LoginScreen';
 import { ApplicationState } from '../store';
 
 
 const appName = 'gorani'
-const authName = `${appName}.auth`
+const loginName = `${appName}.login`
 
 export function registerScreens(store: Store<ApplicationState>, provider: any) {
-  Navigation.registerComponent(authName, () => AuthScreen, store, provider)
+  Navigation.registerComponent(loginName, () => LoginScreen, store, provider)
 }
 
-export function showAuthScreen() {
+export function showLoginScreen() {
   Navigation.startSingleScreenApp(
     {
       screen: {
-        screen: authName,
+        screen: loginName,
         title: 'Login',
         navigatorStyle: {
           navBarHidden: true

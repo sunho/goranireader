@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { TextInput as RTextInput, StyleSheet, View } from 'react-native'
-import { normalize, colorDivider, colorSecondText } from '../utils/StyleUtil';
+import { normalize, colorDivider, colorSecondText, colorPrimary, colorText, colorWhite } from '../utils/StyleUtil';
 
 interface Props {
   placeholder?: string
@@ -19,6 +19,7 @@ export default class TextInput extends React.Component<Props> {
         <RTextInput
           style={[styles.input, this.props.fontSize ? {fontSize: normalize(this.props.fontSize)} : {}]}
           placeholder={this.props.placeholder}
+          placeholderTextColor={colorDivider}
         />
       </View>
     )
@@ -28,10 +29,12 @@ export default class TextInput extends React.Component<Props> {
 const styles = StyleSheet.create({
   input: {
     color: colorSecondText,
-    borderBottomWidth: normalize(1),
-    borderBottomColor: colorDivider,
+    backgroundColor: colorWhite,
+    borderRadius: normalize(3),
+    paddingLeft: normalize(10),
+    paddingRight: normalize(10),
     fontSize: normalize(20),
-    height: normalize(40),
-    marginBottom: normalize(30),
+    height: normalize(45),
+    marginBottom: normalize(20),
   }
 })

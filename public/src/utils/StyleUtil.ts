@@ -16,7 +16,24 @@ export function normalize(size: number) {
   }
 }
 
-export const colorPrimary = '#009688'
-export const colorAccent = '#00BCD4'
+export const colorPrimary = '#616161'
+export const colorLightPrimary = '#eeeeee'
+export const colorText = '#212121'
+export const colorAccent = '#f50057'
 export const colorSecondText = '#757575'
+export const colorBg= '#8D999E'
 export const colorDivider = '#BDBDBD'
+export const colorWhite = '#fff'
+
+export function shadow(color: string) {
+  return {
+    shadowRadius: 2,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowColor: color,
+    shadowOpacity: 0.5,
+    elevation: 4,
+  }
+}

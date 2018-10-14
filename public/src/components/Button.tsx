@@ -1,29 +1,46 @@
 import * as React from 'react'
-import { Text, StyleSheet, View } from 'react-native'
-import { normalize, colorDivider, colorSecondText, colorPrimary } from '../utils/StyleUtil';
+import { Text, StyleSheet, View, TouchableOpacity } from 'react-native'
+import { normalize, shadow, colorPrimary } from '../utils/StyleUtil';
 
 interface Props {
   title: string
   color?: string
+  onPress?: () => void
   fontSize?: number
   outline?: boolean
   style?: any
 }
 
-export default class Button extends React.Component<Props> {
+
+export default class Button extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
   }
 
   render() {
-    const styles = createStyles(this.props.color ? this.props.color : colorPrimary)
+    const styles = createStyles(this.props.color || colorPrimary)
     return (
       <View style={this.props.style}>
-        <View style={[styles.container, this.props.outline ? styles.outline : {}]}>
-          <Text style={[styles.text, this.props.outline ? styles.outlineText : {}]}>
-            {this.props.title}
-          </Text>
-        </View>
+        <TouchableOpacity activeOpacity = { 0.8 }>
+          <View
+            onTouchEnd={() =>  {
+              this.props.onPress && this.props.onPress()
+            }}
+            style={[
+              styles.container,
+              this.props.outline && styles.outline
+            ]}
+          >
+            <Text
+              style={[
+                styles.text,
+                this.props.outline && styles.outlineText
+              ]}
+            >
+              {this.props.title}
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -34,17 +51,18 @@ function createStyles(color: string) {
     container: {
       alignItems: 'center',
       backgroundColor: color,
-      borderRadius: normalize(5),
+      flexDirection: 'row',
+      justifyContent: 'center',
+      borderRadius: normalize(3),
       paddingLeft: normalize(40),
       paddingRight: normalize(40),
-      paddingTop: normalize(13),
-      paddingBottom: normalize(13),
-      marginBottom: normalize(20)
+      height: normalize(45),
     },
     outline: {
-      backgroundColor: '#fff',
+      backgroundColor: 'rgba(0,0,0,0)',
       borderColor: color,
-      borderWidth: 1
+      borderWidth: normalize(1),
+      shadowOpacity: 0
     },
     text: {
       fontSize: normalize(20),
