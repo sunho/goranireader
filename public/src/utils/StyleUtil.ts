@@ -25,15 +25,15 @@ export const colorBg= '#8D999E'
 export const colorDivider = '#BDBDBD'
 export const colorWhite = '#fff'
 
-export function shadow(color: string) {
+export function shadow(color: string, strong: boolean = false) {
   return {
-    shadowRadius: 2,
+    shadowRadius: strong ? 3 : 2,
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: strong ? 4 : 2,
     },
     shadowColor: color,
     shadowOpacity: 0.5,
-    elevation: 4,
+    elevation: strong ? 6 : 4,
   }
 }

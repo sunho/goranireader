@@ -33,7 +33,6 @@ class LoginScreen extends React.Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colorLightPrimary,
     alignItems: 'center',
     paddingTop: normalize(50),
     paddingBottom: normalize(50),
@@ -52,8 +51,8 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     padding: normalize(25),
     marginTop: normalize(15),
-    marginLeft: normalize(30),
-    marginRight: normalize(30)
+    marginLeft: normalize(20),
+    marginRight: normalize(20)
   },
   header: {
     fontSize: normalize(35),

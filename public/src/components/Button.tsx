@@ -12,7 +12,7 @@ interface Props {
 }
 
 
-export default class Button extends React.Component<Props, State> {
+export default class Button extends React.Component<Props> {
   constructor(props: Props) {
     super(props)
   }

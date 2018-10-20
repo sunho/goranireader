@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { TextInput as RTextInput, StyleSheet, View } from 'react-native'
-import { normalize, colorDivider, colorSecondText, colorPrimary, colorText, colorWhite } from '../utils/StyleUtil';
+import { normalize, colorDivider, colorSecondText, colorPrimary, colorText, colorWhite, colorLightPrimary } from '../utils/StyleUtil';
 
 interface Props {
   placeholder?: string
@@ -29,7 +29,7 @@ export default class TextInput extends React.Component<Props> {
 const styles = StyleSheet.create({
   input: {
     color: colorSecondText,
-    backgroundColor: colorWhite,
+    backgroundColor: colorLightPrimary,
     borderRadius: normalize(3),
     paddingLeft: normalize(10),
     paddingRight: normalize(10),

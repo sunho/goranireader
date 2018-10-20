@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { registerScreens, showLoginScreen } from './screens'
+import { registerScreens, showLoginScreen, showMainScreen } from './screens'
 import { configureStore, ApplicationState } from './store'
 import { Provider } from 'react-redux'
 
@@ -16,7 +16,7 @@ export default class App extends React.Component {
   onStoreUpdate() {
     const { logined } = store.getState().auth;
     if ( !logined ) {
-      showLoginScreen()
+      showMainScreen()
     }
   }
 }
