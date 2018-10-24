@@ -19,25 +19,23 @@ export default class Button extends React.Component<Props> {
 
   render() {
     const styles = createStyles(this.props.color || colorPrimary)
+    const { outline, onPress, title } = this.props
     return (
       <View style={this.props.style}>
-        <TouchableOpacity activeOpacity = { 0.8 }>
+        <TouchableOpacity onPress={onPress} activeOpacity = { 0.8 }>
           <View
-            onTouchEnd={() =>  {
-              this.props.onPress && this.props.onPress()
-            }}
             style={[
               styles.container,
-              this.props.outline && styles.outline
+              outline && styles.outline
             ]}
           >
             <Text
               style={[
                 styles.text,
-                this.props.outline && styles.outlineText
+                outline && styles.outlineText
               ]}
             >
-              {this.props.title}
+              {title}
             </Text>
           </View>
         </TouchableOpacity>

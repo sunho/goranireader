@@ -7,6 +7,8 @@ export enum BooksActionTypes {
 export interface Book {
   id: number
   name: string
+  src: string
+  path?: string
   cover: string
   author: string
 }
