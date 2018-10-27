@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import { colorSecondText, colorWhite, normalize, colorText } from '../utils/StyleUtil';
+import { normalize, colorText } from '../utils/StyleUtil';
 
 interface Props {
   percent: number
@@ -40,5 +40,6 @@ const styles = StyleSheet.create({
   text: {
     color: colorText,
     fontSize: normalize(20),
+    fontWeight: '200',
   }
 })

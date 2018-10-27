@@ -1,17 +1,20 @@
-import { BooksState, booksReducder } from "./books";
-import { AuthState, authReducder } from "./auth";
+import { BooksState, booksReducer } from "./books";
+import { AuthState, authReducer } from "./auth";
 
 import { createStore, Store, combineReducers, Reducer } from 'redux';
+import { DownloadsState, donwloadsReducer } from "./downloads";
 
 export interface ApplicationState {
   books: BooksState
+  downloads: DownloadsState
   auth: AuthState
 }
 
 export const reducers: Reducer<ApplicationState> = combineReducers(
   {
-    books: booksReducder,
-    auth: authReducder
+    books: booksReducer,
+    downloads: donwloadsReducer,
+    auth: authReducer,
   }
 )
 

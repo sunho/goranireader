@@ -2,7 +2,7 @@ import { Navigation } from 'react-native-navigation'
 import { Store } from 'redux'
 import LoginScreen from './LoginScreen';
 import { ApplicationState } from '../store';
-import BooksListScreen from './BooksListScreen';
+import DownBooksListScreen from './DownBooksListScreen';
 import { colorDivider, colorWhite, colorPrimary, normalize, colorSecondText } from '../utils/StyleUtil';
 import BookViewScreen from './BookViewScreen';
 import StoreScreen from './StoreScreen';
@@ -26,7 +26,7 @@ export function registerScreens(store: Store<ApplicationState>, provider: any) {
 
   Navigation.registerComponent(bookView, () => BookViewScreen, store, provider)
 
-  Navigation.registerComponent(mainBooksList, () => BooksListScreen, store, provider)
+  Navigation.registerComponent(mainBooksList, () => DownBooksListScreen, store, provider)
   Navigation.registerComponent(mainStore, () => StoreScreen, store, provider)
   Navigation.registerComponent(mainStoreDetail, () => StoreDetailScreen, store, provider)
 }
@@ -79,6 +79,16 @@ export function showMainScreen() {
 export function storeDetailScreen(book: Book) {
   return {
     screen: mainStoreDetail,
+    passProps: {
+      book: book
+    },
+    title: book.name
+  }
+}
+
+export function bookViewScreen(book: Book) {
+  return {
+    screen: bookView,
     passProps: {
       book: book
     },

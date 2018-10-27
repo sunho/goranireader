@@ -3,7 +3,7 @@ import { Navigator } from 'react-native-navigation';
 import { View, Text, StyleSheet, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { normalize, colorLightPrimary } from '../utils/StyleUtil';
 import HeaderLayout from '../components/HeaderLayout';
-import BookItem from '../components/BookItem';
+import BookItem from '../components/DownBooksList';
 import { Book } from '../store/books';
 import { ApplicationState } from '../store';
 import { connect } from 'react-redux';
@@ -27,7 +27,8 @@ class StoreDetailScreen extends React.Component<Props, State> {
     return (
       <View>
         <Text>{book.name}</Text>
-        <Button title='다운로드'></Button>
+        <Button onPress={()=>{
+        }} title='다운로드'></Button>
       </View>
     )
   }

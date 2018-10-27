@@ -1,6 +1,7 @@
 export enum BooksActionTypes {
   LOAD = '[book] LOAD',
   ADD = '[book] ADD',
+  ADD_PATH = '[book] ADD PATH',
   DELETE = '[book] DELETE',
 }
 

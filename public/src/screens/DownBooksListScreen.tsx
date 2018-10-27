@@ -3,7 +3,7 @@ import { Navigator } from 'react-native-navigation';
 import { View, Text, StyleSheet, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { normalize, colorLightPrimary } from '../utils/StyleUtil';
 import HeaderLayout from '../components/HeaderLayout';
-import BookItem from '../components/BookItem';
+import DownBooksList from '../components/DownBooksList'
 import { Book } from '../store/books';
 import { ApplicationState } from '../store';
 import { connect } from 'react-redux';
@@ -13,20 +13,18 @@ interface Props {
   books: Book[]
 }
 
-class BooksListScreen extends React.Component<Props> {
+export default class DownBooksListScreen extends React.Component<Props> {
   constructor(props: Props) {
     super(props)
   }
 
   render() {
-    const { books } = this.props
+    const { navigator, books } = this.props
     return (
       <HeaderLayout title='책'>
-        <ScrollView style={styles.container}>
-          {books.map(b => (
-            <BookItem book={b}></BookItem>
-          ))}
-        </ScrollView>
+        <View style={styles.container}>
+          <DownBooksList navigator={navigator}/>
+        </View>
       </HeaderLayout>
     )
   }
@@ -38,11 +36,3 @@ const styles = StyleSheet.create({
     backgroundColor: colorLightPrimary
   }
 })
-
-const mapStateToProps = (state: ApplicationState) => (
-  {
-    books: state.books.data
-  }
-)
-
-export default connect(mapStateToProps)(BooksListScreen)

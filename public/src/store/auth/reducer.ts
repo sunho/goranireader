@@ -6,7 +6,7 @@ const initialState: AuthState = {
   logined: false
 }
 
-export const authReducder: Reducer<AuthState> = (state = initialState, action) => {
+export const authReducer: Reducer<AuthState> = (state = initialState, action) => {
   switch(action.type) {
     case AuthActionTypes.REQUEST: {
       return {

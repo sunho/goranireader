@@ -3,7 +3,6 @@ import { Navigator } from 'react-native-navigation';
 import { View, Text, StyleSheet, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { normalize, colorLightPrimary } from '../utils/StyleUtil';
 import HeaderLayout from '../components/HeaderLayout';
-import BookItem from '../components/BookItem';
 import { Book } from '../store/books';
 import { ApplicationState } from '../store';
 import { connect } from 'react-redux';
@@ -29,6 +28,7 @@ class StoreScreen extends React.Component<Props, State> {
           id: 32414,
           name: 'asdfasf',
           cover: 'https://images-na.ssl-images-amazon.com/images/I/61GPmyCxTpL._SX331_BO1,204,203,200_.jpg',
+          src: '',
           author: 'asdfasfd'
         }
       ]
@@ -46,9 +46,6 @@ class StoreScreen extends React.Component<Props, State> {
     return (
       <HeaderLayout title='서점'>
         <ScrollView style={styles.container}>
-          {books.map(b => (
-            <BookItem onPress={()=>{this.showDetail(b)}} book={b}></BookItem>
-          ))}
         </ScrollView>
       </HeaderLayout>
     )

@@ -1,3 +1,14 @@
 export enum DownloadsActionTypes {
-  START = '[downloads] START'
+  ADD = '[downloads] ADD',
+  PROGRESS = '[downloads] PROGRESS',
+  REMOVE = '[downloads] REMOVE'
+}
+
+export interface Download {
+  id: number
+  percent: number
+}
+
+export interface DownloadsState {
+  data: {[id: number]: Download}
 }

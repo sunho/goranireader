@@ -1,18 +1,28 @@
 import * as React from 'react'
-import { View, Text, ScrollView, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { normalize, colorDivider, colorText, shadow, colorPrimary, colorWhite, colorLightPrimary, colorSecondText } from '../utils/StyleUtil';
-import { Book, booksReducder } from '../store/books';
-import DownloadCover from './DownloadCover';
+import { View, Text, ScrollView, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { normalize, colorDivider, colorText, shadow, colorPrimary, colorWhite, colorLightPrimary, colorSecondText } from '../utils/StyleUtil'
+import { Book, booksReducder } from '../store/books'
+import DownloadCover from './DownloadCover'
 
+export enum BookItemType {
+  DOWN,
+}
 
-export default class BookList extends React.Component<Props> {
+interface Props {
+  book: Book
+  type: BookItemType
+  percent: number
+  onPress?: () => void
+}
+
+export default class BookItem extends React.Component<Props> {
   render() {
-    const { name, author, cover, path } = this.props.book
-    const { onPress } = this.props
+    const { path, name, author, cover } = this.props.book
+    const { type, percent, onPress } = this.props
     return (
-      <TouchableOpacity onPress={onPress && onPress} activeOpacity = { 0.8 }>
+      <TouchableOpacity onPress={onPress && onPress} activeOpacity = {0.8}>
         <View style={styles.container}>
-          { !path && (<DownloadCover style={styles.downCover} percent={0}></DownloadCover>) }
+          { type === BookItemType.DOWN && !path && (<DownloadCover style={styles.downCover} percent={percent}/>) }
           <Image style={styles.cover} source={{uri: cover}}/>
           <View style={styles.info}>
             <Text style={styles.name}>{name}</Text>
