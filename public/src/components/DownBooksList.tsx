@@ -25,7 +25,7 @@ class DownBooksList extends React.Component<Props> {
     if (!this.props.downloads[b.id] && !b.path) {
       this.props.startDownload(b)
     } else if(b.path) {
-      this.props.navigator.push(bookViewScreen(b))
+      this.props.navigator.showModal(bookViewScreen(b))
     }
   }
 

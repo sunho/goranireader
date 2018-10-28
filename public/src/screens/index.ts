@@ -82,6 +82,7 @@ export function storeDetailScreen(book: Book) {
     passProps: {
       book: book
     },
+
     title: book.name
   }
 }
@@ -92,6 +93,11 @@ export function bookViewScreen(book: Book) {
     passProps: {
       book: book
     },
-    title: book.name
+    title: book.name,
+    navigatorStyle: {
+      navBarHidden: true,
+      disabledBackGesture: false,
+      disabledSimultaneousGesture: false
+    }
   }
 }
