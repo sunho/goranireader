@@ -7,7 +7,7 @@
 ._*
 
 /scripts/epub/analyze/*.epub
-/server/vendor
+/server/target
 /public/node_modules
 
 aconfig.yaml
