@@ -1,0 +1,5 @@
+create_table("users") {
+  t.Column("email", "string", {})
+  t.Column("username", "string", {})
+  t.Column("password_hash", "string", {})
+}

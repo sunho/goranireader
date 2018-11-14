@@ -3,8 +3,8 @@ package book_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"book"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGoodReadsGenre(t *testing.T) {

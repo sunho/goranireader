@@ -7,6 +7,8 @@
 ._*
 
 /scripts/epub/analyze/*.epub
+/server/migrations/schema.sql
+/server/database.yml
 /server/target
 /public/node_modules
 
