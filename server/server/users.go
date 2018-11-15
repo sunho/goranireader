@@ -1,6 +1,7 @@
 package server
 
 import (
+	"gorani/models"
 	"github.com/labstack/echo"
 	"github.com/gobuffalo/pop"
 )
@@ -21,6 +22,15 @@ func (u *Users) register(g *echo.Group) {
 }
 
 func (u *Users) getUsers(c echo.Context) error {
-	c.String(200, "hello")
+	d := []models.User{}
+	err := u.conn.Create(&models.User{Username:"test"})
+	if err != nil {
+		return err 
+	}
+	err = u.conn.All(&d)
+	if err != nil {
+		return err
+	}
+	c.JSON(200, d)
 	return nil
 }

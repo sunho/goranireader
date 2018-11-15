@@ -6,16 +6,23 @@ import (
 )
 
 type Server struct {
-	e *echo.Echo
-	c *dig.Container
+	addr string
+	e    *echo.Echo
+	c    *dig.Container
 }
 
-func New(c *dig.Container) *Server {
+func New(addr string, c *dig.Container) *Server {
 	s := &Server{
-		e: echo.New(),
-		c: c,
+		addr: addr,
+		e:    echo.New(),
+		c:    c,
 	}
+	s.register()
 	return s
+}
+
+func (s *Server) Listen() error {
+	return s.e.Start(s.addr)
 }
 
 func (s *Server) register() {
