@@ -1,20 +1,23 @@
 package server
 
 import (
+	"gorani/service/redserv"
 	"gorani/models"
 	"github.com/labstack/echo"
 	"github.com/gobuffalo/pop"
 )
 
-func (r *Routes) setupUsers(conn *pop.Connection) error {
+func (r *Routes) setupUsers(conn *pop.Connection, red *redserv.RedServ) error {
 	r.users = &Users {
 		conn: conn,
+		red: red,
 	}
 	return nil
 }
 
 type Users struct {
 	conn *pop.Connection
+	red *redserv.RedServ
 }
 
 func (u *Users) register(g *echo.Group) {
@@ -34,3 +37,5 @@ func (u *Users) getUsers(c echo.Context) error {
 	c.JSON(200, d)
 	return nil
 }
+
+func (u *Users) 

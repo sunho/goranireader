@@ -4,11 +4,13 @@ require (
 	github.com/PuerkitoBio/goquery v1.4.1
 	github.com/andybalholm/cascadia v1.0.0 // indirect
 	github.com/go-ini/ini v1.38.3 // indirect
+	github.com/go-redis/redis v6.14.2+incompatible
 	github.com/gobuffalo/envy v1.6.8 // indirect
 	github.com/gobuffalo/fizz v1.1.2 // indirect
 	github.com/gobuffalo/flect v0.0.0-20181109221320-179d36177b5b // indirect
 	github.com/gobuffalo/packd v0.0.0-20181111195323-b2e760a5f0ff // indirect
 	github.com/gobuffalo/pop v4.9.0+incompatible
+	github.com/gobuffalo/uuid v2.0.5+incompatible
 	github.com/gobuffalo/x v0.0.0-20181110221217-14085ca3e1a9 // indirect
 	github.com/gofrs/uuid v3.1.0+incompatible
 	github.com/google/uuid v1.0.0
