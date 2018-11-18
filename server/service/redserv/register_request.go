@@ -1,7 +1,9 @@
 package redserv
 
 import (
+	"encoding/json"
 	"errors"
+	"gorani/models"
 
 	"github.com/gofrs/uuid"
 )
@@ -10,35 +12,46 @@ const (
 	regReqsKey = "regReqs"
 )
 
-func (s *RedServ) CreateRegisterRequest(email string) (string, error) {
+func (s *RedServ) CreateRegRequest(req models.RegRequest) (string, error) {
 	k, err := uuid.NewV4()
 	if err != nil {
 		return "", err
 	}
 	key := k.String()
 
-	if err = s.cli.HSet(regReqsKey, key, email).Err(); err != nil {
+	buf, err := json.Marshal(req)
+	if err != nil {
+		return "", err
+	}
+
+	if err = s.cli.HSet(regReqsKey, key, buf).Err(); err != nil {
 		return "", err
 	}
 
 	return key, nil
 }
 
-func (s *RedServ) GetRegisterRequest(key string) (string, error) {
+func (s *RedServ) GetRegRequest(key string) (models.RegRequest, error) {
 	exists, err := s.cli.HExists(regReqsKey, key).Result()
 	if err != nil {
-		return "", err
+		return models.RegRequest{}, err
 	}
 	if !exists {
-		return "", errors.New("no such reigster request")
+		return models.RegRequest{}, errors.New("no such reigster request")
 	}
 
-	email, err := s.cli.HGet(regReqsKey, key).Result()
+	buf, err := s.cli.HGet(regReqsKey, key).Result()
 	if err != nil {
-		return "", err
+		return models.RegRequest{}, err
 	}
 
-	return email, nil
+	out := models.RegRequest{}
+	err = json.Unmarshal([]byte(buf), &out)
+	if err != nil {
+		return models.RegRequest{}, err
+	}
+
+	return out, nil
 }
 
 func (s *RedServ) DeleteRegisterRequest(key string) error {

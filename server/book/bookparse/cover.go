@@ -1,4 +1,5 @@
-package book
+package bookfetch
+
 
 import (
 	"errors"

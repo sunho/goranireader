@@ -10,3 +10,9 @@ type User struct {
 	Email        string    `db:"email"`
 	PasswordHash string    `db:"password_hash"`
 }
+
+type RegRequest struct {
+	Username     string
+	PasswordHash string
+	Email        string
+}
