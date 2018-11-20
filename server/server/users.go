@@ -1,6 +1,8 @@
 package server
 
 import (
+	"gorani/util"
+	"net/http"
 	"encoding/json"
 	"gorani/service/encserv"
 	"gorani/service/redserv"
@@ -9,7 +11,7 @@ import (
 	"github.com/gobuffalo/pop"
 )
 
-func (r *Routes) setupUsers(conn *pop.Connection, enc *endserv.EncServ, red *redserv.RedServ) error {
+func (r *Routes) setupUsers(conn *pop.Connection, enc *encserv.EncServ, red *redserv.RedServ) error {
 	r.users = &Users {
 		conn: conn,
 		enc: enc,
@@ -25,20 +27,49 @@ type Users struct {
 }
 
 func (u *Users) register(g *echo.Group) {
+	u.registerRegReq(g.Group("regreq"))
 }
 
 func (u *Users) createRegRequest(c echo.Context) error {
-	req := struct{
+	params := struct{
 		Email string `json:"email"`
 		Username string `json:"username"`
 		Password string `json:"password"`
 	}{}
-	err := json.NewDecoder(c.Request().Body).Decode(&req)
+	err := json.NewDecoder(c.Request().Body).Decode(&params)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err)
+	}
+
+	if err = util.ReturnErrIfExists(u.conn, "email", &models.User{Email: params.Email}); err != nil {
+		return err
+	}
+
+	if err = util.ReturnErrIfExists(u.conn, "username", &models.User{Username: params.Username}); err != nil {
+		return err
+	}
+
+	hash, err:= u.enc.HashPassword(params.Password)
 	if err != nil {
 		return err
 	}
 
-	u.enc.
+	req := models.RegRequest{
+		Email: params.Email,
+		Username: params.Username,
+		PasswordHash: hash,
+	}
+
+	key, err := u.red.CreateRegRequest(req)
+	if err != nil {
+		return err
+	}
+
+	return c.String(200, key)
+}
+
+func (u *Users) registerRegReq(g *echo.Group) {
+
 }
 
 func (u *Users) getUsers(c echo.Context) error {
@@ -47,14 +78,10 @@ func (u *Users) getUsers(c echo.Context) error {
 	if err != nil {
 		return err 
 	}
+	
 	err = u.conn.All(&d)
 	if err != nil {
 		return err
 	}
-	c.JSON(200, d)
-	return nil
-}
-
-func (u *Users) request(c echo.Context) error {
-
+	return c.JSON(200, d)
 }
