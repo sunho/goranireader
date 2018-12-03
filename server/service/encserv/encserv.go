@@ -8,7 +8,7 @@ type EncServ struct {
 	key string
 }
 
-func New() *EncServ {
+func Provide() *EncServ {
 	return &EncServ{}
 }
 

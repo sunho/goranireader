@@ -6,9 +6,17 @@ type RedServ struct {
 	cli *redis.Client
 }
 
-func New(addr string) (*RedServ, error) {
+func (RedServ) ConfigName() string {
+	return "red"
+}
+
+type RedServConf struct {
+	Addr string `yaml:"addr"`
+}
+
+func Provide(conf RedServConf) (*RedServ, error) {
 	cli := redis.NewClient(&redis.Options{
-		Addr: addr,
+		Addr: conf.Addr,
 	})
 	_, err := cli.Ping().Result()
 	if err != nil {

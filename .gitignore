@@ -9,13 +9,11 @@
 /scripts/epub/analyze/*.epub
 /server/migrations/schema.sql
 /server/database.yml
+/server/db.yaml
+/server/red.yaml
 /server/target
 /public/node_modules
 
-aconfig.yaml
-econfig.yaml
-config.yaml
-services.yaml
 
 log.txt
 
