@@ -1,0 +1,3 @@
+[submodule "public/FolioReaderKit"]
+	path = public/FolioReaderKit
+	url = git@github.com:sunho/FolioReaderKit.git
