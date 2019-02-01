@@ -1,10 +1,10 @@
 import Foundation
 import SQLite
 
-fileprivate let wordsTable = Table("words")
-fileprivate let idField = Expression<Int64>("id")
+fileprivate let wordsTable = Table("word")
+fileprivate let idField = Expression<Int64>("word_id")
 fileprivate let wordField = Expression<String>("word")
-fileprivate let pronField = Expression<String?>("pron")
+fileprivate let pronField = Expression<String?>("word_pronunciation")
 
 class DictEntry {
     var id: Int64

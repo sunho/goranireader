@@ -37,7 +37,7 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
 
         self.view.backgroundColor = UIColor.white
-        let attrs = [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 20)]
+        let attrs = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 20)]
 
         let (front, middle, end) = self.getFrontMiddleEnd()
         let frontString = NSMutableAttributedString(string: front)
@@ -60,7 +60,7 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.tableView.dataSource = self
         self.tableView.backgroundColor = UIUtill.lightGray1
         self.tableView.separatorStyle = .none
-        self.tableView.rowHeight = UITableViewAutomaticDimension;
+        self.tableView.rowHeight = UITableView.automaticDimension;
         self.tableView.estimatedRowHeight = 100;
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.register(UINib(nibName: kDictViewTableCell, bundle: nil), forCellReuseIdentifier: kDictViewTableCell)

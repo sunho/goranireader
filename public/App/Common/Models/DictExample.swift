@@ -1,10 +1,10 @@
 import Foundation
 import SQLite
 
-fileprivate let examplesTable = Table("examples")
-fileprivate let defIdField = Expression<Int64>("def_id")
-fileprivate let firstField = Expression<String>("first")
-fileprivate let secondField = Expression<String>("second")
+fileprivate let examplesTable = Table("example")
+fileprivate let defIdField = Expression<Int64>("definition_id")
+fileprivate let firstField = Expression<String>("native")
+fileprivate let secondField = Expression<String>("foreign")
 
 class DictExample {
     var first: String

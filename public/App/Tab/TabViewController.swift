@@ -26,7 +26,6 @@ class TabViewController: UIViewController {
         let unknownWordViewController = self.storyboard!.instantiateViewController(withIdentifier: "UnknownWordMainViewController")
         
         self.viewControllers = [bookViewController, wordbookViewController, unknownWordViewController]
-        
         self.didPressTab(self.buttons[0])
         
         self.layout()
@@ -40,9 +39,9 @@ class TabViewController: UIViewController {
         self.buttons[self.selectedIndex].isSelected = false
         
         let previousVC = viewControllers[self.selectedIndex]
-        previousVC.willMove(toParentViewController: nil)
+        previousVC.willMove(toParent: nil)
         previousVC.view.removeFromSuperview()
-        previousVC.removeFromParentViewController()
+        previousVC.removeFromParent()
         
         if let delegate = previousVC as? TabViewControllerDelegate {
             delegate.sideView.removeFromSuperview()
@@ -53,11 +52,11 @@ class TabViewController: UIViewController {
         sender.isSelected = true
         
         let vc = self.viewControllers[self.selectedIndex]
-        
-        self.addChildViewController(vc)
-        vc.view.frame = self.contentView.bounds
+        self.addChild(vc)
+        vc.view.frame = self.contentView.bounds;
+        vc.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.contentView.addSubview(vc.view)
-        vc.didMove(toParentViewController: self)
+        vc.didMove(toParent: self)
         
         self.titleLabel.text = vc.title
         self.titleLabel.sizeToFit()

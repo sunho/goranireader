@@ -1,11 +1,11 @@
 import Foundation
 import SQLite
 
-fileprivate let defsTable = Table("defs")
-fileprivate let idField = Expression<Int64>("id")
+fileprivate let defsTable = Table("definition")
+fileprivate let idField = Expression<Int64>("definition_id")
 fileprivate let wordIdField = Expression<Int64>("word_id")
-fileprivate let posField = Expression<String?>("pos")
-fileprivate let defField = Expression<String>("def")
+fileprivate let posField = Expression<String?>("definition_pos")
+fileprivate let defField = Expression<String>("definition")
 
 class DictDefinition {
     var id: Int64
