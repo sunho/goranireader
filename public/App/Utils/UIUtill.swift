@@ -47,7 +47,7 @@ class UIUtill {
         view.clipsToBounds = true
     }
     
-    class func dropShadow(_ view: UIView, offset: CGSize, radius: CGFloat, alpha: Float = 0.15) {
+    class func dropShadow(_ view: UIView, offset: CGSize, radius: CGFloat, alpha: Float = 0.06) {
         view.layer.masksToBounds = false
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.shadowOpacity = alpha

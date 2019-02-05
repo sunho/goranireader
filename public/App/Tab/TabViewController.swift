@@ -23,16 +23,16 @@ class TabViewController: UIViewController {
 
         let bookViewController = self.storyboard!.instantiateViewController(withIdentifier: "BookMainViewController")
         let wordbookViewController = self.storyboard!.instantiateViewController(withIdentifier: "WordbookMainViewController")
-        let unknownWordViewController = self.storyboard!.instantiateViewController(withIdentifier: "UnknownWordMainViewController")
+        let storeMainViewController = self.storyboard!.instantiateViewController(withIdentifier: "StoreMainViewController")
         
-        self.viewControllers = [bookViewController, wordbookViewController, unknownWordViewController]
+        self.viewControllers = [bookViewController, wordbookViewController, storeMainViewController]
         self.didPressTab(self.buttons[0])
         
         self.layout()
     }
     
     fileprivate func layout() {
-        UIUtill.dropShadow(self.tabBarView, offset: CGSize(width: 0, height: -4), radius: 4)
+        UIUtill.dropShadow(self.tabBarView, offset: CGSize(width: 0, height: -2), radius: 3)
     }
     
     @IBAction func didPressTab(_ sender: UIButton) {
