@@ -1,12 +1,10 @@
 package routes
 
 import (
-	"gorani/service/dbserv"
-	"encoding/json"
+	"gorani/services/dbserv"
 	"gorani/models"
-	"gorani/service/encserv"
-	"gorani/service/redserv"
-	"net/http"
+	"gorani/services/encserv"
+	"gorani/services/redserv"
 
 	"github.com/sunho/dim"
 	"github.com/labstack/echo"
@@ -20,29 +18,16 @@ type Users struct {
 
 func (u *Users) Register(g *dim.Group) {
 	g.GET("/", u.getUsers)
-	g.RouteFunc("/req", u.registerRegReq)
+	g.POST("/", u.postUser)
 }
 
-func (u *Users) registerRegReq(g *dim.Group) {
-	g.POST("/", u.createRegReq)
-}
-
-func (u *Users) createRegReq(c echo.Context) error {
+func (u *Users) postUser(c echo.Context) error {
 	params := struct {
-		Email    string `json:"email"`
 		Username string `json:"username"`
+		Email    string `json:"email"`
 		Password string `json:"password"`
 	}{}
-	err := json.NewDecoder(c.Request().Body).Decode(&params)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err)
-	}
-
-	if err = u.DB.ReturnErrIfExists("email", &models.User{Email: params.Email}); err != nil {
-		return err
-	}
-
-	if err = u.DB.ReturnErrIfExists("username", &models.User{Username: params.Username}); err != nil {
+	if err := c.Bind(&params); err != nil {
 		return err
 	}
 
@@ -51,18 +36,17 @@ func (u *Users) createRegReq(c echo.Context) error {
 		return err
 	}
 
-	req := models.RegRequest{
-		Email:        params.Email,
-		Username:     params.Username,
+	user := models.User {
+		Username: params.Username,
+		Email: params.Email,
 		PasswordHash: hash,
 	}
 
-	key, err := u.Red.CreateRegRequest(req)
-	if err != nil {
+	if err = u.DB.Create(&user); err != nil {
 		return err
 	}
 
-	return c.String(200, key)
+	return c.NoContent(201)
 }
 
 func (u *Users) getUsers(c echo.Context) error {

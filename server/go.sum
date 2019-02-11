@@ -245,6 +245,8 @@ github.com/microcosm-cc/bluemonday v1.0.1 h1:SIYunPjnlXcW+gVfvm0IlSeR5U3WZUOLfVm
 github.com/microcosm-cc/bluemonday v1.0.1/go.mod h1:hsXNsILzKxV+sX77C5b8FSuKF00vh2OMYv+xgHpAMF4=
 github.com/minio/minio-go v6.0.8+incompatible h1:RBJrzsmxk259C1CvZ9clro73HBPA3zBwFwVePlkom78=
 github.com/minio/minio-go v6.0.8+incompatible/go.mod h1:7guKYtitv8dktvNUGrhzmNlA5wrAABTQXCoesZdFQO8=
+github.com/minio/minio-go v6.0.14+incompatible h1:fnV+GD28LeqdN6vT2XdGKW8Qe/IfjJDswNVuni6km9o=
+github.com/minio/minio-go v6.0.14+incompatible/go.mod h1:7guKYtitv8dktvNUGrhzmNlA5wrAABTQXCoesZdFQO8=
 github.com/mitchellh/go-homedir v1.0.0 h1:vKb8ShqSby24Yrqr/yDYkuFz8d0WUjys40rvnGC8aR0=
 github.com/mitchellh/go-homedir v1.0.0/go.mod h1:SfyaCUpYCn1Vlf4IUYiD9fPX4A5wJrkLzIz1N1q0pr0=
 github.com/mitchellh/mapstructure v1.0.0/go.mod h1:FVVH3fgwuzCH5S8UJGiWEs2h04kUh9fWfEaFds41c1Y=
@@ -303,6 +305,8 @@ github.com/sunho/dim v1.0.1 h1:16FgRcFJ0YPUKjQPApO3uUHPEHH3pL2q4G1hOXvNV5Y=
 github.com/sunho/dim v1.0.1/go.mod h1:LSDFTCo2DIpeQ2qVW1G06kxq/6qxXmy7leDcVBOglhU=
 github.com/sunho/dim v1.0.2 h1:+VRAGsOXLUs2M+/r+g15O4Z2l7QTi171LkZw95C1Pdo=
 github.com/sunho/dim v1.0.2/go.mod h1:LSDFTCo2DIpeQ2qVW1G06kxq/6qxXmy7leDcVBOglhU=
+github.com/sunho/dim v1.0.3 h1:YMUGKQ8ibPa0BwHzGADlB8Gzwm/bAAN3HYohlNGrXgU=
+github.com/sunho/dim v1.0.3/go.mod h1:LSDFTCo2DIpeQ2qVW1G06kxq/6qxXmy7leDcVBOglhU=
 github.com/sunho/epubgo v0.0.0-20180629211917-650a8f2de947 h1:VhyqLN+REjeXFc+C3jGgQmV8ivwRdXOvh/Hicbivo2o=
 github.com/sunho/epubgo v0.0.0-20180629211917-650a8f2de947/go.mod h1:XQBZHUlZDq3r3FTig4kBgfY2Sw5N3PNwRFZspEvPFUA=
 github.com/unrolled/secure v0.0.0-20180918153822-f340ee86eb8b/go.mod h1:mnPT77IAdsi/kV7+Es7y+pXALeV3h7G6dQF6mNYjcLA=

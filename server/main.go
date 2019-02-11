@@ -1,19 +1,19 @@
 package main
 
 import (
-	"gorani/service/dbserv"
-	"gorani/service/encserv"
-	"gorani/service/redserv"
+	"gorani/services/fileserv"
+	"gorani/services/dbserv"
+	"gorani/services/encserv"
+	"gorani/services/redserv"
 	"github.com/sunho/dim"
 	"gorani/routes"
 )
 
 func main() {
 	d := dim.New()
-	d.Provide(redserv.Provide)
-	d.Provide(dbserv.Provide)
-	d.Provide(encserv.Provide)
+	d.Provide(redserv.Provide,dbserv.Provide,encserv.Provide,fileserv.Provide)
 	d.Init("")
 	d.Register(routes.RegisterRoutes)
-	d.Start(":8080")
+	d.Start(":8081")
 }
+

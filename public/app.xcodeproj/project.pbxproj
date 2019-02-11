@@ -41,6 +41,7 @@
 		B19942E920A1BCE0004CF61A /* FolioReaderKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7C63EAF209946A50093CC02 /* FolioReaderKit.framework */; };
 		B19942F320A21262004CF61A /* DictViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19942F220A21262004CF61A /* DictViewController.swift */; };
 		B1A2125320ACDDA90067A6DD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1A2125120ACDC2F0067A6DD /* Localizable.strings */; };
+		C7291C862210E10A00821624 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7291C852210E10A00821624 /* API.swift */; };
 		C7362F18209BE2060081B012 /* AEXML.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7362F0D209BE1FE0081B012 /* AEXML.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C7362F19209BE2060081B012 /* FontBlaster.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7362F0A209BE1FE0081B012 /* FontBlaster.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C7362F1A209BE2060081B012 /* JSQWebViewController.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7362F0B209BE1FE0081B012 /* JSQWebViewController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -66,6 +67,11 @@
 		C78ECA932206BCC1001909C3 /* ShareError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A97421209AA65900A41D02 /* ShareError.swift */; };
 		C78ECA9B2206E57F001909C3 /* StoreMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78ECA9A2206E57F001909C3 /* StoreMainViewController.swift */; };
 		C7905B4520956F0300CE3D17 /* WordbooksTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7905B4420956F0300CE3D17 /* WordbooksTableCell.swift */; };
+		C7B1C6B02210E407007CF0D9 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B1C6AF2210E407007CF0D9 /* Alamofire.framework */; };
+		C7B1C6B12210E410007CF0D9 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B1C6AF2210E407007CF0D9 /* Alamofire.framework */; };
+		C7B1C6B22210E410007CF0D9 /* Alamofire.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7B1C6AF2210E407007CF0D9 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C7B1C6B42210E489007CF0D9 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B1C6B32210E489007CF0D9 /* Book.swift */; };
+		C7B1C6B62210ECF5007CF0D9 /* Downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B1C6B52210ECF5007CF0D9 /* Downloader.swift */; };
 		C7C63E92209905900093CC02 /* BookMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C63E91209905900093CC02 /* BookMainViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -95,6 +101,7 @@
 			files = (
 				C7362F18209BE2060081B012 /* AEXML.framework in CopyFiles */,
 				C7362F19209BE2060081B012 /* FontBlaster.framework in CopyFiles */,
+				C7B1C6B22210E410007CF0D9 /* Alamofire.framework in CopyFiles */,
 				C7362F24209BE2340081B012 /* FolioReaderKit.framework in CopyFiles */,
 				B143AF8420A4393B003341A3 /* SwiftSoup.framework in CopyFiles */,
 				B13393A520A8DCC800F34525 /* OAuthSwift.framework in CopyFiles */,
@@ -145,25 +152,13 @@
 		B143AF9720A4704F003341A3 /* Verb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Verb.swift; sourceTree = "<group>"; };
 		B143AF9820A4704F003341A3 /* UIUtill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtill.swift; sourceTree = "<group>"; };
 		B143AF9920A4704F003341A3 /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
-		B143B00420A4758A003341A3 /* Epub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Epub.swift; sourceTree = "<group>"; };
-		B143B00520A4758A003341A3 /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
-		B143B00620A4758A003341A3 /* KnownWord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KnownWord.swift; sourceTree = "<group>"; };
-		B143B00820A4758A003341A3 /* Wordbook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wordbook.swift; sourceTree = "<group>"; };
-		B143B00A20A4758A003341A3 /* POS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POS.swift; sourceTree = "<group>"; };
-		B143B00F20A4758A003341A3 /* FileUtill.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileUtill.swift; sourceTree = "<group>"; };
-		B143B01020A4758A003341A3 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
-		B143B01120A4758A003341A3 /* IPA.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IPA.swift; sourceTree = "<group>"; };
-		B143B01220A4758A003341A3 /* Ease.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ease.swift; sourceTree = "<group>"; };
-		B143B01320A4758A003341A3 /* Verb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Verb.swift; sourceTree = "<group>"; };
-		B143B01420A4758A003341A3 /* UIUtill.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIUtill.swift; sourceTree = "<group>"; };
-		B143B01520A4758A003341A3 /* Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		B158D46920A59A7600339CCC /* Wordbook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wordbook.swift; sourceTree = "<group>"; };
 		B18254FF20A5AA4A00ADB1AC /* WordbookEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordbookEntry.swift; sourceTree = "<group>"; };
-		B182550120A5AA5200ADB1AC /* WordbookEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordbookEntry.swift; sourceTree = "<group>"; };
 		B19942DC20A1B072004CF61A /* dict.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = dict.db; sourceTree = "<group>"; };
 		B19942E520A1BCA4004CF61A /* Regex.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Regex.framework; path = Carthage/Build/iOS/Regex.framework; sourceTree = "<group>"; };
 		B19942F220A21262004CF61A /* DictViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictViewController.swift; sourceTree = "<group>"; };
 		B1A2125220ACDC2F0067A6DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C7291C852210E10A00821624 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		C7362F08209BE1FE0081B012 /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = FolioReaderKit/Carthage/Build/iOS/ZipArchive.framework; sourceTree = "<group>"; };
 		C7362F0A209BE1FE0081B012 /* FontBlaster.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FontBlaster.framework; path = FolioReaderKit/Carthage/Build/iOS/FontBlaster.framework; sourceTree = "<group>"; };
 		C7362F0B209BE1FE0081B012 /* JSQWebViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSQWebViewController.framework; path = FolioReaderKit/Carthage/Build/iOS/JSQWebViewController.framework; sourceTree = "<group>"; };
@@ -185,18 +180,14 @@
 		C78217C0209BCAA900C19E2F /* BooksTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksTableCell.swift; sourceTree = "<group>"; };
 		C78217C7209BD32700C19E2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C78217C8209BD32700C19E2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		C78217D0209BD5A500C19E2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		C78217D5209BD5C000C19E2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C78ECA9A2206E57F001909C3 /* StoreMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreMainViewController.swift; sourceTree = "<group>"; };
 		C7905B4420956F0300CE3D17 /* WordbooksTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordbooksTableCell.swift; sourceTree = "<group>"; };
-		C7A97414209A5F0C00A41D02 /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		C7A97416209A8FD700A41D02 /* ManagedEpubURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedEpubURL.swift; sourceTree = "<group>"; };
 		C7A97421209AA65900A41D02 /* ShareError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareError.swift; sourceTree = "<group>"; };
+		C7B1C6AF2210E407007CF0D9 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		C7B1C6B32210E489007CF0D9 /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
+		C7B1C6B52210ECF5007CF0D9 /* Downloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloader.swift; sourceTree = "<group>"; };
 		C7C1E3262098058500C909D7 /* app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = app.entitlements; sourceTree = "<group>"; };
-		C7C1E37920981A1700C909D7 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
-		C7C1E37E20981A1700C909D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C7C1E38520981A4900C909D7 /* copyEpub.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = copyEpub.entitlements; sourceTree = "<group>"; };
-		C7C63E8F2098F7DC0093CC02 /* EntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
 		C7C63E91209905900093CC02 /* BookMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMainViewController.swift; sourceTree = "<group>"; };
 		C7C63EA9209946A50093CC02 /* FolioReaderKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FolioReaderKit.xcodeproj; path = FolioReaderKit/FolioReaderKit.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -206,11 +197,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7B1C6B02210E407007CF0D9 /* Alamofire.framework in Frameworks */,
 				C7362F22209BE21B0081B012 /* SQLite.framework in Frameworks */,
 				B13393BA20AB6CC400F34525 /* SwipeCellKit.framework in Frameworks */,
 				B19942E920A1BCE0004CF61A /* FolioReaderKit.framework in Frameworks */,
-				B13393A320A8DCC000F34525 /* OAuthSwift.framework in Frameworks */,
+				C7B1C6B12210E410007CF0D9 /* Alamofire.framework in Frameworks */,
 				B143AF8520A43943003341A3 /* SwiftSoup.framework in Frameworks */,
+				B13393A320A8DCC000F34525 /* OAuthSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -220,6 +213,7 @@
 		702F24C22323D91C0487792D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C7B1C6AF2210E407007CF0D9 /* Alamofire.framework */,
 				B13393B920AB6CC400F34525 /* SwipeCellKit.framework */,
 				B13393A020A8DCBF00F34525 /* OAuthSwift.framework */,
 				B143AF8220A438FE003341A3 /* SwiftSoup.framework */,
@@ -257,6 +251,7 @@
 				B143AF9020A4704F003341A3 /* DictExample.swift */,
 				B158D46920A59A7600339CCC /* Wordbook.swift */,
 				B18254FF20A5AA4A00ADB1AC /* WordbookEntry.swift */,
+				C7B1C6B32210E489007CF0D9 /* Book.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -274,45 +269,17 @@
 				B143AF9720A4704F003341A3 /* Verb.swift */,
 				B143AF9820A4704F003341A3 /* UIUtill.swift */,
 				B143AF9920A4704F003341A3 /* Keys.swift */,
+				C7B1C6B52210ECF5007CF0D9 /* Downloader.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		B143B00220A4758A003341A3 /* Common */ = {
+		C7291C7F2210DDFF00821624 /* API */ = {
 			isa = PBXGroup;
 			children = (
-				B143B00320A4758A003341A3 /* Models */,
-				B143B00E20A4758A003341A3 /* Utils */,
+				C7291C852210E10A00821624 /* API.swift */,
 			);
-			name = Common;
-			path = App/Common;
-			sourceTree = SOURCE_ROOT;
-		};
-		B143B00320A4758A003341A3 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				B143B00420A4758A003341A3 /* Epub.swift */,
-				B143B00520A4758A003341A3 /* UserData.swift */,
-				B143B00620A4758A003341A3 /* KnownWord.swift */,
-				B182550120A5AA5200ADB1AC /* WordbookEntry.swift */,
-				B143B00820A4758A003341A3 /* Wordbook.swift */,
-				B143B00A20A4758A003341A3 /* POS.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		B143B00E20A4758A003341A3 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				B143B00F20A4758A003341A3 /* FileUtill.swift */,
-				B143B01020A4758A003341A3 /* Helper.swift */,
-				B143B01120A4758A003341A3 /* IPA.swift */,
-				B143B01220A4758A003341A3 /* Ease.swift */,
-				B143B01320A4758A003341A3 /* Verb.swift */,
-				B143B01420A4758A003341A3 /* UIUtill.swift */,
-				B143B01520A4758A003341A3 /* Keys.swift */,
-			);
-			path = Utils;
+			path = API;
 			sourceTree = "<group>";
 		};
 		C7403AE72091767D00099119 /* Wordbook */ = {
@@ -332,7 +299,6 @@
 				B13393B220A8F78D00F34525 /* .gitignore */,
 				B124047220A8CD90005EAE4F /* Cartfile */,
 				C74CEFD6208C899F002765D6 /* App */,
-				C7C1E37820981A1700C909D7 /* CopyEpub */,
 				C74CEFD5208C899F002765D6 /* Products */,
 				702F24C22323D91C0487792D /* Frameworks */,
 			);
@@ -349,6 +315,7 @@
 		C74CEFD6208C899F002765D6 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				C7291C7F2210DDFF00821624 /* API */,
 				C78ECA942206E51E001909C3 /* Store */,
 				B143AF8720A4704F003341A3 /* Models */,
 				B143AF9220A4704F003341A3 /* Utils */,
@@ -387,23 +354,6 @@
 			path = Store;
 			sourceTree = "<group>";
 		};
-		C7A9741A209AA29C00A41D02 /* UI */ = {
-			isa = PBXGroup;
-			children = (
-				C7C63E8F2098F7DC0093CC02 /* EntryViewController.swift */,
-				C7C1E37920981A1700C909D7 /* ShareViewController.swift */,
-				C7A97414209A5F0C00A41D02 /* Spinner.swift */,
-			);
-			path = UI;
-			sourceTree = "<group>";
-		};
-		C7A9741B209AA2B500A41D02 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		C7C1E2FF2098016D00C909D7 /* Book */ = {
 			isa = PBXGroup;
 			children = (
@@ -414,20 +364,6 @@
 				B1352ADF20A34204007E132C /* DictViewTableCell.swift */,
 			);
 			path = Book;
-			sourceTree = "<group>";
-		};
-		C7C1E37820981A1700C909D7 /* CopyEpub */ = {
-			isa = PBXGroup;
-			children = (
-				B143B00220A4758A003341A3 /* Common */,
-				C7A9741B209AA2B500A41D02 /* Models */,
-				C7A9741A209AA29C00A41D02 /* UI */,
-				C7C1E38520981A4900C909D7 /* copyEpub.entitlements */,
-				C7C1E37E20981A1700C909D7 /* Info.plist */,
-				C78217D1209BD5A500C19E2F /* Main.storyboard */,
-				C7A97429209AB00F00A41D02 /* Localizable.strings */,
-			);
-			path = CopyEpub;
 			sourceTree = "<group>";
 		};
 		C7C63EAA209946A50093CC02 /* Products */ = {
@@ -555,6 +491,7 @@
 				C751A8F82092838000E7B04E /* WordbookDetailViewController.swift in Sources */,
 				B143B05C20A47617003341A3 /* Keys.swift in Sources */,
 				B143B05820A47617003341A3 /* IPA.swift in Sources */,
+				C7B1C6B62210ECF5007CF0D9 /* Downloader.swift in Sources */,
 				C78ECA932206BCC1001909C3 /* ShareError.swift in Sources */,
 				B143B04F20A47613003341A3 /* Dict.swift in Sources */,
 				B143B05520A47613003341A3 /* DictDefinition.swift in Sources */,
@@ -578,8 +515,10 @@
 				B19942F320A21262004CF61A /* DictViewController.swift in Sources */,
 				C742DD8F2209568800CD737A /* SearchResultViewController.swift in Sources */,
 				C78ECA912206BCB4001909C3 /* ManagedEpubURL.swift in Sources */,
+				C7B1C6B42210E489007CF0D9 /* Book.swift in Sources */,
 				C78ECA922206BCB4001909C3 /* NewEpub.swift in Sources */,
 				C74CEFE0208C899F002765D6 /* app.xcdatamodeld in Sources */,
+				C7291C862210E10A00821624 /* API.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -608,22 +547,6 @@
 				C78217C8209BD32700C19E2F /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		C78217D1209BD5A500C19E2F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C78217D0209BD5A500C19E2F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		C7A97429209AB00F00A41D02 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C78217D5209BD5C000C19E2F /* Base */,
-			);
-			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -750,9 +673,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = app/app.entitlements;
+				CODE_SIGN_ENTITLEMENTS = App/app.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = YT3F53Y6WA;
+				DEVELOPMENT_TEAM = GND7ZFZ8Y8;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -779,9 +702,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = app/app.entitlements;
+				CODE_SIGN_ENTITLEMENTS = App/app.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = YT3F53Y6WA;
+				DEVELOPMENT_TEAM = GND7ZFZ8Y8;
 				ENABLE_TESTABILITY = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

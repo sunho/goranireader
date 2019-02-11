@@ -13,7 +13,7 @@ type Word struct {
 	Id            int          `gorm:"column:word_id;primary_key" json:"id"`
 	Word          string       `gorm:"column:word;not null;unique" json:"word"`
 	Pronunciation *string      `gorm:"column:word_pronunciation" json:"pron,omitempty"`
-	Definitions   []Definition `json:"defs,omitempty"`
+	Definitions   []Definition `gorm:"association_save_reference:false" json:"defs,omitempty"`
 }
 
 func (Word) TableName() string {
@@ -25,7 +25,7 @@ type Definition struct {
 	WordId     int       `gorm:"column:word_id;not null" json:"word_id"`
 	Definition string    `gorm:"column:definition;not null" json:"def"`
 	POS        *string   `gorm:"column:definition_pos" json:"pos,omitempty"`
-	Examples   []Example `json:"examples,omitempty"`
+	Examples   []Example `gorm:"association_save_reference:false" json:"examples,omitempty"`
 }
 
 func (Definition) TableName() string {
@@ -68,6 +68,24 @@ func main() {
 
 	words := []Word{}
 	for _, word := range dict {
+		visitDef := make(map[string]bool)
+		defs := []Definition{}
+		for _, def := range word.Definitions {
+			if _, ok := visitDef[def.Definition]; !ok && def.Definition != "" {
+				visitDef[def.Definition] = true
+				visitEx := make(map[string]bool)
+				exs := []Example{}
+				for _, ex := range def.Examples {
+					if _, ok := visitEx[ex.Foreign]; !ok {
+						visitEx[ex.Foreign] = true
+						exs = append(exs, ex)
+					}
+				}
+				def.Examples = exs
+				defs = append(defs, def)
+			}
+		}
+		word.Definitions = defs
 		words = append(words, word)
 	}
 

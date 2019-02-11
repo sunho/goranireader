@@ -144,6 +144,10 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        dismiss(animated: true)
+    }
 
     fileprivate func getFrontMiddleEnd() -> (String, String, String) {
         let arr = self.sentence.components(separatedBy: " ")
