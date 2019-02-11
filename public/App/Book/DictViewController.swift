@@ -13,10 +13,6 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var entries: [DictEntry]
     
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
-    
     init(word: String, sentence: String, index: Int) {
         self.word = word
         self.sentence = sentence

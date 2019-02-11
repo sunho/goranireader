@@ -23,7 +23,7 @@ class SearchResultViewController: UIViewController, UITableViewDataSource, UITab
     
     func search(_ keyword: String) {
         isSearching = true
-        API.shared.getBooks(success: { (books) in
+        API.shared.getBooks(name: keyword, success: { (books) in
             self.books = books
             self.tableView.reloadData()
         },failure:{(err) in })

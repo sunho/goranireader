@@ -24,6 +24,8 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewDidAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector:#selector(applicationWillEnterForeground(_:)), name: UIApplication.willEnterForegroundNotification, object: nil)
+        self.books = Epub.getLocalBooks()
+        self.tableView.reloadData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -79,6 +81,7 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
         let config = FolioReaderConfig()
         config.tintColor = UIUtill.tint
         config.canChangeScrollDirection = false
+        config.shouldHideNavigationOnTap = false
         config.hideBars = false
         config.scrollDirection = .horizontal
         
@@ -92,7 +95,10 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
         guard orientation == .right else { return nil }
         
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
-            // handle action by updating model with deletion
+            let book = self.books[indexPath.row]
+            try! FileManager.default.removeItem(atPath: book.path)
+            self.books = Epub.getLocalBooks()
+            self.tableView.reloadData()
         }
         
         // customize the action appearance

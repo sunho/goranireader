@@ -7,6 +7,7 @@ enum EpubError: Error{
 }
 
 class Epub {
+    var path: String = ""
     var book: FRBook?
     var title: String = ""
     var cover: UIImage?
@@ -16,6 +17,7 @@ class Epub {
     }
     
     init(path: String) throws {
+        self.path = path
         self.book = try FREpubParser().readEpub(bookBasePath: path)
         try self.parse()
     }

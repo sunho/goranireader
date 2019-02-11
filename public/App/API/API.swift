@@ -10,12 +10,12 @@ import Foundation
 import Alamofire
 
 class API {
-    let serverURL = "http://localhost:8081"
+    let serverURL = "https://s3.minda.games"
     
     static let shared = API()
     
-    func getBooks(success:@escaping (_ response : [Book])->(), failure : @escaping (_ error : Error)->()) {
-        Alamofire.request(URL(string: serverURL + "/books/")!, method: .get, encoding: JSONEncoding.default, headers: nil).responseJSON { (response) in
+    func getBooks(name: String, success:@escaping (_ response : [Book])->(), failure : @escaping (_ error : Error)->()) {
+        Alamofire.request(URL(string: serverURL + "/books/")!, method: .get, parameters: ["name": name], encoding: URLEncoding.queryString, headers: nil).responseJSON { (response) in
             switch response.result {
             case .success:
                 if let data = response.data {

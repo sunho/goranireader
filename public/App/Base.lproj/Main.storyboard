@@ -271,13 +271,17 @@
                         <subviews>
                             <searchBar contentMode="redraw" verticalHuggingPriority="251" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="5Id-K0-ZTH">
                                 <rect key="frame" x="10" y="20" width="355" height="56"/>
+                                <color key="barTintColor" red="0.60784313729999995" green="0.37254901959999998" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rSG-QY-ZHT">
                                 <rect key="frame" x="0.0" y="76" width="375" height="421"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" red="0.60784313729999995" green="0.37254901959999998" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" red="0.60784313729999995" green="0.37254901959999998" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="rSG-QY-ZHT" firstAttribute="top" secondItem="5Id-K0-ZTH" secondAttribute="bottom" id="MgB-Pz-leu"/>
                             <constraint firstItem="yBn-kM-btv" firstAttribute="trailing" secondItem="5Id-K0-ZTH" secondAttribute="trailing" constant="10" id="TqF-E3-K6J"/>
@@ -755,7 +759,7 @@
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="9oG-mU-qZQ" firstAttribute="top" secondItem="0IR-Bb-rWH" secondAttribute="top" constant="432" id="BbW-9U-WVu"/>
                                             <constraint firstAttribute="bottom" secondItem="9oG-mU-qZQ" secondAttribute="bottom" constant="20" id="XHG-tG-C8d"/>
@@ -764,6 +768,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="top" secondItem="0IR-Bb-rWH" secondAttribute="top" id="Xyl-a7-KRQ"/>
                                     <constraint firstItem="0IR-Bb-rWH" firstAttribute="trailing" secondItem="2MF-eG-Oox" secondAttribute="trailing" id="l3n-nP-s3g"/>
@@ -773,7 +778,8 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" red="0.60784313729999995" green="0.37254901959999998" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="2MF-eG-Oox" secondAttribute="bottom" id="82R-2a-GpR"/>
                             <constraint firstAttribute="trailing" secondItem="2MF-eG-Oox" secondAttribute="trailing" id="E2Y-4a-cUb"/>
@@ -872,7 +878,8 @@
                                 </prototypes>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" red="0.60784313729999995" green="0.37254901959999998" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="vux-fx-4sJ" firstAttribute="top" secondItem="Sa7-5X-4IT" secondAttribute="top" id="4cv-ID-eQ0"/>
                             <constraint firstItem="2N5-Rg-V7Z" firstAttribute="trailing" secondItem="vux-fx-4sJ" secondAttribute="trailing" id="FVp-pK-aZQ"/>
