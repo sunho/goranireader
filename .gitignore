@@ -11,7 +11,7 @@ Carthage
 /server/migrations/schema.sql
 /server/database.yml
 /server/db.yaml
-/server/red.yaml
+/server/*.yaml
 /server/target
 /public/node_modules
 

@@ -20,8 +20,9 @@ func (b *Books) Register(d *dim.Group) {
 }
 
 func (b *Books) list(c echo.Context) error {
-	var out []models.Book
-	err := b.DB.All(&out)
+	name := c.QueryParam("name")
+	out := []models.Book{}
+	err := b.DB.Where("name LIKE ?", "%"+ name+"%").All(&out)
 	if err != nil {
 		return err
 	}
