@@ -7,6 +7,7 @@ fileprivate let MinActulReadRate = 0.7
 class BookMainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FolioReaderDelegate, FolioReaderCenterDelegate, SwipeTableViewCellDelegate {
     @IBOutlet weak var tableView: UITableView!
 
+    var dictVC: DictViewController?
     var books: [Epub]!
     var folioReader = FolioReader()
     var currentHTML: String?
@@ -45,9 +46,20 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
         NotificationCenter.default.removeObserver(self)
     }
     
-    func presentDictView(bookName: String, page: Int, scroll: CGFloat, sentence: String, word: String, index: Int) {
-        let vc = DictViewController(word: word, sentence: sentence, index: index)
-        self.folioReader.readerContainer?.present(vc, animated:  true)
+    func presentDictView(bookName: String, rect: CGRect, page: Int, scroll: CGFloat, sentence: String, word: String, index: Int) {
+        if let vc = dictVC {
+            vc.willMove(toParent: nil)
+            vc.view.removeFromSuperview()
+            vc.removeFromParent()
+        }
+        let vc = storyboard!.instantiateViewController(withIdentifier: "DictViewController") as! DictViewController
+        vc.word = word
+        vc.sentence = sentence
+        vc.index = index
+        self.folioReader.readerContainer?.view.addSubview(vc.view)
+        vc.didMove(toParent: self)
+        vc.view.frame = CGRect(x: 20, y: rect.maxY, width: UIScreen.main.bounds.width - 40, height: 300)
+        dictVC = vc
     }
 
     func htmlContentForPage(_ page: FolioReaderPage, htmlContent: String) -> String {

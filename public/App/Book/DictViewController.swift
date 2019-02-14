@@ -3,73 +3,18 @@ import UIKit
 fileprivate let MaxChar = 120
 
 class DictViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    var tableView: UITableView!
-    var sentenceLabel: UILabel!
-    var cancelButton: UIButton!
     
-    var word: String
-    var sentence: String
-    var index: Int
+    @IBOutlet weak var tableView: UITableView!
     
-    var entries: [DictEntry]
+    var word: String!
+    var sentence: String!
+    var index: Int!
     
-    init(word: String, sentence: String, index: Int) {
-        self.word = word
-        self.sentence = sentence
-        self.index = index
-        self.entries = Dict.shared.search(word: word)
-        super.init(nibName: nil, bundle: Bundle.main)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("storyboard is not good" )
-    }
-
-    @objc func onCacnelButton(_ sender: Any? = nil) {
-        dismiss(animated: true)
-    }
+    var entries: [DictEntry] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.view.backgroundColor = UIColor.white
-        let attrs = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 20)]
-
-        let (front, middle, end) = self.getFrontMiddleEnd()
-        let frontString = NSMutableAttributedString(string: front)
-        let middleString = NSMutableAttributedString(string: middle, attributes:attrs)
-        let endString = NSMutableAttributedString(string: end)
-        frontString.append(middleString)
-        frontString.append(endString)
-        
-        self.sentenceLabel = UILabel(frame: CGRect(x: 14, y: 20, width: view.frame.width - 28, height: 70))
-        self.sentenceLabel.attributedText = frontString
-        self.sentenceLabel.textAlignment = .center
-        self.sentenceLabel.numberOfLines = 0
-        self.view.addSubview(self.sentenceLabel)
-        
-        let line = UIView(frame: CGRect(x: 0, y: self.sentenceLabel.frame.height + self.sentenceLabel.frame.origin.y + 20, width: view.frame.width, height: 0.7))
-        line.backgroundColor = UIUtill.gray1
-
-        self.tableView = UITableView(frame: CGRect(x: 0, y: line.frame.origin.y + 0.7 , width: view.frame.width, height: view.frame.height - 200))
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        self.tableView.backgroundColor = UIUtill.lightGray1
-        self.tableView.separatorStyle = .none
-        self.tableView.rowHeight = UITableView.automaticDimension;
-        self.tableView.estimatedRowHeight = 100;
-        self.tableView.showsVerticalScrollIndicator = false
-        self.tableView.register(UINib(nibName: kDictViewTableCell, bundle: nil), forCellReuseIdentifier: kDictViewTableCell)
-        self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
-        self.view.addSubview(self.tableView)
-
-        self.cancelButton = UIButton(frame: CGRect(x: 14, y: view.frame.height - 70, width: view.frame.width - 28, height: 50))
-        self.cancelButton.backgroundColor = UIUtill.tint
-        self.cancelButton.setTitleColor(UIUtill.white, for: .normal)
-        self.cancelButton.setTitle("Cancel", for: .normal)
-        self.cancelButton.addTarget(self, action: #selector(onCacnelButton(_:)), for: .touchUpInside)
-        UIUtill.roundView(self.cancelButton)
-        self.view.addSubview(self.cancelButton)
+        self.entries = Dict.shared.search(word: word)
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
