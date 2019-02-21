@@ -24,8 +24,9 @@ class TabViewController: UIViewController {
         let bookViewController = self.storyboard!.instantiateViewController(withIdentifier: "BookMainViewController")
         let wordbookViewController = self.storyboard!.instantiateViewController(withIdentifier: "WordbookMainViewController")
         let storeMainViewController = self.storyboard!.instantiateViewController(withIdentifier: "StoreMainViewController")
+        let recommendMainViewController = self.storyboard!.instantiateViewController(withIdentifier: "RecommendMainViewController")
         
-        self.viewControllers = [bookViewController, wordbookViewController, storeMainViewController]
+        self.viewControllers = [bookViewController, wordbookViewController,  recommendMainViewController, storeMainViewController]
         self.didPressTab(self.buttons[0])
         
         self.layout()
