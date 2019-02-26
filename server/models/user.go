@@ -10,3 +10,7 @@ type User struct {
 	Email        string    `db:"email"`
 	PasswordHash string    `db:"password_hash"`
 }
+
+type UserInfo struct {
+	UserID int `db:"user_id"`
+}

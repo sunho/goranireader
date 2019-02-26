@@ -9,7 +9,6 @@ class UserData {
     private init(url: URL) {
         self.connection = try! Connection(url.path)
         try! KnownWord.prepare(self.connection)
-        try! Wordbook.prepare(self.connection)
-        try! WordbookEntry.perpare(self.connection)
+        try! UnknownWord.prepare(self.connection)
     }
 }

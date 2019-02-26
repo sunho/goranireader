@@ -21,14 +21,13 @@ class TabViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let bookViewController = self.storyboard!.instantiateViewController(withIdentifier: "BookMainViewController")
-        let wordbookViewController = self.storyboard!.instantiateViewController(withIdentifier: "WordbookMainViewController")
+        let bookMainViewController = self.storyboard!.instantiateViewController(withIdentifier: "BookMainViewController")
+        let wordMainViewController = self.storyboard!.instantiateViewController(withIdentifier: "WordMainViewController")
         let storeMainViewController = self.storyboard!.instantiateViewController(withIdentifier: "StoreMainViewController")
         let recommendMainViewController = self.storyboard!.instantiateViewController(withIdentifier: "RecommendMainViewController")
         
-        self.viewControllers = [bookViewController, wordbookViewController,  recommendMainViewController, storeMainViewController]
+        self.viewControllers = [bookMainViewController, wordMainViewController,  recommendMainViewController, storeMainViewController]
         self.didPressTab(self.buttons[0])
-        
         self.layout()
     }
     

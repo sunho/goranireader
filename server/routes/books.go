@@ -2,8 +2,8 @@ package routes
 
 import (
 	"gorani/models"
-	"gorani/services/dbserv"
-	"gorani/services/fileserv"
+	"gorani/servs/dbserv"
+	"gorani/servs/fileserv"
 
 	"github.com/labstack/echo"
 	"github.com/sunho/dim"

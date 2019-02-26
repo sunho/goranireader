@@ -1,6 +1,6 @@
 import UIKit
 
-class WordbooksTableCell: UITableViewCell {
+class WordTableCell: UITableViewCell {
     @IBOutlet weak var back: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var countLabel: UILabel!

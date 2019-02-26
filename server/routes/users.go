@@ -1,24 +1,26 @@
 package routes
 
 import (
-	"gorani/services/dbserv"
+	"gorani/utils"
+	"gorani/servs/authserv"
+	"gorani/servs/dbserv"
 	"gorani/models"
-	"gorani/services/encserv"
-	"gorani/services/redserv"
+	"gorani/servs/redserv"
 
 	"github.com/sunho/dim"
 	"github.com/labstack/echo"
 )
 
 type Users struct {
+	Auth *authserv.AuthServ `dim:"on"`
 	DB *dbserv.DBServ `dim:"on"`
-	Enc  *encserv.EncServ `dim:"on"`
 	Red  *redserv.RedServ `dim:"on"`
 }
 
 func (u *Users) Register(g *dim.Group) {
-	g.GET("/", u.getUsers)
 	g.POST("/", u.postUser)
+	g.POST("/login/", u.login)
+	g.GET("/me/", u.getMe)
 }
 
 func (u *Users) postUser(c echo.Context) error {
@@ -31,7 +33,7 @@ func (u *Users) postUser(c echo.Context) error {
 		return err
 	}
 
-	hash, err := u.Enc.HashPassword(params.Password)
+	hash, err := u.Auth.HashPassword(params.Password)
 	if err != nil {
 		return err
 	}
@@ -61,4 +63,26 @@ func (u *Users) getUsers(c echo.Context) error {
 		return err
 	}
 	return c.JSON(200, d)
+}
+
+func (u *Users) login(c echo.Context) error {
+	params := struct {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}{}
+	if err := c.Bind(&params); err != nil {
+		return err
+	}
+	token, err := u.Auth.Login(params.Username, params.Password)
+	if err != nil {
+		return err
+	}
+	
+	return c.JSON(200, utils.M{
+		"token": token,
+	})
+}
+
+func (u *Users) getMe(c2 echo.Context) error {
+	c := c2.(*models.Context)
 }

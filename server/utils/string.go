@@ -1,4 +1,4 @@
-package util
+package utils
 
 func NewString(str string) *string {
 	return &str
