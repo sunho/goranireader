@@ -23,3 +23,19 @@ func (a *AuthMiddle) Act(c2 echo.Context) error {
 	c.User = user
 	return nil
 }
+
+type AdminAuthMiddle struct {
+	Auth *authserv.AuthServ `dim:"on"`
+}
+
+func (a *AdminAuthMiddle) Act(c2 echo.Context) error {
+	c := c2.(*models.Context)
+	token := c.Request().Header.Get("Authorization")
+	if token == "" {
+		return echo.NewHTTPError(400, "No authorization header")
+	}
+	if a.Auth.AdminToken != token {
+		return echo.NewHTTPError(403, "Invalid token")
+	}
+	return nil
+}

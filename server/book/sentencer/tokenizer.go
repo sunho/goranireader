@@ -52,6 +52,26 @@ func NewTokenizer(r io.Reader) *Tokenizer {
 	}
 }
 
+// USA -> U S A(true)
+func AbbrsToDotSpecialCases(abbrs []string) DotSpecialCases {
+	out := DotSpecialCases{}
+	for _, abbr := range abbrs {
+		lets := []rune(abbr)
+		for i, let := range lets {
+			key := strings.ToLower(string(let))
+			if i >= len(out) {
+				out = append(out, make(map[string]bool))
+			}
+			if i == len(lets)-1 {
+				out[i][key] = true
+			} else {
+				out[i][key] = false
+			}
+		}
+	}
+	return out
+}
+
 func isWordToken(t Token) bool {
 	return t.Kind == TokenKindCapitalWord || t.Kind == TokenKindNormalWord
 }

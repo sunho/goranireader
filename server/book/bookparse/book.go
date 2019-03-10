@@ -1,9 +1,8 @@
-package bookfetch
+package bookparse
 
 import (
+	"gorani/book/sentencer"
 	"io"
-
-	"gorani/sentencer"
 )
 
 type (
@@ -14,24 +13,10 @@ type (
 		Cover     Cover
 		Genre     []string
 		Sentences []sentencer.Sentence
-		Ratings   []BookRating
-		Reviews   []BookReview
-	}
-
-	BookRating struct {
-		Provider string
-		Number   string
-		Rating   float32
-	}
-
-	BookReview struct {
-		Provider string
-		Comment  string
 	}
 
 	Cover struct {
 		Reader io.Reader
 		Ext    string
-		Object string
 	}
 )

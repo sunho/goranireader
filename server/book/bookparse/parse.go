@@ -1,12 +1,12 @@
-package book
+package bookparse
 
 import (
+	"gorani/book/sentencer"
 	"errors"
 	"io"
 	"strings"
 
 	"github.com/sunho/epubgo"
-	"gorani/sentencer"
 )
 
 var (
@@ -21,7 +21,6 @@ func Parse(isbn string, r io.ReaderAt, size int64) (b Book, err error) {
 		return
 	}
 
-	b.fetchInfos()
 
 	return
 }

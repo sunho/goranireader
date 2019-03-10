@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"gorani/sentencer"
+	"gorani/book/sentencer"
 
 	"github.com/stretchr/testify/assert"
 )

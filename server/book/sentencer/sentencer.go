@@ -32,7 +32,7 @@ func (s *Sentencer) ExtractSentencesFromText(r io.Reader) (out []Sentence) {
 	toks := t.Tokenize()
 
 	i := 0
-	out = append(out, Sentence{Words: []WordId{}})
+	out = append(out, Sentence{Words: []WordID{}})
 	for _, tok := range toks {
 		out[i].Origin += tok.Lit
 
@@ -53,7 +53,7 @@ func (s *Sentencer) ExtractSentencesFromText(r io.Reader) (out []Sentence) {
 
 		if tok.Kind == TokenKindEos {
 			i++
-			out = append(out, Sentence{Words: []WordId{}})
+			out = append(out, Sentence{Words: []WordID{}})
 		}
 	}
 

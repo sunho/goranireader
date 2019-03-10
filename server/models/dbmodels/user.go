@@ -1,4 +1,4 @@
-package models
+package dbmodels
 
 import "time"
 
@@ -13,4 +13,13 @@ type User struct {
 
 type UserInfo struct {
 	UserID int `db:"user_id"`
+}
+
+type BookProgress struct {
+}
+
+type RecommendInfo struct {
+	UserID       int        `db:"user_id"`
+	TargetBookID int        `db:"target_book_id"`
+	Categories   []Category `has_many:"category"`
 }

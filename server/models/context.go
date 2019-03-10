@@ -1,8 +1,11 @@
 package models
 
-import "github.com/labstack/echo"
+import (
+	"gorani/models/dbmodels"
+	"github.com/labstack/echo"
+)
 
 type Context struct {
 	echo.Context
-	User User
+	User dbmodels.User
 }

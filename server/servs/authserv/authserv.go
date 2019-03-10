@@ -1,9 +1,9 @@
 package authserv
 
 import (
+	"gorani/models/dbmodels"
 	"golang.org/x/crypto/bcrypt"
 	"errors"
-	"gorani/models"
 	"gorani/servs/dbserv"
 	"gorani/utils"
 	"strconv"
@@ -18,15 +18,18 @@ var (
 
 type AuthServ struct {
 	DB     *dbserv.DBServ       `dim:"on"`
+	AdminToken string
 	secret []byte
 }
 
 type AuthServConf struct {
 	Secret string `yaml:"secret"`
+	AdminToken string  `yaml:"admin_token"`
 }
 
 func Provide(conf AuthServConf) *AuthServ {
 	return &AuthServ{
+		AdminToken: conf.AdminToken,
 		secret: []byte(conf.Secret),
 	}
 }
@@ -39,8 +42,8 @@ func (a *AuthServ) Init() error {
 	return nil
 }
 
-func (a *AuthServ) GetUser(id int) (models.User, error) {
-	user := models.User{}
+func (a *AuthServ) GetUser(id int) (dbmodels.User, error) {
+	user := dbmodels.User{}
 	err := a.DB.Q().Where("id = ?", id).First(&user)
 	return user, err
 }
@@ -63,7 +66,7 @@ func (a *AuthServ) CreateToken(id int) string {
 }
 
 func (a *AuthServ) Login(username string, password string) (string, error) {
-	var user models.User
+	var user dbmodels.User
 	err := a.DB.Q().Where("username = ?", user).First(&user)
 	if err != nil {
 		return "", err
@@ -76,15 +79,14 @@ func (a *AuthServ) Login(username string, password string) (string, error) {
 	return "", ErrPassMismatch
 }
 
-func (a *AuthServ) Authorize(token string) (models.User, error) {
+func (a *AuthServ) Authorize(token string) (dbmodels.User, error) {
 	id, err := a.ParseToken(token)
 	if err != nil {
-		return models.User{}, err
+		return dbmodels.User{}, err
 	}
 
 	return a.GetUser(id)
 }
-
 
 func (a *AuthServ) HashPassword(password string) (string, error) {
 	buf, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)

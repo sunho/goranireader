@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"gorani/middles"
 	"gorani/utils"
 	"gorani/servs/authserv"
 	"gorani/servs/dbserv"
@@ -20,7 +21,10 @@ type Users struct {
 func (u *Users) Register(g *dim.Group) {
 	g.POST("/", u.postUser)
 	g.POST("/login/", u.login)
-	g.GET("/me/", u.getMe)
+	g.RouteFunc("/me", func(g *dim.Group) {
+		g.Use(&middles.AuthMiddle{})
+		g.GET("/", u.getMe)
+	})
 }
 
 func (u *Users) postUser(c echo.Context) error {
@@ -85,4 +89,5 @@ func (u *Users) login(c echo.Context) error {
 
 func (u *Users) getMe(c2 echo.Context) error {
 	c := c2.(*models.Context)
+	return c.NoContent(200)
 }
