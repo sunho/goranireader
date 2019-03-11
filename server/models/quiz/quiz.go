@@ -1,5 +1,7 @@
 package quiz
 
+const MIME = "application/x-gorani-quizs"
+
 type Quiz struct {
 	BookID    int `json:"book_id"`
 	Questions []Question

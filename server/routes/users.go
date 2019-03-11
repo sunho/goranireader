@@ -2,28 +2,29 @@ package routes
 
 import (
 	"gorani/middles"
-	"gorani/utils"
+	"gorani/models"
+	"gorani/models/dbmodels"
 	"gorani/servs/authserv"
 	"gorani/servs/dbserv"
-	"gorani/models"
 	"gorani/servs/redserv"
+	"gorani/utils"
 
-	"github.com/sunho/dim"
 	"github.com/labstack/echo"
+	"github.com/sunho/dim"
 )
 
 type Users struct {
 	Auth *authserv.AuthServ `dim:"on"`
-	DB *dbserv.DBServ `dim:"on"`
-	Red  *redserv.RedServ `dim:"on"`
+	DB   *dbserv.DBServ     `dim:"on"`
+	Red  *redserv.RedServ   `dim:"on"`
 }
 
-func (u *Users) Register(g *dim.Group) {
-	g.POST("/", u.postUser)
-	g.POST("/login/", u.login)
-	g.RouteFunc("/me", func(g *dim.Group) {
-		g.Use(&middles.AuthMiddle{})
-		g.GET("/", u.getMe)
+func (u *Users) Register(d *dim.Group) {
+	d.POST("/", u.postUser)
+	d.POST("/login/", u.login)
+	d.RouteFunc("/me", func(d *dim.Group) {
+		d.Use(&middles.AuthMiddle{})
+		d.GET("/", u.getMe)
 	})
 }
 
@@ -42,9 +43,9 @@ func (u *Users) postUser(c echo.Context) error {
 		return err
 	}
 
-	user := models.User {
-		Username: params.Username,
-		Email: params.Email,
+	user := dbmodels.User{
+		Username:     params.Username,
+		Email:        params.Email,
 		PasswordHash: hash,
 	}
 
@@ -56,8 +57,8 @@ func (u *Users) postUser(c echo.Context) error {
 }
 
 func (u *Users) getUsers(c echo.Context) error {
-	d := []models.User{}
-	err := u.DB.Create(&models.User{Username: "test"})
+	d := []dbmodels.User{}
+	err := u.DB.Create(&dbmodels.User{Username: "test"})
 	if err != nil {
 		return err
 	}
@@ -81,7 +82,7 @@ func (u *Users) login(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	
+
 	return c.JSON(200, utils.M{
 		"token": token,
 	})

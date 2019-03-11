@@ -10,6 +10,7 @@ require (
 	github.com/gobuffalo/flect v0.0.0-20181109221320-179d36177b5b // indirect
 	github.com/gobuffalo/packd v0.0.0-20181111195323-b2e760a5f0ff // indirect
 	github.com/gobuffalo/pop v4.9.0+incompatible
+	github.com/gobuffalo/uuid v2.0.5+incompatible
 	github.com/gobuffalo/x v0.0.0-20181110221217-14085ca3e1a9 // indirect
 	github.com/gofrs/uuid v3.1.0+incompatible
 	github.com/google/uuid v1.0.0
@@ -20,8 +21,8 @@ require (
 	github.com/minio/minio-go v6.0.14+incompatible
 	github.com/smartystreets/assertions v0.0.0-20180927180507-b2de0cb4f26d // indirect
 	github.com/smartystreets/goconvey v0.0.0-20181108003508-044398e4856c // indirect
-	github.com/stretchr/testify v1.2.2
-	github.com/sunho/dim v1.0.3
+	github.com/stretchr/testify v1.3.0
+	github.com/sunho/dim v1.1.1
 	github.com/sunho/epubgo v0.0.0-20180629211917-650a8f2de947
 	go.uber.org/atomic v1.3.2 // indirect
 	go.uber.org/dig v1.6.0

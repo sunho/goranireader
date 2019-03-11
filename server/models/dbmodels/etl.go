@@ -1,15 +1,21 @@
 package dbmodels
 
-import "time"
+import (
+	"time"
+
+	"github.com/gobuffalo/uuid"
+)
 
 type SimilarWord struct {
-	Word        string `db:"word"`
-	Type        string `db:"type"`
-	Similarity  int    `db:"similarity"`
-	SimilarWord string `db:"similar_word"`
+	ID          uuid.UUID `db:"id"`
+	Word        string    `db:"word"`
+	Type        string    `db:"type"`
+	Similarity  int       `db:"similarity"`
+	SimilarWord string    `db:"similar_word"`
 }
 
 type RecommendBook struct {
+	ID        uuid.UUID `db:"id"`
 	UserID    int       `db:"user_id"`
 	BookID    int       `db:"book_id"`
 	CreatedAt time.Time `db:"created_at"`
@@ -18,6 +24,8 @@ type RecommendBook struct {
 }
 
 type ReadableBook struct {
-	UserID int `db:"user_id"`
-	BookID int `db:"book_id"`
+	ID         uuid.UUID `db:"id"`
+	UserID     int       `db:"user_id"`
+	BookID     int       `db:"book_id"`
+	Difficulty int       `db:"difficulty"`
 }

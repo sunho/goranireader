@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"gorani/middles"
 	"gorani/models"
 	"gorani/servs/dbserv"
 	"gorani/servs/fileserv"
@@ -15,46 +16,21 @@ type Books struct {
 }
 
 func (b *Books) Register(d *dim.Group) {
-	d.GET("/", b.list)
-	d.POST("/", b.post)
+	d.Use(&middles.AuthMiddle{})
+	d.GET("", b.List)
+	d.GET("", b.)
+	d.RouteFunc("/:bookid", func(d *dim.Group) {
+
+	}, &middles.BookParamMiddle{}, &middles.BookOfUserMiddle{})
 }
 
-func (b *Books) list(c echo.Context) error {
-	name := c.QueryParam("name")
-	out := []models.Book{}
-	err := b.DB.Where("name LIKE ?", "%"+ name+"%").All(&out)
+func (b *Books) List(c2 echo.Context) error {
+	c := c2.(*models.Context)
+	books, err := b.DB.GetBooksOfUser(c.Tx, &c.User)
 	if err != nil {
 		return err
 	}
-	return c.JSON(200, out)
+	return c.JSON(200, books)
 }
 
-func (b *Books) post(c echo.Context) error {
-	file, err := c.FormFile("file")
-	if err != nil {
-		return err
-	}
-	epubURL, err := b.File.UploadFileHeader(file)
-	if err != nil {
-		return err
-	}
-	img, err := c.FormFile("img")
-	if err != nil {
-		return err
-	}
-	imgURL, err := b.File.UploadFileHeader(img)
-	if err != nil {
-		return err
-	}
-
-	item := models.Book {
-		Name: c.FormValue("name"),
-		Epub: epubURL,
-		Img: imgURL,
-	}
-	err = b.DB.Create(&item)
-	if err != nil {
-		return err
-	}
-	return c.NoContent(201)
-}
+func (b *Books) 

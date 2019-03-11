@@ -2,12 +2,21 @@ package middles
 
 import (
 	"gorani/models"
+	"gorani/models/dbmodels"
 	"gorani/servs/authserv"
+
 	"github.com/labstack/echo"
 )
 
 type AuthMiddle struct {
 	Auth *authserv.AuthServ `dim:"on"`
+}
+
+func (a *AuthMiddle) Require() []string {
+	return []string{
+		"ContextMiddle",
+		"TxMiddle",
+	}
 }
 
 func (a *AuthMiddle) Act(c2 echo.Context) error {
@@ -16,9 +25,14 @@ func (a *AuthMiddle) Act(c2 echo.Context) error {
 	if token == "" {
 		return echo.NewHTTPError(400, "No authorization header")
 	}
-	user, err := a.Auth.Authorize(token)
+	id, err := a.Auth.Authorize(token)
 	if err != nil {
 		return echo.NewHTTPError(403, "Invalid token")
+	}
+	var user dbmodels.User
+	err = c.Tx.Where("id = ?", id).First(&user)
+	if err != nil {
+		return err
 	}
 	c.User = user
 	return nil
@@ -26,6 +40,12 @@ func (a *AuthMiddle) Act(c2 echo.Context) error {
 
 type AdminAuthMiddle struct {
 	Auth *authserv.AuthServ `dim:"on"`
+}
+
+func (a *AdminAuthMiddle) Require() []string {
+	return []string{
+		"ContextMiddle",
+	}
 }
 
 func (a *AdminAuthMiddle) Act(c2 echo.Context) error {

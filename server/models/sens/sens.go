@@ -7,6 +7,8 @@ import (
 	"io/ioutil"
 )
 
+const MIME = "application/x-gorani-sens"
+
 type Sens struct {
 	BookID    int        `json:"book_id"`
 	Cover     string     `json:"cover"`

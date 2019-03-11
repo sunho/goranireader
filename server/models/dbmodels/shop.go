@@ -1,5 +1,7 @@
 package dbmodels
 
+import "github.com/gobuffalo/uuid"
+
 type Category struct {
 	ID   int    `db:"id"`
 	Name string `db:"name"`
@@ -14,7 +16,8 @@ type Review struct {
 }
 
 type ReviewRate struct {
-	ReviewID int `db:"review_id"`
-	UserID   int `db:"user_id"`
-	Rate     int `db:"rate"`
+	ID       uuid.UUID `db:"id"`
+	ReviewID int       `db:"review_id"`
+	UserID   int       `db:"user_id"`
+	Rate     int       `db:"rate"`
 }

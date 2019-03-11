@@ -42,7 +42,7 @@ func (a *AuthServ) Init() error {
 	return nil
 }
 
-func (a *AuthServ) GetUser(id int) (dbmodels.User, error) {
+func (a *AuthServ) getUser(id int) (dbmodels.User, error) {
 	user := dbmodels.User{}
 	err := a.DB.Q().Where("id = ?", id).First(&user)
 	return user, err
@@ -79,13 +79,13 @@ func (a *AuthServ) Login(username string, password string) (string, error) {
 	return "", ErrPassMismatch
 }
 
-func (a *AuthServ) Authorize(token string) (dbmodels.User, error) {
+func (a *AuthServ) Authorize(token string) (int, error) {
 	id, err := a.ParseToken(token)
 	if err != nil {
-		return dbmodels.User{}, err
+		return 0, err
 	}
 
-	return a.GetUser(id)
+	return id, nil
 }
 
 func (a *AuthServ) HashPassword(password string) (string, error) {

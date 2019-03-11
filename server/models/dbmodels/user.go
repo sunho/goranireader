@@ -1,6 +1,10 @@
 package dbmodels
 
-import "time"
+import (
+	"time"
+
+	"github.com/gobuffalo/uuid"
+)
 
 type User struct {
 	ID           int       `db:"id"`
@@ -11,15 +15,19 @@ type User struct {
 	PasswordHash string    `db:"password_hash"`
 }
 
+type UsersBooks struct {
+	ID     uuid.UUID `db:"id"`
+	UserID int       `db:"user_id"`
+	BookID int       `db:"book_id"`
+}
+
 type UserInfo struct {
 	UserID int `db:"user_id"`
 }
 
-type BookProgress struct {
-}
-
 type RecommendInfo struct {
+	ID           uuid.UUID  `db:"id"`
 	UserID       int        `db:"user_id"`
 	TargetBookID int        `db:"target_book_id"`
-	Categories   []Category `has_many:"category"`
+	Categories   []Category `many_to_many:"category"`
 }

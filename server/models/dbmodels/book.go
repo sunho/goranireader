@@ -3,6 +3,8 @@ package dbmodels
 import (
 	"time"
 
+	"github.com/gobuffalo/uuid"
+
 	"github.com/gobuffalo/pop/nulls"
 )
 
@@ -18,32 +20,37 @@ type Book struct {
 	Epub        BookEpub     `has_one:"book_epub"`
 	Sens        BookSens     `has_one:"book_sens"`
 	Quiz        BookQuiz     `has_one:"book_quiz"`
-	Categories  []Category   `has_many:"category"`
+	Rate        int          `db:"rate"`
+	Categories  []Category   `many_to_many:"category"`
 }
 
 type BookEpub struct {
-	BookID    int       `db:"book_id"`
-	CreatedAt time.Time `db:"created_at" json:"created_at"`
-	UpdatedAt time.Time `db:"updated_at" json:"updated_at"`
-	Epub      string    `db:"epub"`
+	ID        uuid.UUID    `db:"id"`
+	BookID    int          `db:"book_id"`
+	CreatedAt time.Time    `db:"created_at" json:"created_at"`
+	UpdatedAt time.Time    `db:"updated_at" json:"updated_at"`
+	Epub      nulls.String `db:"epub"`
 }
 
 type BookSens struct {
-	BookID    int       `db:"book_id"`
-	CreatedAt time.Time `db:"created_at" json:"created_at"`
-	UpdatedAt time.Time `db:"updated_at" json:"updated_at"`
-	Sens      string    `db:"sens"`
+	ID        uuid.UUID    `db:"id"`
+	BookID    int          `db:"book_id"`
+	CreatedAt time.Time    `db:"created_at" json:"created_at"`
+	UpdatedAt time.Time    `db:"updated_at" json:"updated_at"`
+	Sens      nulls.String `db:"sens"`
 }
 
 type BookQuiz struct {
-	BookID    int       `db:"book_id"`
-	CreatedAt time.Time `db:"created_at" json:"created_at"`
-	UpdatedAt time.Time `db:"updated_at" json:"updated_at"`
-	Quiz      string    `db:"quiz"`
+	ID        uuid.UUID    `db:"id"`
+	BookID    int          `db:"book_id"`
+	CreatedAt time.Time    `db:"created_at" json:"created_at"`
+	UpdatedAt time.Time    `db:"updated_at" json:"updated_at"`
+	Quiz      nulls.String `db:"quiz"`
 }
 
 type BookWord struct {
-	BookID int    `db:"book_id"`
-	Word   string `db:"word"`
-	N      int    `db:"n"`
+	ID     uuid.UUID `db:"id"`
+	BookID int       `db:"book_id"`
+	Word   string    `db:"word"`
+	N      int       `db:"n"`
 }

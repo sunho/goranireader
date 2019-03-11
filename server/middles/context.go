@@ -6,7 +6,10 @@ import (
 	"github.com/labstack/echo"
 )
 
-func ContextMiddle(next echo.HandlerFunc) echo.HandlerFunc {
+type ContextMiddle struct {
+}
+	
+func (c *ContextMiddle) Act(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		return next(&models.Context{
 			Context: c,

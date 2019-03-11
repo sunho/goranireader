@@ -4,13 +4,17 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
+
+	"github.com/gobuffalo/uuid"
 )
 
 type Word struct {
-	Word string `db:"word"`
+	ID   uuid.UUID `db:"id"`
+	Word string    `db:"word"`
 }
 
 type UnknownWord struct {
+	ID          uuid.UUID          `db:"id"`
 	UserID      int                `db:"user_id"`
 	Word        string             `db:"word"`
 	Definitions UnknownDefinitions `db:"definitions"`
@@ -58,13 +62,15 @@ type Memory struct {
 }
 
 type MemoryRate struct {
-	MemoryID int `db:"memory_id"`
-	UserID   int `db:"user_id"`
-	Rate     int `db:"rate"`
+	ID       uuid.UUID `db:"id"`
+	MemoryID int       `db:"memory_id"`
+	UserID   int       `db:"user_id"`
+	Rate     int       `db:"rate"`
 }
 
 type KnownWord struct {
-	UserID int    `db:"user_id"`
-	Word   string `db:"word"`
-	N      int    `db:"n"`
+	ID     uuid.UUID `db:"id"`
+	UserID int       `db:"user_id"`
+	Word   string    `db:"word"`
+	N      int       `db:"n"`
 }

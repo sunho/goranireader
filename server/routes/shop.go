@@ -1,48 +1,28 @@
 package routes
 
 import (
+	"gorani/models/dbmodels"
 	"gorani/models"
 	"gorani/servs/dbserv"
 
 	"github.com/labstack/echo"
+	"github.com/sunho/dim"
 )
 
 type Shop struct {
 	DB *dbserv.DBServ
 }
 
-func (s *Shop) getBooks(c2 echo.Context) error {
-	c := c2.(*models.Context)
-
+func (s *Shop) Register(d *dim.Group) {
+	d.GET("/categories", s.GetCategories)
 }
 
-// GET /shop/categories/
-// GET /shop/books/
-// GET /shop/books/:id/
-// POST /shop/books/:id/buy/
-// POST /shop/books/:id/reviews/
-// POST /shop/books/:id/reviews/:rid/rate/
-
-// GET /books/
-// GET /books/:id/payload/
-// GET /books/:id/quiz/
-// POST /books/:id/quiz/
-// PUT /books/:id/progress/
-
-// GET /recommmend/info/
-// PUT /recommmend/info/
-// GET /recommmend/books/
-// POST /recommmend/books/:id/rate/
-
-// GET /uwords/
-// POST /uwords/:id/
-// GET /uwords/:id/memory/
-// POST /uwords/:id/memory/
-// POST /uwords/:id/stats/
-// DELETE /uwords/:id/
-
-// GET /nwords/
-// POST /nwords/
-// DELETE /nwords/:id/
-
-// GET /
+func (s *Shop) GetCategories(c2 echo.Context) error {
+	c := c2.(*models.Context)
+	var out []dbmodels.Category
+	err := c.Tx.All(&out)
+	if err != nil {
+		return err
+	}
+	return c.JSON(200, out)
+}
