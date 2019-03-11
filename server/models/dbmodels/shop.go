@@ -1,6 +1,6 @@
 package dbmodels
 
-import "github.com/gobuffalo/uuid"
+import "github.com/gofrs/uuid"
 
 type Category struct {
 	ID   int    `db:"id"`

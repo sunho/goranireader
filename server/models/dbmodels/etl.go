@@ -3,7 +3,7 @@ package dbmodels
 import (
 	"time"
 
-	"github.com/gobuffalo/uuid"
+	"github.com/gofrs/uuid"
 )
 
 type SimilarWord struct {
@@ -21,6 +21,13 @@ type RecommendBook struct {
 	CreatedAt time.Time `db:"created_at"`
 	UpdatedAt time.Time `db:"updated_at"`
 	Cause     string    `db:"cause"`
+}
+
+type RecommendBookRate struct {
+	ID     uuid.UUID `db:"id"`
+	UserID int       `db:"user_id"`
+	BookID int       `db:"book_id"`
+	Rate   int       `db:"rate"`
 }
 
 type ReadableBook struct {

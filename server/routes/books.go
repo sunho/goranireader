@@ -18,7 +18,6 @@ type Books struct {
 func (b *Books) Register(d *dim.Group) {
 	d.Use(&middles.AuthMiddle{})
 	d.GET("", b.List)
-	d.GET("", b.)
 	d.RouteFunc("/:bookid", func(d *dim.Group) {
 
 	}, &middles.BookParamMiddle{}, &middles.BookOfUserMiddle{})
@@ -32,5 +31,3 @@ func (b *Books) List(c2 echo.Context) error {
 	}
 	return c.JSON(200, books)
 }
-
-func (b *Books) 

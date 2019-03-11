@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/gobuffalo/uuid"
+	"github.com/gofrs/uuid"
 )
 
 type Word struct {

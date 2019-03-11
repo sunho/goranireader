@@ -3,7 +3,7 @@ package dbmodels
 import (
 	"time"
 
-	"github.com/gobuffalo/uuid"
+	"github.com/gofrs/uuid"
 )
 
 type User struct {

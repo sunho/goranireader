@@ -4,16 +4,22 @@ import (
 	"gorani/middles"
 	"gorani/models"
 	"gorani/models/dbmodels"
+	"gorani/servs/dbserv"
 
 	"github.com/labstack/echo"
 	"github.com/sunho/dim"
 )
 
 type Recommend struct {
+	DB *dbserv.DBServ `dim:"on"`
 }
 
 func (r *Recommend) Register(d *dim.Group) {
 	d.Use(&middles.AuthMiddle{})
+	d.GET("/info", r.GetInfo)
+	d.PUT("/info", r.PutInfo)
+	d.GET("/books", r.GetBooks)
+	d.PUT("/books/:bookid/rate", r.PutRate, &middles.BookParamMiddle{})
 }
 
 func (r *Recommend) GetInfo(c2 echo.Context) error {
@@ -39,6 +45,32 @@ func (r *Recommend) PutInfo(c2 echo.Context) error {
 	new.UserID = old.UserID
 
 	err = c.Tx.Update(&new)
+	if err != nil {
+		return err
+	}
+	return c.NoContent(200)
+}
+
+func (r *Recommend) GetBooks(c2 echo.Context) error {
+	c := c2.(*models.Context)
+	var out []dbmodels.RecommendBook
+	err := c.Tx.Where("user_id = ?", c.User.ID).All(&out)
+	if err != nil {
+		return err
+	}
+	return c.JSON(200, out)
+}
+
+func (r *Recommend) PutRate(c2 echo.Context) error {
+	c := c2.(*models.Context)
+	var rate dbmodels.RecommendBookRate
+	if err := c.Bind(&rate); err != nil {
+		return err
+	}
+	rate.UserID = c.User.ID
+	rate.BookID = c.BookParam.ID
+
+	err := r.DB.Upsert(c.Tx, &rate)
 	if err != nil {
 		return err
 	}

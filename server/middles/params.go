@@ -83,7 +83,7 @@ func (r *ReviewParamMiddle) Act(c2 echo.Context) error {
 	str := c.Param("reviewid")
 	var review dbmodels.Review
 	if str == "my" {
-		err := c.Tx.Where("user_id = ?", c.User.ID).First(&review)
+		err := c.Tx.Where("user_id = ? and book_id = ?", c.User.ID, c.BookParam.ID).First(&review)
 		if err != nil {
 			return echo.NewHTTPError(404, "No such review")
 		}
@@ -98,5 +98,39 @@ func (r *ReviewParamMiddle) Act(c2 echo.Context) error {
 		}
 	}
 	c.ReviewParam = review
+	return nil
+}
+
+type MemoryParamMiddle struct {
+}
+
+func (m *MemoryParamMiddle) Require() []string {
+	return []string{
+		"ContextMiddle",
+		"TxMiddle",
+		"AuthMiddle",
+	}
+}
+
+func (m *MemoryParamMiddle) Act(c2 echo.Context) error {
+	c := c2.(*models.Context)
+	str := c.Param("memoryid")
+	var memory dbmodels.Memory
+	if str == "my" {
+		err := c.Tx.Where("user_id = ? and word = ?", c.User.ID, c.Param("word")).First(&memory)
+		if err != nil {
+			return echo.NewHTTPError(404, "No such memory")
+		}
+	} else {
+		id, err := strconv.Atoi(str)
+		if err != nil {
+			return err
+		}
+		err = c.Tx.Where("id = ?", id).First(&memory)
+		if err != nil {
+			return echo.NewHTTPError(404, "No such memory")
+		}
+	}
+	c.MemoryParam = memory
 	return nil
 }

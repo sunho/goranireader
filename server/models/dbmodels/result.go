@@ -1,12 +1,12 @@
 package dbmodels
 
-import "github.com/gobuffalo/uuid"
+import "github.com/gofrs/uuid"
 
 type UserQuizResult struct {
 	ID     uuid.UUID `db:"id"`
 	UserID int       `db:"user_id"`
 	BookID int       `db:"book_id"`
-	Seq    int       `db:"seq"`
+	QuizID int       `db:"quiz_id"`
 	Score  int       `db:"score"`
 }
 
@@ -14,6 +14,6 @@ type UserSensResult struct {
 	ID     uuid.UUID `db:"id"`
 	UserID int       `db:"user_id"`
 	BookID int       `db:"book_id"`
-	Seq    int       `db:"seq"`
+	SensID int       `db:"sens_id"`
 	Score  int       `db:"score"`
 }

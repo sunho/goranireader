@@ -12,5 +12,6 @@ type Context struct {
 	User        dbmodels.User
 	BookParam   dbmodels.Book
 	ReviewParam dbmodels.Review
+	MemoryParam dbmodels.Memory
 	Tx          *pop.Connection
 }

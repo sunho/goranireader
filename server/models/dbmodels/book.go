@@ -3,7 +3,7 @@ package dbmodels
 import (
 	"time"
 
-	"github.com/gobuffalo/uuid"
+	"github.com/gofrs/uuid"
 
 	"github.com/gobuffalo/pop/nulls"
 )
