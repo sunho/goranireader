@@ -14,7 +14,7 @@ type WordServConf struct {
 }
 
 type WordServ struct {
-	DB *dbserv.DBServ `dim:"on"`
+	DB   *dbserv.DBServ `dim:"on"`
 	conf WordServConf
 }
 
@@ -24,6 +24,10 @@ func Provide(conf WordServConf) *WordServ {
 	}
 }
 
+func (w WordServ) ConfigName() string {
+	return "word"
+}
+
 func (w *WordServ) Init() error {
 	var words []dbmodels.Word
 
@@ -31,7 +35,7 @@ func (w *WordServ) Init() error {
 	if err != nil {
 		return err
 	}
-	
+
 	old := make([]string, 0, len(words))
 	for _, word := range words {
 		old = append(old, word.Word)
@@ -46,7 +50,7 @@ L:
 				continue L
 			}
 		}
-		item := dbmodels.Word {
+		item := dbmodels.Word{
 			Word: word,
 		}
 		err := w.DB.Create(&item)
@@ -63,7 +67,7 @@ L2:
 				continue L2
 			}
 		}
-		err := w.DB.Destroy(&dbmodels.Word{Word:word})
+		err := w.DB.Destroy(&dbmodels.Word{Word: word})
 		if err != nil {
 			return err
 		}
@@ -74,14 +78,11 @@ L2:
 		dict[word] = sentencer.WordID(word)
 	}
 
-
 	sentencer.SetSentencer(sentencer.New(
 		dict,
-		sentencer.AbbrsToDotSpecialCases(w.conf.Abbrs), 
+		sentencer.AbbrsToDotSpecialCases(w.conf.Abbrs),
 		sentencer.NewStemmer(w.conf.IrregularPast, w.conf.IrregularComplete),
 	))
-	
+
 	return nil
 }
-
-

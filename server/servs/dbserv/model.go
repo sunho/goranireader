@@ -8,8 +8,6 @@ import (
 	"strings"
 
 	"github.com/gobuffalo/pop"
-
-	"github.com/gofrs/uuid"
 )
 
 type Model struct {
@@ -58,9 +56,6 @@ func (m *Model) GetField(name string) interface{} {
 	fbn, err := m.fieldByName(name)
 	if err != nil {
 		return 0
-	}
-	if m.FieldType(name) == "UUID" {
-		return fbn.Interface().(uuid.UUID).String()
 	}
 	return fbn.Interface()
 }

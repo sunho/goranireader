@@ -1,36 +1,37 @@
 package authserv
 
 import (
-	"gorani/models/dbmodels"
-	"golang.org/x/crypto/bcrypt"
 	"errors"
+	"gorani/models/dbmodels"
 	"gorani/servs/dbserv"
 	"gorani/utils"
 	"strconv"
+
+	"golang.org/x/crypto/bcrypt"
 
 	"go.uber.org/zap"
 )
 
 var (
-	ErrNotFound = errors.New("not found")
+	ErrNotFound     = errors.New("not found")
 	ErrPassMismatch = errors.New("password mismatch")
 )
 
 type AuthServ struct {
-	DB     *dbserv.DBServ       `dim:"on"`
+	DB         *dbserv.DBServ `dim:"on"`
 	AdminToken string
-	secret []byte
+	secret     []byte
 }
 
 type AuthServConf struct {
-	Secret string `yaml:"secret"`
-	AdminToken string  `yaml:"admin_token"`
+	Secret     string `yaml:"secret"`
+	AdminToken string `yaml:"admin_token"`
 }
 
 func Provide(conf AuthServConf) *AuthServ {
 	return &AuthServ{
 		AdminToken: conf.AdminToken,
-		secret: []byte(conf.Secret),
+		secret:     []byte(conf.Secret),
 	}
 }
 
@@ -67,7 +68,7 @@ func (a *AuthServ) CreateToken(id int) string {
 
 func (a *AuthServ) Login(username string, password string) (string, error) {
 	var user dbmodels.User
-	err := a.DB.Q().Where("username = ?", user).First(&user)
+	err := a.DB.Q().Where("username = ?", username).First(&user)
 	if err != nil {
 		return "", err
 	}

@@ -7,7 +7,7 @@ import (
 	"gorani/models/dbmodels"
 	"gorani/servs/fileserv"
 
-	"github.com/gobuffalo/pop/nulls"
+	"github.com/gobuffalo/nulls"
 
 	"github.com/labstack/echo"
 	"github.com/sunho/dim"

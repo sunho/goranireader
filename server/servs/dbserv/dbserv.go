@@ -71,13 +71,20 @@ func (db *DBServ) Upsert(tx *pop.Connection, model interface{}) error {
 	}
 	m := Model{Value: model}
 	v := m.new()
-	err := m.wherePrimary(tx.Q()).First(&v)
+	exists, err := m.wherePrimary(tx.Q()).Exists(m.Value)
 	if err != nil {
+		return err
+	}
+	if !exists {
 		err = tx.Create(model)
 		if err != nil {
 			return err
 		}
 		return nil
+	}
+	err = m.wherePrimary(tx.Q()).First(v)
+	if err != nil {
+		return err
 	}
 	m2 := Model{Value: v}
 	m.setID(m2.GetField("ID"))

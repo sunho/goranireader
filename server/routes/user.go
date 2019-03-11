@@ -20,15 +20,16 @@ type User struct {
 }
 
 func (u *User) Register(d *dim.Group) {
-	d.POST("/", u.postUser)
-	d.POST("/login/", u.login)
+	d.POST("", u.PostUser)
+	d.POST("/login", u.Login)
 	d.RouteFunc("/me", func(d *dim.Group) {
 		d.Use(&middles.AuthMiddle{})
-		d.GET("/", u.getMe)
+		d.GET("", u.GetMe)
 	})
 }
 
-func (u *User) postUser(c echo.Context) error {
+func (u *User) PostUser(c2 echo.Context) error {
+	c := c2.(*models.Context)
 	params := struct {
 		Username string `json:"username"`
 		Email    string `json:"email"`
@@ -49,28 +50,21 @@ func (u *User) postUser(c echo.Context) error {
 		PasswordHash: hash,
 	}
 
-	if err = u.DB.Create(&user); err != nil {
+	if err = c.Tx.Eager().Create(&user); err != nil {
+		return err
+	}
+
+	err = c.Tx.Create(&dbmodels.RecommendInfo{
+		UserID: user.ID,
+	})
+	if err != nil {
 		return err
 	}
 
 	return c.NoContent(201)
 }
 
-func (u *User) getUsers(c echo.Context) error {
-	d := []dbmodels.User{}
-	err := u.DB.Create(&dbmodels.User{Username: "test"})
-	if err != nil {
-		return err
-	}
-
-	err = u.DB.All(&d)
-	if err != nil {
-		return err
-	}
-	return c.JSON(200, d)
-}
-
-func (u *User) login(c echo.Context) error {
+func (u *User) Login(c echo.Context) error {
 	params := struct {
 		Username string `json:"username"`
 		Password string `json:"password"`
@@ -88,7 +82,7 @@ func (u *User) login(c echo.Context) error {
 	})
 }
 
-func (u *User) getMe(c2 echo.Context) error {
+func (u *User) GetMe(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	return c.NoContent(200)
 }

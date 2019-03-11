@@ -7,12 +7,12 @@ import (
 )
 
 type User struct {
-	ID           int       `db:"id"`
-	CreatedAt    time.Time `db:"created_at"`
-	UpdatedAt    time.Time `db:"updated_at"`
-	Username     string    `db:"username"`
-	Email        string    `db:"email"`
-	PasswordHash string    `db:"password_hash"`
+	ID           int       `db:"id" json:"id"`
+	CreatedAt    time.Time `db:"created_at" json:"created_at"`
+	UpdatedAt    time.Time `db:"updated_at" json:"updated_at"`
+	Username     string    `db:"username" json:"username"`
+	Email        string    `db:"email" json:"email"`
+	PasswordHash string    `db:"password_hash" json:"-"`
 }
 
 type UsersBooks struct {
@@ -21,13 +21,9 @@ type UsersBooks struct {
 	BookID int       `db:"book_id"`
 }
 
-type UserInfo struct {
-	UserID int `db:"user_id"`
-}
-
 type RecommendInfo struct {
-	ID           uuid.UUID  `db:"id"`
-	UserID       int        `db:"user_id"`
-	TargetBookID int        `db:"target_book_id"`
-	Categories   []Category `many_to_many:"category"`
+	ID           uuid.UUID  `db:"id" json:"-"`
+	UserID       int        `db:"user_id" json:"-"`
+	TargetBookID int        `db:"target_book_id" json:"target_book_id"`
+	Categories   []Category `many_to_many:"recommend_infoes_categories" json:"categories"`
 }

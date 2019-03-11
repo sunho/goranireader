@@ -14,15 +14,15 @@ type Word struct {
 }
 
 type UnknownWord struct {
-	ID          uuid.UUID          `db:"id"`
-	UserID      int                `db:"user_id"`
-	Word        string             `db:"word"`
-	Definitions UnknownDefinitions `db:"definitions"`
+	ID          uuid.UUID          `db:"id" json:"-"`
+	UserID      int                `db:"user_id" pk:"true" json:"-"`
+	Word        string             `db:"word" pk:"true" json:"word"`
+	Definitions UnknownDefinitions `db:"definitions" json:"definitions"`
 }
 
 type UnknownDefinitions []UnknownDefinition
 
-func (s *UnknownDefinitions) Value() (driver.Value, error) {
+func (s UnknownDefinitions) Value() (driver.Value, error) {
 	str, err := json.Marshal(s)
 	if err != nil {
 		return nil, err
@@ -55,22 +55,22 @@ type UnknownExample struct {
 }
 
 type Memory struct {
-	ID       int    `db:"id"`
-	UserID   int    `db:"user_id"`
-	Word     string `db:"word"`
-	Sentence string `db:"sentence"`
+	ID       int    `db:"id" json:"id"`
+	UserID   int    `db:"user_id" pk:"true" json:"user_id"`
+	Word     string `db:"word" pk:"true" json:"word"`
+	Sentence string `db:"sentence" json:"sentence"`
 }
 
 type MemoryRate struct {
-	ID       uuid.UUID `db:"id"`
-	MemoryID int       `db:"memory_id"`
-	UserID   int       `db:"user_id"`
-	Rate     int       `db:"rate"`
+	ID       uuid.UUID `db:"id" json:"-"`
+	MemoryID int       `db:"memory_id" pk:"true" json:"-"`
+	UserID   int       `db:"user_id" pk:"true" json:"-"`
+	Rate     int       `db:"rate" json:"rate'`
 }
 
 type KnownWord struct {
-	ID     uuid.UUID `db:"id"`
-	UserID int       `db:"user_id"`
-	Word   string    `db:"word"`
-	N      int       `db:"n"`
+	ID     uuid.UUID `db:"id" json:"-"`
+	UserID int       `db:"user_id" pk:"true" json:"-"`
+	Word   string    `db:"word" pk:"true" json:"word"`
+	N      int       `db:"n" json:"n"`
 }
