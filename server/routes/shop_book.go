@@ -13,21 +13,22 @@ import (
 
 const booksPerPage = 10
 
-type ShopBooks struct {
+type ShopBook struct {
 	DB *dbserv.DBServ `dim:"on"`
 }
 
-func (s *ShopBooks) Register(d *dim.Group) {
+func (s *ShopBook) Register(d *dim.Group) {
 	d.Use(&middles.AuthMiddle{})
 	d.GET("", s.List)
 	d.RouteFunc("/:bookid", func(d *dim.Group) {
 		d.Use(&middles.BookParamMiddle{})
 		d.GET("", s.Get)
 		d.POST("/buy", s.PostBuy)
+		d.Route("/review", &BookReview{})
 	})
 }
 
-func (s *ShopBooks) List(c2 echo.Context) error {
+func (s *ShopBook) List(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	name := c.QueryParam("name")
 	p, _ := strconv.Atoi(c.QueryParam("p"))
@@ -41,12 +42,12 @@ func (s *ShopBooks) List(c2 echo.Context) error {
 	return c.JSON(200, out)
 }
 
-func (s *ShopBooks) Get(c2 echo.Context) error {
+func (s *ShopBook) Get(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	return c.JSON(200, c.BookParam)
 }
 
-func (s *ShopBooks) PostBuy(c2 echo.Context) error {
+func (s *ShopBook) PostBuy(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	err := c.Tx.Create(&dbmodels.UsersBooks{
 		UserID: c.User.ID,

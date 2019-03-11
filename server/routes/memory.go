@@ -13,11 +13,11 @@ import (
 
 const memoriesPerPage = 10
 
-type Memories struct {
+type Memory struct {
 	DB *dbserv.DBServ `dim:"on"`
 }
 
-func (m *Memories) Register(d *dim.Group) {
+func (m *Memory) Register(d *dim.Group) {
 	d.Use(&middles.AuthMiddle{})
 	d.GET("/:word", m.List)
 	d.POST("/:word", m.Post)
@@ -29,7 +29,7 @@ func (m *Memories) Register(d *dim.Group) {
 	}, &middles.MemoryParamMiddle{})
 }
 
-func (m *Memories) List(c2 echo.Context) error {
+func (m *Memory) List(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	var out []dbmodels.Memory
 	p, _ := strconv.Atoi(c.Param("p"))
@@ -40,7 +40,7 @@ func (m *Memories) List(c2 echo.Context) error {
 	return c.JSON(200, out)
 }
 
-func (m *Memories) Post(c2 echo.Context) error {
+func (m *Memory) Post(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	var memory dbmodels.Memory
 	if err := c.Bind(&memory); err != nil {
@@ -55,12 +55,12 @@ func (m *Memories) Post(c2 echo.Context) error {
 	return c.NoContent(200)
 }
 
-func (m *Memories) Get(c2 echo.Context) error {
+func (m *Memory) Get(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	return c.JSON(200, c.MemoryParam)
 }
 
-func (m *Memories) Put(c2 echo.Context) error {
+func (m *Memory) Put(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	if c.MemoryParam.UserID != c.User.ID {
 		return echo.NewHTTPError(403, "That's not your memory")
@@ -79,7 +79,7 @@ func (m *Memories) Put(c2 echo.Context) error {
 	return c.NoContent(200)
 }
 
-func (m *Memories) Delete(c2 echo.Context) error {
+func (m *Memory) Delete(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	if c.MemoryParam.UserID != c.User.ID {
 		return echo.NewHTTPError(403, "That's not your memory")
@@ -91,7 +91,7 @@ func (m *Memories) Delete(c2 echo.Context) error {
 	return c.NoContent(200)
 }
 
-func (m *Memories) PutRate(c2 echo.Context) error {
+func (m *Memory) PutRate(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	var rate dbmodels.MemoryRate
 	if err := c.Bind(&rate); err != nil {

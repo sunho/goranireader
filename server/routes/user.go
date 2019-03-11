@@ -13,13 +13,13 @@ import (
 	"github.com/sunho/dim"
 )
 
-type Users struct {
+type User struct {
 	Auth *authserv.AuthServ `dim:"on"`
 	DB   *dbserv.DBServ     `dim:"on"`
 	Red  *redserv.RedServ   `dim:"on"`
 }
 
-func (u *Users) Register(d *dim.Group) {
+func (u *User) Register(d *dim.Group) {
 	d.POST("/", u.postUser)
 	d.POST("/login/", u.login)
 	d.RouteFunc("/me", func(d *dim.Group) {
@@ -28,7 +28,7 @@ func (u *Users) Register(d *dim.Group) {
 	})
 }
 
-func (u *Users) postUser(c echo.Context) error {
+func (u *User) postUser(c echo.Context) error {
 	params := struct {
 		Username string `json:"username"`
 		Email    string `json:"email"`
@@ -56,7 +56,7 @@ func (u *Users) postUser(c echo.Context) error {
 	return c.NoContent(201)
 }
 
-func (u *Users) getUsers(c echo.Context) error {
+func (u *User) getUsers(c echo.Context) error {
 	d := []dbmodels.User{}
 	err := u.DB.Create(&dbmodels.User{Username: "test"})
 	if err != nil {
@@ -70,7 +70,7 @@ func (u *Users) getUsers(c echo.Context) error {
 	return c.JSON(200, d)
 }
 
-func (u *Users) login(c echo.Context) error {
+func (u *User) login(c echo.Context) error {
 	params := struct {
 		Username string `json:"username"`
 		Password string `json:"password"`
@@ -88,7 +88,7 @@ func (u *Users) login(c echo.Context) error {
 	})
 }
 
-func (u *Users) getMe(c2 echo.Context) error {
+func (u *User) getMe(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	return c.NoContent(200)
 }

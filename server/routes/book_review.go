@@ -13,11 +13,11 @@ import (
 
 const reviewsPerPage = 10
 
-type BookReviews struct {
+type BookReview struct {
 	DB *dbserv.DBServ `dim:"on"`
 }
 
-func (b *BookReviews) Register(d *dim.Group) {
+func (b *BookReview) Register(d *dim.Group) {
 	d.GET("", b.List)
 	d.POST("", b.Post)
 	d.RouteFunc("/:reviewid", func(d *dim.Group) {
@@ -28,7 +28,7 @@ func (b *BookReviews) Register(d *dim.Group) {
 	}, &middles.ReviewParamMiddle{})
 }
 
-func (b *BookReviews) List(c2 echo.Context) error {
+func (b *BookReview) List(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	p, _ := strconv.Atoi(c.QueryParam("p"))
 	var out []dbmodels.Review
@@ -41,7 +41,7 @@ func (b *BookReviews) List(c2 echo.Context) error {
 	return c.JSON(200, out)
 }
 
-func (b *BookReviews) Post(c2 echo.Context) error {
+func (b *BookReview) Post(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	var review dbmodels.Review
 	if err := c.Bind(&review); err != nil {
@@ -57,12 +57,12 @@ func (b *BookReviews) Post(c2 echo.Context) error {
 	return c.NoContent(201)
 }
 
-func (b *BookReviews) Get(c2 echo.Context) error {
+func (b *BookReview) Get(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	return c.JSON(200, c.ReviewParam)
 }
 
-func (b *BookReviews) Put(c2 echo.Context) error {
+func (b *BookReview) Put(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	if c.User.ID != c.ReviewParam.UserID {
 		return echo.NewHTTPError(403, "That's not your review")
@@ -81,7 +81,7 @@ func (b *BookReviews) Put(c2 echo.Context) error {
 	return c.NoContent(200)
 }
 
-func (b *BookReviews) Delete(c2 echo.Context) error {
+func (b *BookReview) Delete(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	if c.User.ID != c.ReviewParam.UserID {
 		return echo.NewHTTPError(403, "That's not your review")
@@ -93,7 +93,7 @@ func (b *BookReviews) Delete(c2 echo.Context) error {
 	return c.NoContent(200)
 }
 
-func (b *BookReviews) PutRate(c2 echo.Context) error {
+func (b *BookReview) PutRate(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	var rate dbmodels.ReviewRate
 	if err := c.Bind(&rate); err != nil {

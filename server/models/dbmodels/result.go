@@ -2,7 +2,7 @@ package dbmodels
 
 import "github.com/gofrs/uuid"
 
-type UserQuizResult struct {
+type QuizResult struct {
 	ID     uuid.UUID `db:"id"`
 	UserID int       `db:"user_id"`
 	BookID int       `db:"book_id"`
@@ -10,7 +10,7 @@ type UserQuizResult struct {
 	Score  int       `db:"score"`
 }
 
-type UserSensResult struct {
+type SensResult struct {
 	ID     uuid.UUID `db:"id"`
 	UserID int       `db:"user_id"`
 	BookID int       `db:"book_id"`

@@ -14,6 +14,9 @@ type Progress struct {
 }
 
 func (p *Progress) Register(d *dim.Group) {
+	d.Use(&middles.AuthMiddle{})
+	d.Route("/quiz", &ProgressQuiz{})
+	d.Route("/sens", &ProgressSens{})
 }
 
 type ProgressQuiz struct {

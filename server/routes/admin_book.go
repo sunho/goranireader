@@ -13,11 +13,11 @@ import (
 	"github.com/sunho/dim"
 )
 
-type AdminBooks struct {
+type AdminBook struct {
 	File *fileserv.FileServ `dim:"on"`
 }
 
-func (a *AdminBooks) Register(g *dim.Group) {
+func (a *AdminBook) Register(g *dim.Group) {
 	g.POST("", a.Post)
 	g.RouteFunc("/:bookid", func(g *dim.Group) {
 		g.PUT("", a.Put)
@@ -29,7 +29,7 @@ func (a *AdminBooks) Register(g *dim.Group) {
 
 }
 
-func (a *AdminBooks) Post(c2 echo.Context) error {
+func (a *AdminBook) Post(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	var book dbmodels.Book
 	if err := c.Bind(&book); err != nil {
@@ -43,7 +43,7 @@ func (a *AdminBooks) Post(c2 echo.Context) error {
 	return c.NoContent(201)
 }
 
-func (a *AdminBooks) Put(c2 echo.Context) error {
+func (a *AdminBook) Put(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	var book dbmodels.Book
 	if err := c.Bind(&book); err != nil {
@@ -57,7 +57,7 @@ func (a *AdminBooks) Put(c2 echo.Context) error {
 	return c.NoContent(200)
 }
 
-func (a *AdminBooks) Delete(c2 echo.Context) error {
+func (a *AdminBook) Delete(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	err := c.Tx.Destroy(&c.BookParam)
 	if err != nil {
@@ -66,7 +66,7 @@ func (a *AdminBooks) Delete(c2 echo.Context) error {
 	return c.NoContent(200)
 }
 
-func (a *AdminBooks) PutEpub(c2 echo.Context) error {
+func (a *AdminBook) PutEpub(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	f, err := c.FormFile("file")
 	if err != nil {
@@ -104,7 +104,7 @@ func (a *AdminBooks) PutEpub(c2 echo.Context) error {
 	return c.NoContent(200)
 }
 
-func (a *AdminBooks) PutSens(c2 echo.Context) error {
+func (a *AdminBook) PutSens(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	f, err := c.FormFile("file")
 	if err != nil {
@@ -126,7 +126,7 @@ func (a *AdminBooks) PutSens(c2 echo.Context) error {
 	return c.NoContent(200)
 }
 
-func (a *AdminBooks) PutQuiz(c2 echo.Context) error {
+func (a *AdminBook) PutQuiz(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	f, err := c.FormFile("file")
 	if err != nil {
@@ -148,7 +148,7 @@ func (a *AdminBooks) PutQuiz(c2 echo.Context) error {
 	return c.NoContent(200)
 }
 
-func (a *AdminBooks) uploadWords(c *models.Context, id int, b bookparse.Book) error {
+func (a *AdminBook) uploadWords(c *models.Context, id int, b bookparse.Book) error {
 	var words []dbmodels.BookWord
 	err := c.Tx.Where("book_id = ?", id).All(&words)
 	if err != nil {

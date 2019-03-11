@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"gorani/models/dbmodels"
 	"gorani/models"
+	"gorani/models/dbmodels"
 	"gorani/servs/dbserv"
 
 	"github.com/labstack/echo"
@@ -14,10 +14,11 @@ type Shop struct {
 }
 
 func (s *Shop) Register(d *dim.Group) {
-	d.GET("/categories", s.GetCategories)
+	d.GET("/category", s.GetCategory)
+	d.Route("/book", &ShopBook{})
 }
 
-func (s *Shop) GetCategories(c2 echo.Context) error {
+func (s *Shop) GetCategory(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	var out []dbmodels.Category
 	err := c.Tx.All(&out)

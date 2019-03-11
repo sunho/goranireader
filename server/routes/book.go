@@ -10,12 +10,12 @@ import (
 	"github.com/sunho/dim"
 )
 
-type Books struct {
+type Book struct {
 	File *fileserv.FileServ `dim:"on"`
 	DB   *dbserv.DBServ     `dim:"on"`
 }
 
-func (b *Books) Register(d *dim.Group) {
+func (b *Book) Register(d *dim.Group) {
 	d.Use(&middles.AuthMiddle{})
 	d.GET("", b.List)
 	d.RouteFunc("/:bookid", func(d *dim.Group) {
@@ -23,7 +23,7 @@ func (b *Books) Register(d *dim.Group) {
 	}, &middles.BookParamMiddle{}, &middles.BookOfUserMiddle{})
 }
 
-func (b *Books) List(c2 echo.Context) error {
+func (b *Book) List(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	books, err := b.DB.GetBooksOfUser(c.Tx, &c.User)
 	if err != nil {

@@ -13,8 +13,8 @@ type Admin struct {
 }
 
 func (a *Admin) Register(d *dim.Group) {
-	d.Route("/books", &AdminBooks{})
-	d.GET("/utils/initial.sens", a.InitialSens)
+	d.Route("/book", &AdminBook{})
+	d.GET("/util/initial.sens", a.InitialSens)
 }
 
 func (a *Admin) InitialSens(c echo.Context) error {
