@@ -6,6 +6,8 @@ fileprivate let idField = Expression<Int64>("word_id")
 fileprivate let wordField = Expression<String>("word")
 fileprivate let pronField = Expression<String?>("word_pronunciation")
 
+typealias DefSortPolicy = (_ word: String, _ entries: [DictDefinition], _ pos: POS?) -> [DictDefinition]
+
 class DictEntry {
     var id: Int64
     var word: String
@@ -18,14 +20,14 @@ class DictEntry {
         self.pron = pron.unstressed
     }
     
-    class func get(word wordstr: String, firstDefPos: POS?, policy: Dict.DefSortPolicy?) -> DictEntry? {
+    class func get(connection: Connection, word wordstr: String, firstDefPos: POS?, policy: DefSortPolicy?) -> DictEntry? {
         let query = wordsTable.where(wordField.collate(.nocase) == wordstr)
         
         do {
-            if let entry = try Dict.shared.connection.pluck(query) {
+            if let entry = try connection.pluck(query) {
                 let entry = DictEntry(id: try entry.get(idField), word: try entry.get(wordField), pron: try entry.get(pronField) ?? "")
                 
-                DictDefinition.fetch(entry: entry, firstPos: firstDefPos, policy: policy)
+                DictDefinition.fetch(connection: connection, entry: entry, firstPos: firstDefPos, policy: policy)
                 return entry
             }
         } catch {}
@@ -34,7 +36,7 @@ class DictEntry {
     }
     
     
-    class func search(word: String, firstWordType: VerbType?, firstDefPos: POS?, policy: Dict.DefSortPolicy?) -> [DictEntry] {
+    class func search(connection: Connection, word: String, firstWordType: VerbType?, firstDefPos: POS?, policy: DefSortPolicy?) -> [DictEntry] {
         if word == "" {
             return []
         }
@@ -43,7 +45,7 @@ class DictEntry {
         
         let candidates = VerbType.candidates(word: word)
         for candidate in candidates {
-            if let entry = DictEntry.get(word: candidate.0, firstDefPos: firstDefPos, policy: policy) {
+            if let entry = DictEntry.get(connection: connection, word: candidate.0, firstDefPos: firstDefPos, policy: policy) {
                 let entry = DictEntryRedirect(entry: entry, type: candidate.1)
                 
                 if candidate.1 == firstWordType
@@ -55,7 +57,7 @@ class DictEntry {
             }
         }
 
-        if let entry = DictEntry.get(word: word, firstDefPos: firstDefPos, policy: policy) {
+        if let entry = DictEntry.get(connection: connection, word: word, firstDefPos: firstDefPos, policy: policy) {
             entries.append(entry)
         }
         

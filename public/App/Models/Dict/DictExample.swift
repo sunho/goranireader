@@ -15,9 +15,9 @@ class DictExample {
         self.second = second
     }
 
-    class func fetch(def: DictDefinition) {
+    class func fetch(connection: Connection, def: DictDefinition) {
         let query = examplesTable.where(defIdField == def.id)
-        guard let results = try? Dict.shared.connection.prepare(query) else {
+        guard let results = try? connection.prepare(query) else {
             return
         }
         
