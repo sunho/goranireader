@@ -1,9 +1,12 @@
-//
-//  Config.swift
-//  app
-//
-//  Created by sunho on 2019/03/14.
-//  Copyright © 2019 sunho. All rights reserved.
-//
-
 import Foundation
+import RealmSwift
+
+class Config: Object {
+    @objc dynamic var id = 1
+    @objc dynamic var token = ""
+    @objc dynamic var authorized = false
+    
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+}

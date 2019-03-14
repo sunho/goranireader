@@ -9,7 +9,7 @@ type Category struct {
 
 type Review struct {
 	ID      int    `db:"id" json:"id"`
-	BookID  int    `db:"book_id" json:"book_id"`
+	BookID  int    `db:"book_id" json:"-"`
 	UserID  int    `db:"user_id" json:"user_id"`
 	Content string `db:"content" json:"content"`
 	Rate    int    `db:"rate" json:"rate'`

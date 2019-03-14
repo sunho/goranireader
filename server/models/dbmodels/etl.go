@@ -15,19 +15,19 @@ type SimilarWord struct {
 }
 
 type RecommendBook struct {
-	ID        uuid.UUID `db:"id"`
-	UserID    int       `db:"user_id"`
-	BookID    int       `db:"book_id"`
-	CreatedAt time.Time `db:"created_at"`
-	UpdatedAt time.Time `db:"updated_at"`
-	Cause     string    `db:"cause"`
+	ID        uuid.UUID `db:"id" json:"-"`
+	UserID    int       `db:"user_id" json:"-"`
+	BookID    int       `db:"book_id" json:"book_id"`
+	CreatedAt time.Time `db:"created_at" json:"created_at"`
+	UpdatedAt time.Time `db:"updated_at" json:"updated_at"`
+	Cause     string    `db:"cause" json:"cause"`
 }
 
 type RecommendBookRate struct {
-	ID     uuid.UUID `db:"id"`
-	UserID int       `db:"user_id"`
-	BookID int       `db:"book_id"`
-	Rate   int       `db:"rate"`
+	ID     uuid.UUID `db:"id" json:"-"`
+	UserID int       `db:"user_id" json:"-"`
+	BookID int       `db:"book_id" json:"-"`
+	Rate   int       `db:"rate" json:"rate"`
 }
 
 type ReadableBook struct {

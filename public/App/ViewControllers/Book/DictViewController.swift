@@ -14,7 +14,7 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.entries = Dict.shared.search(word: word)
+        self.entries = DictService.shared.search(word: word)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

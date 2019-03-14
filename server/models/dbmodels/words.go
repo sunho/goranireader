@@ -57,15 +57,16 @@ type UnknownExample struct {
 type Memory struct {
 	ID       int    `db:"id" json:"id"`
 	UserID   int    `db:"user_id" pk:"true" json:"user_id"`
-	Word     string `db:"word" pk:"true" json:"word"`
+	Word     string `db:"word" pk:"true" json:"-"`
 	Sentence string `db:"sentence" json:"sentence"`
+	Rate     int    `db:"rate" json:"rate"`
 }
 
 type MemoryRate struct {
 	ID       uuid.UUID `db:"id" json:"-"`
 	MemoryID int       `db:"memory_id" pk:"true" json:"-"`
 	UserID   int       `db:"user_id" pk:"true" json:"-"`
-	Rate     int       `db:"rate" json:"rate'`
+	Rate     int       `db:"rate" json:"rate"`
 }
 
 type KnownWord struct {

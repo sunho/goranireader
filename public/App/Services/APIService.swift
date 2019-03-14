@@ -4,19 +4,29 @@ import ReactiveSwift
 import ReactiveMoya
 import Result
 
-class APIProvider {
-    fileprivate let provider: MoyaProvider<API>
+class APIService {
+    static let shared: APIService = {
+        let config = RealmService.shared.getConfig()
+        if !config.authorized {
+            return APIService(token: nil)
+        }
+        return APIService(token: config.token)
+    }()
+    
+    fileprivate lazy var provider: MoyaProvider<API> = { [unowned self] in
+       return MoyaProvider(endpointClosure: self.endpointsClosure,
+                     requestClosure: MoyaProvider<API>.defaultRequestMapping,
+                     stubClosure: MoyaProvider.neverStub,
+                     manager: MoyaProvider<API>.defaultAlamofireManager(),
+                     plugins: self.plugins,
+                     trackInflights: false)
+    }()
+    
     fileprivate let online: SignalProducer<Bool, NoError>
     var token: String?
     
     init(token: String?) {
         self.token = token
-        provider = MoyaProvider(endpointClosure: endpointsClosure,
-                                     requestClosure: MoyaProvider<API>.defaultRequestMapping,
-                                     stubClosure: MoyaProvider.neverStub,
-                                     manager: MoyaProvider<API>.defaultAlamofireManager(),
-                                     plugins: APIProvider.plugins,
-                                     trackInflights: false)
         online = ReachabilityService.shared.reach.producer
     }
     
@@ -42,7 +52,7 @@ class APIProvider {
         return endpoint
     }
     
-    static var plugins: [PluginType] {
+    fileprivate var plugins: [PluginType] {
         return []
     }
 }

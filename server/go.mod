@@ -20,6 +20,7 @@ require (
 	github.com/labstack/echo v3.3.5+incompatible
 	github.com/markbates/goth v1.49.0
 	github.com/minio/minio-go v6.0.14+incompatible
+	github.com/pkg/errors v0.8.1
 	github.com/smartystreets/assertions v0.0.0-20180927180507-b2de0cb4f26d // indirect
 	github.com/smartystreets/goconvey v0.0.0-20181108003508-044398e4856c // indirect
 	github.com/stretchr/testify v1.3.0

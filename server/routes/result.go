@@ -25,8 +25,8 @@ type ResultQuiz struct {
 }
 
 func (r *ResultQuiz) Register(d *dim.Group) {
+	d.GET("", r.List)
 	d.RouteFunc("/:bookid", func(d *dim.Group) {
-		d.GET("", r.List)
 		d.PUT("/:quizid", r.Put)
 		d.DELETE("/:quizid", r.DeleteOne)
 	}, &middles.BookParamMiddle{})
@@ -35,7 +35,7 @@ func (r *ResultQuiz) Register(d *dim.Group) {
 func (r *ResultQuiz) List(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	var out []dbmodels.QuizResult
-	err := c.Tx.Where("user_id = ? and book_id = ?", c.User.ID, c.BookParam.ID).All(&out)
+	err := c.Tx.Where("user_id = ?", c.User.ID).All(&out)
 	if err != nil {
 		return err
 	}

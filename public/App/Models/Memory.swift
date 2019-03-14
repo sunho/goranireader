@@ -7,3 +7,18 @@
 //
 
 import Foundation
+
+struct Memory: Codable {
+    var id: Int
+    var userId: Int
+    var sentence: String
+    var rate: Int
+    
+    enum CodingKeys: String, CodingKey
+    {
+        case id
+        case userId = "user_id"
+        case sentence
+        case rate
+    }
+}

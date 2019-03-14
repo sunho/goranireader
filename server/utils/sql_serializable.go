@@ -10,7 +10,7 @@ import (
 
 /*
 
-func (s *@) Value() (driver.Value, error) {
+func (s @) Value() (driver.Value, error) {
 	str, err := json.Marshal(s)
 	if err != nil {
 		return nil, err
@@ -35,7 +35,7 @@ func (s *@) Scan(i interface{}) error {
 
 type SQLStrings []string
 
-func (s *SQLStrings) Value() (driver.Value, error) {
+func (s SQLStrings) Value() (driver.Value, error) {
 	str, err := json.Marshal(s)
 	if err != nil {
 		return nil, err
@@ -58,7 +58,7 @@ func (s *SQLStrings) Scan(i interface{}) error {
 
 type SQLInts []int
 
-func (s *SQLInts) Value() (driver.Value, error) {
+func (s SQLInts) Value() (driver.Value, error) {
 	str, err := json.Marshal(s)
 	if err != nil {
 		return nil, err

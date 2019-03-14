@@ -7,3 +7,25 @@
 //
 
 import Foundation
+
+struct SensProgress: Codable {
+    var bookId: Int
+    var sensId: Int
+    
+    enum CodingKeys: String, CodingKey
+    {
+        case bookId = "book_id"
+        case sensId = "sens_id"
+    }
+}
+
+struct QuizProgress: Codable {
+    var bookId: Int
+    var quizId: Int
+    
+    enum CodingKeys: String, CodingKey
+    {
+        case bookId = "book_id"
+        case quizId = "quiz_id"
+    }
+}

@@ -1,6 +1,7 @@
 package middles
 
 import (
+	"fmt"
 	"gorani/models"
 	"gorani/models/dbmodels"
 	"gorani/servs/authserv"
@@ -21,10 +22,12 @@ func (a *AuthMiddle) Require() []string {
 
 func (a *AuthMiddle) Act(c2 echo.Context) error {
 	c := c2.(*models.Context)
-	token := c.Request().Header.Get("Authorization")
-	if token == "" {
+	header := c.Request().Header.Get("Authorization")
+	if header == "" {
 		return echo.NewHTTPError(400, "No authorization header")
 	}
+	var token string
+	fmt.Sscanf(header, "Bearer %s", &token)
 	id, err := a.Auth.Authorize(token)
 	if err != nil {
 		return echo.NewHTTPError(403, "Invalid token")

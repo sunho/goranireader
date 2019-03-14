@@ -18,8 +18,8 @@ func (r *Recommend) Register(d *dim.Group) {
 	d.Use(&middles.AuthMiddle{})
 	d.GET("/info", r.GetInfo)
 	d.PUT("/info", r.PutInfo)
-	d.GET("/books", r.GetBooks)
-	d.PUT("/books/:bookid/rate", r.PutRate, &middles.BookParamMiddle{})
+	d.GET("/book", r.GetBooks)
+	d.PUT("/book/:bookid/rate", r.PutRate, &middles.BookParamMiddle{})
 }
 
 func (r *Recommend) GetInfo(c2 echo.Context) error {

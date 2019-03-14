@@ -2,11 +2,11 @@ import Reachability
 import ReactiveSwift
 
 class ReachabilityService {
-    private let reachability: Reachability
+    static let shared = ReachabilityService()
     
-    static let shared = ReachabilityManager()
-    
+    fileprivate let reachability: Reachability
     let reach: MutableProperty<Bool>
+    
     init() {
         reach = MutableProperty(false)
         reachability = Reachability()!

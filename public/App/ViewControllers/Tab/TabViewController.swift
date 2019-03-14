@@ -1,4 +1,5 @@
 import UIKit
+import RealmSwift
 
 protocol TabViewControllerDelegate {
     var sideView: UIView { get }
@@ -29,6 +30,20 @@ class TabViewController: UIViewController {
         self.viewControllers = [bookMainViewController, wordMainViewController,  recommendMainViewController, storeMainViewController]
         self.didPressTab(self.buttons[0])
         self.layout()
+        
+        APIService.shared.request(.checkAuth).start { event in
+            switch event {
+            case .value(let progress):
+                if let resp = progress.response {
+                    print(resp.statusCode)
+                }
+            case .failed(let error):
+                print(error)
+            default:
+                break
+            }
+        }
+        print(Realm.Configuration.defaultConfiguration.fileURL!)
     }
     
     fileprivate func layout() {
