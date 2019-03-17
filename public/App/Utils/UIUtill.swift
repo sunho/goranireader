@@ -57,3 +57,18 @@ class UIUtill {
         view.layer.shadowPath = UIBezierPath(rect: view.bounds).cgPath
     }
 }
+
+extension UITextView {
+    func makeSmallText() {
+        self.font = UIFont.systemFont(ofSize: 10)
+    }
+    
+    func makeBoldText() {
+        self.font = UIFont.boldSystemFont(ofSize: 15)
+    }
+    
+    func makeGrayText() {
+        self.font = UIFont.systemFont(ofSize: 13)
+        self.textColor = UIColor.gray
+    }
+}

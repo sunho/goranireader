@@ -427,6 +427,10 @@
                                 <rect key="frame" x="55" y="54" width="249" height="36"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jIN-d1-br9">
+                                <rect key="frame" x="0.0" y="100" width="320" height="419"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                             <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QNR-Xq-Yza">
                                 <rect key="frame" x="0.0" y="519" width="320" height="49"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -437,13 +441,10 @@
                                     <tabBarItem tag="3" title="서점" id="S1e-8K-KvL"/>
                                 </items>
                                 <color key="tintColor" red="0.60784313729999995" green="0.37254901959999998" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="selectedImageTintColor" red="0.60784313729999995" green="0.37254901959999998" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </tabBar>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jIN-d1-br9">
-                                <rect key="frame" x="0.0" y="90" width="320" height="429"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.96862745098039216" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="gg0-kA-bp4" firstAttribute="height" secondItem="67b-3Q-G9f" secondAttribute="height" id="EVr-FA-XWe"/>
                             <constraint firstItem="gg0-kA-bp4" firstAttribute="top" secondItem="lBQ-z0-887" secondAttribute="top" constant="34" id="Q3R-or-87s"/>
@@ -456,7 +457,7 @@
                             <constraint firstItem="lBQ-z0-887" firstAttribute="trailing" secondItem="gg0-kA-bp4" secondAttribute="trailing" constant="16" id="eWL-xG-fUZ"/>
                             <constraint firstItem="gg0-kA-bp4" firstAttribute="leading" secondItem="67b-3Q-G9f" secondAttribute="trailing" id="jln-EE-re5"/>
                             <constraint firstItem="67b-3Q-G9f" firstAttribute="top" secondItem="lBQ-z0-887" secondAttribute="top" constant="34" id="kBL-e1-VXk"/>
-                            <constraint firstItem="jIN-d1-br9" firstAttribute="top" secondItem="gg0-kA-bp4" secondAttribute="bottom" id="wad-lG-e28"/>
+                            <constraint firstItem="jIN-d1-br9" firstAttribute="top" secondItem="gg0-kA-bp4" secondAttribute="bottom" constant="10" id="wad-lG-e28"/>
                             <constraint firstItem="QNR-Xq-Yza" firstAttribute="bottom" secondItem="lBQ-z0-887" secondAttribute="bottom" id="yJt-0t-OEY"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="lBQ-z0-887"/>

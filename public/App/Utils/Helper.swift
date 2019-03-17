@@ -174,3 +174,16 @@ extension JSONEncoder.DateEncodingStrategy {
     }
 }
 
+extension UITextView {
+    func makeStaticText() {
+        self.textAlignment = NSTextAlignment.justified
+        self.isScrollEnabled = false
+        self.textContainerInset = .zero
+        self.textContainer.lineFragmentPadding = 0
+        self.isEditable = false
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.sizeToFit()
+    }
+    
+}
+

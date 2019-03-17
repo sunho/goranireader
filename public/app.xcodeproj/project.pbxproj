@@ -423,7 +423,6 @@
 				C78ECA942206E51E001909C3 /* Store */,
 				C7403AE72091767D00099119 /* Word */,
 				C7C1E2FF2098016D00C909D7 /* Book */,
-				B13393B620AB2AD500F34525 /* Tab */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -493,6 +492,7 @@
 			children = (
 				C7FA5427223476BD006F94C7 /* DictViewController.swift */,
 				C7C63E91209905900093CC02 /* BookMainViewController.swift */,
+				B13393B620AB2AD500F34525 /* Tab */,
 			);
 			path = Book;
 			sourceTree = "<group>";

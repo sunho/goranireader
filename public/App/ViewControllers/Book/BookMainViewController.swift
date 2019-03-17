@@ -20,6 +20,10 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
             case .value(let contents):
                 print(contents)
                 self.contents = contents
+                self.contents.append(contents[0])
+                self.contents.append(contents[0])
+                self.contents.append(contents[0])
+                self.contents.append(contents[0])
             default:
                 print(event)
             }
@@ -28,7 +32,8 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.rowHeight = UITableView.automaticDimension
-        self.tableView.estimatedRowHeight = 44
+        self.tableView.estimatedRowHeight = 30
+        self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
         
         self.folioReader.delegate = self
         
@@ -138,6 +143,8 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
         
         cell.contentView.layer.masksToBounds = false
         cell.clipsToBounds = false
+        cell.name = item.name
+        cell.author = item.author
 
         return cell
     }

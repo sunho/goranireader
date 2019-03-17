@@ -10,6 +10,14 @@ import UIKit
 
 class CircleBarView: UIView {
     fileprivate var progressLayer = CAShapeLayer()
+    fileprivate var valueView: UITextView!
+    
+    var value: Float = 0 {
+        didSet {
+            valueView.text = "\(Int(value * 100))%"
+            layoutIfNeeded()
+        }
+    }
     
     /*
      // Only override draw() if you perform custom drawing.
@@ -21,21 +29,33 @@ class CircleBarView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        createCircularPath()
+        valueView = UITextView()
+        self.addSubview(valueView)
+        valueView.snp.makeConstraints { make -> Void in
+            make.center.equalToSuperview()
+        }
+        valueView.makeStaticText()
+        valueView.makeSmallText()
+        layout()
     }
     
     required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        createCircularPath()
+        fatalError("inin(aDecoder")
     }
     
-    var progressColor:UIColor = UIColor.red {
+    var progressColor:UIColor = UIUtill.tint {
         didSet {
             progressLayer.strokeColor = progressColor.cgColor
         }
     }
     
-    fileprivate func createCircularPath() {
+    override func layoutSubviews() {
+        print("hoi")
+        progressLayer.removeFromSuperlayer()
+        layout()
+    }
+    
+    fileprivate func layout() {
         self.backgroundColor = UIColor.clear
         self.layer.cornerRadius = self.frame.size.width/2.0
         let circlePath = UIBezierPath(arcCenter: CGPoint(x: frame.size.width / 2.0, y: frame.size.height / 2.0),
@@ -45,10 +65,9 @@ class CircleBarView: UIView {
         progressLayer.path = circlePath.cgPath
         progressLayer.fillColor = UIColor.clear.cgColor
         progressLayer.strokeColor = progressColor.cgColor
-        progressLayer.lineWidth = 10.0;
-        progressLayer.strokeEnd = 0.0
+        progressLayer.lineWidth = 1.5
+        progressLayer.strokeEnd = CGFloat(value)
         layer.addSublayer(progressLayer)
-        
     }
     
     func setProgressWithAnimation(duration: TimeInterval, value: Float) {
