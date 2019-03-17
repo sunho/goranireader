@@ -28,11 +28,4 @@ class SearchResultViewController: UIViewController {
         self.books = []
         self.tableView.reloadData()
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        for cell in tableView.visibleCells {
-            UIUtill.dropShadow((cell as! BooksTableCell).back, offset: CGSize(width: 0, height: 3), radius: 4)
-        }
-    }
 }

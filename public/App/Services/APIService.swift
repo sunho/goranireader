@@ -23,7 +23,17 @@ class APIService {
     }()
     
     fileprivate let online: SignalProducer<Bool, NoError>
-    var token: String?
+    var token: String? {
+        didSet {
+            if let token = token {
+                let conf = RealmService.shared.getConfig()
+                RealmService.shared.write {
+                    conf.authorized = true
+                    conf.token = token
+                }
+            }
+        }
+    }
     
     init(token: String?) {
         self.token = token

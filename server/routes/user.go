@@ -7,7 +7,6 @@ import (
 	"gorani/servs/authserv"
 	"gorani/servs/dbserv"
 	"gorani/servs/redserv"
-	"gorani/utils"
 
 	"github.com/labstack/echo"
 	"github.com/sunho/dim"
@@ -77,9 +76,7 @@ func (u *User) Login(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(200, utils.M{
-		"token": token,
-	})
+	return c.String(200, token)
 }
 
 func (u *User) GetMe(c2 echo.Context) error {

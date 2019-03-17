@@ -6,4 +6,4 @@ github "huri000/SwiftEntryKit" == 0.8.8
 github "Moya/Moya"
 github "realm/realm-cocoa"
 github "ashleymills/Reachability.swift"
-github "Swinject/Swinject"
+github "onevcat/Kingfisher" ~> 5.0

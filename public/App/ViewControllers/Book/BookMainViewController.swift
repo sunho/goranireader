@@ -8,36 +8,39 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var tableView: UITableView!
 
     var dictVC: DictViewController?
-    var books: [Epub]!
+    var contents: [Content] = []
     var folioReader = FolioReader()
     var currentHTML: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.books = Epub.getLocalBooks()
+        ContentService.shared.getDownloadableContents().start { event in
+            switch event {
+            case .value(let contents):
+                print(contents)
+                self.contents = contents
+            default:
+                print(event)
+            }
+        }
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.tableView.rowHeight = UITableView.automaticDimension
+        self.tableView.estimatedRowHeight = 44
         
         self.folioReader.delegate = self
+        
+        self.tableView.register(BookListTableViewCell.self, forCellReuseIdentifier: "cell")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector:#selector(applicationWillEnterForeground(_:)), name: UIApplication.willEnterForegroundNotification, object: nil)
-        self.books = Epub.getLocalBooks()
         self.tableView.reloadData()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        for cell in tableView.visibleCells {
-            UIUtill.dropShadow((cell as! BooksTableCell).back, offset: CGSize(width: 0, height: 3), radius: 4)
-        }
-    }
-    
     @objc func applicationWillEnterForeground(_ notification: NSNotification) {
-        self.books = Epub.getLocalBooks()
         self.tableView.reloadData()
     }
     
@@ -95,51 +98,46 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.books.count
+        return self.contents.count
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let config = FolioReaderConfig()
-        config.tintColor = UIUtill.tint
-        config.canChangeScrollDirection = false
-        config.shouldHideNavigationOnTap = false
-        config.hideBars = false
-        config.scrollDirection = .horizontal
-        
-        let book = self.books[indexPath.row]
-        
-        self.folioReader.presentReader(parentViewController: self, book: book.book!, config: config)
-        self.folioReader.readerCenter!.delegate = self
+//        let config = FolioReaderConfig()
+//        config.tintColor = UIUtill.tint
+//        config.canChangeScrollDirection = false
+//        config.shouldHideNavigationOnTap = false
+//        config.hideBars = false
+//        config.scrollDirection = .horizontal
+//
+//        let book = self.contents[indexPath.row]
+//
+//        self.folioReader.presentReader(parentViewController: self, book: book.book!, config: config)
+//        self.folioReader.readerCenter!.delegate = self
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        guard orientation == .right else { return nil }
-        
-        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
-            let book = self.books[indexPath.row]
-            try! FileManager.default.removeItem(atPath: book.path)
-            self.books = Epub.getLocalBooks()
-            self.tableView.reloadData()
-        }
-        
-        // customize the action appearance
-        deleteAction.image = UIImage(named: "delete")
-        
-        return [deleteAction]
+//        guard orientation == .right else { return nil }
+//
+//        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+//            let book = self.contents[indexPath.row]
+//            try! FileManager.default.removeItem(atPath: book.path)
+//            self.books = Epub.getLocalBooks()
+//            self.tableView.reloadData()
+//        }
+//
+//        // customize the action appearance
+//        deleteAction.image = UIImage(named: "delete")
+//
+        return []
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = self.books[indexPath.row]
+        let item = self.contents[indexPath.row]
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "BooksTableCell") as! BooksTableCell
-        cell.titleLabel.text = item.title
-        cell.coverImage.image = item.cover
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! BookListTableViewCell
         
-        UIUtill.dropShadow(cell.back, offset: CGSize(width: 0, height: 3), radius: 4)
         cell.contentView.layer.masksToBounds = false
         cell.clipsToBounds = false
-        
-        cell.delegate = self
 
         return cell
     }

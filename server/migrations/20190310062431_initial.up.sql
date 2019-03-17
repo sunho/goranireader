@@ -14,6 +14,7 @@ create table books (
     updated_at timestamp without time zone not null,
     isbn character varying(30) not null,
     name character varying(1024) not null,
+    author character varying(1024) not null,
     native_name character varying(1024),
     cover character varying(1024) not null,
     description character varying(4096) not null,
@@ -35,20 +36,12 @@ create table book_epubs (
     epub character varying(1024)
 );
 
-create table book_senses (
+create table book_sens (
     id uuid not null,
     book_id integer references books on delete cascade primary key,
     created_at timestamp without time zone not null,
     updated_at timestamp without time zone not null,
     sens character varying(1024)
-);
-
-create table book_quizes (
-    id uuid not null,
-    book_id integer references books on delete cascade primary key,
-    created_at timestamp without time zone not null,
-    updated_at timestamp without time zone not null,
-    quiz character varying(1024)
 );
 
 create table book_words (
@@ -72,14 +65,6 @@ create table sens_progresses (
     user_id integer references users on delete cascade,
     book_id integer references books on delete cascade,
     sens_id integer not null,
-    primary key(user_id, book_id)
-);
-
-create table quiz_progresses (
-    id uuid not null,
-    user_id integer references users on delete cascade,
-    book_id integer references books on delete cascade,
-    quiz_id integer not null,
     primary key(user_id, book_id)
 );
 

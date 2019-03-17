@@ -22,4 +22,8 @@ class RealmService {
             realm.add(config, update: true)
         }
     }
+    
+    func write(_ block: (() throws -> Void)) {
+        try! realm.write(block)
+    }
 }

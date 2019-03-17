@@ -60,6 +60,7 @@ func (db *DBServ) GetBooksOfUser(tx *pop.Connection, user *dbmodels.User) ([]dbm
 	}
 	var out []dbmodels.Book
 	err := tx.Q().
+		Eager().
 		InnerJoin("users_books", "books.id = users_books.book_id").
 		Where("users_books.user_id = ?", user.ID).All(&out)
 	return out, err

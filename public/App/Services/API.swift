@@ -41,8 +41,6 @@ enum API {
     
     case listSensProgresses
     case updateSensProgress(progress: SensProgress)
-    case listQuizProgresses
-    case updateQuizProgress(progress: QuizProgress)
     
     case listSensResults
     case updateSensResult(result: SensResult)
@@ -108,10 +106,6 @@ extension API: TargetType {
             return "/progress/sens"
         case .updateSensProgress(let progress):
             return "/progress/sens/\(progress.bookId)"
-        case .listQuizProgresses:
-            return "/progress/quiz"
-        case .updateQuizProgress(let progress):
-            return "/progress/quiz/\(progress.bookId)"
         case .listSensResults:
             return "/result/sens"
         case .updateSensResult(let result):
@@ -132,13 +126,13 @@ extension API: TargetType {
     public var method: Moya.Method {
         switch self {
         case .listReviews, .listMemories, .getMyReview, .listBooks, .getMyMemory, .listCategories,
-             .getShopBook, .searchShopBooks, .listRecommendedBooks, .getRecommendInfo, .listQuizProgresses,
+             .getShopBook, .searchShopBooks, .listRecommendedBooks, .getRecommendInfo,
              .listSensProgresses, .listQuizResults, .listSensResults, .checkAuth:
             return .get
         case .createReview, .createMemory, .buyShopBook, .register, .login:
             return .post
         case .updateReview, .rateReview, .updateMemory, .rateMemory, .updateRecommendInfo,
-             .rateRecommendedBook, .addKnownWord, .updateQuizProgress, .updateSensProgress,
+             .rateRecommendedBook, .addKnownWord, .updateSensProgress,
              .updateQuizResult, .updateSensResult:
             return .put
         case .deleteReview, .deleteMemory, .subtractKnownWord:
@@ -162,8 +156,6 @@ extension API: TargetType {
             return .requestParameters(parameters: ["name": name, "p": p], encoding: URLEncoding.default)
         case .updateSensProgress(let progress):
             return .requestJSONEncodable(progress)
-        case .updateQuizProgress(let progress):
-            return .requestJSONEncodable(progress)
         case .updateSensResult(let result):
             return .requestJSONEncodable(result)
         case .updateQuizResult(let result):
@@ -173,7 +165,7 @@ extension API: TargetType {
         case .login(let username, let password):
             return .requestJSONEncodable(["username": username, "password": password])
         case .getMyReview, .listBooks, .getMyMemory, .listCategories, .getShopBook,
-             .listRecommendedBooks, .getRecommendInfo, .listQuizProgresses,
+             .listRecommendedBooks, .getRecommendInfo,
              .listSensProgresses, .listQuizResults, .listSensResults, .buyShopBook,
              .addKnownWord, .deleteReview, .deleteMemory, .subtractKnownWord, .checkAuth:
             return .requestPlain

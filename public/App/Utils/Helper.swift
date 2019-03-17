@@ -2,6 +2,8 @@ import Foundation
 import UIKit
 import Result
 import ReactiveSwift
+import Moya
+import ReactiveMoya
 
 extension UIColor {
     convenience init(rgba: String) {
@@ -135,3 +137,40 @@ extension JSONEncoder {
 }
 
 extension String: Error {}
+
+extension Formatter {
+    static let iso8601: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
+        return formatter
+    }()
+}
+
+extension JSONDecoder.DateDecodingStrategy {
+    static let iso8601withFractionalSeconds = custom {
+        let container = try $0.singleValueContainer()
+        let string = try container.decode(String.self)
+        guard let date = Formatter.iso8601.date(from: string) else {
+            throw DecodingError.dataCorruptedError(in: container,
+                                                   debugDescription: "Invalid date: " + string)
+        }
+        return date
+    }
+}
+
+extension String {
+    var iso8601: Date? {
+        return Formatter.iso8601.date(from: self)
+    }
+}
+
+extension JSONEncoder.DateEncodingStrategy {
+    static let iso8601withFractionalSeconds = custom {
+        var container = $1.singleValueContainer()
+        try container.encode(Formatter.iso8601.string(from: $0))
+    }
+}
+

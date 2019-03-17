@@ -11,15 +11,16 @@ import RealmSwift
 
 struct Book: Codable {
     var id: Int = 0
-    var name: String = ""
-    var isbn: String = ""
+    var name: String
+    var author: String
+    var isbn: String
     var nativeName: String?
-    var createdAt: Date
-    var updatedAt: Date
+    var createdAt: String
+    var updatedAt: String
     var cover: String
     var desc: String
     var rate: Int
-    var categories: [Category]
+    var categories: [Category]?
     var epub: String?
     var sens: String?
     var quiz: String?
@@ -28,6 +29,7 @@ struct Book: Codable {
     {
         case id
         case name
+        case author
         case isbn
         case nativeName = "native_name"
         case createdAt = "created_at"
