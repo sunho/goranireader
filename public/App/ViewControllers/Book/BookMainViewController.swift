@@ -1,52 +1,54 @@
 import UIKit
 import FolioReaderKit
 import SwipeCellKit
+import ReactiveSwift
 
 fileprivate let MinActulReadRate = 0.7
 
 class BookMainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FolioReaderDelegate, FolioReaderCenterDelegate, SwipeTableViewCellDelegate {
     @IBOutlet weak var tableView: UITableView!
 
-    var dictVC: DictViewController?
+    var downloadProgresses: Dictionary<ContentKey, Float> = [:]
     var contents: [Content] = []
     var folioReader = FolioReader()
+    var dictVC: DictViewController?
     var currentHTML: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ContentService.shared.getDownloadableContents().start { event in
-            switch event {
-            case .value(let contents):
-                print(contents)
-                self.contents = contents
-                self.contents.append(contents[0])
-                self.contents.append(contents[0])
-                self.contents.append(contents[0])
-                self.contents.append(contents[0])
-            default:
-                print(event)
-            }
-        }
-        
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.rowHeight = UITableView.automaticDimension
-        self.tableView.estimatedRowHeight = 30
+        self.tableView.estimatedRowHeight = 160
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
         
         self.folioReader.delegate = self
         
         self.tableView.register(BookListTableViewCell.self, forCellReuseIdentifier: "cell")
+        self.reload()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector:#selector(applicationWillEnterForeground(_:)), name: UIApplication.willEnterForegroundNotification, object: nil)
-        self.tableView.reloadData()
+    }
+    
+    func reload() {
+        ContentService.shared.getContents().start { event in
+            DispatchQueue.main.async{
+                switch event {
+                case .value(let contents):
+                    self.contents = contents
+                    self.tableView.reloadData()
+                default:
+                    print(event)
+                }
+            }
+        }
     }
     
     @objc func applicationWillEnterForeground(_ notification: NSNotification) {
-        self.tableView.reloadData()
+        self.reload()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -107,6 +109,38 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let item = contents[indexPath.row]
+        if let item = item as? DownloadableContent {
+            if downloadProgresses[item.key] == nil {
+                ContentService.shared.downloadContent(item)
+                    .start { event -> Void in
+                        DispatchQueue.main.async{
+                            switch event {
+                            case .completed:
+                                self.downloadProgresses.removeValue(forKey: item.key)
+                                self.reload()
+                            case .value(let progress):
+                                self.updateDownloadProgress(item.key, progress)
+                            default:
+                                self.downloadProgresses.removeValue(forKey: item.key)
+                                print(event)
+                            }
+                        }
+                    }
+            }
+        }
+        
+            
+        if let item = item as? DownloadedContent {
+            switch item.type {
+            case .sens:
+                print("adsfas")
+            case .epub:
+                print("adsfas")
+            }
+        }
 //        let config = FolioReaderConfig()
 //        config.tintColor = UIUtill.tint
 //        config.canChangeScrollDirection = false
@@ -118,6 +152,17 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
 //
 //        self.folioReader.presentReader(parentViewController: self, book: book.book!, config: config)
 //        self.folioReader.readerCenter!.delegate = self
+    }
+    
+    func updateDownloadProgress(_ key: ContentKey, _ progress: Float) {
+        downloadProgresses[key] = progress
+        guard let row = contents.index(where: { c in c.id == key.id }) else {
+            return
+        }
+        guard let cell = tableView.cellForRow(at: IndexPath(row: row, section: 0)) as? BookListTableViewCell else {
+            return
+        }
+        cell.progress = progress
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
@@ -145,7 +190,21 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
         cell.clipsToBounds = false
         cell.name = item.name
         cell.author = item.author
+        cell.type = item.type
+        cell.setCover(with: item.cover)
+        
+        switch item {
+        case let item as DownloadedContent:
+            cell.tableType = .local
+            cell.progress = item.progress
+        case is DownloadableContent:
+            cell.tableType = .download
+        default:
+            fatalError("?")
+        }
 
         return cell
     }
+    
+    
 }

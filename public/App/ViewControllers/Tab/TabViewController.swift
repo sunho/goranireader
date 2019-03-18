@@ -29,20 +29,9 @@ class TabViewController: UIViewController, UITabBarDelegate {
         self.tabBar.selectedItem = self.tabBar.items![0]
         self.tabBar(self.tabBar, didSelect: self.tabBar.items![0])
         self.layout()
-        
-        APIService.shared.request(.checkAuth).start { event in
-            switch event {
-            case .value(let progress):
-                if let resp = progress.response {
-                    print(resp.statusCode)
-                }
-            case .failed(let error):
-                print(error)
-            default:
-                break
-            }
-        }
+
         print(Realm.Configuration.defaultConfiguration.fileURL!)
+        print(FileUtill.booksDir)
     }
     
     func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {

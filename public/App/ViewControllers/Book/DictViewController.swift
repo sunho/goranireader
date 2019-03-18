@@ -46,7 +46,7 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 20)
         label.frame.origin.x = 14
-        label.textColor = UIUtill.gray2
+        label.textColor = UIUtill.gray
         label.text = entry.word
         label.sizeToFit()
         label.frame = CGRect(origin: label.frame.origin, size: CGSize(width: label.frame.width, height: 50))

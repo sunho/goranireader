@@ -50,12 +50,23 @@ enum API {
     case register(username: String, password: String, email: String)
     case login(username: String, password: String)
     case checkAuth
+    
+    case download(url: String, file: String)
 }
 
 extension API: TargetType {
-    public var baseURL: URL { return URL(string: "http://127.0.0.1:8081")! }
+    public var baseURL: URL {
+        if case .download(let url, _) = self {
+            return URL(string: url) ?? URL(string: "http://fnfnffnfnfn.asdf")!
+        } else {
+            return URL(string: "http://127.0.0.1:8081")!
+        }
+    }
+    
     public var path: String {
         switch self {
+        case .download:
+            return ""
         case .listReviews(let id, _):
             return "/shop/book/\(id)/review"
         case .createReview(let id, _):
@@ -125,6 +136,8 @@ extension API: TargetType {
     
     public var method: Moya.Method {
         switch self {
+        case .download:
+            return .get
         case .listReviews, .listMemories, .getMyReview, .listBooks, .getMyMemory, .listCategories,
              .getShopBook, .searchShopBooks, .listRecommendedBooks, .getRecommendInfo,
              .listSensProgresses, .listQuizResults, .listSensResults, .checkAuth:
@@ -140,8 +153,20 @@ extension API: TargetType {
         }
     }
     
+    //TODO
+    var downloadDestination: DownloadDestination {
+        return { [self] (url, resp) in
+            if case .download(_, let file) = self {
+                return (FileUtill.downloadDir.appendingPathComponent(file), .removePreviousFile)
+            }
+            return (FileUtill.downloadDir.appendingPathComponent(url.lastPathComponent), .removePreviousFile)
+        }
+    }
+    
     public var task: Task {
         switch self {
+        case .download:
+            return .downloadDestination(downloadDestination)
         case .listReviews(_, let p), .listMemories(_, let p):
             return .requestParameters(parameters: ["p": p], encoding: URLEncoding.default)
         case .createMemory(_, let body), .updateMemory(_, let body):

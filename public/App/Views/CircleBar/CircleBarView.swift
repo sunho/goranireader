@@ -10,33 +10,23 @@ import UIKit
 
 class CircleBarView: UIView {
     fileprivate var progressLayer = CAShapeLayer()
-    fileprivate var valueView: UITextView!
+    var valueView: UITextView!
     
     var value: Float = 0 {
         didSet {
-            valueView.text = "\(Int(value * 100))%"
-            layoutIfNeeded()
+            if value != oldValue {
+                layoutSubviews()
+            }
         }
     }
     
-    /*
-     // Only override draw() if you perform custom drawing.
-     // An empty implementation adversely affects performance during animation.
-     override func draw(_ rect: CGRect) {
-     // Drawing code
-     }
-     */
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        layout()
         valueView = UITextView()
-        self.addSubview(valueView)
-        valueView.snp.makeConstraints { make -> Void in
-            make.center.equalToSuperview()
-        }
         valueView.makeStaticText()
         valueView.makeSmallText()
-        layout()
+        valueView.textColor = UIUtill.white
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -45,28 +35,23 @@ class CircleBarView: UIView {
     
     var progressColor:UIColor = UIUtill.tint {
         didSet {
-            progressLayer.strokeColor = progressColor.cgColor
+            progressLayer.fillColor = progressColor.cgColor
         }
     }
     
     override func layoutSubviews() {
-        print("hoi")
         progressLayer.removeFromSuperlayer()
         layout()
     }
     
     fileprivate func layout() {
-        self.backgroundColor = UIColor.clear
-        self.layer.cornerRadius = self.frame.size.width/2.0
         let circlePath = UIBezierPath(arcCenter: CGPoint(x: frame.size.width / 2.0, y: frame.size.height / 2.0),
-                                      radius: (frame.size.width - 1.5)/2, startAngle: CGFloat(-0.5 * Double.pi),
-                                      endAngle: CGFloat(1.5 * Double.pi), clockwise: true)
-        
+                                      radius: (frame.size.width*0.85)/2, startAngle: CGFloat(-0.5 * Double.pi),
+                                      endAngle: CGFloat(-0.5 * Float.pi + 2.0 * value * Float.pi), clockwise: true)
+        circlePath.addLine(to: CGPoint(x: frame.size.width / 2.0, y: frame.size.height / 2.0))
         progressLayer.path = circlePath.cgPath
-        progressLayer.fillColor = UIColor.clear.cgColor
-        progressLayer.strokeColor = progressColor.cgColor
-        progressLayer.lineWidth = 1.5
-        progressLayer.strokeEnd = CGFloat(value)
+        progressLayer.fillColor = progressColor.cgColor
+        print("layout")
         layer.addSublayer(progressLayer)
     }
     
@@ -79,5 +64,9 @@ class CircleBarView: UIView {
         animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
         progressLayer.strokeEnd = CGFloat(value)
         progressLayer.add(animation, forKey: "animateCircle")
+    }
+    
+    func updateValueViewDefault() {
+        valueView.text = "\(Int(value * 100))%"
     }
 }

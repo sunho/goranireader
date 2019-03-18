@@ -11,6 +11,7 @@ const MIME = "application/x-gorani-sens"
 
 type Sens struct {
 	BookID    int        `json:"book_id"`
+	Name      string     `json:"name"`
 	Cover     string     `json:"cover"`
 	Author    string     `json:"author"`
 	Sentences []Sentence `json:"sentences"`
@@ -34,6 +35,7 @@ func NewFromBook(b bookparse.Book) (Sens, error) {
 		})
 	}
 
+	out.Name = b.Name
 	out.Author = b.Author
 	if b.Cover.Reader == nil {
 		return out, nil

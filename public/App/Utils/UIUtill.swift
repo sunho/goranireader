@@ -3,7 +3,7 @@ import UIKit
 
 class UIUtill {
     class var green: UIColor {
-        return UIColor(rgba: "#4CD964")
+        return UIColor(rgba: "#FFE66D")
     }
     
     class var black: UIColor {
@@ -14,20 +14,16 @@ class UIUtill {
         return UIColor.white
     }
     
+    class var strongTint: UIColor {
+        return UIColor(rgba: "#0B4F6C")
+    }
+    
     class var tint: UIColor {
-        return UIColor(rgba: "#9B5FED")
-    }
-    
-    class var gray2: UIColor {
-        return UIColor(rgba: "#484848")
-    }
-    
-    class var gray1: UIColor {
-        return UIColor(rgba: "#858787")
+        return UIColor(rgba: "#01BAEF")
     }
     
     class var gray: UIColor {
-        return UIColor(rgba: "#BFBFC3")
+        return UIColor(rgba: "#999999")
     }
     
     class var lightGray1: UIColor {
@@ -60,15 +56,15 @@ class UIUtill {
 
 extension UITextView {
     func makeSmallText() {
-        self.font = UIFont.systemFont(ofSize: 10)
+        self.font = UIFont.boldSystemFont(ofSize: 12)
     }
     
     func makeBoldText() {
-        self.font = UIFont.boldSystemFont(ofSize: 15)
+        self.font = UIFont.systemFont(ofSize: 16)
     }
     
     func makeGrayText() {
         self.font = UIFont.systemFont(ofSize: 13)
-        self.textColor = UIColor.gray
+        self.textColor = UIUtill.gray
     }
 }

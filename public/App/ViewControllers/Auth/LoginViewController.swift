@@ -24,14 +24,16 @@ class LoginViewController: UIViewController {
     func checkAuth() {
         APIService.shared.request(.checkAuth)
             .start { event in
-                switch event {
-                case .value(let resp):
-                    if resp.statusCode == 200 {
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "TabViewController") as! TabViewController
-                        self.present(vc, animated: true, completion: nil)
+                DispatchQueue.main.async {
+                    switch event {
+                    case .value(let resp):
+                        if resp.statusCode == 200 {
+                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "TabViewController") as! TabViewController
+                            self.present(vc, animated: true, completion: nil)
+                        }
+                    default:
+                        print(event)
                     }
-                default:
-                    print(event)
                 }
             }
     }
@@ -40,13 +42,15 @@ class LoginViewController: UIViewController {
         APIService.shared.request(.login(username: usernameInput.text!, password: passwordInput.text!))
             .filterSuccessfulStatusCodes()
             .start { event in
-            switch event {
-            case .value(let resp):
-                APIService.shared.token = String(data: resp.data, encoding: .utf8)
-                self.checkAuth()
-            default:
-                print(event)
-            }
+                DispatchQueue.main.async {
+                    switch event {
+                    case .value(let resp):
+                        APIService.shared.token = String(data: resp.data, encoding: .utf8)
+                        self.checkAuth()
+                    default:
+                        print(event)
+                    }
+                }
         }
     }
     

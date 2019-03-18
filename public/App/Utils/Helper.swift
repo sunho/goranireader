@@ -176,6 +176,7 @@ extension JSONEncoder.DateEncodingStrategy {
 
 extension UITextView {
     func makeStaticText() {
+        self.backgroundColor = UIColor.clear
         self.textAlignment = NSTextAlignment.justified
         self.isScrollEnabled = false
         self.textContainerInset = .zero
