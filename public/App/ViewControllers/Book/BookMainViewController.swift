@@ -5,7 +5,7 @@ import ReactiveSwift
 
 fileprivate let MinActulReadRate = 0.7
 
-class BookMainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FolioReaderDelegate, FolioReaderCenterDelegate, SwipeTableViewCellDelegate {
+class BookMainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var tableView: UITableView!
 
     var downloadProgresses: Dictionary<ContentKey, Float> = [:]
@@ -55,54 +55,6 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
     }
-    
-    @objc func removeDictView() {
-        if let vc = dictVC {
-            vc.willMove(toParent: nil)
-            vc.view.removeFromSuperview()
-            vc.removeFromParent()
-            dictVC = nil
-        }
-    }
-    
-    func presentDictView(bookName: String, rect: CGRect, page: Int, scroll: CGFloat, sentence: String, word: String, index: Int) {
-        removeDictView()
-        let vc = storyboard!.instantiateViewController(withIdentifier: "DictViewController") as! DictViewController
-        vc.word = word
-        vc.sentence = sentence
-        vc.index = index
-        self.folioReader.readerContainer?.view.addSubview(vc.view)
-        vc.didMove(toParent: self.folioReader.readerContainer)
-        vc.view.frame = CGRect(x: 20, y: rect.maxY, width: UIScreen.main.bounds.width - 40, height: 300)
-        dictVC = vc
-    }
-    
-    func hideDictView() {
-        removeDictView()
-    }
-
-    func htmlContentForPage(_ page: FolioReaderPage, htmlContent: String) -> String {
-        self.updateKnownWords()
-        
-        self.currentHTML = htmlContent
-        return htmlContent
-    }
-    
-    fileprivate func updateKnownWords() {
-        guard let html = self.currentHTML else {
-            return
-        }
-        
-        if self.folioReader.readerCenter!.actualReadRate > MinActulReadRate {
-            DispatchQueue.global(qos: .default).async {
-                //try? KnownWord.add(html: html)
-            }
-        }
-    }
-
-    func folioReaderDidClose(_ folioReader: FolioReader) {
-        self.currentHTML = nil
-    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.contents.count
@@ -113,33 +65,11 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
         
         let item = contents[indexPath.row]
         if let item = item as? DownloadableContent {
-            if downloadProgresses[item.key] == nil {
-                ContentService.shared.downloadContent(item)
-                    .start { event -> Void in
-                        DispatchQueue.main.async{
-                            switch event {
-                            case .completed:
-                                self.downloadProgresses.removeValue(forKey: item.key)
-                                self.reload()
-                            case .value(let progress):
-                                self.updateDownloadProgress(item.key, progress)
-                            default:
-                                self.downloadProgresses.removeValue(forKey: item.key)
-                                print(event)
-                            }
-                        }
-                    }
-            }
+            downloadContent(item)
         }
         
-            
         if let item = item as? DownloadedContent {
-            switch item.type {
-            case .sens:
-                print("adsfas")
-            case .epub:
-                print("adsfas")
-            }
+            openContent(item)
         }
 //        let config = FolioReaderConfig()
 //        config.tintColor = UIUtill.tint
@@ -152,6 +82,40 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
 //
 //        self.folioReader.presentReader(parentViewController: self, book: book.book!, config: config)
 //        self.folioReader.readerCenter!.delegate = self
+    }
+    
+    func downloadContent(_ content: DownloadableContent) {
+        if downloadProgresses[content.key] == nil {
+            ContentService.shared.downloadContent(content)
+                .start { event -> Void in
+                    DispatchQueue.main.async{
+                        switch event {
+                        case .completed:
+                            self.downloadProgresses.removeValue(forKey: content.key)
+                            self.reload()
+                        case .value(let progress):
+                            self.updateDownloadProgress(content.key, progress)
+                        default:
+                            self.downloadProgresses.removeValue(forKey: content.key)
+                            print(event)
+                        }
+                    }
+            }
+        }
+    }
+    
+    func openContent(_ content: DownloadedContent) {
+        switch content.type {
+        case .sens:
+            guard let sens = try? Sens(path: content.path) else {
+                return
+            }
+            let vc = self.storyboard!.instantiateViewController(withIdentifier: "SensMainViewController") as! SensMainViewController
+            vc.sens = sens
+            self.present(vc, animated: true)
+        case .epub:
+            print("adsfas")
+        }
     }
     
     func updateDownloadProgress(_ key: ContentKey, _ progress: Float) {

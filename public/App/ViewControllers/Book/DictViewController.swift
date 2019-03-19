@@ -35,11 +35,9 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
         let whole = UIView()
         
         let back = UIView(frame: CGRect(x: 0, y: 0, width: self.tableView.bounds.width, height: 40))
-        back.backgroundColor = UIUtill.lightGray1
         whole.addSubview(back)
         
         let view = UIView(frame: CGRect(x: 4, y: 8, width: self.tableView.bounds.width - 8, height: 50))
-        view.backgroundColor = UIUtill.lightGray0
         UIUtill.roundView(view)
         back.addSubview(view)
         
@@ -70,10 +68,7 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     fileprivate func getDictEntryColor(entry: DictEntry) -> UIColor {
-        if entry is DictEntryRedirect {
-            return UIUtill.green
-        }
-        return UIUtill.lightGray0
+        return UIUtill.green
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

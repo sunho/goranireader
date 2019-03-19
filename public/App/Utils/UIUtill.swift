@@ -23,19 +23,7 @@ class UIUtill {
     }
     
     class var gray: UIColor {
-        return UIColor(rgba: "#999999")
-    }
-    
-    class var lightGray1: UIColor {
-        return UIColor(rgba: "#E3E3E2")
-    }
-    
-    class var lightGray0: UIColor {
-        return UIColor(rgba: "#F0F0F0")
-    }
-    
-    class var blue: UIColor {
-        return UIColor(rgba: "#006FFF")
+        return UIColor(rgba: "#E8E9EB")
     }
     
     class func roundView(_ view: UIView, _ radius: CGFloat = 10) {

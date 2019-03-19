@@ -63,6 +63,10 @@
 		C79F3362221D8A2E00D52BDF /* DictViewTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79F3361221D8A2E00D52BDF /* DictViewTableCell.swift */; };
 		C7B1C6B62210ECF5007CF0D9 /* Downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B1C6B52210ECF5007CF0D9 /* Downloader.swift */; };
 		C7C63E92209905900093CC02 /* BookMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C63E91209905900093CC02 /* BookMainViewController.swift */; };
+		C7D915C02240D5310073E860 /* SensMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D915BF2240D5310073E860 /* SensMainViewController.swift */; };
+		C7D915C22240DF8F0073E860 /* SensCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D915C12240DF8F0073E860 /* SensCollectionViewCell.swift */; };
+		C7D915C52240E2D50073E860 /* EpubViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D915C42240E2D50073E860 /* EpubViewControllerExtension.swift */; };
+		C7D915C92240FAA60073E860 /* HorizontalPageLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D915C82240FAA60073E860 /* HorizontalPageLayout.swift */; };
 		C7FA5428223476BD006F94C7 /* DictViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FA5427223476BD006F94C7 /* DictViewController.swift */; };
 		C7FC186E2239CD65007172ED /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B1C6AF2210E407007CF0D9 /* Alamofire.framework */; };
 		C7FC186F2239CD65007172ED /* Alamofire.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7B1C6AF2210E407007CF0D9 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -227,6 +231,10 @@
 		C7C1E3262098058500C909D7 /* app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = app.entitlements; sourceTree = "<group>"; };
 		C7C63E91209905900093CC02 /* BookMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMainViewController.swift; sourceTree = "<group>"; };
 		C7C63EA9209946A50093CC02 /* FolioReaderKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FolioReaderKit.xcodeproj; path = FolioReaderKit/FolioReaderKit.xcodeproj; sourceTree = "<group>"; };
+		C7D915BF2240D5310073E860 /* SensMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensMainViewController.swift; sourceTree = "<group>"; };
+		C7D915C12240DF8F0073E860 /* SensCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensCollectionViewCell.swift; sourceTree = "<group>"; };
+		C7D915C42240E2D50073E860 /* EpubViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpubViewControllerExtension.swift; sourceTree = "<group>"; };
+		C7D915C82240FAA60073E860 /* HorizontalPageLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalPageLayout.swift; sourceTree = "<group>"; };
 		C7FA5427223476BD006F94C7 /* DictViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictViewController.swift; sourceTree = "<group>"; };
 		C7FC18722239CD87007172ED /* Moya.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Moya.framework; path = Carthage/Build/iOS/Moya.framework; sourceTree = "<group>"; };
 		C7FC18762239CDAD007172ED /* QuickLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLayout.framework; path = Carthage/Build/iOS/QuickLayout.framework; sourceTree = "<group>"; };
@@ -415,7 +423,6 @@
 		C759AD7A221EDB1E00166B2A /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				C7D38399223FA5DC00BA8626 /* Sens */,
 				B13393B620AB2AD500F34525 /* Tab */,
 				C77043C0223E52EB00B91831 /* Auth */,
 				C759AD7D221EEA6300166B2A /* Recommend */,
@@ -434,20 +441,22 @@
 			path = Recommend;
 			sourceTree = "<group>";
 		};
-		C77043A9223DFFB800B91831 /* TableViewCells */ = {
+		C77043A9223DFFB800B91831 /* ViewCells */ = {
 			isa = PBXGroup;
 			children = (
 				C79F3361221D8A2E00D52BDF /* DictViewTableCell.swift */,
 				C77043AA223DFFD400B91831 /* BookListTableViewCell.swift */,
+				C7D915C12240DF8F0073E860 /* SensCollectionViewCell.swift */,
 			);
-			path = TableViewCells;
+			path = ViewCells;
 			sourceTree = "<group>";
 		};
 		C77043AC223DFFDC00B91831 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				C77043AD223E0E3600B91831 /* CircleBar */,
-				C77043A9223DFFB800B91831 /* TableViewCells */,
+				C77043A9223DFFB800B91831 /* ViewCells */,
+				C7D915C82240FAA60073E860 /* HorizontalPageLayout.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -489,8 +498,10 @@
 		C7C1E2FF2098016D00C909D7 /* Book */ = {
 			isa = PBXGroup;
 			children = (
+				C7D915BF2240D5310073E860 /* SensMainViewController.swift */,
 				C7FA5427223476BD006F94C7 /* DictViewController.swift */,
 				C7C63E91209905900093CC02 /* BookMainViewController.swift */,
+				C7D915C42240E2D50073E860 /* EpubViewControllerExtension.swift */,
 			);
 			path = Book;
 			sourceTree = "<group>";
@@ -502,13 +513,6 @@
 				C7C63EB1209946A50093CC02 /* FolioReaderKitTests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		C7D38399223FA5DC00BA8626 /* Sens */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Sens;
 			sourceTree = "<group>";
 		};
 		C7FC18912239E178007172ED /* Services */ = {
@@ -660,8 +664,10 @@
 				C7B1C6B62210ECF5007CF0D9 /* Downloader.swift in Sources */,
 				C78ECA932206BCC1001909C3 /* ShareError.swift in Sources */,
 				C7FC18B5223A346D007172ED /* ReachabilityService.swift in Sources */,
+				C7D915C52240E2D50073E860 /* EpubViewControllerExtension.swift in Sources */,
 				B143B04F20A47613003341A3 /* DictService.swift in Sources */,
 				B143B05520A47613003341A3 /* DictDefinition.swift in Sources */,
+				C7D915C92240FAA60073E860 /* HorizontalPageLayout.swift in Sources */,
 				C7FC18BB223A3C45007172ED /* GoraniError.swift in Sources */,
 				B143B05920A47617003341A3 /* Ease.swift in Sources */,
 				C7403AEB209176D800099119 /* WordMainViewController.swift in Sources */,
@@ -671,11 +677,13 @@
 				C74CEFD8208C899F002765D6 /* AppDelegate.swift in Sources */,
 				C7FC188F2239D748007172ED /* Book.swift in Sources */,
 				C78ECA9B2206E57F001909C3 /* StoreMainViewController.swift in Sources */,
+				C7D915C22240DF8F0073E860 /* SensCollectionViewCell.swift in Sources */,
 				B13393B820AB2AE600F34525 /* TabViewController.swift in Sources */,
 				B143B05220A47613003341A3 /* POS.swift in Sources */,
 				C7FC18AF223A12DD007172ED /* APIService.swift in Sources */,
 				B143B05320A47613003341A3 /* DictEntry.swift in Sources */,
 				B143B04C20A47613003341A3 /* Sens.swift in Sources */,
+				C7D915C02240D5310073E860 /* SensMainViewController.swift in Sources */,
 				B143B05A20A47617003341A3 /* Verb.swift in Sources */,
 				B143B05620A47617003341A3 /* FileUtill.swift in Sources */,
 				C742DD8F2209568800CD737A /* SearchResultViewController.swift in Sources */,

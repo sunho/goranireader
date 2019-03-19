@@ -51,7 +51,6 @@ class CircleBarView: UIView {
         circlePath.addLine(to: CGPoint(x: frame.size.width / 2.0, y: frame.size.height / 2.0))
         progressLayer.path = circlePath.cgPath
         progressLayer.fillColor = progressColor.cgColor
-        print("layout")
         layer.addSublayer(progressLayer)
     }
     

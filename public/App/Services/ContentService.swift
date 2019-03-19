@@ -37,7 +37,6 @@ class ContentService {
         
         return APIService.shared.requestWithProgress(.download(url: content.downloadUrl, file: file))
             .map { (resp: ProgressResponse) -> Float in
-                print(resp.progress)
                 return Float(resp.progress)
             }
             .mapError { (error: MoyaError) -> GoraniError in
