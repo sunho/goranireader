@@ -47,6 +47,7 @@ class BookListTableViewCell: UITableViewCell {
         }
     }
     
+    fileprivate var container: UIView!
     fileprivate var typeView: UIImageView!
     fileprivate var coverView: UIImageView!
     fileprivate var nameView: UITextView!
@@ -60,24 +61,23 @@ class BookListTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-        contentView.snp.makeConstraints { make -> Void in
-            make.left.equalToSuperview().offset(16)
-            make.right.equalToSuperview().offset(-16)
-            make.top.equalToSuperview().offset(13)
-            make.bottom.equalToSuperview().offset(-13)
-        }
         
+        container = UIView()
+        contentView.addSubview(container)
+        container.snp.makeConstraints { make in
+            make.edges.equalTo(contentView.snp.margins)
+        }
         coverView = UIImageView(image: UIImage(named: "book_placeholder")!)
-        contentView.addSubview(coverView)
+        container.addSubview(coverView)
         coverView.snp.makeConstraints { (make) -> Void in
             make.left.equalToSuperview()
-            make.width.equalTo(67)
+            make.height.equalTo(coverView.snp.width).multipliedBy(1.5)
+            make.width.equalTo(bounds.width * 0.2)
             make.bottom.top.equalToSuperview()
         }
         
         progressView = CircleBarView(frame: CGRect())
-        contentView.addSubview(progressView)
+        container.addSubview(progressView)
         progressView.snp.makeConstraints { make -> Void in
             make.height.equalTo(30)
             make.width.equalTo(30)
@@ -86,25 +86,25 @@ class BookListTableViewCell: UITableViewCell {
         }
         
         nameView = UITextView()
-        contentView.addSubview(nameView)
+        container.addSubview(nameView)
         nameView.snp.makeConstraints { make -> Void in
             make.left.equalTo(coverView.snp.right).offset(8)
             make.top.equalToSuperview().offset(2)
         }
-        nameView.makeBoldText()
+        nameView.setFont(.normal)
         nameView.makeStaticText()
         
         authorView = UITextView()
-        contentView.addSubview(authorView)
+        container.addSubview(authorView)
         authorView.snp.makeConstraints { make -> Void in
             make.left.equalTo(coverView.snp.right).offset(10)
             make.top.equalTo(nameView.snp.bottom).offset(2)
         }
-        authorView.makeGrayText()
+        authorView.setFont(.small, UIUtill.gray)
         authorView.makeStaticText()
         
         typeView = UIImageView(image: UIImage(named: "epub_icon"))
-        contentView.addSubview(typeView)
+        container.addSubview(typeView)
         typeView.snp.makeConstraints{ make -> Void in
             make.height.equalTo(15)
             make.width.equalTo(26)
@@ -113,7 +113,7 @@ class BookListTableViewCell: UITableViewCell {
         }
         
         downloadView = UIImageView(image: UIImage(named: "download_btn"))
-        contentView.addSubview(downloadView)
+        container.addSubview(downloadView)
         downloadView.snp.makeConstraints{ make -> Void in
             make.height.equalTo(30)
             make.width.equalTo(30)

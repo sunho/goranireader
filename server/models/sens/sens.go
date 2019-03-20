@@ -18,9 +18,10 @@ type Sens struct {
 }
 
 type Sentence struct {
-	ID      int      `json:"id"`
-	Text    string   `json:"text"`
-	Answers []string `json:"answers"`
+	ID            int      `json:"id"`
+	Text          string   `json:"text"`
+	Answers       []string `json:"answers"`
+	CorrectAnswer int      `json:"correct_answer"`
 }
 
 func NewFromBook(b bookparse.Book) (Sens, error) {

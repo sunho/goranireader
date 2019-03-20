@@ -55,34 +55,6 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
     }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.contents.count
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        let item = contents[indexPath.row]
-        if let item = item as? DownloadableContent {
-            downloadContent(item)
-        }
-        
-        if let item = item as? DownloadedContent {
-            openContent(item)
-        }
-//        let config = FolioReaderConfig()
-//        config.tintColor = UIUtill.tint
-//        config.canChangeScrollDirection = false
-//        config.shouldHideNavigationOnTap = false
-//        config.hideBars = false
-//        config.scrollDirection = .horizontal
-//
-//        let book = self.contents[indexPath.row]
-//
-//        self.folioReader.presentReader(parentViewController: self, book: book.book!, config: config)
-//        self.folioReader.readerCenter!.delegate = self
-    }
     
     func downloadContent(_ content: DownloadableContent) {
         if downloadProgresses[content.key] == nil {
@@ -170,5 +142,33 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
         return cell
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.contents.count
+    }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let item = contents[indexPath.row]
+        if let item = item as? DownloadableContent {
+            downloadContent(item)
+        }
+        
+        if let item = item as? DownloadedContent {
+            openContent(item)
+        }
+        //        let config = FolioReaderConfig()
+        //        config.tintColor = UIUtill.tint
+        //        config.canChangeScrollDirection = false
+        //        config.shouldHideNavigationOnTap = false
+        //        config.hideBars = false
+        //        config.scrollDirection = .horizontal
+        //
+        //        let book = self.contents[indexPath.row]
+        //
+        //        self.folioReader.presentReader(parentViewController: self, book: book.book!, config: config)
+        //        self.folioReader.readerCenter!.delegate = self
+    }
+    
+
 }

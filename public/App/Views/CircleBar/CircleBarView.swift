@@ -24,9 +24,8 @@ class CircleBarView: UIView {
         super.init(frame: frame)
         layout()
         valueView = UITextView()
+        valueView.setFont(.small, UIUtill.white)
         valueView.makeStaticText()
-        valueView.makeSmallText()
-        valueView.textColor = UIUtill.white
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -32,4 +32,13 @@ struct SensSentence: Codable {
     var id: Int
     var text: String
     var answers: [String]
+    var correctAnswer: Int
+    
+    enum CodingKeys: String, CodingKey
+    {
+        case id
+        case text
+        case answers
+        case correctAnswer = "correct_answer"
+    }
 }

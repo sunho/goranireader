@@ -26,11 +26,6 @@ class UIUtill {
         return UIColor(rgba: "#E8E9EB")
     }
     
-    class func roundView(_ view: UIView, _ radius: CGFloat = 10) {
-        view.layer.cornerRadius = radius
-        view.clipsToBounds = true
-    }
-    
     class func dropShadow(_ view: UIView, offset: CGSize, radius: CGFloat, alpha: Float = 0.06) {
         view.layer.masksToBounds = false
         view.layer.shadowColor = UIColor.black.cgColor
@@ -42,17 +37,99 @@ class UIUtill {
     }
 }
 
+enum TextStroke {
+    case normal
+    case bold
+}
+
+enum TextSize {
+    case small
+    case normal
+    case big
+}
+
+extension TextSize {
+    var value: CGFloat {
+        switch self {
+        case .small:
+            return 9
+        case .normal:
+            return 14
+        case .big:
+            return 16
+        }
+    }
+}
+
+
+enum BorderRadius {
+    case none
+    case small
+    case normal
+    case big
+}
+
+extension BorderRadius {
+    var value: CGFloat {
+        switch self {
+        case .none:
+            return 0
+        case .small:
+            return 10
+        case .normal:
+            return 20
+        case .big:
+            return 30
+        }
+    }
+}
+
+
 extension UITextView {
-    func makeSmallText() {
-        self.font = UIFont.boldSystemFont(ofSize: 12)
+    func setFont(_ size: TextSize = .normal, _ color: UIColor = UIColor.black, _ stroke: TextStroke = .normal) {
+        switch stroke {
+        case .normal:
+            self.font = UIFont.systemFont(ofSize: size.value)
+        case .bold:
+            self.font = UIFont.boldSystemFont(ofSize: size.value)
+        }
+        self.textColor = color
+    }
+}
+
+
+extension UIView {
+    var borderRadius: BorderRadius {
+        set {
+            self.layer.cornerRadius = newValue.value
+            self.clipsToBounds = true
+        }
+        
+        get {
+            return .none
+        }
+    }
+}
+
+extension UIColor {
+    
+    func lighter(by percentage: CGFloat = 30.0) -> UIColor? {
+        return self.adjust(by: abs(percentage) )
     }
     
-    func makeBoldText() {
-        self.font = UIFont.systemFont(ofSize: 16)
+    func darker(by percentage: CGFloat = 30.0) -> UIColor? {
+        return self.adjust(by: -1 * abs(percentage) )
     }
     
-    func makeGrayText() {
-        self.font = UIFont.systemFont(ofSize: 13)
-        self.textColor = UIUtill.gray
+    func adjust(by percentage: CGFloat = 30.0) -> UIColor? {
+        var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
+        if self.getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
+            return UIColor(red: min(red + percentage/100, 1.0),
+                           green: min(green + percentage/100, 1.0),
+                           blue: min(blue + percentage/100, 1.0),
+                           alpha: alpha)
+        } else {
+            return nil
+        }
     }
 }

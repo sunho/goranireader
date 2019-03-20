@@ -38,7 +38,6 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
         whole.addSubview(back)
         
         let view = UIView(frame: CGRect(x: 4, y: 8, width: self.tableView.bounds.width - 8, height: 50))
-        UIUtill.roundView(view)
         back.addSubview(view)
         
         let label = UILabel()
@@ -61,7 +60,6 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
         typeButton.titleLabel?.sizeToFit()
         typeButton.sizeToFit()
         typeButton.frame = CGRect(x: view.frame.width - typeButton.frame.width - 5, y: 5, width: typeButton.frame.width, height: 40)
-        UIUtill.roundView(typeButton)
         view.addSubview(typeButton)
         
         return whole

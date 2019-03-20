@@ -13,14 +13,22 @@ class RealmService {
         if let config = realm.object(ofType: Config.self, forPrimaryKey: 1) {
             return config
         }
-        setConfig(Config())
+        RealmService.shared.write {
+            realm.add(Config(), update: true)
+        }
         return Config()
     }
     
-    func setConfig(_ config: Config) {
-        try! realm.write {
-            realm.add(config, update: true)
+    func getSensResult(bookId: Int, sensId: Int) -> SensResult {
+        if let res = realm.object(ofType: SensResult.self, forPrimaryKey: "\(bookId)-\(sensId)") {
+            return res
         }
+        let res = SensResult()
+        RealmService.shared.write {
+            res.configure(bookId: bookId, sensId: sensId)
+            realm.add(res, update: true)
+        }
+        return res
     }
     
     func write(_ block: (() throws -> Void)) {

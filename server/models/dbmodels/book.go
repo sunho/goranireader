@@ -12,12 +12,12 @@ type Book struct {
 	ID          int          `db:"id" json:"id" pk:"true"`
 	CreatedAt   time.Time    `db:"created_at" json:"created_at"`
 	UpdatedAt   time.Time    `db:"updated_at" json:"updated_at"`
+	Description string       `db:"description" json:"description"`
 	ISBN        string       `db:"isbn" json:"isbn"`
 	Name        string       `db:"name" json:"name"`
 	NativeName  nulls.String `db:"native_name" json:"native_name"`
 	Author      string       `db:"author" json:"author"`
 	Cover       string       `db:"cover" json:"cover"`
-	Description string       `db:"description" json:"description"`
 	Epub        BookEpub     `has_one:"book_epub" json:"epub"`
 	Sens        BookSens     `has_one:"book_sens" json:"sens"`
 	Rate        int          `db:"rate" json:"rate"`

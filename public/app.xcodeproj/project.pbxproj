@@ -56,6 +56,13 @@
 		C77043BD223E4B3400B91831 /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C77043B6223E47EC00B91831 /* Kingfisher.framework */; };
 		C77043BE223E4B3400B91831 /* Kingfisher.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C77043B6223E47EC00B91831 /* Kingfisher.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C77043C4223E530300B91831 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77043C3223E530300B91831 /* LoginViewController.swift */; };
+		C783AAAD2241D85F00D0D7BB /* CHIPageControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C783AAAA2241D85F00D0D7BB /* CHIPageControl.framework */; };
+		C783AAAE2241D87000D0D7BB /* CHIPageControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C783AAAA2241D85F00D0D7BB /* CHIPageControl.framework */; };
+		C783AAAF2241D87000D0D7BB /* CHIPageControl.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C783AAAA2241D85F00D0D7BB /* CHIPageControl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C783AAB12241D8AE00D0D7BB /* AnswerListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C783AAB02241D8AE00D0D7BB /* AnswerListTableViewCell.swift */; };
+		C783AAB62241E0CB00D0D7BB /* SensMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C783AAB52241E0CB00D0D7BB /* SensMainViewController.swift */; };
+		C783AAB822420C0200D0D7BB /* SelfSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C783AAB722420C0200D0D7BB /* SelfSizedTableView.swift */; };
+		C783AABA2242332500D0D7BB /* SwipeSubmitScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C783AAB92242332500D0D7BB /* SwipeSubmitScreen.swift */; };
 		C78ECA912206BCB4001909C3 /* ManagedEpubURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A97416209A8FD700A41D02 /* ManagedEpubURL.swift */; };
 		C78ECA932206BCC1001909C3 /* ShareError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A97421209AA65900A41D02 /* ShareError.swift */; };
 		C78ECA9B2206E57F001909C3 /* StoreMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78ECA9A2206E57F001909C3 /* StoreMainViewController.swift */; };
@@ -63,7 +70,6 @@
 		C79F3362221D8A2E00D52BDF /* DictViewTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79F3361221D8A2E00D52BDF /* DictViewTableCell.swift */; };
 		C7B1C6B62210ECF5007CF0D9 /* Downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B1C6B52210ECF5007CF0D9 /* Downloader.swift */; };
 		C7C63E92209905900093CC02 /* BookMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C63E91209905900093CC02 /* BookMainViewController.swift */; };
-		C7D915C02240D5310073E860 /* SensMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D915BF2240D5310073E860 /* SensMainViewController.swift */; };
 		C7D915C22240DF8F0073E860 /* SensCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D915C12240DF8F0073E860 /* SensCollectionViewCell.swift */; };
 		C7D915C52240E2D50073E860 /* EpubViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D915C42240E2D50073E860 /* EpubViewControllerExtension.swift */; };
 		C7D915C92240FAA60073E860 /* HorizontalPageLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D915C82240FAA60073E860 /* HorizontalPageLayout.swift */; };
@@ -139,6 +145,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				C7FC18752239CD89007172ED /* Moya.framework in CopyFiles */,
+				C783AAAF2241D87000D0D7BB /* CHIPageControl.framework in CopyFiles */,
 				C7362F18209BE2060081B012 /* AEXML.framework in CopyFiles */,
 				C7FC188D2239D6C3007172ED /* RealmSwift.framework in CopyFiles */,
 				C7362F19209BE2060081B012 /* FontBlaster.framework in CopyFiles */,
@@ -221,6 +228,11 @@
 		C77043C3223E530300B91831 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		C78217C7209BD32700C19E2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C78217C8209BD32700C19E2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C783AAAA2241D85F00D0D7BB /* CHIPageControl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CHIPageControl.framework; path = Carthage/Build/iOS/CHIPageControl.framework; sourceTree = "<group>"; };
+		C783AAB02241D8AE00D0D7BB /* AnswerListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerListTableViewCell.swift; sourceTree = "<group>"; };
+		C783AAB52241E0CB00D0D7BB /* SensMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensMainViewController.swift; sourceTree = "<group>"; };
+		C783AAB722420C0200D0D7BB /* SelfSizedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizedTableView.swift; sourceTree = "<group>"; };
+		C783AAB92242332500D0D7BB /* SwipeSubmitScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeSubmitScreen.swift; sourceTree = "<group>"; };
 		C78ECA9A2206E57F001909C3 /* StoreMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreMainViewController.swift; sourceTree = "<group>"; };
 		C7905B4420956F0300CE3D17 /* WordTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordTableCell.swift; sourceTree = "<group>"; };
 		C79F3361221D8A2E00D52BDF /* DictViewTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictViewTableCell.swift; sourceTree = "<group>"; };
@@ -231,7 +243,6 @@
 		C7C1E3262098058500C909D7 /* app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = app.entitlements; sourceTree = "<group>"; };
 		C7C63E91209905900093CC02 /* BookMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMainViewController.swift; sourceTree = "<group>"; };
 		C7C63EA9209946A50093CC02 /* FolioReaderKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FolioReaderKit.xcodeproj; path = FolioReaderKit/FolioReaderKit.xcodeproj; sourceTree = "<group>"; };
-		C7D915BF2240D5310073E860 /* SensMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensMainViewController.swift; sourceTree = "<group>"; };
 		C7D915C12240DF8F0073E860 /* SensCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensCollectionViewCell.swift; sourceTree = "<group>"; };
 		C7D915C42240E2D50073E860 /* EpubViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpubViewControllerExtension.swift; sourceTree = "<group>"; };
 		C7D915C82240FAA60073E860 /* HorizontalPageLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalPageLayout.swift; sourceTree = "<group>"; };
@@ -267,6 +278,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7FC187B2239CDBE007172ED /* SnapKit.framework in Frameworks */,
+				C783AAAD2241D85F00D0D7BB /* CHIPageControl.framework in Frameworks */,
 				C7FC189B2239EE08007172ED /* ReactiveSwift.framework in Frameworks */,
 				C7FC18842239CDD9007172ED /* Result.framework in Frameworks */,
 				C7FC188C2239D6C3007172ED /* RealmSwift.framework in Frameworks */,
@@ -278,6 +290,7 @@
 				C7FC18742239CD89007172ED /* Moya.framework in Frameworks */,
 				C77043B7223E47EC00B91831 /* Kingfisher.framework in Frameworks */,
 				B13393BA20AB6CC400F34525 /* SwipeCellKit.framework in Frameworks */,
+				C783AAAE2241D87000D0D7BB /* CHIPageControl.framework in Frameworks */,
 				B19942E920A1BCE0004CF61A /* FolioReaderKit.framework in Frameworks */,
 				C7FC189C2239EE11007172ED /* ReactiveMoya.framework in Frameworks */,
 				C7FC18782239CDAF007172ED /* QuickLayout.framework in Frameworks */,
@@ -300,6 +313,7 @@
 		702F24C22323D91C0487792D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C783AAAA2241D85F00D0D7BB /* CHIPageControl.framework */,
 				C77043B6223E47EC00B91831 /* Kingfisher.framework */,
 				C7FC18B0223A2148007172ED /* Reachability.framework */,
 				C7FC18982239EE07007172ED /* ReactiveMoya.framework */,
@@ -447,6 +461,7 @@
 				C79F3361221D8A2E00D52BDF /* DictViewTableCell.swift */,
 				C77043AA223DFFD400B91831 /* BookListTableViewCell.swift */,
 				C7D915C12240DF8F0073E860 /* SensCollectionViewCell.swift */,
+				C783AAB02241D8AE00D0D7BB /* AnswerListTableViewCell.swift */,
 			);
 			path = ViewCells;
 			sourceTree = "<group>";
@@ -457,6 +472,8 @@
 				C77043AD223E0E3600B91831 /* CircleBar */,
 				C77043A9223DFFB800B91831 /* ViewCells */,
 				C7D915C82240FAA60073E860 /* HorizontalPageLayout.swift */,
+				C783AAB722420C0200D0D7BB /* SelfSizedTableView.swift */,
+				C783AAB92242332500D0D7BB /* SwipeSubmitScreen.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -498,7 +515,7 @@
 		C7C1E2FF2098016D00C909D7 /* Book */ = {
 			isa = PBXGroup;
 			children = (
-				C7D915BF2240D5310073E860 /* SensMainViewController.swift */,
+				C783AAB52241E0CB00D0D7BB /* SensMainViewController.swift */,
 				C7FA5427223476BD006F94C7 /* DictViewController.swift */,
 				C7C63E91209905900093CC02 /* BookMainViewController.swift */,
 				C7D915C42240E2D50073E860 /* EpubViewControllerExtension.swift */,
@@ -682,8 +699,9 @@
 				B143B05220A47613003341A3 /* POS.swift in Sources */,
 				C7FC18AF223A12DD007172ED /* APIService.swift in Sources */,
 				B143B05320A47613003341A3 /* DictEntry.swift in Sources */,
+				C783AABA2242332500D0D7BB /* SwipeSubmitScreen.swift in Sources */,
 				B143B04C20A47613003341A3 /* Sens.swift in Sources */,
-				C7D915C02240D5310073E860 /* SensMainViewController.swift in Sources */,
+				C783AAB12241D8AE00D0D7BB /* AnswerListTableViewCell.swift in Sources */,
 				B143B05A20A47617003341A3 /* Verb.swift in Sources */,
 				B143B05620A47617003341A3 /* FileUtill.swift in Sources */,
 				C742DD8F2209568800CD737A /* SearchResultViewController.swift in Sources */,
@@ -692,9 +710,11 @@
 				C77043B3223E214700B91831 /* ContentService.swift in Sources */,
 				C7FC18A72239F1F7007172ED /* Memory.swift in Sources */,
 				C759AD7F221EEA9400166B2A /* RecommendMainViewController.swift in Sources */,
+				C783AAB62241E0CB00D0D7BB /* SensMainViewController.swift in Sources */,
 				C79F3362221D8A2E00D52BDF /* DictViewTableCell.swift in Sources */,
 				C74CEFE0208C899F002765D6 /* app.xcdatamodeld in Sources */,
 				C7FA5428223476BD006F94C7 /* DictViewController.swift in Sources */,
+				C783AAB822420C0200D0D7BB /* SelfSizedTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
