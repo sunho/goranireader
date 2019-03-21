@@ -56,7 +56,7 @@ extension TextSize {
         case .normal:
             return 14
         case .big:
-            return 16
+            return 20
         }
     }
 }
@@ -85,7 +85,7 @@ extension BorderRadius {
 }
 
 
-extension UITextView {
+extension UILabel {
     func setFont(_ size: TextSize = .normal, _ color: UIColor = UIColor.black, _ stroke: TextStroke = .normal) {
         switch stroke {
         case .normal:

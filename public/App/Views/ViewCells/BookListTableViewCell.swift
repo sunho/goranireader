@@ -50,8 +50,8 @@ class BookListTableViewCell: UITableViewCell {
     fileprivate var container: UIView!
     fileprivate var typeView: UIImageView!
     fileprivate var coverView: UIImageView!
-    fileprivate var nameView: UITextView!
-    fileprivate var authorView: UITextView!
+    fileprivate var nameView: UILabel!
+    fileprivate var authorView: UILabel!
     fileprivate var downloadView: UIImageView!
     fileprivate var progressView: CircleBarView!
 
@@ -85,23 +85,21 @@ class BookListTableViewCell: UITableViewCell {
             make.top.equalToSuperview()
         }
         
-        nameView = UITextView()
+        nameView = UILabel()
         container.addSubview(nameView)
         nameView.snp.makeConstraints { make -> Void in
             make.left.equalTo(coverView.snp.right).offset(8)
             make.top.equalToSuperview().offset(2)
         }
         nameView.setFont(.normal)
-        nameView.makeStaticText()
         
-        authorView = UITextView()
+        authorView = UILabel()
         container.addSubview(authorView)
         authorView.snp.makeConstraints { make -> Void in
             make.left.equalTo(coverView.snp.right).offset(10)
             make.top.equalTo(nameView.snp.bottom).offset(2)
         }
         authorView.setFont(.small, UIUtill.gray)
-        authorView.makeStaticText()
         
         typeView = UIImageView(image: UIImage(named: "epub_icon"))
         container.addSubview(typeView)

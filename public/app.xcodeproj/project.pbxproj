@@ -56,6 +56,13 @@
 		C77043BD223E4B3400B91831 /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C77043B6223E47EC00B91831 /* Kingfisher.framework */; };
 		C77043BE223E4B3400B91831 /* Kingfisher.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C77043B6223E47EC00B91831 /* Kingfisher.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C77043C4223E530300B91831 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77043C3223E530300B91831 /* LoginViewController.swift */; };
+		C7742BAB22433B4500925081 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7742BAA22433B4500925081 /* CardView.swift */; };
+		C7742BAD22433BEE00925081 /* CardSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7742BAC22433BEE00925081 /* CardSlider.swift */; };
+		C7742BAF22436A6D00925081 /* CardOptionIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7742BAE22436A6D00925081 /* CardOptionIndicator.swift */; };
+		C7742BB122437B4900925081 /* WordCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7742BB022437B4900925081 /* WordCardViewController.swift */; };
+		C7742BB322438D8500925081 /* UnknownWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7742BB222438D8500925081 /* UnknownWord.swift */; };
+		C7742BB52243953D00925081 /* WordCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7742BB42243953D00925081 /* WordCardTableViewCell.swift */; };
+		C7742BB72243967A00925081 /* WordCardExampleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7742BB62243967A00925081 /* WordCardExampleTableViewCell.swift */; };
 		C783AAAD2241D85F00D0D7BB /* CHIPageControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C783AAAA2241D85F00D0D7BB /* CHIPageControl.framework */; };
 		C783AAAE2241D87000D0D7BB /* CHIPageControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C783AAAA2241D85F00D0D7BB /* CHIPageControl.framework */; };
 		C783AAAF2241D87000D0D7BB /* CHIPageControl.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C783AAAA2241D85F00D0D7BB /* CHIPageControl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -66,7 +73,6 @@
 		C78ECA912206BCB4001909C3 /* ManagedEpubURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A97416209A8FD700A41D02 /* ManagedEpubURL.swift */; };
 		C78ECA932206BCC1001909C3 /* ShareError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A97421209AA65900A41D02 /* ShareError.swift */; };
 		C78ECA9B2206E57F001909C3 /* StoreMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78ECA9A2206E57F001909C3 /* StoreMainViewController.swift */; };
-		C7905B4520956F0300CE3D17 /* WordTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7905B4420956F0300CE3D17 /* WordTableCell.swift */; };
 		C79F3362221D8A2E00D52BDF /* DictViewTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79F3361221D8A2E00D52BDF /* DictViewTableCell.swift */; };
 		C7B1C6B62210ECF5007CF0D9 /* Downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B1C6B52210ECF5007CF0D9 /* Downloader.swift */; };
 		C7C63E92209905900093CC02 /* BookMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C63E91209905900093CC02 /* BookMainViewController.swift */; };
@@ -226,6 +232,13 @@
 		C77043B4223E219E00B91831 /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
 		C77043B6223E47EC00B91831 /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
 		C77043C3223E530300B91831 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		C7742BAA22433B4500925081 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		C7742BAC22433BEE00925081 /* CardSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSlider.swift; sourceTree = "<group>"; };
+		C7742BAE22436A6D00925081 /* CardOptionIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardOptionIndicator.swift; sourceTree = "<group>"; };
+		C7742BB022437B4900925081 /* WordCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCardViewController.swift; sourceTree = "<group>"; };
+		C7742BB222438D8500925081 /* UnknownWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnknownWord.swift; sourceTree = "<group>"; };
+		C7742BB42243953D00925081 /* WordCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCardTableViewCell.swift; sourceTree = "<group>"; };
+		C7742BB62243967A00925081 /* WordCardExampleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCardExampleTableViewCell.swift; sourceTree = "<group>"; };
 		C78217C7209BD32700C19E2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C78217C8209BD32700C19E2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C783AAAA2241D85F00D0D7BB /* CHIPageControl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CHIPageControl.framework; path = Carthage/Build/iOS/CHIPageControl.framework; sourceTree = "<group>"; };
@@ -234,7 +247,6 @@
 		C783AAB722420C0200D0D7BB /* SelfSizedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizedTableView.swift; sourceTree = "<group>"; };
 		C783AAB92242332500D0D7BB /* SwipeSubmitScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeSubmitScreen.swift; sourceTree = "<group>"; };
 		C78ECA9A2206E57F001909C3 /* StoreMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreMainViewController.swift; sourceTree = "<group>"; };
-		C7905B4420956F0300CE3D17 /* WordTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordTableCell.swift; sourceTree = "<group>"; };
 		C79F3361221D8A2E00D52BDF /* DictViewTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictViewTableCell.swift; sourceTree = "<group>"; };
 		C7A97416209A8FD700A41D02 /* ManagedEpubURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedEpubURL.swift; sourceTree = "<group>"; };
 		C7A97421209AA65900A41D02 /* ShareError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareError.swift; sourceTree = "<group>"; };
@@ -363,6 +375,7 @@
 				C7FC18B6223A360D007172ED /* Config.swift */,
 				C7FC18BA223A3C45007172ED /* GoraniError.swift */,
 				C77043B4223E219E00B91831 /* Content.swift */,
+				C7742BB222438D8500925081 /* UnknownWord.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -387,8 +400,8 @@
 		C7403AE72091767D00099119 /* Word */ = {
 			isa = PBXGroup;
 			children = (
+				C7742BB022437B4900925081 /* WordCardViewController.swift */,
 				C7403AEA209176D800099119 /* WordMainViewController.swift */,
-				C7905B4420956F0300CE3D17 /* WordTableCell.swift */,
 				B13393BF20ACB86C00F34525 /* ModalViewController.swift */,
 			);
 			path = Word;
@@ -462,6 +475,8 @@
 				C77043AA223DFFD400B91831 /* BookListTableViewCell.swift */,
 				C7D915C12240DF8F0073E860 /* SensCollectionViewCell.swift */,
 				C783AAB02241D8AE00D0D7BB /* AnswerListTableViewCell.swift */,
+				C7742BB42243953D00925081 /* WordCardTableViewCell.swift */,
+				C7742BB62243967A00925081 /* WordCardExampleTableViewCell.swift */,
 			);
 			path = ViewCells;
 			sourceTree = "<group>";
@@ -469,6 +484,7 @@
 		C77043AC223DFFDC00B91831 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C7742BA722433B3500925081 /* Card */,
 				C77043AD223E0E3600B91831 /* CircleBar */,
 				C77043A9223DFFB800B91831 /* ViewCells */,
 				C7D915C82240FAA60073E860 /* HorizontalPageLayout.swift */,
@@ -492,6 +508,16 @@
 				C77043C3223E530300B91831 /* LoginViewController.swift */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		C7742BA722433B3500925081 /* Card */ = {
+			isa = PBXGroup;
+			children = (
+				C7742BAA22433B4500925081 /* CardView.swift */,
+				C7742BAC22433BEE00925081 /* CardSlider.swift */,
+				C7742BAE22436A6D00925081 /* CardOptionIndicator.swift */,
+			);
+			path = Card;
 			sourceTree = "<group>";
 		};
 		C78217BB209BC1CF00C19E2F /* Resources */ = {
@@ -664,12 +690,13 @@
 				C77043B5223E219E00B91831 /* Content.swift in Sources */,
 				C77043AF223E0E4A00B91831 /* CircleBarView.swift in Sources */,
 				B143B05420A47613003341A3 /* DictExample.swift in Sources */,
-				C7905B4520956F0300CE3D17 /* WordTableCell.swift in Sources */,
 				C742DD8B2209567A00CD737A /* SearchHomeViewController.swift in Sources */,
 				B143B05B20A47617003341A3 /* UIUtill.swift in Sources */,
 				C7FC18952239E4E5007172ED /* API.swift in Sources */,
 				C7FC18A52239F0F9007172ED /* RecommendInfo.swift in Sources */,
+				C7742BAD22433BEE00925081 /* CardSlider.swift in Sources */,
 				C7FC18AD223A014A007172ED /* Result.swift in Sources */,
+				C7742BAB22433B4500925081 /* CardView.swift in Sources */,
 				C7C63E92209905900093CC02 /* BookMainViewController.swift in Sources */,
 				C7FC18A12239EEE9007172ED /* Category.swift in Sources */,
 				B143B05C20A47617003341A3 /* Keys.swift in Sources */,
@@ -678,6 +705,8 @@
 				C7FC18B7223A360D007172ED /* Config.swift in Sources */,
 				C7FC18AB223A0139007172ED /* Progress.swift in Sources */,
 				C77043AB223DFFD400B91831 /* BookListTableViewCell.swift in Sources */,
+				C7742BB322438D8500925081 /* UnknownWord.swift in Sources */,
+				C7742BAF22436A6D00925081 /* CardOptionIndicator.swift in Sources */,
 				C7B1C6B62210ECF5007CF0D9 /* Downloader.swift in Sources */,
 				C78ECA932206BCC1001909C3 /* ShareError.swift in Sources */,
 				C7FC18B5223A346D007172ED /* ReachabilityService.swift in Sources */,
@@ -686,7 +715,9 @@
 				B143B05520A47613003341A3 /* DictDefinition.swift in Sources */,
 				C7D915C92240FAA60073E860 /* HorizontalPageLayout.swift in Sources */,
 				C7FC18BB223A3C45007172ED /* GoraniError.swift in Sources */,
+				C7742BB122437B4900925081 /* WordCardViewController.swift in Sources */,
 				B143B05920A47617003341A3 /* Ease.swift in Sources */,
+				C7742BB52243953D00925081 /* WordCardTableViewCell.swift in Sources */,
 				C7403AEB209176D800099119 /* WordMainViewController.swift in Sources */,
 				B143B05720A47617003341A3 /* Helper.swift in Sources */,
 				B13393C020ACB86C00F34525 /* ModalViewController.swift in Sources */,
@@ -706,6 +737,7 @@
 				B143B05620A47617003341A3 /* FileUtill.swift in Sources */,
 				C742DD8F2209568800CD737A /* SearchResultViewController.swift in Sources */,
 				C7FC18A32239F07F007172ED /* Review.swift in Sources */,
+				C7742BB72243967A00925081 /* WordCardExampleTableViewCell.swift in Sources */,
 				C78ECA912206BCB4001909C3 /* ManagedEpubURL.swift in Sources */,
 				C77043B3223E214700B91831 /* ContentService.swift in Sources */,
 				C7FC18A72239F1F7007172ED /* Memory.swift in Sources */,

@@ -10,8 +10,8 @@ import UIKit
 
 class AnswerListTableViewCell: UITableViewCell {
     fileprivate var container: UIView!
-    var indexView: UITextView!
-    var textView: UITextView!
+    var indexView: UILabel!
+    var textView: UILabel!
     override var isOpaque: Bool {
         didSet {
             container.isHidden = isOpaque
@@ -33,22 +33,20 @@ class AnswerListTableViewCell: UITableViewCell {
         container.snp.makeConstraints { make in
             make.top.left.right.bottom.equalToSuperview()
         }
-        indexView = UITextView()
+        indexView = UILabel()
         container.addSubview(indexView)
         indexView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().offset(10)
         }
         indexView.setFont()
-        indexView.makeStaticText()
         
-        textView = UITextView()
+        textView = UILabel()
         container.addSubview(textView)
         textView.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
         textView.setFont()
-        textView.makeStaticText()
     }
 
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {

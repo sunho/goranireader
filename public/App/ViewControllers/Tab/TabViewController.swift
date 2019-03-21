@@ -30,6 +30,8 @@ class TabViewController: UIViewController, UITabBarDelegate {
         self.tabBar(self.tabBar, didSelect: self.tabBar.items![0])
         self.layout()
 
+        contentView.clipsToBounds = false
+        
         print(Realm.Configuration.defaultConfiguration.fileURL!)
         print(FileUtill.booksDir)
     }

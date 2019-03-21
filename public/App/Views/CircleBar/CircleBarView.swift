@@ -10,7 +10,7 @@ import UIKit
 
 class CircleBarView: UIView {
     fileprivate var progressLayer = CAShapeLayer()
-    var valueView: UITextView!
+    var valueView: UILabel!
     
     var value: Float = 0 {
         didSet {
@@ -23,9 +23,8 @@ class CircleBarView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         layout()
-        valueView = UITextView()
+        valueView = UILabel()
         valueView.setFont(.small, UIUtill.white)
-        valueView.makeStaticText()
     }
     
     required init?(coder aDecoder: NSCoder) {
