@@ -8,11 +8,16 @@ fileprivate let MinActulReadRate = 0.7
 class BookMainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var tableView: UITableView!
 
+    // for epub
+    // TODO: separate
+    var currentBookId: Int?
+    var folioReader = FolioReader()
+    var currentHTML: String?
+    
+    
+    var dictVC: DictViewController!
     var downloadProgresses: Dictionary<ContentKey, Float> = [:]
     var contents: [Content] = []
-    var folioReader = FolioReader()
-    var dictVC: DictViewController?
-    var currentHTML: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,12 +32,10 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
         
         self.tableView.register(BookListTableViewCell.self, forCellReuseIdentifier: "cell")
         self.reload()
+        
+        dictVC = storyboard!.instantiateViewController(withIdentifier: "DictViewController") as! DictViewController
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        NotificationCenter.default.addObserver(self, selector:#selector(applicationWillEnterForeground(_:)), name: UIApplication.willEnterForegroundNotification, object: nil)
-    }
-    
+ 
     func reload() {
         ContentService.shared.getContents().start { event in
             DispatchQueue.main.async{
@@ -49,6 +52,11 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
     
     @objc func applicationWillEnterForeground(_ notification: NSNotification) {
         self.reload()
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        NotificationCenter.default.addObserver(self, selector:#selector(applicationWillEnterForeground(_:)), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -84,6 +92,7 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
             }
             let vc = self.storyboard!.instantiateViewController(withIdentifier: "SensMainViewController") as! SensMainViewController
             vc.sens = sens
+            vc.dictVC = dictVC
             self.present(vc, animated: true)
         case .epub:
             print("adsfas")

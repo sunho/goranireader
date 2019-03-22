@@ -27,6 +27,7 @@ class SensMainViewController: UIViewController, UITextViewDelegate {
     fileprivate var submitScreen: SwipeSubmitScreen!
     
     var sens: Sens!
+    var dictVC: DictViewController!
     var currentPage: Int = 0
     var currentSentence: SensSentence {
         return sens.sentences[currentPage]
@@ -68,6 +69,8 @@ class SensMainViewController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        dictVC.addViewToWindow()
+        
         state = getStateFromRealm()
         totalPage = sens.sentences.count
     
@@ -90,7 +93,6 @@ class SensMainViewController: UIViewController, UITextViewDelegate {
         collectionView.dataSource = self
         collectionView.delaysContentTouches = true
         
-        
         submitScreen = SwipeSubmitScreen(frame: collectionView.bounds)
         view.addSubview(submitScreen)
         submitScreen.snp.makeConstraints { make in
@@ -103,13 +105,14 @@ class SensMainViewController: UIViewController, UITextViewDelegate {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 50
+        tableView.estimatedRowHeight = 60
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         reloadData()
         
         collectionView.addGestureRecognizer(submitScreen.recognizer)
         
         pageControl.numberOfPages = 5
+        pageControl.isUserInteractionEnabled = false
     }
     
     func stateUpdated() {
@@ -140,13 +143,27 @@ class SensMainViewController: UIViewController, UITextViewDelegate {
         return out
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        dictVC.addViewToWindow()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        dictVC.removeViewFromWindow()
+    }
+    
     func textViewDidChangeSelection(_ textView: UITextView) {
         guard let range = textView.selectedTextRange else {
-            print("deselect")
+            dictVC.hide()
             return
         }
-        print(textView.caretRect(for: range.start).origin)
-        print(textView.text(in: range))
+        
+        if let text = textView.text(in: range) {
+            let rect = textView.caretRect(for: range.start)
+            let point = CGPoint(x: rect.minX, y: rect.minY)
+            dictVC.show(textView.convert(point, to: nil), word: text, sentence: "", index: 0, bookId: sens.bookId)
+        }
     }
     
     @IBAction func openChapterList(_ sender: Any) {
@@ -195,6 +212,7 @@ extension SensMainViewController: UICollectionViewDataSource, UICollectionViewDe
     }
     
     func updateState() {
+        dictVC.hide()
         if scrollDirection == .right {
             if subPage == 0 {
                 state = getStateFromRealm()
@@ -270,6 +288,7 @@ extension SensMainViewController: UITableViewDelegate, UITableViewDataSource {
             cell.isOpaque = true
             return cell
         }
+        
         let answer = currentSentence.answers[indexPath.row]
         cell.isOpaque = false
         cell.indexView.text = "\(indexPath.row)"

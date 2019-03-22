@@ -42,7 +42,7 @@ class DictEntry {
         }
         
         var entries: [DictEntry] = []
-        
+        let word = SentenceUtill.removePunctuations(word)
         let candidates = VerbType.candidates(word: word)
         for candidate in candidates {
             if let entry = DictEntry.get(connection: connection, word: candidate.0, firstDefPos: firstDefPos, policy: policy) {

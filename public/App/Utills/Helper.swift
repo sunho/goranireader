@@ -207,3 +207,17 @@ extension List : Encodable where Element : Encodable {
             try element.encode(to: container.superEncoder())
         }
     } }
+
+extension UIEdgeInsets {
+    var all: CGFloat {
+        set {
+            top = newValue
+            bottom = newValue
+            left = newValue
+            right = newValue
+        }
+        get {
+            return 0
+        }
+    }
+}

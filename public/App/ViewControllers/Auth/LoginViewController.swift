@@ -72,7 +72,7 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func signUp(_ sender: Any) {
-        
+        signUpForm.showBulletin(above: self)
     }
     
 }

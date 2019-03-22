@@ -20,30 +20,12 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
         self.currentHTML = nil
     }
     
-    
-    @objc func removeDictView() {
-        if let vc = dictVC {
-            vc.willMove(toParent: nil)
-            vc.view.removeFromSuperview()
-            vc.removeFromParent()
-            dictVC = nil
-        }
-    }
-    
-    func presentDictView(bookName: String, rect: CGRect, page: Int, scroll: CGFloat, sentence: String, word: String, index: Int) {
-        removeDictView()
-        let vc = storyboard!.instantiateViewController(withIdentifier: "DictViewController") as! DictViewController
-        vc.word = word
-        vc.sentence = sentence
-        vc.index = index
-        self.folioReader.readerContainer?.view.addSubview(vc.view)
-        vc.didMove(toParent: self.folioReader.readerContainer)
-        vc.view.frame = CGRect(x: 20, y: rect.maxY, width: UIScreen.main.bounds.width - 40, height: 300)
-        dictVC = vc
+    func presentDictView(bookName: String, point: CGPoint, page: Int, scroll: CGFloat, sentence: String, word: String, index: Int) {
+        dictVC.show(point, word: word, sentence: sentence, index: index, bookId: currentBookId!)
     }
     
     func hideDictView() {
-        removeDictView()
+        dictVC.hide()
     }
     
     func htmlContentForPage(_ page: FolioReaderPage, htmlContent: String) -> String {

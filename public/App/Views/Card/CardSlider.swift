@@ -6,7 +6,7 @@ import UIKit
 protocol CardSliderDelegate {
     func cardSlider(_ cardSlider: CardSlider, itemAt: Int) -> CardView
     func cardSlider(_ cardSlider: CardSlider, numberOfItems: ()) -> Int
-    func cardSliderDidProceed(_ cardSlider: CardSlider, option: CardOption)
+    func cardSliderDidProceed(_ cardSlider: CardSlider, index: Int, option: CardOption)
     func cardSliderDidClear(_ cardSlider: CardSlider)
     func cardSliderShouldSlide(_ cardSlider: CardSlider) -> Bool
 }
@@ -51,6 +51,7 @@ class CardSlider: UIView {
         for i in 0..<len {
             let card = delegate.cardSlider(self, itemAt: i)
             card.index = i
+            card.isUserInteractionEnabled = false
             cards.append(card)
         }
         
@@ -60,6 +61,7 @@ class CardSlider: UIView {
         firstCard.layer.zPosition = CGFloat(len)
         firstCard.center = self.center
         firstCard.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleCardPan)))
+        firstCard.isUserInteractionEnabled = true
         
         // the next 3 cards in the deck
         for i in 1...3 {
@@ -154,15 +156,21 @@ class CardSlider: UIView {
         })
         // first card needs to be in the front for proper interactivity
         self.bringSubviewToFront(self.cards[1])
-        
+        self.cards[1].isUserInteractionEnabled = true
     }
     
     func removeOldFrontCard() {
         cards[0].removeFromSuperview()
         cards.remove(at: 0)
+        if cards.count == 0 {
+            delegate.cardSliderDidClear(self)
+        }
     }
     
     @objc func handleCardPan(sender: UIPanGestureRecognizer) {
+        if !delegate.cardSliderShouldSlide(self) {
+            return
+        }
         if cardIsHiding {
             return
         }
@@ -186,22 +194,27 @@ class CardSlider: UIView {
                 if cards[0].center.y < (self.center.y - optionLength) {
                     cards[0].showOptionLabel(option: .easy)
                     cardOptionIndicator.showEmoji(for: .easy)
+                    currentOption = .easy
                     
                 } else {
                     cards[0].showOptionLabel(option: .medium)
                     cardOptionIndicator.showEmoji(for: .medium)
+                    currentOption = .medium
                 }
             } else if cards[0].center.x < (self.center.x - requiredOffsetFromCenter) {
                 if cards[0].center.y < (self.center.y - optionLength) {
                     cards[0].showOptionLabel(option: .difficult)
                     cardOptionIndicator.showEmoji(for: .difficult)
+                    currentOption = .difficult
                 } else {
                     cards[0].showOptionLabel(option: .retry)
                     cardOptionIndicator.showEmoji(for: .retry)
+                    currentOption = .retry
                 }
             } else {
                 cards[0].hideOptionLabel()
                 cardOptionIndicator.hideFaceEmojis()
+                currentOption = nil
             }
         case .ended:
             dynamicAnimator.removeAllBehaviors()
@@ -230,7 +243,7 @@ class CardSlider: UIView {
                 itemBehavior.allowsRotation = true
                 itemBehavior.addAngularVelocity(CGFloat(angular), for: cards[0])
                 dynamicAnimator.addBehavior(itemBehavior)
-                
+                delegate.cardSliderDidProceed(self, index: cards[0].index!, option: currentOption!)
                 showNextCard()
                 hideFrontCard()
             }

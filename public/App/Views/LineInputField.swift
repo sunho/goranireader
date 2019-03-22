@@ -9,13 +9,33 @@
 import UIKit
 
 class LineInputField: UIView {
-
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    fileprivate var nameView: UILabel!
+    var placeholder: String? {
+        didSet {
+            nameView.text = placeholder
+        }
     }
-    */
-
+    var textField: LineTextField!
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        nameView = UILabel()
+        addSubview(nameView)
+        nameView.snp.makeConstraints { make in
+            make.top.left.equalToSuperview()
+        }
+        nameView.setFont(.medium, UIUtill.strongGray, .medium)
+        
+        textField = LineTextField()
+        addSubview(textField)
+        textField.snp.makeConstraints { make in
+            make.top.equalTo(nameView.snp.bottom)
+            make.left.right.bottom.equalToSuperview()
+        }
+        textField.placeholder = "입력"
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:)")
+    }
 }

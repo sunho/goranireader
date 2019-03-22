@@ -20,6 +20,7 @@ class BookListTableViewCell: UITableViewCell {
     var name: String = "" {
         didSet {
             nameView.text = name
+            layoutSubviews()
         }
     }
     
@@ -46,8 +47,8 @@ class BookListTableViewCell: UITableViewCell {
             layout()
         }
     }
-    
-    fileprivate var container: UIView!
+
+    fileprivate var container: PaddingMarginView!
     fileprivate var typeView: UIImageView!
     fileprivate var coverView: UIImageView!
     fileprivate var nameView: UILabel!
@@ -62,10 +63,15 @@ class BookListTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        container = UIView()
+        selectedBackgroundView?.backgroundColor = UIUtill.gray
+        
+        let margin = UIEdgeInsets(top: 12, left: 8, bottom: 12, right: 8)
+        container = PaddingMarginView()
+        container.margin = margin
+        container.layout()
         contentView.addSubview(container)
         container.snp.makeConstraints { make in
-            make.edges.equalTo(contentView.snp.margins)
+            make.edges.equalToSuperview()
         }
         coverView = UIImageView(image: UIImage(named: "book_placeholder")!)
         container.addSubview(coverView)
@@ -88,18 +94,19 @@ class BookListTableViewCell: UITableViewCell {
         nameView = UILabel()
         container.addSubview(nameView)
         nameView.snp.makeConstraints { make -> Void in
-            make.left.equalTo(coverView.snp.right).offset(8)
+            make.left.equalTo(coverView.snp.right).offset(12)
+            make.right.equalTo(progressView.snp.left).offset(-4)
             make.top.equalToSuperview().offset(2)
         }
-        nameView.setFont(.normal)
+        nameView.setFont(.normal, UIUtill.black, .medium)
         
         authorView = UILabel()
         container.addSubview(authorView)
         authorView.snp.makeConstraints { make -> Void in
-            make.left.equalTo(coverView.snp.right).offset(10)
-            make.top.equalTo(nameView.snp.bottom).offset(2)
+            make.left.equalTo(coverView.snp.right).offset(12)
+            make.top.equalTo(nameView.snp.bottom).offset(4)
         }
-        authorView.setFont(.small, UIUtill.gray)
+        authorView.setFont(.normal, UIUtill.strongGray)
         
         typeView = UIImageView(image: UIImage(named: "epub_icon"))
         container.addSubview(typeView)
@@ -119,7 +126,18 @@ class BookListTableViewCell: UITableViewCell {
             make.top.equalToSuperview()
         }
         
+        nameView.numberOfLines = 0
+        nameView.preferredMaxLayoutWidth = nameView.frame.width + 12
+        nameView.lineBreakMode = .byWordWrapping
+        
         layout()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        nameView.preferredMaxLayoutWidth = nameView.frame.width + 12
+        nameView.sizeToFit()
+        layoutIfNeeded()
     }
     
     fileprivate func layout() {
@@ -150,7 +168,6 @@ class BookListTableViewCell: UITableViewCell {
             progressView.progressColor = UIUtill.tint
             if progress == 0 {
                 progressView.value = 0
-                progressView.valueView.text = "열기"
             } else {
                 progressView.value = progress
             }

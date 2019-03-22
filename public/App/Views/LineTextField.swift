@@ -8,8 +8,9 @@
 
 import UIKit
 
-@IBDesignable
 class LineTextField: UITextField {
+    var bottomLine: CALayer!
+    
     @IBInspectable var placeHolderColor: UIColor? {
         get {
             return self.placeHolderColor
@@ -19,22 +20,37 @@ class LineTextField: UITextField {
         }
     }
     
+    init() {
+        super.init(frame: CGRect())
+        layout()
+    }
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        layout()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        layout()
+    }
+    
+    func layout() {
+        snp.makeConstraints { make in
+            make.height.equalTo(36)
+        }
+        
+        bottomLine = CALayer()
+        layer.addSublayer(bottomLine)
+        borderStyle = UITextField.BorderStyle.none
+        font = UIFont.systemFont(ofSize: 15)
+        placeHolderColor = UIUtill.strongGray
+        textColor = UIUtill.black
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let bottomLine = CALayer()
         bottomLine.frame = CGRect(x: 0.0, y: frame.height - 1, width: frame.width, height: 1.0)
         bottomLine.backgroundColor = UIUtill.darkGray.cgColor
-        borderStyle = UITextField.BorderStyle.none
-        layer.addSublayer(bottomLine)
-    }
-    
-    
+    }    
 }

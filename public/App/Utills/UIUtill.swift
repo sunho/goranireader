@@ -37,16 +37,6 @@ class UIUtill {
     class var strongGray: UIColor {
         return UIColor(rgba: "#828283")
     }
-    
-    class func dropShadow(_ view: UIView, offset: CGSize, radius: CGFloat, alpha: Float = 0.06) {
-        view.layer.masksToBounds = false
-        view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowOpacity = alpha
-        view.layer.shadowOffset = offset
-        view.layer.shadowRadius = radius
-        
-        view.layer.shadowPath = UIBezierPath(rect: view.bounds).cgPath
-    }
 }
 
 enum TextStroke {
@@ -126,6 +116,15 @@ extension UIView {
         get {
             return .none
         }
+    }
+    
+    func dropShadow(offset: CGSize, radius: CGFloat, alpha: Float = 0.06) {
+        self.layer.masksToBounds = false
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOpacity = alpha
+        self.layer.shadowOffset = offset
+        self.layer.shadowRadius = radius
+        self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
     }
 }
 

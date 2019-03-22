@@ -9,13 +9,41 @@
 import UIKit
 
 class PaddingMarginView: UIView {
-
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    var box: UIView! // padding
+    fileprivate var inbox: UIView!
+    fileprivate var marginBox: UIView!
+    
+    var margin: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    var padding: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    init() {
+        super.init(frame: CGRect())
+        marginBox = UIView()
+        super.addSubview(marginBox)
+        box = UIView()
+        marginBox.addSubview(box)
+        inbox = UIView()
+        box.addSubview(inbox)
     }
-    */
 
+    func layout() {
+        marginBox.snp.makeConstraints { make in
+            make.top.bottom.left.right.equalToSuperview().inset(margin)
+        }
+        
+        box.snp.makeConstraints { make in
+            make.top.bottom.left.right.equalToSuperview()
+        }
+        
+        inbox.snp.makeConstraints { make in
+            make.top.bottom.left.right.equalToSuperview().inset(padding)
+        }
+    }
+    
+    override func addSubview(_ view: UIView) {
+        inbox.addSubview(view)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:)")
+    }
 }

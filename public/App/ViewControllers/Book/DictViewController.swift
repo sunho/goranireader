@@ -1,114 +1,113 @@
 import UIKit
 
 fileprivate let MaxChar = 120
+fileprivate let height: CGFloat = 200
+fileprivate let padding: CGFloat = 0
 
 class DictViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    @IBOutlet weak var wordView: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
-    var word: String!
-    var sentence: String!
-    var index: Int!
+    fileprivate var hidden: Bool = true
+    fileprivate var word: String = ""
+    fileprivate var sentence: String = ""
+    fileprivate var index: Int = 0
+
     
-    var entries: [DictEntry] = []
+    fileprivate let topY: CGFloat = 0
+    fileprivate let topHiddenY = -height
+    fileprivate let bottomY = UIScreen.main.bounds.height - height
+    fileprivate let bottomHiddenY = UIScreen.main.bounds.height
+    
+    var entry: DictEntry!
+    
+    func addViewToWindow() {
+        let window = UIApplication.shared.keyWindow!
+        window.addSubview(view)
+    }
+    
+    func removeViewFromWindow() {
+        view.removeFromSuperview()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.entries = DictService.shared.search(word: word)
+        view.isHidden = true
     }
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return self.entries.count
+    func show(_ point: CGPoint, word: String, sentence: String, index: Int, bookId: Int) {
+        let entries = DictService.shared.search(word: word)
+        if entries.count == 0 {
+            return
+        }
+    
+        entry = entries[0]
+        reloadData()
+    
+        let centerY = UIScreen.main.bounds.height/2 - height / 2
+        var oldy: CGFloat = 0
+        var newy: CGFloat = 0
+        if point.y  < centerY - 100 {
+            // bottom
+            oldy = bottomHiddenY
+            newy = bottomY
+        } else {
+            oldy = topHiddenY
+            newy = topY
+        }
+    
+        view.isHidden = false
+        view.frame = CGRect(x: padding, y: oldy, width: UIScreen.main.bounds.width - padding * 2, height: height)
+        if hidden {
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
+                self.view.frame.origin.y = newy
+            }, completion: nil)
+            hidden = false
+        } else {
+            view.frame.origin.y = newy
+        }
+    }
+    
+    func reloadData() {
+        wordView.text = entry.word
+        tableView.reloadData()
+    }
+    
+    func hide() {
+        if !hidden {
+            var newy: CGFloat = 0
+            if self.view.frame.origin.y == topY {
+                newy = topHiddenY
+            } else {
+                newy = bottomHiddenY
+            }
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
+                self.view.frame.origin.y = newy
+            }, completion: nil)
+            hidden = true
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.entries[section].defs.count
+        return self.entry.defs.count
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 58
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let entry = self.entries[section]
-        
-        let whole = UIView()
-        
-        let back = UIView(frame: CGRect(x: 0, y: 0, width: self.tableView.bounds.width, height: 40))
-        whole.addSubview(back)
-        
-        let view = UIView(frame: CGRect(x: 4, y: 8, width: self.tableView.bounds.width - 8, height: 50))
-        back.addSubview(view)
-        
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 20)
-        label.frame.origin.x = 14
-        label.textColor = UIUtill.gray
-        label.text = entry.word
-        label.sizeToFit()
-        label.frame = CGRect(origin: label.frame.origin, size: CGSize(width: label.frame.width, height: 50))
-        view.addSubview(label)
-        
-        let typeButton = UIButton()
-        typeButton.setTitle(entry.pron.ipa, for: .normal)
-        typeButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        typeButton.backgroundColor = UIUtill.green
-        typeButton.setTitleColor(UIUtill.white, for: .normal)
-        typeButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        typeButton.titleLabel?.baselineAdjustment = .alignCenters
-        typeButton.contentVerticalAlignment = .center
-        typeButton.titleLabel?.sizeToFit()
-        typeButton.sizeToFit()
-        typeButton.frame = CGRect(x: view.frame.width - typeButton.frame.width - 5, y: 5, width: typeButton.frame.width, height: 40)
-        view.addSubview(typeButton)
-        
-        return whole
-    }
-    
-    fileprivate func getDictEntryColor(entry: DictEntry) -> UIColor {
-        return UIUtill.green
-    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let entry = self.entries[indexPath.section].defs[indexPath.row]
+//        let entry = self.entries[indexPath.section].defs[indexPath.row]
         
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: kDictViewTableCell, for: indexPath) as! DictViewTableCell
-        cell.backgroundColor = UIColor.clear
-        cell.label.text = entry.def
+//        let cell = self.tableView.dequeueReusableCell(withIdentifier: kDictViewTableCell, for: indexPath) as! DictViewTableCell
+//        cell.backgroundColor = UIColor.clear
+//        cell.label.text = entry.def
         
-        return cell
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        dismiss(animated: true)
-    }
-    
-    fileprivate func getFrontMiddleEnd() -> (String, String, String) {
-        let arr = self.sentence.components(separatedBy: " ")
-        
-        var front = ""
-        var end = ""
-        
-        if arr.count > index {
-            let frontarr = arr[...(index - 1)]
-            front = frontarr.joined(separator: " ")
-            
-            let endarr = arr[(index + 1)...]
-            end = endarr.joined(separator: " ")
-        }
-        
-        // trim
-        var frontLength = 0
-        let candidate1 = min(front.count, MaxChar / 2)
-        let candidate2 = min(end.count, MaxChar / 2)
-        if candidate1 < candidate2 {
-            frontLength = candidate1
-        } else {
-            frontLength = MaxChar - candidate2
-        }
-        
-        front = String(front.suffix(frontLength))
-        end = String(end.prefix(MaxChar - frontLength))
-        return (front, " \(arr[index]) ", end)
+        hide()
     }
 }

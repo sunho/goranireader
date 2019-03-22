@@ -12,7 +12,6 @@
 		B13393B820AB2AE600F34525 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13393B720AB2AE600F34525 /* TabViewController.swift */; };
 		B13393BA20AB6CC400F34525 /* SwipeCellKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B13393B920AB6CC400F34525 /* SwipeCellKit.framework */; };
 		B13393BC20AB6CCE00F34525 /* SwipeCellKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B13393B920AB6CC400F34525 /* SwipeCellKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		B13393C020ACB86C00F34525 /* ModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13393BF20ACB86C00F34525 /* ModalViewController.swift */; };
 		B143B04C20A47613003341A3 /* Sens.swift in Sources */ = {isa = PBXBuildFile; fileRef = B143AF8820A4704F003341A3 /* Sens.swift */; };
 		B143B04F20A47613003341A3 /* DictService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B143AF8B20A4704F003341A3 /* DictService.swift */; };
 		B143B05220A47613003341A3 /* POS.swift in Sources */ = {isa = PBXBuildFile; fileRef = B143AF8E20A4704F003341A3 /* POS.swift */; };
@@ -83,6 +82,11 @@
 		C7C1176B2244CDE20084C799 /* BLTNBoard.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7C117682244CDE10084C799 /* BLTNBoard.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C7C117702244CF4B0084C799 /* SignUpBulletPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C1176F2244CF4B0084C799 /* SignUpBulletPage.swift */; };
 		C7C117722244D05D0084C799 /* FeedbackBulletPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C117712244D05D0084C799 /* FeedbackBulletPage.swift */; };
+		C7C117742244D8930084C799 /* InputFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C117732244D8930084C799 /* InputFormView.swift */; };
+		C7C117762244DC8E0084C799 /* LineInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C117752244DC8E0084C799 /* LineInputField.swift */; };
+		C7C1177822450C310084C799 /* SentenceUtill.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C1177722450C310084C799 /* SentenceUtill.swift */; };
+		C7C1177A224526AA0084C799 /* PaddingMarginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C11779224526AA0084C799 /* PaddingMarginView.swift */; };
+		C7C1177C22453CE10084C799 /* MemoryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C1177B22453CE10084C799 /* MemoryButton.swift */; };
 		C7C63E92209905900093CC02 /* BookMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C63E91209905900093CC02 /* BookMainViewController.swift */; };
 		C7D915C22240DF8F0073E860 /* SensCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D915C12240DF8F0073E860 /* SensCollectionViewCell.swift */; };
 		C7D915C52240E2D50073E860 /* EpubViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D915C42240E2D50073E860 /* EpubViewControllerExtension.swift */; };
@@ -202,7 +206,6 @@
 		B13393B220A8F78D00F34525 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = .gitignore; path = ../.gitignore; sourceTree = "<group>"; };
 		B13393B720AB2AE600F34525 /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		B13393B920AB6CC400F34525 /* SwipeCellKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwipeCellKit.framework; path = Carthage/Build/iOS/SwipeCellKit.framework; sourceTree = "<group>"; };
-		B13393BF20ACB86C00F34525 /* ModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalViewController.swift; sourceTree = "<group>"; };
 		B143AF8820A4704F003341A3 /* Sens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sens.swift; sourceTree = "<group>"; };
 		B143AF8B20A4704F003341A3 /* DictService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictService.swift; sourceTree = "<group>"; };
 		B143AF8E20A4704F003341A3 /* POS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POS.swift; sourceTree = "<group>"; };
@@ -267,6 +270,11 @@
 		C7C117682244CDE10084C799 /* BLTNBoard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BLTNBoard.framework; path = Carthage/Build/iOS/BLTNBoard.framework; sourceTree = "<group>"; };
 		C7C1176F2244CF4B0084C799 /* SignUpBulletPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpBulletPage.swift; sourceTree = "<group>"; };
 		C7C117712244D05D0084C799 /* FeedbackBulletPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackBulletPage.swift; sourceTree = "<group>"; };
+		C7C117732244D8930084C799 /* InputFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFormView.swift; sourceTree = "<group>"; };
+		C7C117752244DC8E0084C799 /* LineInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineInputField.swift; sourceTree = "<group>"; };
+		C7C1177722450C310084C799 /* SentenceUtill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceUtill.swift; sourceTree = "<group>"; };
+		C7C11779224526AA0084C799 /* PaddingMarginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingMarginView.swift; sourceTree = "<group>"; };
+		C7C1177B22453CE10084C799 /* MemoryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryButton.swift; sourceTree = "<group>"; };
 		C7C1E3262098058500C909D7 /* app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = app.entitlements; sourceTree = "<group>"; };
 		C7C63E91209905900093CC02 /* BookMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMainViewController.swift; sourceTree = "<group>"; };
 		C7C63EA9209946A50093CC02 /* FolioReaderKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FolioReaderKit.xcodeproj; path = FolioReaderKit/FolioReaderKit.xcodeproj; sourceTree = "<group>"; };
@@ -398,7 +406,7 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		B143AF9220A4704F003341A3 /* Utils */ = {
+		B143AF9220A4704F003341A3 /* Utills */ = {
 			isa = PBXGroup;
 			children = (
 				C7A97421209AA65900A41D02 /* ShareError.swift */,
@@ -411,8 +419,9 @@
 				B143AF9820A4704F003341A3 /* UIUtill.swift */,
 				B143AF9920A4704F003341A3 /* Keys.swift */,
 				C7B1C6B52210ECF5007CF0D9 /* Downloader.swift */,
+				C7C1177722450C310084C799 /* SentenceUtill.swift */,
 			);
-			path = Utils;
+			path = Utills;
 			sourceTree = "<group>";
 		};
 		C7403AE72091767D00099119 /* Word */ = {
@@ -420,7 +429,6 @@
 			children = (
 				C7742BB022437B4900925081 /* WordCardViewController.swift */,
 				C7403AEA209176D800099119 /* WordMainViewController.swift */,
-				B13393BF20ACB86C00F34525 /* ModalViewController.swift */,
 			);
 			path = Word;
 			sourceTree = "<group>";
@@ -451,7 +459,7 @@
 				C7FC18912239E178007172ED /* Services */,
 				C759AD7A221EDB1E00166B2A /* ViewControllers */,
 				B143AF8720A4704F003341A3 /* Models */,
-				B143AF9220A4704F003341A3 /* Utils */,
+				B143AF9220A4704F003341A3 /* Utills */,
 				C78217BB209BC1CF00C19E2F /* Resources */,
 				C7C1E3262098058500C909D7 /* app.entitlements */,
 				C74CEFD7208C899F002765D6 /* AppDelegate.swift */,
@@ -511,6 +519,9 @@
 				C783AAB92242332500D0D7BB /* SwipeSubmitScreen.swift */,
 				C7C11762224489F90084C799 /* LineTextField.swift */,
 				C7C11764224494CB0084C799 /* RoundButton.swift */,
+				C7C117752244DC8E0084C799 /* LineInputField.swift */,
+				C7C11779224526AA0084C799 /* PaddingMarginView.swift */,
+				C7C1177B22453CE10084C799 /* MemoryButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -556,6 +567,7 @@
 			children = (
 				C7C1176F2244CF4B0084C799 /* SignUpBulletPage.swift */,
 				C7C117712244D05D0084C799 /* FeedbackBulletPage.swift */,
+				C7C117732244D8930084C799 /* InputFormView.swift */,
 			);
 			path = BulletPages;
 			sourceTree = "<group>";
@@ -710,6 +722,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7C1177822450C310084C799 /* SentenceUtill.swift in Sources */,
 				C7C11765224494CB0084C799 /* RoundButton.swift in Sources */,
 				C77043B5223E219E00B91831 /* Content.swift in Sources */,
 				C77043AF223E0E4A00B91831 /* CircleBarView.swift in Sources */,
@@ -723,8 +736,10 @@
 				C7FC18AD223A014A007172ED /* Result.swift in Sources */,
 				C7742BAB22433B4500925081 /* CardView.swift in Sources */,
 				C7C63E92209905900093CC02 /* BookMainViewController.swift in Sources */,
+				C7C1177C22453CE10084C799 /* MemoryButton.swift in Sources */,
 				C7FC18A12239EEE9007172ED /* Category.swift in Sources */,
 				B143B05C20A47617003341A3 /* Keys.swift in Sources */,
+				C7C117762244DC8E0084C799 /* LineInputField.swift in Sources */,
 				C77043C4223E530300B91831 /* LoginViewController.swift in Sources */,
 				B143B05820A47617003341A3 /* IPA.swift in Sources */,
 				C7C117672244A4920084C799 /* AlertService.swift in Sources */,
@@ -745,9 +760,9 @@
 				C7742BB122437B4900925081 /* WordCardViewController.swift in Sources */,
 				B143B05920A47617003341A3 /* Ease.swift in Sources */,
 				C7742BB52243953D00925081 /* WordCardTableViewCell.swift in Sources */,
+				C7C117742244D8930084C799 /* InputFormView.swift in Sources */,
 				C7403AEB209176D800099119 /* WordMainViewController.swift in Sources */,
 				B143B05720A47617003341A3 /* Helper.swift in Sources */,
-				B13393C020ACB86C00F34525 /* ModalViewController.swift in Sources */,
 				C7FC18B9223A364E007172ED /* RealmService.swift in Sources */,
 				C74CEFD8208C899F002765D6 /* AppDelegate.swift in Sources */,
 				C7FC188F2239D748007172ED /* Book.swift in Sources */,
@@ -774,6 +789,7 @@
 				C79F3362221D8A2E00D52BDF /* DictViewTableCell.swift in Sources */,
 				C74CEFE0208C899F002765D6 /* app.xcdatamodeld in Sources */,
 				C7FA5428223476BD006F94C7 /* DictViewController.swift in Sources */,
+				C7C1177A224526AA0084C799 /* PaddingMarginView.swift in Sources */,
 				C783AAB822420C0200D0D7BB /* SelfSizedTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

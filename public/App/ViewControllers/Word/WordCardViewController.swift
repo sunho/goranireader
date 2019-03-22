@@ -10,7 +10,9 @@ import Foundation
 import UIKit
 
 protocol WordCardViewControllerDelegate {
-    func didFlip()
+    func wordCardViewDidFlip()
+    func wordCardViewDidOpenDetail()
+    func wordCardViewDidHideDetail()
 }
 
 class WordCardViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -34,8 +36,8 @@ class WordCardViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         cardView.addGestureRecognizer(tap)
-        cardView.wordView.text = "asdf"
-        cardView.backView.wordView.text = "asdf"
+        cardView.wordView.text = word.word
+        cardView.backView.wordView.text = word.word
         cardView.backView.memoryView.text = word.memory
         cardView.backView.tableView.delegate = self
         cardView.backView.tableView.dataSource = self
@@ -51,7 +53,7 @@ class WordCardViewController: UIViewController, UITableViewDelegate, UITableView
                 self.cardView.frontView.isHidden = true
             }
             opened = true
-            delegate?.didFlip()
+            delegate?.wordCardViewDidFlip()
         }
     }
     
@@ -93,12 +95,12 @@ class WordCardView: CardView {
         }
         
         frontView.clipsToBounds = true
-        frontView.backgroundColor = UIUtill.gray
+        frontView.backgroundColor = UIUtill.tint
         frontView.borderRadius = .small
         frontView.isHidden = false
         
         wordView = UILabel()
-        wordView.setFont(.big, .black, .bold)
+        wordView.setFont(.big, UIUtill.white, .bold)
         frontView.addSubview(wordView)
         wordView.snp.makeConstraints { make in
             make.center.equalToSuperview()
@@ -118,6 +120,7 @@ class WordCardView: CardView {
 }
 
 class WordCardBackView: UIView {
+    var container: PaddingMarginView!
     var wordView: UILabel!
     var tableView: UITableView!
     var memoryView: UILabel!
@@ -126,19 +129,24 @@ class WordCardBackView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        container = PaddingMarginView()
+        container.margin.all = 20
+        container.layout()
+        addSubview(container)
+        
         clipsToBounds = true
         backgroundColor = UIUtill.gray
         borderRadius = .small
         
         wordView = UILabel()
-        addSubview(wordView)
-        wordView.setFont()
+        container.addSubview(wordView)
+        wordView.setFont(.medium, UIUtill.strongGray, .medium)
         wordView.snp.makeConstraints { make in
-            make.top.left.equalToSuperview().inset(UIEdgeInsets(top: 20, left: 20, bottom: 0, right: 20))
+            make.top.left.equalToSuperview()
         }
         
         detailButton = UIButton()
-        addSubview(detailButton)
+        container.addSubview(detailButton)
         detailButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(20)
             make.left.equalTo(wordView.snp.right)
@@ -147,18 +155,18 @@ class WordCardBackView: UIView {
         }
         
         tableView = UITableView()
-        addSubview(tableView)
+        container.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(wordView.snp.bottom)
-            make.left.right.equalToSuperview().inset(UIEdgeInsets(top: 20, left: 20, bottom: 0, right: 20))
+            make.top.equalTo(wordView.snp.bottom).offset(8)
+            make.left.right.equalToSuperview()
         }
         
         memoryView = UILabel()
-        addSubview(memoryView)
+        container.addSubview(memoryView)
         memoryView.setFont()
         memoryView.snp.makeConstraints { make in
-            make.top.equalTo(tableView.snp.bottom)
-            make.left.right.bottom.equalToSuperview().inset(UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20))
+            make.top.equalTo(tableView.snp.bottom).offset(20)
+            make.left.right.bottom.equalToSuperview()
         }
         
         tableView.rowHeight = UITableView.automaticDimension

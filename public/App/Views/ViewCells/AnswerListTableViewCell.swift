@@ -9,7 +9,7 @@
 import UIKit
 
 class AnswerListTableViewCell: UITableViewCell {
-    fileprivate var container: UIView!
+    fileprivate var container: PaddingMarginView!
     var indexView: UILabel!
     var textView: UILabel!
     override var isOpaque: Bool {
@@ -25,21 +25,27 @@ class AnswerListTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        container = UIView()
-        contentView.addSubview(container)
+        container = PaddingMarginView()
+        container.padding.top = 12
+        container.padding.bottom = 12
+        container.margin.top = 8
+        container.margin.bottom = 8
+        container.layout()
         
-        container.borderRadius = .small
-        container.backgroundColor = UIUtill.gray
+        contentView.addSubview(container)
         container.snp.makeConstraints { make in
-            make.top.left.right.bottom.equalToSuperview()
+            make.top.bottom.left.right.equalToSuperview()
         }
+
         indexView = UILabel()
         container.addSubview(indexView)
         indexView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
+            make.top.bottom.equalToSuperview()
             make.left.equalToSuperview().offset(10)
         }
         indexView.setFont()
+        container.box.backgroundColor = UIUtill.gray
+        container.box.borderRadius = .small
         
         textView = UILabel()
         container.addSubview(textView)
@@ -50,10 +56,10 @@ class AnswerListTableViewCell: UITableViewCell {
     }
 
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        container.backgroundColor = highlighted ? UIUtill.gray.darker() : UIUtill.gray
+        container.box.backgroundColor = highlighted ? UIUtill.gray.darker() : UIUtill.gray
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
-        container.backgroundColor = selected ? UIUtill.tint : UIUtill.gray
+        container.box.backgroundColor = selected ? UIUtill.tint : UIUtill.gray
     }
 }

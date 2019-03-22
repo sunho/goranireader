@@ -11,7 +11,7 @@ import BLTNBoard
 
 class FeedbackBulletPage: BLTNPageItem {
     
-    private let feedbackGenerator = SelectionFeedbackGenerator()
+    private let feedbackGenerator = UISelectionFeedbackGenerator()
     
     override func actionButtonTapped(sender: UIButton) {
         

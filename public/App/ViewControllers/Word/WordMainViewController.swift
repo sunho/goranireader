@@ -1,6 +1,8 @@
 import UIKit
 
-class WordMainViewController: UIViewController, CardSliderDelegate {
+class WordMainViewController: UIViewController, CardSliderDelegate, WordCardViewControllerDelegate {
+    var cardDetailOpen: Bool = false
+    var cardOpen: Bool = false
     var cardSliderContainer: UIView!
     var cardSlider: CardSlider!
     var words: [UnknownWord] = [UnknownWord()]
@@ -32,11 +34,13 @@ class WordMainViewController: UIViewController, CardSliderDelegate {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        cardSliderContainer.center = view.center
+        cardSliderContainer.frame.origin.y = 50
+        cardSliderContainer.center.x = view.center.x
     }
     
     func cardSlider(_ cardSlider: CardSlider, itemAt: Int) -> CardView {
         let vc = WordCardViewController(frame: CGRect(x: 0, y: 0, width: cardWidth, height: cardHeight))
+        vc.delegate = self
         addChild(vc)
         vc.word = words[itemAt]
         vc.didMove(toParent: self)
@@ -45,5 +49,26 @@ class WordMainViewController: UIViewController, CardSliderDelegate {
     
     func cardSlider(_ cardSlider: CardSlider, numberOfItems: ()) -> Int {
         return words.count
+    }
+    
+    func cardSliderDidProceed(_ cardSlider: CardSlider, index: Int, option: CardOption) {
+        cardOpen = false
+        cardDetailOpen = false
+    }
+    
+    func wordCardViewDidFlip() {
+        cardOpen = true
+    }
+    
+    func wordCardViewDidOpenDetail() {
+        cardDetailOpen = true
+    }
+    
+    func wordCardViewDidHideDetail() {
+        cardDetailOpen = false
+    }
+    
+    func cardSliderShouldSlide(_ cardSlider: CardSlider) -> Bool {
+        return cardOpen && !cardDetailOpen
     }
 }
