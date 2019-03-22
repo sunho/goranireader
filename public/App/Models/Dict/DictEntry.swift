@@ -42,8 +42,8 @@ class DictEntry {
         }
         
         var entries: [DictEntry] = []
-        let word = SentenceUtill.removePunctuations(word)
-        let candidates = VerbType.candidates(word: word)
+        let word = SentenceUtil.removePunctuations(word)
+        let candidates = word.verbCandidates
         for candidate in candidates {
             if let entry = DictEntry.get(connection: connection, word: candidate.0, firstDefPos: firstDefPos, policy: policy) {
                 let entry = DictEntryRedirect(entry: entry, type: candidate.1)

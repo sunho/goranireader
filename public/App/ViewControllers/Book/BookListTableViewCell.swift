@@ -63,7 +63,7 @@ class BookListTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        selectedBackgroundView?.backgroundColor = UIUtill.gray
+        selectedBackgroundView?.backgroundColor = Color.gray
         
         let margin = UIEdgeInsets(top: 12, left: 8, bottom: 12, right: 8)
         container = PaddingMarginView()
@@ -98,7 +98,7 @@ class BookListTableViewCell: UITableViewCell {
             make.right.equalTo(progressView.snp.left).offset(-4)
             make.top.equalToSuperview().offset(2)
         }
-        nameView.setFont(.normal, UIUtill.black, .medium)
+        nameView.setFont(.normal, Color.black, .medium)
         
         authorView = UILabel()
         container.addSubview(authorView)
@@ -106,7 +106,7 @@ class BookListTableViewCell: UITableViewCell {
             make.left.equalTo(coverView.snp.right).offset(12)
             make.top.equalTo(nameView.snp.bottom).offset(4)
         }
-        authorView.setFont(.normal, UIUtill.strongGray)
+        authorView.setFont(.normal, Color.strongGray)
         
         typeView = UIImageView(image: UIImage(named: "epub_icon"))
         container.addSubview(typeView)
@@ -156,7 +156,7 @@ class BookListTableViewCell: UITableViewCell {
             } else {
                 downloadView.isHidden = true
                 progressView.isHidden = false
-                progressView.progressColor = UIUtill.gray
+                progressView.progressColor = Color.gray
                 progressView.value = progress
             }
         case .shop:
@@ -165,7 +165,7 @@ class BookListTableViewCell: UITableViewCell {
         case .local:
             downloadView.isHidden = true
             progressView.isHidden = false
-            progressView.progressColor = UIUtill.tint
+            progressView.progressColor = Color.tint
             if progress == 0 {
                 progressView.value = 0
             } else {

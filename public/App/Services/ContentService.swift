@@ -33,7 +33,7 @@ class ContentService {
             }
         }()
         
-        let url = FileUtill.downloadDir.appendingPathComponent(file)
+        let url = FileUtil.downloadDir.appendingPathComponent(file)
         
         return APIService.shared.requestWithProgress(.download(url: content.downloadUrl, file: file))
             .map { (resp: ProgressResponse) -> Float in
@@ -49,7 +49,7 @@ class ContentService {
                         return SignalProducer<Float, GoraniError> { (observer, _) -> Void in
                             do {
                                 print(url.absoluteString)
-                                let _ = try FREpubParser().readEpub(epubPath: url.path, removeEpub: true, unzipPath: FileUtill.booksDir.path)
+                                let _ = try FREpubParser().readEpub(epubPath: url.path, removeEpub: true, unzipPath: FileUtil.booksDir.path)
                                 observer.sendCompleted()
                             } catch let error as FolioReaderError {
                                 observer.send(error: GoraniError.folio(error: error))
@@ -60,7 +60,7 @@ class ContentService {
                     case .sens:
                         return SignalProducer<Float, GoraniError> { (observer, _) -> Void in
                             do {
-                                try FileManager.default.moveItem(at: url, to: FileUtill.booksDir.appendingPathComponent(file))
+                                try FileManager.default.moveItem(at: url, to: FileUtil.booksDir.appendingPathComponent(file))
                                 observer.sendCompleted()
                             } catch let error as NSError {
                                 observer.send(error: GoraniError.ns(error: error))
@@ -112,7 +112,7 @@ class ContentService {
     }
     
     fileprivate func getLocalContents() -> Dictionary<ContentKey, String> {
-        guard let paths = FileUtill.contentsOfDirectory(path: FileUtill.booksDir.path) else {
+        guard let paths = FileUtil.contentsOfDirectory(path: FileUtil.booksDir.path) else {
             assert(true)
             return [:]
         }

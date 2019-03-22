@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct SentenceUtill {
+struct SentenceUtil {
     static func removePunctuations(_ word: String) -> String {
         return word.replacingOccurrences(of: "[.!?,]+", with: "", options: .regularExpression)
     }

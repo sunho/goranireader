@@ -24,7 +24,7 @@ class LineInputField: UIView {
         nameView.snp.makeConstraints { make in
             make.top.left.equalToSuperview()
         }
-        nameView.setFont(.medium, UIUtill.strongGray, .medium)
+        nameView.setFont(.medium, Color.strongGray, .medium)
         
         textField = LineTextField()
         addSubview(textField)

@@ -20,6 +20,7 @@ class MemoryButton: UIButton {
     
     var text: String? {
         didSet {
+            setTitle(text, for: .normal)
             layoutSubviews()
         }
     }
@@ -27,18 +28,19 @@ class MemoryButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         borderRadius = .small
+        setTitle("", for: .normal)
+        setTitleColor(Color.strongGray, for: .normal)
         titleLabel!.numberOfLines = 0
         titleLabel!.lineBreakMode = .byWordWrapping
         titleLabel!.preferredMaxLayoutWidth = titleLabel?.frame.width ?? 0
-        titleLabel!.setFont(.normal, UIUtill.strongGray, .medium)
+        titleLabel!.setFont(.normal, Color.strongGray, .medium)
         updateState()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         titleLabel!.preferredMaxLayoutWidth = titleLabel?.frame.width ?? 0
-        titleLabel!.sizeToFit()
-        titleLabel!.layoutIfNeeded()
+        super.layoutSubviews()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -50,6 +52,12 @@ class MemoryButton: UIButton {
             isUserInteractionEnabled = false
         } else {
             isUserInteractionEnabled = true
+        }
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        get {
+            return titleLabel?.intrinsicContentSize ?? CGSize.zero
         }
     }
 }

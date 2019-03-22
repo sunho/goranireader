@@ -10,8 +10,11 @@ import UIKit
 
 class WordCardTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource {
     var examples: [String]!
+    var container: PaddingMarginView!
     var definitionView: UILabel!
     var exampleTableView: UITableView!
+    
+    var isDetail: Bool = false
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:)")
@@ -20,6 +23,8 @@ class WordCardTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDa
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        container = PaddingMarginView()
+        container.padding.all = 4
         definitionView = UILabel()
         addSubview(definitionView)
         definitionView.snp.makeConstraints { make in
@@ -42,6 +47,7 @@ class WordCardTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDa
         exampleTableView.estimatedRowHeight = 50
         exampleTableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         exampleTableView.isScrollEnabled = false
+        exampleTableView.backgroundColor = .clear
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -56,5 +62,9 @@ class WordCardTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.examples.count
+    }
+    
+    func updateState() {
+        
     }
 }

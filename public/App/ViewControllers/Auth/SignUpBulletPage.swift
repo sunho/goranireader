@@ -24,8 +24,8 @@ class SignUpBulletPage: FeedbackBulletPage {
         actionButtonTitle = "완료"
         alternativeButtonTitle = "취소"
         
-        appearance.actionButtonColor = UIUtill.tint
-        appearance.alternativeButtonTitleColor = UIUtill.tint
+        appearance.actionButtonColor = Color.tint
+        appearance.alternativeButtonTitleColor = Color.tint
         appearance.actionButtonTitleColor = .white
     }
     

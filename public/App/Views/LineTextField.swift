@@ -44,13 +44,13 @@ class LineTextField: UITextField {
         layer.addSublayer(bottomLine)
         borderStyle = UITextField.BorderStyle.none
         font = UIFont.systemFont(ofSize: 15)
-        placeHolderColor = UIUtill.strongGray
-        textColor = UIUtill.black
+        placeHolderColor = Color.strongGray
+        textColor = Color.black
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         bottomLine.frame = CGRect(x: 0.0, y: frame.height - 1, width: frame.width, height: 1.0)
-        bottomLine.backgroundColor = UIUtill.darkGray.cgColor
+        bottomLine.backgroundColor = Color.darkGray.cgColor
     }    
 }

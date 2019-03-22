@@ -21,7 +21,7 @@ class SensCollectionViewCell: UICollectionViewCell {
         textView.snp.makeConstraints { make in
             make.bottom.top.left.right.equalToSuperview()
         }
-        backgroundColor = UIUtill.gray
+        backgroundColor = Color.gray
         
     }
     

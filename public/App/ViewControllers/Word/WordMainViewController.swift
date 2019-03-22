@@ -16,7 +16,7 @@ class WordMainViewController: UIViewController, CardSliderDelegate, WordCardView
     
     override func viewDidLoad() {
         words[0].word = "asfd"
-        words[0].memory = "HOOOO"
+        words[0].memory = "HOOOOasdf asdf asddf asdf asdf adsf asdf sadf asdf asdf asdfdsaf sa"
         var def = UnknownWordDefinition()
         def.definition = "asdf2342214123"
         var ex = UnknownWordExample()

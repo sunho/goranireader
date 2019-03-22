@@ -17,12 +17,12 @@ class AlertService {
     init() {
         bottomErrorAttr.position = .bottom
         bottomErrorAttr.precedence = .override(priority: .high, dropEnqueuedEntries: false)
-        bottomErrorAttr.entryBackground = .color(color: UIUtill.red)
+        bottomErrorAttr.entryBackground = .color(color: Color.red)
     }
     
     func alert(attributes: EKAttributes, title: String, description: String, imageName: String? = nil) {
-        let title = EKProperty.LabelContent(text: title, style: .init(font: UIFont.systemFont(ofSize: 17, weight: .medium), color: UIUtill.white))
-        let description = EKProperty.LabelContent(text: description, style: .init(font: UIFont.systemFont(ofSize: 14), color: UIUtill.white))
+        let title = EKProperty.LabelContent(text: title, style: .init(font: UIFont.systemFont(ofSize: 17, weight: .medium), color: Color.white))
+        let description = EKProperty.LabelContent(text: description, style: .init(font: UIFont.systemFont(ofSize: 14), color: Color.white))
         var image: EKProperty.ImageContent?
         if let imageName = imageName {
             image = .init(image: UIImage(named: imageName)!, size: CGSize(width: 35, height: 35))

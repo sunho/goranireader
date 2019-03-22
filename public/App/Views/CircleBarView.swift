@@ -10,7 +10,6 @@ import UIKit
 
 class CircleBarView: UIView {
     fileprivate var progressLayer = CAShapeLayer()
-    var valueView: UILabel!
     
     var value: Float = 0 {
         didSet {
@@ -23,15 +22,13 @@ class CircleBarView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         layout()
-        valueView = UILabel()
-        valueView.setFont(.small, UIUtill.white)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("inin(aDecoder")
     }
     
-    var progressColor:UIColor = UIUtill.tint {
+    var progressColor:UIColor = Color.tint {
         didSet {
             progressLayer.fillColor = progressColor.cgColor
         }
@@ -61,9 +58,5 @@ class CircleBarView: UIView {
         animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
         progressLayer.strokeEnd = CGFloat(value)
         progressLayer.add(animation, forKey: "animateCircle")
-    }
-    
-    func updateValueViewDefault() {
-        valueView.text = "\(Int(value * 100))%"
     }
 }

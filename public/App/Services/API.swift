@@ -157,9 +157,9 @@ extension API: TargetType {
     var downloadDestination: DownloadDestination {
         return { [self] (url, resp) in
             if case .download(_, let file) = self {
-                return (FileUtill.downloadDir.appendingPathComponent(file), .removePreviousFile)
+                return (FileUtil.downloadDir.appendingPathComponent(file), .removePreviousFile)
             }
-            return (FileUtill.downloadDir.appendingPathComponent(url.lastPathComponent), .removePreviousFile)
+            return (FileUtil.downloadDir.appendingPathComponent(url.lastPathComponent), .removePreviousFile)
         }
     }
     

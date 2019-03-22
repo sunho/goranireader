@@ -5,19 +5,23 @@ enum VerbType {
     case past
     case complete
     case both
+}
 
-    static fileprivate func appendPastExceptDuplicate(arr: inout [(String, VerbType?)], element: (String, VerbType?)) {
-        for ele in arr.indices {
-            if element.0 == arr[ele].0 {
-                arr[ele].1 = .both
-                return
-            }
+fileprivate func appendPastExceptDuplicate(arr: inout [(String, VerbType?)], element: (String, VerbType?)) {
+    for ele in arr.indices {
+        if element.0 == arr[ele].0 {
+            arr[ele].1 = .both
+            return
         }
-        arr.append(element)
     }
+    arr.append(element)
+}
+
+extension String {
     
-    static func candidates(word: String) -> [(String, VerbType?)]{
-        let word = word.lowercased()
+    // TODO: refactor
+    var verbCandidates: [(String, VerbType?)] {
+        let word = self.lowercased()
         var arr: [(String, VerbType?)] = []
         
         // these can be same
@@ -43,7 +47,7 @@ enum VerbType {
                 appendPastExceptDuplicate(arr: &arr, element: (trimString(word, 3), .both))
             }
         }
-
+        
         // these are not
         if word.hasSuffix("ying") {
             // tie -> tying
@@ -69,7 +73,7 @@ enum VerbType {
         if word.hasSuffix("s") {
             arr.append((trimString(word, 1), nil))
         }
-
+        
         return arr
     }
 }

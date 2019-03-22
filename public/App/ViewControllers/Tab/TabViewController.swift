@@ -33,7 +33,7 @@ class TabViewController: UIViewController, UITabBarDelegate {
         contentView.clipsToBounds = false
         
         print(Realm.Configuration.defaultConfiguration.fileURL!)
-        print(FileUtill.booksDir)
+        print(FileUtil.booksDir)
     }
     
     func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {

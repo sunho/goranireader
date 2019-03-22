@@ -2,7 +2,7 @@ import Foundation
 
 fileprivate let fileManager = FileManager.default
 
-class FileUtill {
+class FileUtil {
     static let sharedDir: URL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: "group.sunho.gorani")!
     
     static let booksDir: URL = {

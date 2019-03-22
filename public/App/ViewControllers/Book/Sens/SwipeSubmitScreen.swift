@@ -37,7 +37,7 @@ class SwipeSubmitScreen: UIView, UIGestureRecognizerDelegate {
         recognizer.delegate = self
         isUserInteractionEnabled = false
         container = UIView()
-        container.backgroundColor = UIUtill.tint
+        container.backgroundColor = Color.tint
         addSubview(container)
         container.frame = bounds
         container.alpha = 0

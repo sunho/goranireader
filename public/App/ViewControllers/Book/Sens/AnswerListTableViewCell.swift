@@ -44,7 +44,7 @@ class AnswerListTableViewCell: UITableViewCell {
             make.left.equalToSuperview().offset(10)
         }
         indexView.setFont()
-        container.box.backgroundColor = UIUtill.gray
+        container.box.backgroundColor = Color.gray
         container.box.borderRadius = .small
         
         textView = UILabel()
@@ -56,10 +56,10 @@ class AnswerListTableViewCell: UITableViewCell {
     }
 
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        container.box.backgroundColor = highlighted ? UIUtill.gray.darker() : UIUtill.gray
+        container.box.backgroundColor = highlighted ? Color.gray.darker() : Color.gray
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
-        container.box.backgroundColor = selected ? UIUtill.tint : UIUtill.gray
+        container.box.backgroundColor = selected ? Color.tint : Color.gray
     }
 }
