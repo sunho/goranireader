@@ -197,7 +197,7 @@ extension SensMainViewController: UICollectionViewDataSource, UICollectionViewDe
     func updateState() {
         if scrollDirection == .right {
             if subPage == 0 {
-                state = State()
+                state = getStateFromRealm()
             }
             if !hasEnoughAnswers && state.answers.count <= subPage {
                 state.answers.append(-1)

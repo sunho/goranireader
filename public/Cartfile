@@ -1,6 +1,6 @@
 github "stephencelis/SQLite.swift" ~> 0.11.5
 github "crossroadlabs/Regex" ~> 1.1.0
-github "SwipeCellKit/SwipeCellKit" ~> 2.2.0
+github "huri000/SwiftEntryKit" == 0.8.9
 github "SnapKit/SnapKit" ~> 4.0.0
 github "Moya/Moya"
 github "realm/realm-cocoa"

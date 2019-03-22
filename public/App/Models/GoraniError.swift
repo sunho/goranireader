@@ -14,4 +14,14 @@ enum GoraniError: Error {
     case network(error: MoyaError)
     case folio(error: FolioReaderError)
     case ns(error: NSError)
+    case offline
+}
+
+extension MoyaError {
+    var isOffline: Bool {
+        if case MoyaError.underlying(GoraniError.offline, _) = self {
+            return true
+        }
+        return false
+    }
 }

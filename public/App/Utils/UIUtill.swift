@@ -2,6 +2,10 @@ import Foundation
 import UIKit
 
 class UIUtill {
+    class var red: UIColor {
+        return UIColor(rgba: "#FF006E")
+    }
+    
     class var green: UIColor {
         return UIColor(rgba: "#FFE66D")
     }
@@ -24,6 +28,14 @@ class UIUtill {
     
     class var gray: UIColor {
         return UIColor(rgba: "#E8E9EB")
+    }
+    
+    class var darkGray: UIColor {
+        return UIColor(rgba: "#BEBFC1")
+    }
+    
+    class var strongGray: UIColor {
+        return UIColor(rgba: "#828283")
     }
     
     class func dropShadow(_ view: UIView, offset: CGSize, radius: CGFloat, alpha: Float = 0.06) {
@@ -75,11 +87,11 @@ extension BorderRadius {
         case .none:
             return 0
         case .small:
-            return 10
+            return 12
         case .normal:
-            return 20
+            return 24
         case .big:
-            return 30
+            return 36
         }
     }
 }

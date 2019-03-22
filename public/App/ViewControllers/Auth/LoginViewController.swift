@@ -6,11 +6,14 @@
 //  Copyright © 2019 sunho. All rights reserved.
 //
 
+import BLTNBoard
 import UIKit
 import Moya
 import ReactiveSwift
 
 class LoginViewController: UIViewController {
+    
+    var signUpForm: BLTNItemManager!
 
     @IBOutlet weak var usernameInput: UITextField!
     @IBOutlet weak var passwordInput: UITextField!
@@ -18,7 +21,8 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         checkAuth()
-        // Do any additional setup after loading the view.
+        let item = SignUpBulletPage()
+        signUpForm = BLTNItemManager(rootItem: item)
     }
     
     func checkAuth() {
@@ -26,10 +30,19 @@ class LoginViewController: UIViewController {
             .start { event in
                 DispatchQueue.main.async {
                     switch event {
-                    case .value(let resp):
+                    case let .value(resp):
                         if resp.statusCode == 200 {
                             let vc = self.storyboard?.instantiateViewController(withIdentifier: "TabViewController") as! TabViewController
                             self.present(vc, animated: true, completion: nil)
+                        }
+                    case .failed(let error):
+                        if error.isOffline {
+                            if RealmService.shared.getConfig().authorized {
+                                let vc = self.storyboard?.instantiateViewController(withIdentifier: "TabViewController") as! TabViewController
+                                self.present(vc, animated: true, completion: nil)
+                            }
+                        } else {
+                            AlertService.shared.alertError(error)
                         }
                     default:
                         print(event)
@@ -47,6 +60,10 @@ class LoginViewController: UIViewController {
                     case .value(let resp):
                         APIService.shared.token = String(data: resp.data, encoding: .utf8)
                         self.checkAuth()
+                    case .failed(let error):
+                        if !error.isOffline {
+                            AlertService.shared.alertError(error)
+                        }
                     default:
                         print(event)
                     }
@@ -54,15 +71,8 @@ class LoginViewController: UIViewController {
         }
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func signUp(_ sender: Any) {
+        
     }
-    */
-
     
 }

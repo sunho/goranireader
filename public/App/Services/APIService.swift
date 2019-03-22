@@ -4,6 +4,11 @@ import ReactiveSwift
 import ReactiveMoya
 import Result
 
+enum APIThread {
+    case utility
+    case main
+}
+
 class APIService {
     static let shared: APIService = {
         let config = RealmService.shared.getConfig()
@@ -40,25 +45,32 @@ class APIService {
         online = ReachabilityService.shared.reach.producer
     }
     
-    func request(_ target: API) -> SignalProducer<Response, MoyaError> {
+    func request(_ target: API, on: APIThread = .utility) -> SignalProducer<Response, MoyaError> {
         let req = provider.reactive.request(target)
-        return requestInternal(req)
+        return requestInternal(req, on: on)
         
     }
     
-    func requestWithProgress(_ target: API) -> SignalProducer<ProgressResponse, MoyaError> {
+    func requestWithProgress(_ target: API, on: APIThread = .utility) -> SignalProducer<ProgressResponse, MoyaError> {
         let req = provider.reactive.requestWithProgress(target)
-        return requestInternal(req)
+        return requestInternal(req, on: on)
     }
     
-    fileprivate func requestInternal<T>(_ req: SignalProducer<T, MoyaError>) -> SignalProducer<T, MoyaError> {
+    fileprivate func requestInternal<T>(_ req: SignalProducer<T, MoyaError>, on: APIThread) -> SignalProducer<T, MoyaError> {
+        var scheduler: QueueScheduler
+        switch on {
+        case .main:
+            scheduler = QueueScheduler.main
+        case .utility:
+            scheduler = QueueScheduler(qos: .utility)
+        }
         return online
             .filter({(b: Bool) -> Bool in return b })
             .take(first: 1)
             .promoteError(MoyaError.self)
-            .timeout(after: 1.0, raising: MoyaError.underlying("offline", nil), on: QueueScheduler.main)
+            .timeout(after: 0.2, raising: MoyaError.underlying(GoraniError.offline, nil), on: QueueScheduler.main)
             .flatMap(.latest) { _ in
-                req.observe(on: QueueScheduler(qos: .utility))
+                req.observe(on: scheduler)
             }
     }
     

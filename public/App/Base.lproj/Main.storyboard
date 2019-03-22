@@ -79,34 +79,103 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gj9-0B-gM2">
-                                <rect key="frame" x="45" y="157" width="232" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="입력" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="gj9-0B-gM2" customClass="LineTextField" customModule="app" customModuleProvider="target">
+                                <rect key="frame" x="60" y="268" width="255" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="ZWb-M6-rjy"/>
+                                </constraints>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <textInputTraits key="textInputTraits" textContentType="username"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeHolderColor">
+                                        <color key="value" red="0.74509803919999995" green="0.74901960779999999" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="reQ-96-qpC">
-                                <rect key="frame" x="45" y="195" width="232" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="입력" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="reQ-96-qpC" customClass="LineTextField" customModule="app" customModuleProvider="target">
+                                <rect key="frame" x="60" y="355" width="255" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="uTy-NU-P4o"/>
+                                </constraints>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="password"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeHolderColor">
+                                        <color key="value" red="0.74509803919999995" green="0.74901960779999999" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d63-ef-3hB">
-                                <rect key="frame" x="146" y="233" width="131" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Login"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d63-ef-3hB" customClass="RoundButton" customModule="app" customModuleProvider="target">
+                                <rect key="frame" x="60" y="441" width="255" height="45"/>
+                                <color key="backgroundColor" red="0.51229065659999995" green="0.22001135350000001" blue="0.92355126139999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="VdC-gX-Veu"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="로그인">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
                                     <action selector="login:" destination="PM2-Qw-KUm" eventType="touchUpInside" id="kQI-fZ-WS0"/>
                                 </connections>
                             </button>
-                            <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="2do-xx-hP5">
-                                <rect key="frame" x="336" y="240" width="39" height="37"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </pageControl>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tint_logo" translatesAutoresizingMaskIntoConstraints="NO" id="aAl-GY-IlG">
+                                <rect key="frame" x="50" y="60" width="70" height="80"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="비밀번호" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4bS-No-T6U">
+                                <rect key="frame" x="60" y="334" width="59" height="21"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                <color key="textColor" red="0.50980392159999999" green="0.50980392159999999" blue="0.51372549020000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="고라니 리더 계정이 없으시다면" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nkO-qS-Em2">
+                                <rect key="frame" x="103" y="566" width="169" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" red="0.50971525910000004" green="0.50991958380000002" blue="0.51380974049999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fF3-ah-i99">
+                                <rect key="frame" x="163" y="588" width="49" height="29"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="회원가입">
+                                    <color key="titleColor" red="0.51229065659999995" green="0.22001135350000001" blue="0.92355126139999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="signUp:" destination="PM2-Qw-KUm" eventType="touchUpInside" id="F9E-TC-dnm"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="아이디" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pIz-oU-QNn">
+                                <rect key="frame" x="60" y="247" width="45" height="21"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                <color key="textColor" red="0.50980392159999999" green="0.50980392159999999" blue="0.51372549020000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="4bS-No-T6U" firstAttribute="leading" secondItem="Foi-MR-mq7" secondAttribute="leading" constant="60" id="3KJ-2x-cOO"/>
+                            <constraint firstItem="fF3-ah-i99" firstAttribute="centerX" secondItem="Foi-MR-mq7" secondAttribute="centerX" id="5PT-Gn-Ftq"/>
+                            <constraint firstItem="nkO-qS-Em2" firstAttribute="centerX" secondItem="Foi-MR-mq7" secondAttribute="centerX" id="6Ka-NF-05h"/>
+                            <constraint firstItem="pIz-oU-QNn" firstAttribute="leading" secondItem="Foi-MR-mq7" secondAttribute="leading" constant="60" id="6wU-wY-Lz7"/>
+                            <constraint firstItem="4bS-No-T6U" firstAttribute="top" secondItem="gj9-0B-gM2" secondAttribute="bottom" constant="30" id="7FX-gb-bzH"/>
+                            <constraint firstItem="nkO-qS-Em2" firstAttribute="top" secondItem="d63-ef-3hB" secondAttribute="bottom" constant="80" id="Fz3-Au-am7"/>
+                            <constraint firstItem="fF3-ah-i99" firstAttribute="top" secondItem="nkO-qS-Em2" secondAttribute="bottom" constant="5" id="Jie-Ow-FLW"/>
+                            <constraint firstItem="reQ-96-qpC" firstAttribute="leading" secondItem="Foi-MR-mq7" secondAttribute="leading" constant="60" id="Mq3-oZ-5qU"/>
+                            <constraint firstItem="d63-ef-3hB" firstAttribute="top" secondItem="reQ-96-qpC" secondAttribute="bottom" constant="50" id="VdN-kp-03Q"/>
+                            <constraint firstItem="gj9-0B-gM2" firstAttribute="top" secondItem="pIz-oU-QNn" secondAttribute="bottom" id="W0x-2J-tRJ"/>
+                            <constraint firstItem="d63-ef-3hB" firstAttribute="leading" secondItem="Foi-MR-mq7" secondAttribute="leading" constant="60" id="XOc-2a-T1g"/>
+                            <constraint firstItem="Foi-MR-mq7" firstAttribute="trailing" secondItem="gj9-0B-gM2" secondAttribute="trailing" constant="60" id="XYP-sL-DMt"/>
+                            <constraint firstItem="reQ-96-qpC" firstAttribute="top" secondItem="4bS-No-T6U" secondAttribute="bottom" id="euG-Lt-6tC"/>
+                            <constraint firstItem="Foi-MR-mq7" firstAttribute="trailing" secondItem="d63-ef-3hB" secondAttribute="trailing" constant="60" id="jJS-DH-T27"/>
+                            <constraint firstItem="aAl-GY-IlG" firstAttribute="top" secondItem="Foi-MR-mq7" secondAttribute="top" constant="40" id="lgO-5L-HlP"/>
+                            <constraint firstItem="aAl-GY-IlG" firstAttribute="leading" secondItem="Foi-MR-mq7" secondAttribute="leading" constant="50" id="miC-wB-6KX"/>
+                            <constraint firstItem="Foi-MR-mq7" firstAttribute="trailing" secondItem="reQ-96-qpC" secondAttribute="trailing" constant="60" id="rdg-Ti-s4F"/>
+                            <constraint firstItem="Foi-MR-mq7" firstAttribute="bottom" secondItem="fF3-ah-i99" secondAttribute="bottom" constant="50" id="srg-i2-rtN"/>
+                            <constraint firstItem="gj9-0B-gM2" firstAttribute="leading" secondItem="Foi-MR-mq7" secondAttribute="leading" constant="60" id="uAM-GY-T6r"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="Foi-MR-mq7"/>
                     </view>
                     <connections>
@@ -116,7 +185,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y5N-8G-DcU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2497.5" y="-2065.1408450704225"/>
+            <point key="canvasLocation" x="-2519.1999999999998" y="-2047.826086956522"/>
         </scene>
         <!--Sens Main View Controller-->
         <scene sceneID="uxX-9D-cOB">
@@ -549,4 +618,7 @@
             <point key="canvasLocation" x="724" y="38"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="tint_logo" width="70" height="80"/>
+    </resources>
 </document>
