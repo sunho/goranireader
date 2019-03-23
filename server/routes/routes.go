@@ -7,6 +7,7 @@ import (
 )
 
 func RegisterRoutes(g *dim.Group) {
+	g.Use(&middles.LoggerMiddle{})
 	g.Use(&middles.ContextMiddle{}, &middles.TxMiddle{})
 	g.Route("/book", &Book{})
 	g.Route("/shop", &Shop{})

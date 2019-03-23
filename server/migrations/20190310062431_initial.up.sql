@@ -55,8 +55,8 @@ create table users (
     id serial primary key,
     created_at timestamp without time zone not null,
     updated_at timestamp without time zone not null,
-    username character varying(255) not null,
-    email character varying(255) not null,
+    username character varying(255) not null unique,
+    email character varying(255) not null unique,
     password_hash character varying(255) not null
 );
 
@@ -133,8 +133,10 @@ create table unknown_words (
 create table memories (
     id serial primary key,
     user_id integer references users on delete cascade,
-    word character varying(100),
-    sentence character varying(1024)
+    word character varying(100) references words on delete cascade,
+    sentence character varying(1024),
+    rate integer not null,
+    unique(user_id, word)
 );
 
 create table memory_rates (

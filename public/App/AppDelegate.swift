@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let initialViewController: UIViewController = RealmService.shared.getConfig().authorized ? storyboard.instantiateViewController(withIdentifier: "TabViewController") as! TabViewController : storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
         self.window?.rootViewController = initialViewController
         self.window?.makeKeyAndVisible()
+        
         return true
     }
 

@@ -11,6 +11,8 @@ public enum CardOption: String {
     case retry = "다시"
 }
 
+fileprivate let factorX: CGFloat = 0.67 // TODO
+
 class CardView: UIView {
     var index: Int?
     var contentView: UIView!
@@ -31,13 +33,13 @@ class CardView: UIView {
         
         let padding: CGFloat = 20
         
-        greenLabel = CardViewLabel(origin: CGPoint(x: padding, y: padding), color: UIColor(red: 102/255, green: 209/255, blue: 158/255, alpha: 1.0))
+        greenLabel = CardViewLabel(origin: CGPoint(x: padding, y: padding), color: Color.green)
         greenLabel.isHidden = true
-        self.addSubview(greenLabel)
+        contentView.addSubview(greenLabel)
         
-        redLabel = CardViewLabel(origin: CGPoint(x: frame.width - CardViewLabel.size.width - padding, y: padding), color: UIColor(red: 236/255, green: 137/255, blue: 134/255, alpha: 1.0))
+        redLabel = CardViewLabel(origin: CGPoint(x: frame.width * factorX - CardViewLabel.size.width - padding, y: padding), color: Color.red)
         redLabel.isHidden = true
-        self.addSubview(redLabel)
+        contentView.addSubview(redLabel)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -122,12 +124,12 @@ class CardView: UIView {
 }
 
 class CardViewLabel: UILabel {
-    fileprivate static let size = CGSize(width: 60, height: 36)
+    fileprivate static let size = CGSize(width: 70, height: 36)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.setFont(.big, .white, .bold)
+        self.setFont(.medium, .white, .medium)
         self.textAlignment = .center
         self.layer.cornerRadius = frame.height / 2
         self.layer.masksToBounds = true

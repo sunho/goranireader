@@ -15,7 +15,7 @@ class Color {
     }
     
     class var green: UIColor {
-        return UIColor(rgba: "#FFE66D")
+        return UIColor(rgba: "#0CCE6B")
     }
     
     class var black: UIColor {
@@ -64,19 +64,20 @@ extension TextSize {
     var value: CGFloat {
         switch self {
         case .small:
-            return 9
+            return 12
         case .normal:
             return 14
         case .medium:
             return 17
         case .big:
-            return 20
+            return 34
         }
     }
 }
 
 enum BorderRadius {
     case none
+    case tiny
     case small
     case normal
     case big
@@ -87,6 +88,8 @@ extension BorderRadius {
         switch self {
         case .none:
             return 0
+        case .tiny:
+            return 6
         case .small:
             return 12
         case .normal:

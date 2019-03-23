@@ -21,19 +21,19 @@ func (m *Memory) Register(d *dim.Group) {
 	d.Use(&middles.AuthMiddle{})
 	d.GET("/:word", m.List)
 	d.POST("/:word", m.Post)
-	d.RouteFunc("/:memoryid", func(d *dim.Group) {
-		d.GET("", m.Get)
-		d.PUT("", m.Put)
-		d.DELETE("", m.Delete)
-		d.PUT("/rate", m.PutRate)
+	d.RouteFunc("/:word/:memoryid", func(g *dim.Group) {
+		g.GET("", m.Get)
+		g.PUT("", m.Put)
+		g.DELETE("", m.Delete)
+		g.PUT("/rate", m.PutRate)
 	}, &middles.MemoryParamMiddle{})
 }
 
 func (m *Memory) List(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	var out []dbmodels.Memory
-	p, _ := strconv.Atoi(c.Param("p"))
-	err := c.Tx.Where("word = ?", &out).Paginate(p, memoriesPerPage).All(&out)
+	p, _ := strconv.Atoi(c.QueryParam("p"))
+	err := c.Tx.Where("word = ?", c.Param("word")).Paginate(p, memoriesPerPage).All(&out)
 	if err != nil {
 		return err
 	}

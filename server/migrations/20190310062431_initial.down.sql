@@ -12,7 +12,6 @@ drop table sens_results;
 drop table sens_progresses;
 drop table users;
 drop table book_words;
-drop table book_quizes;
 drop table book_sens;
 drop table book_epubs;
 drop table books_categories;

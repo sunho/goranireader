@@ -70,7 +70,7 @@ class APIService {
             .promoteError(MoyaError.self)
             .timeout(after: 0.2, raising: MoyaError.underlying(GoraniError.offline, nil), on: QueueScheduler.main)
             .flatMap(.latest) { _ in
-                req.observe(on: scheduler)
+                return req.observe(on: scheduler)
             }
     }
     

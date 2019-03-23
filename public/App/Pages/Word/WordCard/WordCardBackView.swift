@@ -15,7 +15,6 @@ class WordCardBackView: UIView {
     var tableView: UITableView!
     var memoryButton: MemoryButton!
     var detailButton: UIButton!
-    var isDetail: Bool = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -42,11 +41,13 @@ class WordCardBackView: UIView {
         detailButton = UIButton()
         container.addSubview(detailButton)
         detailButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
+            make.top.equalToSuperview()
             make.left.equalTo(wordView.snp.right)
             make.width.equalTo(50)
-            make.right.equalToSuperview().offset(20)
+            make.right.equalToSuperview()
         }
+        detailButton.setTitleColor(UIColor.white, for: .normal)
+        detailButton.setTitle("상세", for: .normal)
         
         tableView = UITableView()
         container.addSubview(tableView)
@@ -65,10 +66,39 @@ class WordCardBackView: UIView {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 50
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
-        tableView.isScrollEnabled = false
+        tableView.backgroundColor = .clear
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:)")
+    }
+    
+    func updateState(_ detail: Bool) {
+        if detail {
+            tableView.isScrollEnabled = true
+            wordView.setFont(.big, Color.strongGray, .medium)
+        } else {
+            tableView.isScrollEnabled = false
+            wordView.setFont(.medium, Color.strongGray, .medium)
+        }
+        
+        for row in tableView.visibleCells {
+            let row = row as! WordCardTableViewCell
+            row.updateState(detail)
+        }
+        memoryButton.updateState(detail)
+    }
+    
+    func updateLayout(_ detail: Bool) {
+        for row in tableView.visibleCells {
+            let row = row as! WordCardTableViewCell
+            row.updateLayout(detail)
+        }
+        memoryButton.updateLayout(detail)
+    }
+    
+    func updateTableView() {
+        tableView.beginUpdates()
+        tableView.endUpdates()
     }
 }

@@ -13,7 +13,7 @@ import ReactiveSwift
 
 class LoginViewController: UIViewController {
     
-    var signUpForm: BLTNItemManager!
+    var signUpForm: SignupBulletPageManager!
 
     @IBOutlet weak var usernameInput: UITextField!
     @IBOutlet weak var passwordInput: UITextField!
@@ -21,8 +21,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         checkAuth()
-        let item = SignUpBulletPage()
-        signUpForm = BLTNItemManager(rootItem: item)
+        signUpForm = SignupBulletPageManager()
     }
     
     func checkAuth() {
@@ -52,6 +51,7 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func login(_ sender: Any) {
+        print(passwordInput.text!)
         APIService.shared.request(.login(username: usernameInput.text!, password: passwordInput.text!))
             .filterSuccessfulStatusCodes()
             .start { event in
@@ -64,6 +64,7 @@ class LoginViewController: UIViewController {
                         if !error.isOffline {
                             AlertService.shared.alertError(error)
                         }
+                        print(error)
                     default:
                         print(event)
                     }
@@ -72,7 +73,7 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func signUp(_ sender: Any) {
-        signUpForm.showBulletin(above: self)
+        signUpForm.show(above: self)
     }
     
 }

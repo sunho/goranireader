@@ -10,14 +10,6 @@ import Foundation
 import UIKit
 
 class MemoryButton: UIButton {
-    var isDetail: Bool = false {
-        didSet {
-            if oldValue != isDetail {
-                updateState()
-            }
-        }
-    }
-    
     var text: String? {
         didSet {
             setTitle(text, for: .normal)
@@ -34,7 +26,7 @@ class MemoryButton: UIButton {
         titleLabel!.lineBreakMode = .byWordWrapping
         titleLabel!.preferredMaxLayoutWidth = titleLabel?.frame.width ?? 0
         titleLabel!.setFont(.normal, Color.strongGray, .medium)
-        updateState()
+        updateState(false)
     }
     
     override func layoutSubviews() {
@@ -47,17 +39,30 @@ class MemoryButton: UIButton {
         fatalError("init(coder:)")
     }
     
-    fileprivate func updateState() {
-        if !isDetail {
-            isUserInteractionEnabled = false
-        } else {
-            isUserInteractionEnabled = true
+    override var intrinsicContentSize: CGSize {
+        get {
+            let size = titleLabel?.intrinsicContentSize ?? CGSize.zero
+            return CGSize(width: size.width + titleEdgeInsets.left + titleEdgeInsets.right, height: size.height + titleEdgeInsets.top + titleEdgeInsets.bottom)
         }
     }
     
-    override var intrinsicContentSize: CGSize {
-        get {
-            return titleLabel?.intrinsicContentSize ?? CGSize.zero
+    func updateLayout(_ detail: Bool) {
+        if detail {
+            titleEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+        } else {
+            titleEdgeInsets = UIEdgeInsets.zero
+        }
+    }
+    
+    func updateState(_ detail: Bool) {
+        if detail {
+            setTitleColor(Color.white, for: .normal)
+            isUserInteractionEnabled = true
+            backgroundColor = Color.tint
+        } else {
+            setTitleColor(Color.strongGray, for: .normal)
+            isUserInteractionEnabled = false
+            backgroundColor = .clear
         }
     }
 }

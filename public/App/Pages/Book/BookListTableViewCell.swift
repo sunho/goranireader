@@ -20,7 +20,7 @@ class BookListTableViewCell: UITableViewCell {
     var name: String = "" {
         didSet {
             nameView.text = name
-            layoutSubviews()
+            setNeedsLayout()
         }
     }
     
@@ -91,7 +91,7 @@ class BookListTableViewCell: UITableViewCell {
             make.top.equalToSuperview()
         }
         
-        nameView = UILabel()
+        nameView = MultilineLabel()
         container.addSubview(nameView)
         nameView.snp.makeConstraints { make -> Void in
             make.left.equalTo(coverView.snp.right).offset(12)
@@ -125,19 +125,8 @@ class BookListTableViewCell: UITableViewCell {
             make.right.equalToSuperview()
             make.top.equalToSuperview()
         }
-        
-        nameView.numberOfLines = 0
-        nameView.preferredMaxLayoutWidth = nameView.frame.width + 12
-        nameView.lineBreakMode = .byWordWrapping
-        
+
         layout()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        nameView.preferredMaxLayoutWidth = nameView.frame.width + 12
-        nameView.sizeToFit()
-        layoutIfNeeded()
     }
     
     fileprivate func layout() {

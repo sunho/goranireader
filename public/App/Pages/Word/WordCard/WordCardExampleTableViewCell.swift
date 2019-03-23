@@ -17,8 +17,11 @@ class WordCardExampleTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = .clear
+        selectionStyle = .none
+        
         sentenceView = UILabel()
-        addSubview(sentenceView)
+        contentView.addSubview(sentenceView)
         sentenceView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }

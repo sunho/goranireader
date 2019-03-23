@@ -10,7 +10,7 @@ import UIKit
 
 class PaddingMarginView: UIView {
     var box: UIView! // padding
-    fileprivate var inbox: UIView!
+    var inbox: UIView!
     fileprivate var marginBox: UIView!
     
     var margin: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)

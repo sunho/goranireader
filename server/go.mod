@@ -17,20 +17,21 @@ require (
 	github.com/google/uuid v1.0.0
 	github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e // indirect
 	github.com/jtolds/gls v4.2.1+incompatible // indirect
-	github.com/labstack/echo v3.3.5+incompatible
+	github.com/labstack/echo v3.3.10+incompatible
+	github.com/labstack/echo/v4 v4.0.0
 	github.com/markbates/goth v1.49.0
 	github.com/minio/minio-go v6.0.14+incompatible
 	github.com/pkg/errors v0.8.1
 	github.com/smartystreets/assertions v0.0.0-20180927180507-b2de0cb4f26d // indirect
 	github.com/smartystreets/goconvey v0.0.0-20181108003508-044398e4856c // indirect
 	github.com/stretchr/testify v1.3.0
-	github.com/sunho/dim v1.1.1
+	github.com/sunho/dim v1.1.2
 	github.com/sunho/epubgo v0.0.0-20180629211917-650a8f2de947
 	go.uber.org/atomic v1.3.2 // indirect
 	go.uber.org/dig v1.6.0
 	go.uber.org/multierr v1.1.0 // indirect
 	go.uber.org/zap v1.9.1
-	golang.org/x/crypto v0.0.0-20181127143415-eb0de9b17e85
+	golang.org/x/crypto v0.0.0-20190130090550-b01c7a725664
 	golang.org/x/sync v0.0.0-20181108010431-42b317875d0f // indirect
 	gopkg.in/ini.v1 v1.39.1 // indirect
 )

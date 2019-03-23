@@ -1,28 +1,34 @@
 import UIKit
 
 class WordMainViewController: UIViewController, CardSliderDelegate, WordCardViewControllerDelegate {
+    var memoryForm: MemoryBulletPageManager!
     var cardDetailOpen: Bool = false
     var cardOpen: Bool = false
     var cardSliderContainer: UIView!
     var cardSlider: CardSlider!
     var words: [UnknownWord] = [UnknownWord()]
     var cardHeight: CGFloat {
-        return cardWidth * 1.3
+        return cardWidth * 1.2
     }
     var cardWidth: CGFloat {
         let size = UIScreen.main.bounds.size
-        return size.width * 0.55
+        return size.width * 0.8
     }
     
     override func viewDidLoad() {
-        words[0].word = "asfd"
+        memoryForm = MemoryBulletPageManager()
+        words[0].word = "hello"
         words[0].memory = "HOOOOasdf asdf asddf asdf asdf adsf asdf sadf asdf asdf asdfdsaf sa"
         var def = UnknownWordDefinition()
-        def.definition = "asdf2342214123"
+        def.definition = "HOOOOasdf asdf asddf asdf asdf adsf asdf sadf asdf asdf asdfdsaf sa"
         var ex = UnknownWordExample()
         ex.sentence = "231423143214"
         def.examples.append(ex)
         words[0].definitions.append(def)
+        words.append(words[0])
+        words.append(words[0])
+        words.append(words[0])
+        words.append(words[0])
         
         cardSliderContainer = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: cardHeight))
         cardSliderContainer.clipsToBounds = false
@@ -34,8 +40,12 @@ class WordMainViewController: UIViewController, CardSliderDelegate, WordCardView
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        cardSliderContainer.frame.origin.y = 50
+        cardSliderContainer.frame.origin.y = 80
         cardSliderContainer.center.x = view.center.x
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        memoryForm.prepare()
     }
     
     func cardSlider(_ cardSlider: CardSlider, itemAt: Int) -> CardView {
@@ -44,6 +54,7 @@ class WordMainViewController: UIViewController, CardSliderDelegate, WordCardView
         addChild(vc)
         vc.word = words[itemAt]
         vc.didMove(toParent: self)
+        vc.memoryForm = memoryForm
         return vc.cardView
     }
     

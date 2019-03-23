@@ -17,11 +17,14 @@ protocol WordCardViewControllerDelegate {
 
 class WordCardViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     fileprivate var frame: CGRect!
+    var memoryForm: MemoryBulletPageManager!
+    
     var word: UnknownWord!
     var delegate: WordCardViewControllerDelegate?
     var cardView: WordCardView {
         return view as! WordCardView
     }
+    
     fileprivate var opened: Bool = false
     
     init(frame: CGRect) {
@@ -31,17 +34,30 @@ class WordCardViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func loadView() {
         view = WordCardView(frame: frame)
+        memoryForm = MemoryBulletPageManager()
     }
     
     override func viewDidLoad() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
-        cardView.addGestureRecognizer(tap)
+        cardView.contentView.addGestureRecognizer(tap)
+        
+        let tap2 = UITapGestureRecognizer(target: self, action: #selector(self.handleTapDetail(_:)))
+        cardView.backView.detailButton.addGestureRecognizer(tap2)
+        
+        cardView.backView.memoryButton.addTarget(self, action: #selector(self.handleTapMemory(_:)), for: .touchUpInside)
+        
         cardView.wordView.text = word.word
         cardView.backView.wordView.text = word.word
         cardView.backView.memoryButton.text = word.memory
         cardView.backView.tableView.delegate = self
         cardView.backView.tableView.dataSource = self
         cardView.backView.tableView.register(WordCardTableViewCell.self, forCellReuseIdentifier: "cell")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        cardView.backView.tableView.beginUpdates()
+        cardView.backView.tableView.endUpdates()
     }
 
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
@@ -54,6 +70,24 @@ class WordCardViewController: UIViewController, UITableViewDelegate, UITableView
             }
             opened = true
             delegate?.wordCardViewDidFlip()
+        }
+    }
+    
+    @objc func handleTapDetail(_ sender: UITapGestureRecognizer) {
+        if opened {
+            cardView.isDetail = !cardView.isDetail
+            if cardView.isDetail {
+                delegate?.wordCardViewDidOpenDetail()
+            } else {
+                delegate?.wordCardViewDidHideDetail()
+            }
+        }
+    }
+    
+    @objc func handleTapMemory(_ sender: UITapGestureRecognizer) {
+        print("Asdf")
+        if opened && cardView.isDetail {
+            memoryForm.show(above: self, word: word.word)
         }
     }
     
@@ -70,6 +104,7 @@ class WordCardViewController: UIViewController, UITableViewDelegate, UITableView
             return i.sentence
         }
         cell.definitionView.text = item.definition
+        cell.updateState(false)
         
         return cell
     }

@@ -3,6 +3,8 @@
 import Foundation
 import UIKit
 
+fileprivate let factorY: CGFloat = 0.72
+
 class CardOptionIndicator: UIView {
     
     let emojiPadding: CGFloat = 20
@@ -21,16 +23,16 @@ class CardOptionIndicator: UIView {
         self.isUserInteractionEnabled = false
         self.layer.zPosition = CGFloat(Float.greatestFiniteMagnitude)
         
-        like1Emoji.frame = CGRect(x: frame.width - emojiPadding - emojiSize.width, y: (frame.height/2) - (emojiSize.height * 1.5) - emojiPadding, width: emojiSize.width, height: emojiSize.height)
+        like1Emoji.frame = CGRect(x: frame.width - emojiPadding - emojiSize.width, y: (frame.height/2*factorY) - (emojiSize.height * 1.5) - emojiPadding, width: emojiSize.width, height: emojiSize.height)
         self.addSubview(like1Emoji)
         
-        like2Emoji.frame = CGRect(x: frame.width - emojiPadding - emojiSize.width, y: (frame.height/2) - (emojiSize.height * 0.5), width: emojiSize.width, height: emojiSize.height)
+        like2Emoji.frame = CGRect(x: frame.width - emojiPadding - emojiSize.width, y: (frame.height/2*factorY) - (emojiSize.height * 0.5), width: emojiSize.width, height: emojiSize.height)
         self.addSubview(like2Emoji)
         
-        dislike1Emoji.frame = CGRect(x: emojiPadding, y: (frame.height/2) - (emojiSize.height * 1.5) - emojiPadding, width: emojiSize.width, height: emojiSize.height)
+        dislike1Emoji.frame = CGRect(x: emojiPadding, y: (frame.height/2*factorY) - (emojiSize.height * 1.5) - emojiPadding, width: emojiSize.width, height: emojiSize.height)
         self.addSubview(dislike1Emoji)
         
-        dislike2Emoji.frame = CGRect(x: emojiPadding, y: (frame.height/2) - (emojiSize.height * 0.5), width: emojiSize.width, height: emojiSize.height)
+        dislike2Emoji.frame = CGRect(x: emojiPadding, y: (frame.height/2*factorY) - (emojiSize.height * 0.5), width: emojiSize.width, height: emojiSize.height)
         self.addSubview(dislike2Emoji)
         
         // initial state

@@ -68,6 +68,12 @@
 		C783AABA2242332500D0D7BB /* SwipeSubmitScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C783AAB92242332500D0D7BB /* SwipeSubmitScreen.swift */; };
 		C78ECA9B2206E57F001909C3 /* StoreMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78ECA9A2206E57F001909C3 /* StoreMainViewController.swift */; };
 		C7BF8C5B224546D60037FD68 /* UIConsts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BF8C5A224546D60037FD68 /* UIConsts.swift */; };
+		C7BF8C5E2245D8BC0037FD68 /* MultilineLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BF8C5D2245D8BC0037FD68 /* MultilineLabel.swift */; };
+		C7BF8C652246102A0037FD68 /* MemoryBulletPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BF8C642246102A0037FD68 /* MemoryBulletPage.swift */; };
+		C7BF8C67224613740037FD68 /* MemoryBulletPageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BF8C66224613740037FD68 /* MemoryBulletPageManager.swift */; };
+		C7BF8C692246301A0037FD68 /* MemoryCloudCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BF8C682246301A0037FD68 /* MemoryCloudCell.swift */; };
+		C7BF8C6B224632BB0037FD68 /* MemoryCloudViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BF8C6A224632BB0037FD68 /* MemoryCloudViewController.swift */; };
+		C7BF8C6D22466BE00037FD68 /* SignUpBulletPageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BF8C6C22466BE00037FD68 /* SignUpBulletPageManager.swift */; };
 		C7C11763224489F90084C799 /* LineTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C11762224489F90084C799 /* LineTextField.swift */; };
 		C7C11765224494CB0084C799 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C11764224494CB0084C799 /* RoundButton.swift */; };
 		C7C117672244A4920084C799 /* AlertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C117662244A4920084C799 /* AlertService.swift */; };
@@ -254,6 +260,12 @@
 		C78ECA9A2206E57F001909C3 /* StoreMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreMainViewController.swift; sourceTree = "<group>"; };
 		C7B1C6AF2210E407007CF0D9 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		C7BF8C5A224546D60037FD68 /* UIConsts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConsts.swift; sourceTree = "<group>"; };
+		C7BF8C5D2245D8BC0037FD68 /* MultilineLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineLabel.swift; sourceTree = "<group>"; };
+		C7BF8C642246102A0037FD68 /* MemoryBulletPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryBulletPage.swift; sourceTree = "<group>"; };
+		C7BF8C66224613740037FD68 /* MemoryBulletPageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryBulletPageManager.swift; sourceTree = "<group>"; };
+		C7BF8C682246301A0037FD68 /* MemoryCloudCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCloudCell.swift; sourceTree = "<group>"; };
+		C7BF8C6A224632BB0037FD68 /* MemoryCloudViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCloudViewController.swift; sourceTree = "<group>"; };
+		C7BF8C6C22466BE00037FD68 /* SignUpBulletPageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpBulletPageManager.swift; sourceTree = "<group>"; };
 		C7C11762224489F90084C799 /* LineTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineTextField.swift; sourceTree = "<group>"; };
 		C7C11764224494CB0084C799 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		C7C117662244A4920084C799 /* AlertService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertService.swift; sourceTree = "<group>"; };
@@ -417,6 +429,7 @@
 				C7403AEA209176D800099119 /* WordMainViewController.swift */,
 				C7742BA722433B3500925081 /* Card */,
 				C7C117832245455A0084C799 /* WordCard */,
+				C7BF8C632246100D0037FD68 /* Memory */,
 			);
 			path = Word;
 			sourceTree = "<group>";
@@ -445,7 +458,7 @@
 			children = (
 				C77043AC223DFFDC00B91831 /* Views */,
 				C7FC18912239E178007172ED /* Services */,
-				C759AD7A221EDB1E00166B2A /* ViewControllers */,
+				C759AD7A221EDB1E00166B2A /* Pages */,
 				B143AF8720A4704F003341A3 /* Models */,
 				B143AF9220A4704F003341A3 /* Utils */,
 				C78217BB209BC1CF00C19E2F /* Resources */,
@@ -461,7 +474,7 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		C759AD7A221EDB1E00166B2A /* ViewControllers */ = {
+		C759AD7A221EDB1E00166B2A /* Pages */ = {
 			isa = PBXGroup;
 			children = (
 				B13393B620AB2AD500F34525 /* Tab */,
@@ -471,7 +484,7 @@
 				C7403AE72091767D00099119 /* Word */,
 				C7C1E2FF2098016D00C909D7 /* Book */,
 			);
-			path = ViewControllers;
+			path = Pages;
 			sourceTree = "<group>";
 		};
 		C759AD7D221EEA6300166B2A /* Recommend */ = {
@@ -494,6 +507,7 @@
 				C77043AE223E0E4A00B91831 /* CircleBarView.swift */,
 				C7C117752244DC8E0084C799 /* LineInputField.swift */,
 				C7C11779224526AA0084C799 /* PaddingMarginView.swift */,
+				C7BF8C5D2245D8BC0037FD68 /* MultilineLabel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -503,6 +517,7 @@
 			children = (
 				C77043C3223E530300B91831 /* LoginViewController.swift */,
 				C7C1176F2244CF4B0084C799 /* SignUpBulletPage.swift */,
+				C7BF8C6C22466BE00037FD68 /* SignUpBulletPageManager.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -552,6 +567,17 @@
 				C7D915C12240DF8F0073E860 /* SensCollectionViewCell.swift */,
 			);
 			path = Sens;
+			sourceTree = "<group>";
+		};
+		C7BF8C632246100D0037FD68 /* Memory */ = {
+			isa = PBXGroup;
+			children = (
+				C7BF8C642246102A0037FD68 /* MemoryBulletPage.swift */,
+				C7BF8C66224613740037FD68 /* MemoryBulletPageManager.swift */,
+				C7BF8C682246301A0037FD68 /* MemoryCloudCell.swift */,
+				C7BF8C6A224632BB0037FD68 /* MemoryCloudViewController.swift */,
+			);
+			path = Memory;
 			sourceTree = "<group>";
 		};
 		C7C117832245455A0084C799 /* WordCard */ = {
@@ -729,8 +755,10 @@
 				C7FC18A52239F0F9007172ED /* RecommendInfo.swift in Sources */,
 				C7742BAD22433BEE00925081 /* CardSlider.swift in Sources */,
 				C7FC18AD223A014A007172ED /* Result.swift in Sources */,
+				C7BF8C67224613740037FD68 /* MemoryBulletPageManager.swift in Sources */,
 				C7742BAB22433B4500925081 /* CardView.swift in Sources */,
 				C7C63E92209905900093CC02 /* BookMainViewController.swift in Sources */,
+				C7BF8C6B224632BB0037FD68 /* MemoryCloudViewController.swift in Sources */,
 				C7C1177C22453CE10084C799 /* MemoryButton.swift in Sources */,
 				C7FC18A12239EEE9007172ED /* Category.swift in Sources */,
 				C7C117762244DC8E0084C799 /* LineInputField.swift in Sources */,
@@ -744,6 +772,7 @@
 				C7C117702244CF4B0084C799 /* SignUpBulletPage.swift in Sources */,
 				C7742BAF22436A6D00925081 /* CardOptionIndicator.swift in Sources */,
 				C7FC18B5223A346D007172ED /* ReachabilityService.swift in Sources */,
+				C7BF8C6D22466BE00037FD68 /* SignUpBulletPageManager.swift in Sources */,
 				C7D915C52240E2D50073E860 /* EpubViewControllerExtension.swift in Sources */,
 				B143B04F20A47613003341A3 /* DictService.swift in Sources */,
 				B143B05520A47613003341A3 /* DictDefinition.swift in Sources */,
@@ -756,6 +785,8 @@
 				B143B05720A47617003341A3 /* Helper.swift in Sources */,
 				C7FC18B9223A364E007172ED /* RealmService.swift in Sources */,
 				C74CEFD8208C899F002765D6 /* AppDelegate.swift in Sources */,
+				C7BF8C692246301A0037FD68 /* MemoryCloudCell.swift in Sources */,
+				C7BF8C652246102A0037FD68 /* MemoryBulletPage.swift in Sources */,
 				C7FC188F2239D748007172ED /* Book.swift in Sources */,
 				C78ECA9B2206E57F001909C3 /* StoreMainViewController.swift in Sources */,
 				C7D915C22240DF8F0073E860 /* SensCollectionViewCell.swift in Sources */,
@@ -767,6 +798,7 @@
 				B143B04C20A47613003341A3 /* Sens.swift in Sources */,
 				C7C11763224489F90084C799 /* LineTextField.swift in Sources */,
 				C783AAB12241D8AE00D0D7BB /* AnswerListTableViewCell.swift in Sources */,
+				C7BF8C5E2245D8BC0037FD68 /* MultilineLabel.swift in Sources */,
 				B143B05A20A47617003341A3 /* Verb.swift in Sources */,
 				B143B05620A47617003341A3 /* FileUtil.swift in Sources */,
 				C742DD8F2209568800CD737A /* SearchResultViewController.swift in Sources */,

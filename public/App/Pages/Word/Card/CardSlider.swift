@@ -17,6 +17,8 @@ extension CardSliderDelegate {
     func cardSliderShouldSlide(_ cardSlider: CardSlider) -> Bool { return true }
 }
 
+fileprivate let factorY: CGFloat = 0.72 // TODO
+
 class CardSlider: UIView {
     var delegate: CardSliderDelegate!
     fileprivate var cardIsHiding = false
@@ -59,8 +61,8 @@ class CardSlider: UIView {
         let firstCard = cards[0]
         self.addSubview(firstCard)
         firstCard.layer.zPosition = CGFloat(len)
-        firstCard.center = self.center
-        firstCard.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleCardPan)))
+        firstCard.center.x = self.center.x
+        firstCard.contentView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleCardPan)))
         firstCard.isUserInteractionEnabled = true
         
         // the next 3 cards in the deck
@@ -113,14 +115,15 @@ class CardSlider: UIView {
                 card.transform = CGAffineTransform(scaleX: newDownscale, y: newDownscale)
                 card.alpha = newAlpha
                 if i == 1 {
-                    card.center = self.center
+                    card.center.x = self.center.x
+                    card.frame.origin.y = 0
                 } else {
                     card.center.x = self.center.x
                     card.frame.origin.y = self.cards[1].frame.origin.y - (CGFloat(i - 1) * self.cardInteritemSpacing)
                 }
             }, completion: { (_) in
                 if i == 1 {
-                    card.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handleCardPan)))
+                    card.contentView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handleCardPan)))
                 }
             })
             
@@ -130,6 +133,9 @@ class CardSlider: UIView {
         if 4 > (cards.count - 1) {
             if cards.count != 1 {
                 self.bringSubviewToFront(cards[1])
+                self.cards[1].isUserInteractionEnabled = true
+            } else {
+                self.cards[0].isUserInteractionEnabled = true
             }
             return
         }
@@ -191,7 +197,7 @@ class CardSlider: UIView {
         case .changed:
             cardAttachmentBehavior.anchorPoint = panLocationInView
             if cards[0].center.x > (self.center.x + requiredOffsetFromCenter) {
-                if cards[0].center.y < (self.center.y - optionLength) {
+                if cards[0].center.y * factorY < (self.center.y * factorY - optionLength) {
                     cards[0].showOptionLabel(option: .easy)
                     cardOptionIndicator.showEmoji(for: .easy)
                     currentOption = .easy
@@ -202,7 +208,7 @@ class CardSlider: UIView {
                     currentOption = .medium
                 }
             } else if cards[0].center.x < (self.center.x - requiredOffsetFromCenter) {
-                if cards[0].center.y < (self.center.y - optionLength) {
+                if cards[0].center.y * factorY < (self.center.y * factorY  - optionLength) {
                     cards[0].showOptionLabel(option: .difficult)
                     cardOptionIndicator.showEmoji(for: .difficult)
                     currentOption = .difficult
@@ -218,9 +224,9 @@ class CardSlider: UIView {
             }
         case .ended:
             dynamicAnimator.removeAllBehaviors()
-            if !(cards[0].center.x > (self.center.x + requiredOffsetFromCenter) || cards[0].center.x < (self.center.x - requiredOffsetFromCenter)) {
+            if !(cards[0].center.x > (self.center.x + requiredOffsetFromCenter) || cards[0].center.x < (self.center.x - requiredOffsetFromCenter)) || currentOption == nil {
                 // snap to center
-                let snapBehavior = UISnapBehavior(item: cards[0], snapTo: self.center)
+                let snapBehavior = UISnapBehavior(item: cards[0], snapTo: CGPoint(x: self.center.x, y: self.center.y))
                 dynamicAnimator.addBehavior(snapBehavior)
             } else {
                 let velocity = sender.velocity(in: self)
