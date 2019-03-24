@@ -1,11 +1,10 @@
 import UIKit
 import FolioReaderKit
-import SwipeCellKit
 import ReactiveSwift
 
 fileprivate let MinActulReadRate = 0.7
 
-class BookMainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class BookMainViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
 
     // for epub
@@ -18,6 +17,7 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
     var dictVC: DictViewController!
     var downloadProgresses: Dictionary<ContentKey, Float> = [:]
     var contents: [Content] = []
+    var first: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +30,11 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
         
         self.folioReader.delegate = self
         
-        self.tableView.register(BookListTableViewCell.self, forCellReuseIdentifier: "cell")
+        self.tableView.register(BookMainTableViewCell.self, forCellReuseIdentifier: "cell")
         self.reload()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didPurchase), name: .didPurchaseBook, object: nil)
+        NotificationCenter.default.addObserver(self, selector:#selector(self.applicationWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         
         dictVC = storyboard!.instantiateViewController(withIdentifier: "DictViewController") as! DictViewController
     }
@@ -41,6 +44,26 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
             DispatchQueue.main.async{
                 switch event {
                 case .value(let contents):
+                    if !self.first {
+                        var new = 0
+                        for i in contents {
+                            var isNew = true
+                            for j in self.contents {
+                                if i.key == j.key {
+                                    isNew = false
+                                    break
+                                }
+                            }
+                            if isNew {
+                                new += 1
+                            }
+                        }
+                        if new != 0 {
+                            self.navigationController?.tabBarItem.badgeValue = "\(new)"
+                        }
+                    } else {
+                        self.first = false
+                    }
                     self.contents = contents
                     self.tableView.reloadData()
                 default:
@@ -56,12 +79,13 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
     
     
     override func viewDidAppear(_ animated: Bool) {
-        NotificationCenter.default.addObserver(self, selector:#selector(applicationWillEnterForeground(_:)), name: UIApplication.willEnterForegroundNotification, object: nil)
+        super.viewDidAppear(animated)
+        navigationController?.tabBarItem.badgeValue = nil
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
+        super.viewDidAppear(animated)
+        navigationController?.tabBarItem.badgeValue = nil
     }
     
     func downloadContent(_ content: DownloadableContent) {
@@ -101,53 +125,44 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func updateDownloadProgress(_ key: ContentKey, _ progress: Float) {
         downloadProgresses[key] = progress
-        guard let row = contents.index(where: { c in c.id == key.id }) else {
+        guard let row = contents.index(where: { c in c.key == key }) else {
             return
         }
-        guard let cell = tableView.cellForRow(at: IndexPath(row: row, section: 0)) as? BookListTableViewCell else {
+        guard let cell = tableView.cellForRow(at: IndexPath(row: row, section: 0)) as? BookMainTableViewCell else {
             return
         }
         cell.progress = progress
     }
-    
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-//        guard orientation == .right else { return nil }
-//
-//        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
-//            let book = self.contents[indexPath.row]
-//            try! FileManager.default.removeItem(atPath: book.path)
-//            self.books = Epub.getLocalBooks()
-//            self.tableView.reloadData()
-//        }
-//
-//        // customize the action appearance
-//        deleteAction.image = UIImage(named: "delete")
-//
-        return []
-    }
 
+    @objc func didPurchase(notification: NSNotification) {
+        reload()
+        
+    }
+}
+
+extension BookMainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = self.contents[indexPath.row]
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! BookListTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! BookMainTableViewCell
         
         cell.contentView.layer.masksToBounds = false
         cell.clipsToBounds = false
         cell.name = item.name
         cell.author = item.author
-        cell.type = item.type
+        cell.types[0] = item.type
         cell.setCover(with: item.cover)
         
         switch item {
         case let item as DownloadedContent:
-            cell.tableType = .local
+            cell.status = .local
             cell.progress = item.progress
         case is DownloadableContent:
-            cell.tableType = .download
+            cell.status = .remote
         default:
             fatalError("?")
         }
-
+        
         return cell
     }
     
@@ -179,5 +194,25 @@ class BookMainViewController: UIViewController, UITableViewDataSource, UITableVi
         //        self.folioReader.readerCenter!.delegate = self
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        let content = self.contents[indexPath.row]
+        return content is DownloadedContent
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .normal, title: "삭제") { action, index in
+            let content = self.contents[indexPath.row] as! DownloadedContent
+            do {
+                try content.delete()
+            } catch {
+                AlertService.shared.alertError(GoraniError.system)
+            }
+            
+            self.reload()
+        }
+        delete.backgroundColor = Color.red
+        
+        return [delete]
+    }
 
 }

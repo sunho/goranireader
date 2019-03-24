@@ -15,6 +15,7 @@ enum GoraniError: Error {
     case folio(error: FolioReaderError)
     case ns(error: NSError)
     case offline
+    case system
 }
 
 extension MoyaError {

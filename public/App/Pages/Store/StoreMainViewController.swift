@@ -8,21 +8,33 @@
 
 import UIKit
 
-class StoreMainViewController: UIViewController, UISearchBarDelegate {
+class StoreMainViewController: UIViewController, UISearchBarDelegate, UISearchResultsUpdating {
 
     @IBOutlet weak var contentView: UIView!
-    @IBOutlet weak var searchBar: UISearchBar!
     
+    let searchController = UISearchController(searchResultsController: nil)
     var searchHomeVC: SearchHomeViewController!
     var searchResultVC: SearchResultViewController!
     var currentVC: UIViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        searchBar.delegate = self
+        
+        navigationItem.searchController = searchController
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        searchController.dimsBackgroundDuringPresentation = false
         searchHomeVC = storyboard!.instantiateViewController(withIdentifier: "SearchHomeViewController") as? SearchHomeViewController
         searchResultVC = storyboard!.instantiateViewController(withIdentifier: "SearchResultViewController") as? SearchResultViewController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        definesPresentationContext = true
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.tintColor = Color.tint
         switchVC(searchHomeVC)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     func switchVC(_ vc: UIViewController) {
@@ -62,13 +74,17 @@ class StoreMainViewController: UIViewController, UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let text = searchBar.text {
-            searchResultVC.search(text)
             switchVC(searchResultVC)
+            searchResultVC.search(text)
             searchBar.endEditing(true)
         }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        
     }
 
 }

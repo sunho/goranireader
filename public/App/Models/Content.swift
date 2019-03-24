@@ -64,6 +64,10 @@ class DownloadedContent: Content {
         let cover = url != nil ? Source.provider(LocalFileImageDataProvider(fileURL: url!)) : nil
         self.init(id: id, name: epub.title ?? "", author: epub.authorName ?? "", cover: cover, updatedAt: updatedAt, type: .epub, path: path, progress: progress)
     }
+    
+    func delete() throws {
+        try FileManager.default.removeItem(atPath: path)
+    }
 }
 
 class DownloadableContent: Content {

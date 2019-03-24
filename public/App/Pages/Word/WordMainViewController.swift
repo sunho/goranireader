@@ -36,11 +36,14 @@ class WordMainViewController: UIViewController, CardSliderDelegate, WordCardView
         cardSliderContainer.addSubview(cardSlider)
         view.addSubview(cardSliderContainer)
         view.clipsToBounds = false
+        
+        navigationController?.isNavigationBarHidden = false
+        navigationItem.largeTitleDisplayMode = .never
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        cardSliderContainer.frame.origin.y = 80
+        cardSliderContainer.frame.origin.y = 150 + (navigationController?.navigationBar.frame.size.height ?? 0)
         cardSliderContainer.center.x = view.center.x
     }
     

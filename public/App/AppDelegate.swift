@@ -2,6 +2,7 @@ import UIKit
 import CoreData
 import Moya
 import ReactiveSwift
+import IQKeyboardManagerSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -9,10 +10,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        IQKeyboardManager.shared.enable = true
         APIService.shared // TODO: find another way
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let initialViewController: UIViewController = RealmService.shared.getConfig().authorized ? storyboard.instantiateViewController(withIdentifier: "TabViewController") as! TabViewController : storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+        let initialViewController: UIViewController = RealmService.shared.getConfig().authorized ? storyboard.createTabViewController() : storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
         self.window?.rootViewController = initialViewController
         self.window?.makeKeyAndVisible()
         

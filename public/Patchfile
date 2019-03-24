@@ -1,0 +1,6 @@
+ignoreMap:
+  - SQLite
+  - SwiftEntryKit
+  - Reachability
+  - FontBlaster
+  - QuickLayout

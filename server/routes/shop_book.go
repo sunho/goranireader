@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"encoding/json"
+	"fmt"
 	"gorani/middles"
 	"gorani/models"
 	"gorani/models/dbmodels"
@@ -33,12 +35,14 @@ func (s *ShopBook) List(c2 echo.Context) error {
 	name := c.QueryParam("name")
 	p, _ := strconv.Atoi(c.QueryParam("p"))
 	out := []dbmodels.Book{}
-	err := c.Tx.Where("name LIKE ?", "%"+name+"%").
+	err := c.Tx.Eager().Where("name LIKE ?", "%"+name+"%").
 		Paginate(p, booksPerPage).
 		All(&out)
 	if err != nil {
 		return err
 	}
+	str, _ := json.Marshal(out)
+	fmt.Println(string(str))
 	return c.JSON(200, out)
 }
 

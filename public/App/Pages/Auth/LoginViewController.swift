@@ -11,7 +11,7 @@ import UIKit
 import Moya
 import ReactiveSwift
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UITextFieldDelegate {
     
     var signUpForm: SignupBulletPageManager!
 
@@ -22,6 +22,10 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         checkAuth()
         signUpForm = SignupBulletPageManager()
+        
+        usernameInput.returnKeyType = .next
+        usernameInput.delegate = self
+        passwordInput.delegate = self
     }
     
     func checkAuth() {
@@ -31,13 +35,13 @@ class LoginViewController: UIViewController {
                     switch event {
                     case let .value(resp):
                         if resp.statusCode == 200 {
-                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "TabViewController") as! TabViewController
+                            let vc = self.storyboard!.createTabViewController()
                             self.present(vc, animated: true, completion: nil)
                         }
                     case .failed(let error):
                         if error.isOffline {
                             if RealmService.shared.getConfig().authorized {
-                                let vc = self.storyboard?.instantiateViewController(withIdentifier: "TabViewController") as! TabViewController
+                                let vc = self.storyboard!.createTabViewController()
                                 self.present(vc, animated: true, completion: nil)
                             }
                         } else {
@@ -51,7 +55,6 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func login(_ sender: Any) {
-        print(passwordInput.text!)
         APIService.shared.request(.login(username: usernameInput.text!, password: passwordInput.text!))
             .filterSuccessfulStatusCodes()
             .start { event in
@@ -76,4 +79,18 @@ class LoginViewController: UIViewController {
         signUpForm.show(above: self)
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField.text! == "" {
+            return false
+        } else if textField == usernameInput {
+            textField.resignFirstResponder()
+            passwordInput.becomeFirstResponder()
+            return true
+        } else if textField == passwordInput {
+            textField.resignFirstResponder()
+            return true
+        }else {
+            return false
+        }
+    }
 }

@@ -25,6 +25,17 @@ struct Book: Codable {
     var sens: String?
     var quiz: String?
     
+    var types: [ContentType] {
+        var out: [ContentType] = []
+        if epub != nil {
+            out.append(.epub)
+        }
+        if sens != nil {
+            out.append(.sens)
+        }
+        return out
+    }
+    
     enum CodingKeys: String, CodingKey
     {
         case id

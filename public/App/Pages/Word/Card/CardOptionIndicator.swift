@@ -120,6 +120,8 @@ class CardOptionIndicator: UIView {
             self.like2Emoji.frame.origin.x += self.emojiInitialOffset
         }) { (_) in
             self.isHidingLikeEmojis = false
+            self.like1Emoji.isHidden = true
+            self.like2Emoji.isHidden = true
         }
         isLikeEmojisVisible = false
     }
@@ -128,6 +130,8 @@ class CardOptionIndicator: UIView {
     private func showLikeEmojis() {
         if isShowingLikeEmojis { return }
         isShowingLikeEmojis = true
+        self.like1Emoji.isHidden = false
+        self.like2Emoji.isHidden = false
         UIView.animate(withDuration: 0.25, delay: 0.0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.like1Emoji.frame.origin.x -= self.emojiInitialOffset
             self.like2Emoji.frame.origin.x -= self.emojiInitialOffset
@@ -146,6 +150,8 @@ class CardOptionIndicator: UIView {
             self.dislike2Emoji.frame.origin.x -= self.emojiInitialOffset
         }) { (_) in
             self.isHidingDislikeEmojis = false
+            self.dislike1Emoji.isHidden = true
+            self.dislike2Emoji.isHidden = true
         }
         isDislikeEmojisVisible = false
     }
@@ -154,6 +160,8 @@ class CardOptionIndicator: UIView {
     private func showDislikeEmojis() {
         if isShowingDislikeEmojis { return }
         isShowingDislikeEmojis = true
+        self.dislike1Emoji.isHidden = false
+        self.dislike2Emoji.isHidden = false
         UIView.animate(withDuration: 0.25, delay: 0.0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.dislike1Emoji.frame.origin.x += self.emojiInitialOffset
             self.dislike2Emoji.frame.origin.x += self.emojiInitialOffset
