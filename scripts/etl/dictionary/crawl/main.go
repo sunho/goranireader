@@ -12,10 +12,39 @@ import (
 	"strings"
 	"sync"
 	"time"
+    "os/exec"
+    "runtime"
 
 	"github.com/PuerkitoBio/goquery"
 )
 
+var clear map[string]func() //create a map for storing clear funcs
+
+func init() {
+    clear = make(map[string]func()) //Initialize it
+    clear["linux"] = func() { 
+        cmd := exec.Command("clear") //Linux example, its tested
+        cmd.Stdout = os.Stdout
+        cmd.Run()
+    }
+    clear["windows"] = func() {
+        cmd := exec.Command("cmd", "/c", "cls") //Windows example, its tested 
+        cmd.Stdout = os.Stdout
+        cmd.Run()
+    }
+}
+
+func callClear() {
+    value, ok := clear[runtime.GOOS] //runtime.GOOS -> linux, windows, darwin etc.
+    if ok { //if we defined a clear func for that platform:
+        value()  //we execute it
+    } else { //unsupported platform
+        panic("Your platform is unsupported! I can't clear terminal screen :(")
+	}
+}
+
+var otherdict = 0
+var completed = make(map[int]bool)
 var list = []string{}
 var mu = &sync.Mutex{}
 var seen = make(map[string]bool)
@@ -83,10 +112,11 @@ func getDefinition(word string, url string, primary bool, source string) {
 	}
 
 	if !strings.Contains(src.Text(), "Oxford Advanced Learner's English-Korean Dictionary") {
-		// log.Println("returning")
+		mu.Lock()
+		otherdict ++
+		mu.Unlock()
 		return
 	}
-	log.Println("definition:", url)
 	// log.Println("source:", source)
 	wor := Word{
 		Word: word,
@@ -133,18 +163,24 @@ func getDefinition(word string, url string, primary bool, source string) {
 	send <- wor
 }
 
-func getQuery(word string) {
+func getQuery(word string, index int) {
 	body := getBody("http://endic.naver.com/search.nhn?sLn=kr&query=" + word)
-	log.Println("query:", word)
 	if body == nil {
 		time.Sleep(1000)
-		getQuery(word)
+		log.Println("retry")
+		getQuery(word, index)
 	}
 	doc, err := goquery.NewDocumentFromReader(body)
 	if err != nil {
 		log.Println(err.Error())
+		completed[index] = false
 		return
 	}
+
+	mu.Lock()
+	completed[index] = true
+	mu.Unlock()
+
 	doc.Find(".word_num").Each(func(i int, s *goquery.Selection) {
 		sect, _ := s.Find("h3 img").First().Attr("alt")
 		if sect == "단어/숙어" {
@@ -170,32 +206,76 @@ var wg2 sync.WaitGroup
 func worker(input chan int) {
 	for index := range input {
 		word := list[index]
-		log.Println(index, "/", len(list), ":", word)
-		getQuery(word)
+		getQuery(word, index)
 	}
 	wg.Done()
 }
 
 func worker2() {
+	n := 0
 	for item := range send {
 		if _, ok := dict[item.Word]; !ok {
 			dict[item.Word] = item
 		} else {
 			word := dict[item.Word]
-			word.Defs = append(word.Defs, item.Defs...)
+			for _, new := range item.Defs {
+				var isnew = true
+				for _, old := range word.Defs {
+					if new.Def == old.Def {
+						isnew = false
+						break
+					}
+				}
+				if isnew {
+					word.Defs = append(word.Defs, new)
+				}
+			}
 			dict[item.Word] = word
+		}
+		n ++
+		if n % 100 == 0 {
+			writeFile(time.Now().String())
 		}
 	}
 	wg2.Done()
 }
 
-func writeFile() {
-	json, _ := json.Marshal(dict)
-	err := ioutil.WriteFile("output.json", json, 0644)
+func writeFile(t string) {
+	buf, _ := json.Marshal(dict)
+	err := ioutil.WriteFile("output" + t + ".json", buf, 0644)
 	if err != nil {
 		panic(err)
 	}
+
+	mu.Lock()
+	buf2, _ := json.Marshal(completed)
+	err = ioutil.WriteFile("completed" + t + ".json", buf2, 0644)
+	if err != nil {
+		panic(err)
+	}
+	mu.Unlock()
 }
+
+func progress(total int) {
+	t := time.NewTicker(time.Second)
+	for _ = range t.C {
+		callClear()
+		mu.Lock()
+		var success = 0
+		var fail = 0
+		for _, val := range completed {
+			if val {
+				success ++
+			} else {
+				fail ++
+			}
+		}
+		fmt.Println("success:", success, "fail:", fail, "total:", total)
+		mu.Unlock()
+	}
+}
+
+
 func main() {
 	txt, err := ioutil.ReadFile("words.txt")
 	if err != nil {
@@ -222,6 +302,8 @@ func main() {
 	go worker2()
 	wg2.Add(1)
 
+	go progress(len(list))
+
 	for index := range list {
 		input <- index
 	}
@@ -229,7 +311,9 @@ func main() {
 	wg.Wait()
 	close(send)
 	wg2.Wait()
-	writeFile()
+	writeFile("")
+
+	log.Println()
 	log.Println(len(dict))
 	log.Println("done")
 	log.Println(time.Now().Sub(t).Minutes(), " minutes")

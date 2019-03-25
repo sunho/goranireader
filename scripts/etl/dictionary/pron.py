@@ -2,7 +2,7 @@ import json
 import codecs
 
 prons = dict()
-with codecs.open('./raw/cmudict-0.7b', encoding='utf-8', errors='ignore') as file:
+with codecs.open('./cmudict-0.7b', encoding='utf-8', errors='ignore') as file:
   line = file.readline()
   while line:
     line = line[:-1] # \n
@@ -14,7 +14,7 @@ with codecs.open('./raw/cmudict-0.7b', encoding='utf-8', errors='ignore') as fil
 missed = 0
 missed_list = []
 dictionary = dict()
-with open('./raw/output.json', encoding='utf8') as file:
+with open('./output.json', encoding='utf8') as file:
   dictionary = json.load(file)
   for word, v  in dictionary.items():
     if word in prons:
@@ -23,8 +23,8 @@ with open('./raw/output.json', encoding='utf8') as file:
       missed +=1
       missed_list.append(word)
 
-with open('./result/missed.txt', 'w') as file:
+with open('./missed.txt', 'w') as file:
   print(missed_list, sep='\n', file=file)
 
-with open('./result/proned_output.json', 'w', encoding='utf8') as file:
+with open('./proned_output.json', 'w', encoding='utf8') as file:
   json.dump(dictionary, file, ensure_ascii=False)

@@ -5,17 +5,8 @@
 *.bak
 ._*
 Carthage
-/public/App/Auth/AuthProviders.plist
 
-/scripts/epub/analyze/*.epub
-/server/migrations/schema.sql
-/server/database.yml
-/server/db.yaml
-/server/*.yaml
-/server/target
-/public/node_modules
+/backend/apiserver/migrations/schema.sql
+/backend/apiserver/database.yml
+/backend/apiserver/*.yaml
 
-
-log.txt
-
-asdf.epub
