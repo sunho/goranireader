@@ -20,8 +20,8 @@ type Book struct {
 	Cover       string       `db:"cover" json:"cover"`
 	Epub        BookEpub     `has_one:"book_epub" json:"epub"`
 	Sens        BookSens     `has_one:"book_sens" json:"sens"`
-	Rate        int          `db:"rate" json:"rate"`
-	Categories  []Category   `many_to_many:"books_categories" json:"categories"`
+	Rate        float64      `db:"rate" json:"rate"`
+	Categories  []string     `json:"categories"`
 }
 
 type BookEpub struct {
@@ -52,11 +52,4 @@ func (b BookSens) MarshalJSON() ([]byte, error) {
 		return []byte("null"), nil
 	}
 	return []byte("\"" + b.Sens.String + "\""), nil
-}
-
-type BookWord struct {
-	ID     uuid.UUID `db:"id"`
-	BookID int       `db:"book_id"`
-	Word   string    `db:"word"`
-	N      int       `db:"n"`
 }

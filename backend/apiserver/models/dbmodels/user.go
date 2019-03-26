@@ -22,8 +22,7 @@ type UsersBooks struct {
 }
 
 type RecommendInfo struct {
-	ID           uuid.UUID  `db:"id" json:"-"`
-	UserID       int        `db:"user_id" json:"-"`
-	TargetBookID int        `db:"target_book_id" json:"target_book_id"`
-	Categories   []Category `many_to_many:"recommend_infoes_categories" json:"categories"`
+	UserID       int      `db:"user_id" json:"-"`
+	TargetBookID int      `db:"target_book_id" json:"target_book_id"`
+	Categories   []string `many_to_many:"recommend_infoes_categories" json:"categories"`
 }

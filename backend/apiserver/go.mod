@@ -13,15 +13,19 @@ require (
 	github.com/gobuffalo/pop v4.10.0+incompatible
 	github.com/gobuffalo/uuid v2.0.5+incompatible
 	github.com/gobuffalo/x v0.0.0-20181110221217-14085ca3e1a9 // indirect
+	github.com/gocql/gocql v0.0.0-20190325140904-fc3925ac2cbd
 	github.com/gofrs/uuid v3.2.0+incompatible
 	github.com/google/uuid v1.0.0
 	github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e // indirect
+	github.com/jinzhu/gorm v1.9.2 // indirect
+	github.com/jinzhu/inflection v0.0.0-20180308033659-04140366298a // indirect
 	github.com/jtolds/gls v4.2.1+incompatible // indirect
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/echo/v4 v4.0.0
 	github.com/markbates/goth v1.49.0
 	github.com/minio/minio-go v6.0.14+incompatible
 	github.com/pkg/errors v0.8.1
+	github.com/relops/cqlr v0.0.0-20141111204017-0ac35893ea3f // indirect
 	github.com/smartystreets/assertions v0.0.0-20180927180507-b2de0cb4f26d // indirect
 	github.com/smartystreets/goconvey v0.0.0-20181108003508-044398e4856c // indirect
 	github.com/stretchr/testify v1.3.0

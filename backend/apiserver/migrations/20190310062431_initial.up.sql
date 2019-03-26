@@ -1,8 +1,3 @@
-create table words (
-    id uuid not null,
-    word character varying(100) primary key
-);
-
 create table categories (
     id serial primary key,
     name character varying(255) not null
@@ -42,13 +37,6 @@ create table book_sens (
     created_at timestamp without time zone not null,
     updated_at timestamp without time zone not null,
     sens character varying(1024)
-);
-
-create table book_words (
-    id uuid not null,
-    book_id integer references books on delete cascade,
-    word character varying(100) references words(word) on delete cascade,
-    n integer not null
 );
 
 create table users (
@@ -122,14 +110,6 @@ create table recommend_infoes_categories (
     primary key(recommend_info_id, category_id)
 );
 
-create table unknown_words (
-    id uuid not null,
-    user_id integer references users on delete cascade,
-    word character varying(100),
-    definitions character varying(4096),
-    primary key(user_id, word)
-);
-
 create table memories (
     id serial primary key,
     user_id integer references users on delete cascade,
@@ -147,14 +127,4 @@ create table memory_rates (
     rate integer not null,
     primary key(memory_id, user_id)
 );
-
-create table known_words (
-    id uuid not null,
-    user_id integer references users on delete cascade,
-    word character varying(100) references words(word) on delete cascade,
-    n integer not null,
-    primary key(user_id, word)
-);
-
-
 
