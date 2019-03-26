@@ -31,8 +31,6 @@
 		C74CEFE5208C89A1002765D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C74CEFE3208C89A1002765D6 /* LaunchScreen.storyboard */; };
 		C757D2C22247A1D80050E0A2 /* BookMainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C757D2C12247A1D80050E0A2 /* BookMainTableViewCell.swift */; };
 		C757D2C72247A7450050E0A2 /* BookShopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C757D2C62247A7450050E0A2 /* BookShopTableViewCell.swift */; };
-		C757D2C92247AD310050E0A2 /* IQKeyboardManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C757D2C82247AD310050E0A2 /* IQKeyboardManager.framework */; };
-		C757D2CB2247AD340050E0A2 /* IQKeyboardManagerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C757D2CA2247AD340050E0A2 /* IQKeyboardManagerSwift.framework */; };
 		C757D2CF2247C1140050E0A2 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C757D2CE2247C1140050E0A2 /* NavigationController.swift */; };
 		C757D2D12247D5A10050E0A2 /* ContentTypeIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C757D2D02247D5A10050E0A2 /* ContentTypeIconView.swift */; };
 		C757D2D32247D7690050E0A2 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = C757D2D22247D7690050E0A2 /* Notification.swift */; };
@@ -81,21 +79,26 @@
 		C7D915C92240FAA60073E860 /* HorizontalPageLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D915C82240FAA60073E860 /* HorizontalPageLayout.swift */; };
 		C7E242E9224721A5000892D0 /* StoreBookDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E242E8224721A5000892D0 /* StoreBookDetailViewController.swift */; };
 		C7E2431E22474B62000892D0 /* FolioReaderKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7C63EAF209946A50093CC02 /* FolioReaderKit.framework */; };
-		C7E2433222474C26000892D0 /* Cosmos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7E2433122474C26000892D0 /* Cosmos.framework */; };
-		C7E2433A2247547F000892D0 /* ReactiveMoya.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7E243392247547E000892D0 /* ReactiveMoya.framework */; };
-		C7E2433C22475481000892D0 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7E2433B22475480000892D0 /* ReactiveSwift.framework */; };
-		C7E2434022475488000892D0 /* Regex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7E2433F22475488000892D0 /* Regex.framework */; };
-		C7E2434A2247558B000892D0 /* FontBlaster.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7E243492247558B000892D0 /* FontBlaster.framework */; };
 		C7E2434C22475591000892D0 /* QuickLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7E2434B22475591000892D0 /* QuickLayout.framework */; };
 		C7E2434E22475593000892D0 /* Reachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7E2434D22475593000892D0 /* Reachability.framework */; };
 		C7E243502247559C000892D0 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7E2434F2247559C000892D0 /* SQLite.framework */; };
 		C7E243522247559D000892D0 /* SwiftEntryKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7E243512247559D000892D0 /* SwiftEntryKit.framework */; };
-		C7E2436022475723000892D0 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7E2434322475490000892D0 /* SnapKit.framework */; };
-		C7E2436222475727000892D0 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7E243412247548C000892D0 /* Result.framework */; };
-		C7E243722247573F000892D0 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7E2432D22474C22000892D0 /* Alamofire.framework */; };
-		C7E2439B224766CB000892D0 /* BLTNBoard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7E24398224766CB000892D0 /* BLTNBoard.framework */; };
-		C7E2439D224767F0000892D0 /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7E2433322474C2A000892D0 /* Kingfisher.framework */; };
 		C7E243A422477EEF000892D0 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7E243A322477EEF000892D0 /* Realm.framework */; };
+		C7F1DA38224921E900E1AF84 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA37224921E900E1AF84 /* Alamofire.framework */; };
+		C7F1DA3A224921F000E1AF84 /* BLTNBoard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA39224921F000E1AF84 /* BLTNBoard.framework */; };
+		C7F1DA3C224921F700E1AF84 /* CHIPageControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA3B224921F700E1AF84 /* CHIPageControl.framework */; };
+		C7F1DA3E224921FF00E1AF84 /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA3D224921FF00E1AF84 /* Kingfisher.framework */; };
+		C7F1DA402249220900E1AF84 /* Moya.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA3F2249220900E1AF84 /* Moya.framework */; };
+		C7F1DA422249221200E1AF84 /* ReactiveMoya.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA412249221200E1AF84 /* ReactiveMoya.framework */; };
+		C7F1DA442249221800E1AF84 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA432249221700E1AF84 /* ReactiveSwift.framework */; };
+		C7F1DA462249222400E1AF84 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA452249222300E1AF84 /* RealmSwift.framework */; };
+		C7F1DA482249222900E1AF84 /* Regex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA472249222900E1AF84 /* Regex.framework */; };
+		C7F1DA4A2249222E00E1AF84 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA492249222E00E1AF84 /* Result.framework */; };
+		C7F1DA4C2249223500E1AF84 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA4B2249223500E1AF84 /* SnapKit.framework */; };
+		C7F1DA4F22492A4600E1AF84 /* IQKeyboardManagerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA4D22492A4600E1AF84 /* IQKeyboardManagerSwift.framework */; };
+		C7F1DA5022492A4600E1AF84 /* IQKeyboardManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA4E22492A4600E1AF84 /* IQKeyboardManager.framework */; };
+		C7F1DA5B22492DC000E1AF84 /* FolioReaderKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7C63EAF209946A50093CC02 /* FolioReaderKit.framework */; };
+		C7F1DA5C22492DC000E1AF84 /* FolioReaderKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C7C63EAF209946A50093CC02 /* FolioReaderKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C7FA5428223476BD006F94C7 /* DictViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FA5427223476BD006F94C7 /* DictViewController.swift */; };
 		C7FC188F2239D748007172ED /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FC188E2239D748007172ED /* Book.swift */; };
 		C7FC18952239E4E5007172ED /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FC18942239E4E5007172ED /* API.swift */; };
@@ -127,6 +130,13 @@
 			remoteGlobalIDString = B0D699151D035FA2003B4CCD;
 			remoteInfo = FolioReaderKitTests;
 		};
+		C7F1DA5D22492DC000E1AF84 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C7C63EA9209946A50093CC02 /* FolioReaderKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = B0D6990A1D035FA2003B4CCD;
+			remoteInfo = FolioReaderKit;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -138,6 +148,17 @@
 			files = (
 			);
 			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C7F1DA5F22492DC100E1AF84 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C7F1DA5C22492DC000E1AF84 /* FolioReaderKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -167,8 +188,6 @@
 		C74CEFE6208C89A1002765D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C757D2C12247A1D80050E0A2 /* BookMainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMainTableViewCell.swift; sourceTree = "<group>"; };
 		C757D2C62247A7450050E0A2 /* BookShopTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookShopTableViewCell.swift; sourceTree = "<group>"; };
-		C757D2C82247AD310050E0A2 /* IQKeyboardManager.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IQKeyboardManager.framework; path = Carthage/Build/iOS/IQKeyboardManager.framework; sourceTree = "<group>"; };
-		C757D2CA2247AD340050E0A2 /* IQKeyboardManagerSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IQKeyboardManagerSwift.framework; path = Carthage/Build/iOS/IQKeyboardManagerSwift.framework; sourceTree = "<group>"; };
 		C757D2CE2247C1140050E0A2 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		C757D2D02247D5A10050E0A2 /* ContentTypeIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTypeIconView.swift; sourceTree = "<group>"; };
 		C757D2D22247D7690050E0A2 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
@@ -220,25 +239,25 @@
 		C7D915C42240E2D50073E860 /* EpubViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpubViewControllerExtension.swift; sourceTree = "<group>"; };
 		C7D915C82240FAA60073E860 /* HorizontalPageLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalPageLayout.swift; sourceTree = "<group>"; };
 		C7E242E8224721A5000892D0 /* StoreBookDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreBookDetailViewController.swift; sourceTree = "<group>"; };
-		C7E2432D22474C22000892D0 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Static/Alamofire.framework; sourceTree = "<group>"; };
-		C7E2432F22474C24000892D0 /* CHIPageControl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CHIPageControl.framework; path = Carthage/Build/iOS/Static/CHIPageControl.framework; sourceTree = "<group>"; };
-		C7E2433122474C26000892D0 /* Cosmos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cosmos.framework; path = Carthage/Build/iOS/Static/Cosmos.framework; sourceTree = "<group>"; };
-		C7E2433322474C2A000892D0 /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Static/Kingfisher.framework; sourceTree = "<group>"; };
-		C7E243372247547C000892D0 /* Moya.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Moya.framework; path = Carthage/Build/iOS/Static/Moya.framework; sourceTree = "<group>"; };
-		C7E243392247547E000892D0 /* ReactiveMoya.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveMoya.framework; path = Carthage/Build/iOS/Static/ReactiveMoya.framework; sourceTree = "<group>"; };
-		C7E2433B22475480000892D0 /* ReactiveSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveSwift.framework; path = Carthage/Build/iOS/Static/ReactiveSwift.framework; sourceTree = "<group>"; };
-		C7E2433D22475483000892D0 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/Static/RealmSwift.framework; sourceTree = "<group>"; };
-		C7E2433F22475488000892D0 /* Regex.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Regex.framework; path = Carthage/Build/iOS/Static/Regex.framework; sourceTree = "<group>"; };
-		C7E243412247548C000892D0 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Static/Result.framework; sourceTree = "<group>"; };
-		C7E2434322475490000892D0 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/Static/SnapKit.framework; sourceTree = "<group>"; };
-		C7E243492247558B000892D0 /* FontBlaster.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FontBlaster.framework; path = Carthage/Build/iOS/FontBlaster.framework; sourceTree = "<group>"; };
 		C7E2434B22475591000892D0 /* QuickLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLayout.framework; path = Carthage/Build/iOS/QuickLayout.framework; sourceTree = "<group>"; };
 		C7E2434D22475593000892D0 /* Reachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reachability.framework; path = Carthage/Build/iOS/Reachability.framework; sourceTree = "<group>"; };
 		C7E2434F2247559C000892D0 /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = Carthage/Build/iOS/SQLite.framework; sourceTree = "<group>"; };
 		C7E243512247559D000892D0 /* SwiftEntryKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftEntryKit.framework; path = Carthage/Build/iOS/SwiftEntryKit.framework; sourceTree = "<group>"; };
-		C7E24398224766CB000892D0 /* BLTNBoard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BLTNBoard.framework; path = Carthage/Build/iOS/Static/BLTNBoard.framework; sourceTree = "<group>"; };
 		C7E243A322477EEF000892D0 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
 		C7E243AB2247880E000892D0 /* Cosmos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cosmos.framework; path = Carthage/Build/iOS/Cosmos.framework; sourceTree = "<group>"; };
+		C7F1DA37224921E900E1AF84 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		C7F1DA39224921F000E1AF84 /* BLTNBoard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BLTNBoard.framework; path = Carthage/Build/iOS/BLTNBoard.framework; sourceTree = "<group>"; };
+		C7F1DA3B224921F700E1AF84 /* CHIPageControl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CHIPageControl.framework; path = Carthage/Build/iOS/CHIPageControl.framework; sourceTree = "<group>"; };
+		C7F1DA3D224921FF00E1AF84 /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
+		C7F1DA3F2249220900E1AF84 /* Moya.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Moya.framework; path = Carthage/Build/iOS/Moya.framework; sourceTree = "<group>"; };
+		C7F1DA412249221200E1AF84 /* ReactiveMoya.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveMoya.framework; path = Carthage/Build/iOS/ReactiveMoya.framework; sourceTree = "<group>"; };
+		C7F1DA432249221700E1AF84 /* ReactiveSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveSwift.framework; path = Carthage/Build/iOS/ReactiveSwift.framework; sourceTree = "<group>"; };
+		C7F1DA452249222300E1AF84 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
+		C7F1DA472249222900E1AF84 /* Regex.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Regex.framework; path = Carthage/Build/iOS/Regex.framework; sourceTree = "<group>"; };
+		C7F1DA492249222E00E1AF84 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
+		C7F1DA4B2249223500E1AF84 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
+		C7F1DA4D22492A4600E1AF84 /* IQKeyboardManagerSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IQKeyboardManagerSwift.framework; path = Carthage/Build/iOS/IQKeyboardManagerSwift.framework; sourceTree = "<group>"; };
+		C7F1DA4E22492A4600E1AF84 /* IQKeyboardManager.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IQKeyboardManager.framework; path = Carthage/Build/iOS/IQKeyboardManager.framework; sourceTree = "<group>"; };
 		C7FA5427223476BD006F94C7 /* DictViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictViewController.swift; sourceTree = "<group>"; };
 		C7FC188E2239D748007172ED /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		C7FC18942239E4E5007172ED /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
@@ -260,24 +279,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7F1DA5B22492DC000E1AF84 /* FolioReaderKit.framework in Frameworks */,
+				C7F1DA3E224921FF00E1AF84 /* Kingfisher.framework in Frameworks */,
 				C7E2431E22474B62000892D0 /* FolioReaderKit.framework in Frameworks */,
-				C7E2433A2247547F000892D0 /* ReactiveMoya.framework in Frameworks */,
-				C7E2433222474C26000892D0 /* Cosmos.framework in Frameworks */,
-				C757D2CB2247AD340050E0A2 /* IQKeyboardManagerSwift.framework in Frameworks */,
-				C7E2434022475488000892D0 /* Regex.framework in Frameworks */,
-				C757D2C92247AD310050E0A2 /* IQKeyboardManager.framework in Frameworks */,
-				C7E2434A2247558B000892D0 /* FontBlaster.framework in Frameworks */,
-				C7E2436222475727000892D0 /* Result.framework in Frameworks */,
-				C7E2439B224766CB000892D0 /* BLTNBoard.framework in Frameworks */,
+				C7F1DA462249222400E1AF84 /* RealmSwift.framework in Frameworks */,
 				C7E243A422477EEF000892D0 /* Realm.framework in Frameworks */,
-				C7E2439D224767F0000892D0 /* Kingfisher.framework in Frameworks */,
+				C7F1DA402249220900E1AF84 /* Moya.framework in Frameworks */,
+				C7F1DA5022492A4600E1AF84 /* IQKeyboardManager.framework in Frameworks */,
 				C7E2434E22475593000892D0 /* Reachability.framework in Frameworks */,
-				C7E2436022475723000892D0 /* SnapKit.framework in Frameworks */,
+				C7F1DA442249221800E1AF84 /* ReactiveSwift.framework in Frameworks */,
 				C7E243522247559D000892D0 /* SwiftEntryKit.framework in Frameworks */,
+				C7F1DA4C2249223500E1AF84 /* SnapKit.framework in Frameworks */,
+				C7F1DA3C224921F700E1AF84 /* CHIPageControl.framework in Frameworks */,
+				C7F1DA38224921E900E1AF84 /* Alamofire.framework in Frameworks */,
+				C7F1DA482249222900E1AF84 /* Regex.framework in Frameworks */,
+				C7F1DA4A2249222E00E1AF84 /* Result.framework in Frameworks */,
 				C7E243502247559C000892D0 /* SQLite.framework in Frameworks */,
 				C7E2434C22475591000892D0 /* QuickLayout.framework in Frameworks */,
-				C7E2433C22475481000892D0 /* ReactiveSwift.framework in Frameworks */,
-				C7E243722247573F000892D0 /* Alamofire.framework in Frameworks */,
+				C7F1DA3A224921F000E1AF84 /* BLTNBoard.framework in Frameworks */,
+				C7F1DA4F22492A4600E1AF84 /* IQKeyboardManagerSwift.framework in Frameworks */,
+				C7F1DA422249221200E1AF84 /* ReactiveMoya.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,27 +308,25 @@
 		702F24C22323D91C0487792D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C757D2CA2247AD340050E0A2 /* IQKeyboardManagerSwift.framework */,
-				C757D2C82247AD310050E0A2 /* IQKeyboardManager.framework */,
+				C7F1DA4E22492A4600E1AF84 /* IQKeyboardManager.framework */,
+				C7F1DA4D22492A4600E1AF84 /* IQKeyboardManagerSwift.framework */,
+				C7F1DA4B2249223500E1AF84 /* SnapKit.framework */,
+				C7F1DA492249222E00E1AF84 /* Result.framework */,
+				C7F1DA472249222900E1AF84 /* Regex.framework */,
+				C7F1DA452249222300E1AF84 /* RealmSwift.framework */,
+				C7F1DA432249221700E1AF84 /* ReactiveSwift.framework */,
+				C7F1DA412249221200E1AF84 /* ReactiveMoya.framework */,
+				C7F1DA3F2249220900E1AF84 /* Moya.framework */,
+				C7F1DA3D224921FF00E1AF84 /* Kingfisher.framework */,
+				C7F1DA3B224921F700E1AF84 /* CHIPageControl.framework */,
+				C7F1DA39224921F000E1AF84 /* BLTNBoard.framework */,
+				C7F1DA37224921E900E1AF84 /* Alamofire.framework */,
 				C7E243AB2247880E000892D0 /* Cosmos.framework */,
 				C7E243A322477EEF000892D0 /* Realm.framework */,
-				C7E24398224766CB000892D0 /* BLTNBoard.framework */,
 				C7E243512247559D000892D0 /* SwiftEntryKit.framework */,
 				C7E2434F2247559C000892D0 /* SQLite.framework */,
 				C7E2434D22475593000892D0 /* Reachability.framework */,
 				C7E2434B22475591000892D0 /* QuickLayout.framework */,
-				C7E243492247558B000892D0 /* FontBlaster.framework */,
-				C7E2434322475490000892D0 /* SnapKit.framework */,
-				C7E243412247548C000892D0 /* Result.framework */,
-				C7E2433F22475488000892D0 /* Regex.framework */,
-				C7E2433D22475483000892D0 /* RealmSwift.framework */,
-				C7E2433B22475480000892D0 /* ReactiveSwift.framework */,
-				C7E243392247547E000892D0 /* ReactiveMoya.framework */,
-				C7E243372247547C000892D0 /* Moya.framework */,
-				C7E2433322474C2A000892D0 /* Kingfisher.framework */,
-				C7E2433122474C26000892D0 /* Cosmos.framework */,
-				C7E2432F22474C24000892D0 /* CHIPageControl.framework */,
-				C7E2432D22474C22000892D0 /* Alamofire.framework */,
 				C7C63EA9209946A50093CC02 /* FolioReaderKit.xcodeproj */,
 			);
 			name = Frameworks;
@@ -605,10 +624,12 @@
 				C74CEFD2208C899F002765D6 /* Resources */,
 				C7C57B22208E96D300C992CF /* Embed App Extensions */,
 				C7E2431722473C40000892D0 /* ShellScript */,
+				C7F1DA5F22492DC100E1AF84 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				C7F1DA5E22492DC000E1AF84 /* PBXTargetDependency */,
 			);
 			name = app;
 			productName = app;
@@ -705,11 +726,26 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Reachability.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftEntryKit.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SQLite.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/FontBlaster.framework",
+				"$(SRCROOT)/FolioReaderKit/Carthage/Build/iOS/FontBlaster.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Realm.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Cosmos.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/IQKeyboardManager.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/IQKeyboardManagerSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Kingfisher.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Moya.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/ReactiveMoya.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/ReactiveSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Regex.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SnapKit.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/BLTNBoard.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/CHIPageControl.framework",
+				"$(SRCROOT)/FolioReaderKit/Carthage/Build/iOS/AEXML.framework",
+				"$(SRCROOT)/FolioReaderKit/Carthage/Build/iOS/MenuItemKit.framework",
+				"$(SRCROOT)/FolioReaderKit/Carthage/Build/iOS/ZFDragableModalTransition.framework",
+				"$(SRCROOT)/FolioReaderKit/Carthage/Build/iOS/ZipArchive.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/RealmSwift.framework",
 			);
 			outputFileListPaths = (
 			);
@@ -723,6 +759,21 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Cosmos.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/IQKeyboardManager.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/IQKeyboardManagerSwift.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Kingfisher.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Moya.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/ReactiveMoya.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/ReactiveSwift.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Regex.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Result.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SnapKit.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Alamofire.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/BLTNBoard.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/CHIPageControl.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/AEXML.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/MenuItemKit.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/ZFDragableModalTransition.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/ZipArchive.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RealmSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -818,6 +869,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C7F1DA5E22492DC000E1AF84 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FolioReaderKit;
+			targetProxy = C7F1DA5D22492DC000E1AF84 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		C74CEFDB208C899F002765D6 /* Main.storyboard */ = {
@@ -960,6 +1019,7 @@
 		C74CEFEA208C89A1002765D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_CODE_COVERAGE = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = App/app.entitlements;
@@ -991,6 +1051,7 @@
 		C74CEFEB208C89A1002765D6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_CODE_COVERAGE = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = App/app.entitlements;
