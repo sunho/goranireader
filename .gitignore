@@ -14,7 +14,7 @@ Carthage
 /backend/dataserver/miner/libs
 /backend/dataserver/dist
 /backend/dataserver/in
-
+/backend/dataserver/logs
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -66,3 +66,9 @@ coverage.xml
 *.cover
 .hypothesis/
 .pytest_cache/
+
+airflow.cfg
+airflow.db
+airflow.db-journal
+airflow-webserver.pid
+unittests.cfg

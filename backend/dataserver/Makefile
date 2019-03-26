@@ -1,11 +1,10 @@
 SPARKSUBMIT := ~/spark/bin/spark-submit
-
 .venv:
 	if [ ! -e ".venv/bin/activate_this.py" ] ; then virtualenv --clear .venv ; fi
 
-deps: .venv
-	. .venv/bin/activate && pip install -U -r ./requirements.txt -t ./miner/libs 
-	. .venv/bin/activate && pip install -U -r ./requirements-miner.txt -t ./miner/libs
+dev-deps: .venv
+	. .venv/bin/activate && pip install -U -r ./requirements.txt
+	. .venv/bin/activate && pip install -U -r ./requirements-miner.txt
 
 clean: clean-build clean-pyc
 
@@ -25,6 +24,9 @@ build: clean
 	zip -r ./dist/miner.zip ./miner
 	zip -r ./dist/common.zip ./common
 
-run:
+dev: .venv
 	zip -r ./dist/in.zip ./in
-	$(SPARKSUBMIT) --master spark://localhost:7077 --py-files ./dist/main.py,./dist/miner.zip,./dist/common.zip,./dist/in.zip main.py epubtodata --all
+	. .venv/bin/activate && $(SPARKSUBMIT) --master spark://localhost:7077 --py-files ./dist/main.py,./dist/miner.zip,./dist/common.zip --archives ./dist/in.zip main.py ${ARGS}
+
+# TODO
+run: dev 
