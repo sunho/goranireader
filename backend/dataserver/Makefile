@@ -20,13 +20,16 @@ clean-pyc:
 
 build: clean
 	mkdir ./dist
-	cp ./main.py ./dist
-	zip -r ./dist/miner.zip ./miner
+	cp ./workercli.py ./dist
+	zip -r ./dist/worker.zip ./worker
 	zip -r ./dist/common.zip ./common
 
 dev: .venv
 	zip -r ./dist/in.zip ./in
-	. .venv/bin/activate && $(SPARKSUBMIT) --master spark://localhost:7077 --py-files ./dist/main.py,./dist/miner.zip,./dist/common.zip --archives ./dist/in.zip main.py ${ARGS}
+	. .venv/bin/activate && $(SPARKSUBMIT) --master spark://localhost:7077 --py-files ./dist/workercli.py,./dist/worker.zip,./dist/common.zip --archives ./dist/in.zip workercli.py ${ARGS}
 
 # TODO
-run: dev 
+run-spark: dev
+
+run: .venv
+	. .venv/bin/activate && python workercli.py ${ARGS}

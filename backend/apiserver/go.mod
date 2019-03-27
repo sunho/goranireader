@@ -35,7 +35,8 @@ require (
 	go.uber.org/dig v1.6.0
 	go.uber.org/multierr v1.1.0 // indirect
 	go.uber.org/zap v1.9.1
-	golang.org/x/crypto v0.0.0-20190130090550-b01c7a725664
+	golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2
+	golang.org/x/net v0.0.0-20190327091125-710a502c58a2 // indirect
 	golang.org/x/sync v0.0.0-20181108010431-42b317875d0f // indirect
 	gopkg.in/ini.v1 v1.39.1 // indirect
 )
