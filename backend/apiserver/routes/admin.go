@@ -6,8 +6,10 @@ import (
 	"gorani/models/dbmodels"
 	"gorani/models/sens"
 	"gorani/servs/fileserv"
+	"gorani/utils"
 	"mime"
 
+	"github.com/gobuffalo/nulls"
 	"github.com/labstack/echo"
 
 	"github.com/sunho/dim"
@@ -68,12 +70,40 @@ func (a *Admin) BookFromEpub(c2 echo.Context) error {
 	}
 
 	book := dbmodels.Book{
-		ISBN:   "asdf",
-		Name:   b.Name,
-		Author: b.Author,
-		Cover:  cover,
+		ISBN:       "asdf",
+		Name:       b.Name,
+		Author:     b.Author,
+		Cover:      cover,
+		Categories: utils.SQLStrings{},
 	}
+
 	err = c.Tx.Eager().Create(&book)
+	if err != nil {
+		return err
+	}
+
+	c.BookParam = book
+	// TODO separate
+
+	f, err = c.FormFile("file")
+	if err != nil {
+		return err
+	}
+
+	r, err = f.Open()
+	if err != nil {
+		return err
+	}
+	defer r.Close()
+
+	url, err := a.File.UploadFileHeader(f)
+	if err != nil {
+		return err
+	}
+
+	c.BookParam.Epub.Epub = nulls.NewString(url)
+
+	err = c.Tx.Update(&c.BookParam.Epub)
 	if err != nil {
 		return err
 	}

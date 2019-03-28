@@ -4,23 +4,26 @@ fileprivate let MaxChar = 120
 fileprivate let height: CGFloat = 200
 fileprivate let padding: CGFloat = 0
 
+protocol DictViewControllerDelegate {
+    func dictViewControllerDidSelect(_ dictViewController: DictViewController, _ tuple: UnknownDefinitionTuple, _ word: DictEntry, _ def: DictDefinition)
+}
+
 class DictViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var wordView: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
     fileprivate var hidden: Bool = true
-    fileprivate var word: String = ""
-    fileprivate var sentence: String = ""
-    fileprivate var index: Int = 0
+    fileprivate var tuple: UnknownDefinitionTuple?
 
-    
     fileprivate let topY: CGFloat = 0
     fileprivate let topHiddenY = -height
     fileprivate let bottomY = UIScreen.main.bounds.height - height
     fileprivate let bottomHiddenY = UIScreen.main.bounds.height
     
-    var entry: DictEntry!
+    var delegate: DictViewControllerDelegate?
+    
+    var entry: DictEntry?
     
     func addViewToWindow() {
         let window = UIApplication.shared.keyWindow!
@@ -34,10 +37,18 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         view.isHidden = true
+        
+        tableView.register(RoundOptionCell.self, forCellReuseIdentifier: "cell")
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 60
+        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
     }
     
-    func show(_ point: CGPoint, word: String, sentence: String, index: Int, bookId: Int) {
-        let entries = DictService.shared.search(word: word)
+    func show(_ point: CGPoint, _ tuple: UnknownDefinitionTuple) {
+        self.tuple = tuple
+        let entries = DictService.shared.search(word: tuple.word)
         if entries.count == 0 {
             return
         }
@@ -45,10 +56,11 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
         entry = entries[0]
         reloadData()
     
-        let centerY = UIScreen.main.bounds.height/2 - height / 2
+        let centerY = UIScreen.main.bounds.height/2
         var oldy: CGFloat = 0
         var newy: CGFloat = 0
-        if point.y  < centerY - 100 {
+        print(point)
+        if point.y  < centerY {
             // bottom
             oldy = bottomHiddenY
             newy = bottomY
@@ -70,7 +82,7 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func reloadData() {
-        wordView.text = entry.word
+        wordView.text = entry?.word ?? ""
         tableView.reloadData()
     }
     
@@ -90,24 +102,23 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.entry.defs.count
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 58
+        if entry == nil {
+            return 0
+        }
+        return self.entry!.defs.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let entry = self.entries[indexPath.section].defs[indexPath.row]
-        
-//        let cell = self.tableView.dequeueReusableCell(withIdentifier: kDictViewTableCell, for: indexPath) as! DictViewTableCell
-//        cell.backgroundColor = UIColor.clear
-//        cell.label.text = entry.def
-        
-        return UITableViewCell()
+        let item = self.entry!.defs[indexPath.row]
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! RoundOptionCell
+        cell.normalColor = Color.white
+        cell.indexView.text = "\(indexPath.row + 1)"
+        cell.textView.text = item.def
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        delegate?.dictViewControllerDidSelect(self, tuple!, entry!, entry!.defs[indexPath.row])
         hide()
     }
 }

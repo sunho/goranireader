@@ -63,12 +63,13 @@ func (r *Recommend) GetBooks(c2 echo.Context) error {
 
 func (r *Recommend) PutRate(c2 echo.Context) error {
 	c := c2.(*models.Context)
-	var rate dbmodels.RecommendBookRate
+	var rate dbmodels.Rate
 	if err := c.Bind(&rate); err != nil {
 		return err
 	}
 	rate.UserID = c.User.ID
-	rate.BookID = c.BookParam.ID
+	rate.Kind = "recommended_book"
+	rate.TargetID = c.BookParam.ID
 
 	err := r.DB.Upsert(c.Tx, &rate)
 	if err != nil {

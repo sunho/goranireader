@@ -1,6 +1,7 @@
 package dbmodels
 
 import (
+	"gorani/utils"
 	"time"
 
 	"github.com/gofrs/uuid"
@@ -9,19 +10,19 @@ import (
 )
 
 type Book struct {
-	ID          int          `db:"id" json:"id" pk:"true"`
-	CreatedAt   time.Time    `db:"created_at" json:"created_at"`
-	UpdatedAt   time.Time    `db:"updated_at" json:"updated_at"`
-	Description string       `db:"description" json:"description"`
-	ISBN        string       `db:"isbn" json:"isbn"`
-	Name        string       `db:"name" json:"name"`
-	NativeName  nulls.String `db:"native_name" json:"native_name"`
-	Author      string       `db:"author" json:"author"`
-	Cover       string       `db:"cover" json:"cover"`
-	Epub        BookEpub     `has_one:"book_epub" json:"epub"`
-	Sens        BookSens     `has_one:"book_sens" json:"sens"`
-	Rate        float64      `db:"rate" json:"rate"`
-	Categories  []string     `json:"categories"`
+	ID          int              `db:"id" json:"id" pk:"true"`
+	CreatedAt   time.Time        `db:"created_at" json:"created_at"`
+	UpdatedAt   time.Time        `db:"updated_at" json:"updated_at"`
+	Description string           `db:"description" json:"description"`
+	ISBN        string           `db:"isbn" json:"isbn"`
+	Name        string           `db:"name" json:"name"`
+	NativeName  nulls.String     `db:"native_name" json:"native_name"`
+	Author      string           `db:"author" json:"author"`
+	Cover       string           `db:"cover" json:"cover"`
+	Epub        BookEpub         `has_one:"book_epub" json:"epub"`
+	Sens        BookSens         `has_one:"book_sens" json:"sens"`
+	Rate        float64          `db:"rate" json:"rate"`
+	Categories  utils.SQLStrings `db:"categories" json:"categories"`
 }
 
 type BookEpub struct {

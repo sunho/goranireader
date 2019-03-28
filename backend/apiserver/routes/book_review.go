@@ -24,7 +24,6 @@ func (b *BookReview) Register(d *dim.Group) {
 		d.GET("", b.Get)
 		d.PUT("", b.Put)
 		d.DELETE("", b.Delete)
-		d.PUT("/rate", b.PutRate)
 	}, &middles.ReviewParamMiddle{})
 }
 
@@ -87,22 +86,6 @@ func (b *BookReview) Delete(c2 echo.Context) error {
 		return echo.NewHTTPError(403, "That's not your review")
 	}
 	err := c.Tx.Destroy(c.ReviewParam)
-	if err != nil {
-		return err
-	}
-	return c.NoContent(200)
-}
-
-func (b *BookReview) PutRate(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	var rate dbmodels.ReviewRate
-	if err := c.Bind(&rate); err != nil {
-		return err
-	}
-	rate.UserID = c.User.ID
-	rate.ReviewID = c.ReviewParam.ID
-
-	err := b.DB.Upsert(c.Tx, &rate)
 	if err != nil {
 		return err
 	}

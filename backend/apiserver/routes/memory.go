@@ -93,12 +93,13 @@ func (m *Memory) Delete(c2 echo.Context) error {
 
 func (m *Memory) PutRate(c2 echo.Context) error {
 	c := c2.(*models.Context)
-	var rate dbmodels.MemoryRate
+	var rate dbmodels.Rate
 	if err := c.Bind(&rate); err != nil {
 		return err
 	}
 	rate.UserID = c.User.ID
-	rate.MemoryID = c.MemoryParam.ID
+	rate.TargetID = c.MemoryParam.ID
+	rate.Kind = "memory"
 	err := m.DB.Upsert(c.Tx, &rate)
 	if err != nil {
 		return err

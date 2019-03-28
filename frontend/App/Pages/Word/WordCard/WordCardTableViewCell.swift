@@ -8,8 +8,6 @@
 
 import UIKit
 
-
-
 class WordCardTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource {
     let space: CGFloat = 8
     
@@ -62,6 +60,12 @@ class WordCardTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDa
         }
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.contentView.layoutIfNeeded()
+        self.definitionView.preferredMaxLayoutWidth = self.definitionView.frame.size.width
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = self.examples[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! WordCardExampleTableViewCell
@@ -92,7 +96,6 @@ class WordCardTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDa
                 make.edges.equalToSuperview()
             }
         }
-        
     }
     
     func updateState(_ detail: Bool) {

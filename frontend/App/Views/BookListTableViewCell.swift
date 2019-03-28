@@ -14,7 +14,6 @@ class BookListTableViewCell: UITableViewCell {
     var name: String = "" {
         didSet {
             nameView.text = name
-            setNeedsLayout()
         }
     }
     
@@ -51,7 +50,7 @@ class BookListTableViewCell: UITableViewCell {
         
         selectedBackgroundView?.backgroundColor = Color.gray
         
-        let margin = UIEdgeInsets(top: 12, left: 8, bottom: 12, right: 8)
+        let margin = UIEdgeInsets(top: 12, left: 24, bottom: 12, right: 24)
         container = PaddingMarginView()
         container.margin = margin
         container.layout()
@@ -101,6 +100,12 @@ class BookListTableViewCell: UITableViewCell {
             typeStackView.addArrangedSubview(ContentTypeIconView(type: type))
         }
         typeStackView.layoutIfNeeded()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.contentView.layoutIfNeeded()
+        self.nameView.preferredMaxLayoutWidth = self.nameView.frame.size.width
     }
     
     func setCover(with: Source?) {

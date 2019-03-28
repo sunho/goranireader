@@ -6,13 +6,13 @@ import UIKit
 protocol CardSliderDelegate {
     func cardSlider(_ cardSlider: CardSlider, itemAt: Int) -> CardView
     func cardSlider(_ cardSlider: CardSlider, numberOfItems: ()) -> Int
-    func cardSliderDidProceed(_ cardSlider: CardSlider, index: Int, option: CardOption)
+    func cardSliderDidProceed(_ cardSlider: CardSlider, index: Int, option: CardAnswerQuality)
     func cardSliderDidClear(_ cardSlider: CardSlider)
     func cardSliderShouldSlide(_ cardSlider: CardSlider) -> Bool
 }
 
 extension CardSliderDelegate {
-    func cardSliderDidProceed(_ cardSlider: CardSlider, option: CardOption) {}
+    func cardSliderDidProceed(_ cardSlider: CardSlider, option: CardAnswerQuality) {}
     func cardSliderDidClear(_ cardSlider: CardSlider) {}
     func cardSliderShouldSlide(_ cardSlider: CardSlider) -> Bool { return true }
 }
@@ -28,7 +28,7 @@ class CardSlider: UIView {
     fileprivate var cardOptionIndicator: CardOptionIndicator!
     fileprivate let cardAttributes: [(downscale: CGFloat, alpha: CGFloat)] = [(1, 1), (0.92, 0.8), (0.84, 0.6), (0.76, 0.4)]
     fileprivate let cardInteritemSpacing: CGFloat = 15
-    fileprivate var currentOption: CardOption?
+    fileprivate var currentOption: CardAnswerQuality?
     
     init(frame: CGRect, delegate: CardSliderDelegate) {
         super.init(frame: frame)
@@ -37,26 +37,33 @@ class CardSlider: UIView {
         dynamicAnimator = UIDynamicAnimator(referenceView: self)
         cardOptionIndicator = CardOptionIndicator(frame: self.frame)
         self.addSubview(cardOptionIndicator)
-
-        setupCards()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setupCards() {
+    func reload() {
+        for i in 0...3 {
+            if i >= cards.count { break }
+            cards[i].removeFromSuperview()
+        }
+        
+        currentOption = nil
+        cardIsHiding = false
+        cards = []
+        
         let len = delegate.cardSlider(self, numberOfItems: ())
         if len == 0 {
             return
         }
+        
         for i in 0..<len {
             let card = delegate.cardSlider(self, itemAt: i)
             card.index = i
             card.isUserInteractionEnabled = false
             cards.append(card)
         }
-        
         
         let firstCard = cards[0]
         self.addSubview(firstCard)
@@ -284,4 +291,7 @@ class CardSlider: UIView {
         }
     }
 
+    func clear() {
+        
+    }
 }

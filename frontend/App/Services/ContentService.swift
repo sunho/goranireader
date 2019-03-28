@@ -97,8 +97,8 @@ class ContentService {
                     guard let epub = try? FREpubParser().readEpub(bookBasePath: path) else {
                         continue
                     }
-                    //TODO
-                    out.append(DownloadedContent(epub: epub, id: key.id, updatedAt: Date(), path: path, progress: 0))
+                    let progress = RealmService.shared.getEpubProgress(key.id)
+                    out.append(DownloadedContent(epub: epub, id: key.id, updatedAt: progress.updatedAt, path: path, progress: progress.progress))
                 case .sens:
                     guard let sens = try? Sens(path: path) else {
                         continue

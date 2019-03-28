@@ -18,8 +18,7 @@ enum API {
     case rateReview(bookId: Int, reviewId: Int, rate: Int)
     
     case listMemories(word: String, p: Int)
-    case createMemory(word: String, memory: Memory)
-    case updateMemory(word: String, memory: Memory)
+    case createMemory(word: String, sentence: String)
     case deleteMemory(word: String)
     case getMyMemory(word: String)
     case rateMemory(word: String, memoryId: Int, rate: Int)
@@ -35,12 +34,6 @@ enum API {
     case updateRecommendInfo(info: RecommendInfo)
     case listRecommendedBooks
     case rateRecommendedBook(bookId: Int, rate: Int)
-    
-    case addKnownWord(word: String)
-    case subtractKnownWord(word: String)
-    
-    case listSensProgresses
-    case updateSensProgress(progress: SensProgress)
     
     case listSensResults
     case updateSensResult(result: SensResult)
@@ -83,8 +76,6 @@ extension API: TargetType {
             return "/memory/\(word)"
         case .createMemory(let word, _):
             return "/memroy/\(word)"
-        case .updateMemory(let word, _):
-            return "/memory/\(word)/my"
         case .deleteMemory(let word):
             return "/memory/\(word)/my"
         case .getMyMemory(let word):
@@ -109,14 +100,6 @@ extension API: TargetType {
             return "/recommend/book"
         case .rateRecommendedBook(let id):
             return "/recommend/book/\(id)/rate"
-        case .addKnownWord(let word):
-            return "/word/nword/\(word)"
-        case .subtractKnownWord(let word):
-            return "/word/nword/\(word)"
-        case .listSensProgresses:
-            return "/progress/sens"
-        case .updateSensProgress(let progress):
-            return "/progress/sens/\(progress.bookId)"
         case .listSensResults:
             return "/result/sens"
         case .updateSensResult(let result):
@@ -140,15 +123,15 @@ extension API: TargetType {
             return .get
         case .listReviews, .listMemories, .getMyReview, .listBooks, .getMyMemory, .listCategories,
              .getShopBook, .searchShopBooks, .listRecommendedBooks, .getRecommendInfo,
-             .listSensProgresses, .listQuizResults, .listSensResults, .checkAuth:
+             .listQuizResults, .listSensResults, .checkAuth:
             return .get
         case .createReview, .createMemory, .buyShopBook, .register, .login:
             return .post
-        case .updateReview, .rateReview, .updateMemory, .rateMemory, .updateRecommendInfo,
-             .rateRecommendedBook, .addKnownWord, .updateSensProgress,
+        case .updateReview, .rateReview, .rateMemory, .updateRecommendInfo,
+             .rateRecommendedBook,
              .updateQuizResult, .updateSensResult:
             return .put
-        case .deleteReview, .deleteMemory, .subtractKnownWord:
+        case .deleteReview, .deleteMemory:
             return .delete
         }
     }
@@ -169,7 +152,7 @@ extension API: TargetType {
             return .downloadDestination(downloadDestination)
         case .listReviews(_, let p), .listMemories(_, let p):
             return .requestParameters(parameters: ["p": p], encoding: URLEncoding.default)
-        case .createMemory(_, let body), .updateMemory(_, let body):
+        case .createMemory(_, let body):
             return .requestJSONEncodable(body)
         case .createReview(_, let body), .updateReview(_, let body):
             return .requestJSONEncodable(body)
@@ -179,8 +162,6 @@ extension API: TargetType {
             return .requestJSONEncodable(["rate": rate])
         case .searchShopBooks(let name, let p):
             return .requestParameters(parameters: ["name": name, "p": p], encoding: URLEncoding.default)
-        case .updateSensProgress(let progress):
-            return .requestJSONEncodable(progress)
         case .updateSensResult(let result):
             return .requestJSONEncodable(result)
         case .updateQuizResult(let result):
@@ -191,8 +172,8 @@ extension API: TargetType {
             return .requestJSONEncodable(["username": username, "password": password])
         case .getMyReview, .listBooks, .getMyMemory, .listCategories, .getShopBook,
              .listRecommendedBooks, .getRecommendInfo,
-             .listSensProgresses, .listQuizResults, .listSensResults, .buyShopBook,
-             .addKnownWord, .deleteReview, .deleteMemory, .subtractKnownWord, .checkAuth:
+             .listQuizResults, .listSensResults, .buyShopBook,
+             .deleteReview, .deleteMemory, .checkAuth:
             return .requestPlain
         }
     }

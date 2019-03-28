@@ -7,25 +7,28 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct SensProgress: Codable {
-    var bookId: Int
-    var sensId: Int
+class SensProgress: Object {
+    @objc dynamic var bookId: Int = 0
+    @objc dynamic var sensId: Int = 0
+    @objc dynamic var progress: Float = 0
+    @objc dynamic var updatedAt: Date = Date()
     
-    enum CodingKeys: String, CodingKey
-    {
-        case bookId = "book_id"
-        case sensId = "sens_id"
+    override static func primaryKey() -> String? {
+        return "bookId"
     }
 }
 
-struct QuizProgress: Codable {
-    var bookId: Int
-    var quizId: Int
+class EpubProgress: Object {
+    @objc dynamic var bookId: Int = 0
+    @objc dynamic var offsetX: Float = 0
+    @objc dynamic var offsetY: Float = 0
+    @objc dynamic var progress: Float = 0
+    @objc dynamic var pageNumber: Int = 0
+    @objc dynamic var updatedAt: Date = Date()
     
-    enum CodingKeys: String, CodingKey
-    {
-        case bookId = "book_id"
-        case quizId = "quiz_id"
+    override static func primaryKey() -> String? {
+        return "bookId"
     }
 }

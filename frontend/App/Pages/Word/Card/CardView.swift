@@ -3,14 +3,6 @@
 import Foundation
 import UIKit
 
-public enum CardOption: String {
-    case easy = "쉬움"
-    case medium = "중간"
-    
-    case difficult = "어려움"
-    case retry = "다시"
-}
-
 fileprivate let factorX: CGFloat = 0.67 // TODO
 
 class CardView: UIView {
@@ -46,7 +38,7 @@ class CardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func showOptionLabel(option: CardOption) {
+    func showOptionLabel(option: CardAnswerQuality) {
         if option == .easy || option == .medium  {
             
             greenLabel.text = option.rawValue

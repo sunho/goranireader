@@ -10,6 +10,7 @@ import Foundation
 import SwiftEntryKit
 import Moya
 
+// TODO i18n
 class AlertService {
     fileprivate var bottomErrorAttr = EKAttributes()
     static var shared = AlertService()
@@ -33,6 +34,10 @@ class AlertService {
         
         let contentView = EKNotificationMessageView(with: notificationMessage)
         SwiftEntryKit.display(entry: contentView, using: attributes)
+    }
+    
+    func alertErrorMsg(_ msg: String) {
+        alert(attributes: bottomErrorAttr, title: "에러", description: msg)
     }
     
     func alertError(_ error: MoyaError) {

@@ -13,14 +13,8 @@ create table books (
     native_name character varying(1024),
     cover character varying(1024) not null,
     description character varying(4096) not null,
-    rate integer not null
-);
-
-create table books_categories (
-    id uuid not null,
-    book_id integer references books on delete cascade,
-    category_id integer references categories on delete cascade,
-    primary key(book_id, category_id)
+    categories character varying(1024) not null,
+    rate double precision not null
 );
 
 create table book_epubs (
@@ -46,14 +40,6 @@ create table users (
     username character varying(255) not null unique,
     email character varying(255) not null unique,
     password_hash character varying(255) not null
-);
-
-create table sens_progresses (
-    id uuid not null,
-    user_id integer references users on delete cascade,
-    book_id integer references books on delete cascade,
-    sens_id integer not null,
-    primary key(user_id, book_id)
 );
 
 create table sens_results (
@@ -82,14 +68,6 @@ create table reviews (
     rate integer not null
 );
 
-create table review_rates (
-    id uuid not null,
-    review_id integer references reviews on delete cascade,
-    user_id integer references users on delete cascade,
-    rate integer not null,
-    primary key(review_id, user_id)
-);
-
 create table users_books (
     id uuid not null,
     user_id integer references users on delete cascade,
@@ -100,31 +78,24 @@ create table users_books (
 create table recommend_infoes (
     id uuid not null unique,
     user_id integer primary key references users on delete cascade,
-    target_book_id integer
-);
-
-create table recommend_infoes_categories (
-    id uuid not null,
-    recommend_info_id uuid references recommend_infoes(id) on delete cascade,
-    category_id integer references categories on delete cascade,
-    primary key(recommend_info_id, category_id)
+    target_book_id integer,
+    categories character varying(1024)
 );
 
 create table memories (
     id serial primary key,
     user_id integer references users on delete cascade,
-    word character varying(100) references words on delete cascade,
+    word character varying(100),
     sentence character varying(1024),
-    rate integer not null,
+    rate double precision not null,
     unique(user_id, word)
 );
 
-create table memory_rates (
+create table rates (
     id uuid not null,
-    memory_id integer references memories on delete cascade,
-    user_id integer references users on delete cascade,
-    word character varying(100),
+    user_id integer not null references users on delete cascade,
+    target_id integer not null,
+    kind character varying(1024),
     rate integer not null,
-    primary key(memory_id, user_id)
-);
-
+    primary key(target_id, user_id, kind)
+)

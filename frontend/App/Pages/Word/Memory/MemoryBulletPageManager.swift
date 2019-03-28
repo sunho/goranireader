@@ -13,6 +13,8 @@ class MemoryBulletPageManager {
     fileprivate let page = MemoryBulletPage()
     fileprivate var manager: BLTNItemManager
     fileprivate var cloudVC: MemoryCloudViewController
+    fileprivate var uword: UnknownWord?
+    var callback: ((_ memory: String) -> Void)?
     
     init() {
         manager = BLTNItemManager(rootItem: page)
@@ -25,12 +27,13 @@ class MemoryBulletPageManager {
     func prepare() {
     }
 
-    func show(above: UIViewController, word: String) {
+    func show(_ uword: UnknownWord, above: UIViewController) {
         manager.showBulletin(above: above, animated: true, completion: {
+            self.uword = uword
             self.manager.withContentView { contentView in
                 let frame = contentView.superview!.convert(contentView.frame, to: nil)
                 let nframe = CGRect(x: 0, y: UIApplication.shared.statusBarFrame.size.height, width: UIScreen.main.bounds.size.width, height: frame.origin.y - UIApplication.shared.statusBarFrame.size.height)
-                self.showCloudVC(nframe, word)
+                self.showCloudVC(nframe, uword.word)
             }
         })
     }
@@ -51,6 +54,19 @@ class MemoryBulletPageManager {
     
     func didAction(_ item: BLTNItem) {
         let page = item as! MemoryBulletPage
+        let text = page.memoryInput.text ?? ""
+        RealmService.shared.write {
+            uword!.memory = text
+        }
+        APIService.shared.request(.createMemory(word: uword!.word, sentence: text)).start { event in
+            switch event {
+            case .failed(let error):
+                AlertService.shared.alertError(error)
+            default:
+                print(event)
+            }
+        }
+        callback?(text)
         manager.dismissBulletin()
     }
 }

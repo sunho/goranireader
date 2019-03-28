@@ -21,6 +21,7 @@ class SearchResultViewController: UIViewController {
     var isFetching: Bool = false
     var reachEnd: Bool = false
     var books: [Book] = []
+    var ownBooks: [Book] = []
     var p: Int = 0
     
     override func viewDidLoad() {
@@ -31,6 +32,24 @@ class SearchResultViewController: UIViewController {
         tableView.estimatedRowHeight = 160
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
         tableView.register(BookShopTableViewCell.self, forCellReuseIdentifier: "cell")
+        
+        updateOwnBooks()
+    }
+    
+    func updateOwnBooks() {
+        APIService.shared.request(.listBooks)
+            .filterSuccessfulStatusCodes()
+            .map([Book].self)
+            .start { event in
+                DispatchQueue.main.async {
+                    switch event {
+                    case .value(let books):
+                        self.ownBooks = books
+                    default:
+                        print(event)
+                    }
+                }
+            }
     }
     
     func search(_ keyword: String) {
@@ -121,8 +140,10 @@ extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = self.books[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
+        let owned = ownBooks.filter({b in b.id == item.id}).count != 0
         let vc = storyboard?.instantiateViewController(withIdentifier: "StoreBookDetailViewController") as! StoreBookDetailViewController
         vc.book = item
+        vc.owned = owned
         parent?.navigationController?.pushViewController(vc, animated: true)
     }
 }

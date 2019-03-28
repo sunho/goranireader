@@ -16,7 +16,7 @@ extension Date {
     }
     
     var noon: Date {
-        return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: self)!
+        return Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: self)!
     }
     
     var month: Int {
@@ -40,6 +40,22 @@ extension Date {
     
     var dayRange: Range<Date> {
         return self.startOfDay..<self.endOfDay
+    }
+    
+    func addingDays(_ days: Int) -> Date {
+        return Calendar.current.date(byAdding: .day, value: days, to: self)!
+    }
+}
+
+extension UIImage {
+    static func imageWithColor(tintColor: UIColor) -> UIImage {
+        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, 0)
+        tintColor.setFill()
+        UIRectFill(rect)
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return image
     }
 }
 

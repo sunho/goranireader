@@ -58,7 +58,7 @@ class CardOptionIndicator: UIView {
     var isLikeEmojisVisible = false
     var isDislikeEmojisVisible = false
     
-    public func showEmoji(for option: CardOption) {
+    public func showEmoji(for option: CardAnswerQuality) {
         if option == .easy || option == .medium {
             
             if isDislikeEmojisVisible {

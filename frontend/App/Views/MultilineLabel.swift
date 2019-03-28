@@ -12,17 +12,13 @@ class MultilineLabel: UILabel {
     init() {
         super.init(frame: CGRect())
         numberOfLines = 0
-        preferredMaxLayoutWidth = frame.width
         lineBreakMode = .byWordWrapping
     }
     
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:)")
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
+        super.init(coder: aDecoder)
+        numberOfLines = 0
         preferredMaxLayoutWidth = frame.width
-        sizeToFit()
+        lineBreakMode = .byWordWrapping
     }
 }

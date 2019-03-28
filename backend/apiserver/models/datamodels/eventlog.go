@@ -1,45 +1,52 @@
 package datamodels
 
 import (
+	"gorani/utils"
 	"time"
 )
 
 type UserEventLog struct {
-	UserID  int       `cql:"userid"`
-	Day     time.Time `cql:"day"`
-	Kind    string    `cql:"kind"`
-	Time    time.Time `cql:"time"`
-	Payload string    `cql:"payload"`
+	UserID  int       `db:"user_id" json:"-"`
+	Day     time.Time `db:"day" json:"day"`
+	Kind    string    `db:"kind" json:"kind"`
+	Time    time.Time `db:"time" json:"time"`
+	Payload string    `db:"payload" json:"payload"`
 }
 
 type UserEventLogPayload interface {
-	Type() string
+	Payload() string
 	Kind() string
 	sealed()
 }
 
 func NewUserEventLog(userid int, payload UserEventLogPayload) *UserEventLog {
 	return &UserEventLog{
-		UserID: userid,
-		Kind:   payload.Kind(),
+		UserID:  userid,
+		Day:     utils.RoundTime(time.Now()),
+		Payload: payload.Payload(),
+		Time:    time.Now(),
+		Kind:    payload.Kind(),
 	}
 }
 
 type SystemEventLog struct {
-	Day     time.Time `cql:"day"`
-	Kind    string    `cql:"kind"`
-	Time    time.Time `cql:"time"`
-	Payload string    `cql:"payload"`
+	Day     time.Time `db:"day"`
+	Kind    string    `db:"kind"`
+	Time    time.Time `db:"time"`
+	Payload string    `db:"payload"`
 }
 
 type SystemEventLogPayload interface {
-	Type() string
+	Payload() string
 	Kind() string
 	sealed()
 }
 
 func NewSystemEventLog(payload SystemEventLogPayload) *SystemEventLog {
 	return &SystemEventLog{
-		Kind: payload.Kind(),
+		Day:     utils.RoundTime(time.Now()),
+		Time:    time.Now(),
+		Kind:    payload.Kind(),
+		Payload: payload.Payload(),
 	}
 }

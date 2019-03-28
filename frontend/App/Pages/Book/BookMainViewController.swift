@@ -28,6 +28,7 @@ class BookMainViewController: UIViewController {
         self.tableView.estimatedRowHeight = 160
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
         
+        
         self.folioReader.delegate = self
         
         self.tableView.register(BookMainTableViewCell.self, forCellReuseIdentifier: "cell")
@@ -109,9 +110,11 @@ class BookMainViewController: UIViewController {
     }
     
     func openContent(_ content: DownloadedContent) {
+        currentBookId = content.id
         switch content.type {
         case .sens:
             guard let sens = try? Sens(path: content.path) else {
+                AlertService.shared.alertErrorMsg("sens 파싱 에러")
                 return
             }
             let vc = self.storyboard!.instantiateViewController(withIdentifier: "SensMainViewController") as! SensMainViewController
@@ -119,7 +122,20 @@ class BookMainViewController: UIViewController {
             vc.dictVC = dictVC
             self.present(vc, animated: true)
         case .epub:
-            print("adsfas")
+            guard let book = try? FREpubParser().readEpub(bookBasePath: content.path) else {
+                AlertService.shared.alertErrorMsg("epub 파싱 에러")
+                return
+            }
+            
+            let config = FolioReaderConfig()
+            config.tintColor = Color.tint
+            config.canChangeScrollDirection = false
+            config.shouldHideNavigationOnTap = false
+            config.hideBars = false
+            config.scrollDirection = .horizontal
+
+            folioReader.presentReader(parentViewController: self, book: book, config: config)
+            folioReader.readerCenter!.delegate = self
         }
     }
     
@@ -136,7 +152,6 @@ class BookMainViewController: UIViewController {
 
     @objc func didPurchase(notification: NSNotification) {
         reload()
-        
     }
 }
 
@@ -181,17 +196,6 @@ extension BookMainViewController: UITableViewDelegate, UITableViewDataSource {
         if let item = item as? DownloadedContent {
             openContent(item)
         }
-        //        let config = FolioReaderConfig()
-        //        config.tintColor = UIUtill.tint
-        //        config.canChangeScrollDirection = false
-        //        config.shouldHideNavigationOnTap = false
-        //        config.hideBars = false
-        //        config.scrollDirection = .horizontal
-        //
-        //        let book = self.contents[indexPath.row]
-        //
-        //        self.folioReader.presentReader(parentViewController: self, book: book.book!, config: config)
-        //        self.folioReader.readerCenter!.delegate = self
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

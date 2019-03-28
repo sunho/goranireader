@@ -52,6 +52,8 @@ class WordCardViewController: UIViewController, UITableViewDelegate, UITableView
         cardView.backView.tableView.delegate = self
         cardView.backView.tableView.dataSource = self
         cardView.backView.tableView.register(WordCardTableViewCell.self, forCellReuseIdentifier: "cell")
+        
+        memoryForm.callback = self.memoryFormCallback
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -87,8 +89,12 @@ class WordCardViewController: UIViewController, UITableViewDelegate, UITableView
     @objc func handleTapMemory(_ sender: UITapGestureRecognizer) {
         print("Asdf")
         if opened && cardView.isDetail {
-            memoryForm.show(above: self, word: word.word)
+            memoryForm.show(word, above: self)
         }
+    }
+    
+    func memoryFormCallback(_ memory: String) {
+        cardView.backView.memoryButton.setTitle(memory, for: .normal)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -103,7 +109,7 @@ class WordCardViewController: UIViewController, UITableViewDelegate, UITableView
         cell.examples = item.examples.map { i -> String in
             return i.sentence
         }
-        cell.definitionView.text = item.definition
+        cell.definitionView.text = item.def
         cell.updateState(false)
         
         return cell

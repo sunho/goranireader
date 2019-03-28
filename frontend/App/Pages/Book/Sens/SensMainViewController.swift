@@ -20,7 +20,7 @@ fileprivate enum ScrollDirection {
     case right
 }
 
-class SensMainViewController: UIViewController, UITextViewDelegate {
+class SensMainViewController: UIViewController, UITextViewDelegate, DictViewControllerDelegate {
     fileprivate var state: State = State()
     fileprivate var scrollDirection: ScrollDirection = .none
     
@@ -101,7 +101,7 @@ class SensMainViewController: UIViewController, UITextViewDelegate {
        
         submitScreen.delegate = self
 
-        tableView.register(AnswerListTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(RoundOptionCell.self, forCellReuseIdentifier: "cell")
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = UITableView.automaticDimension
@@ -146,6 +146,7 @@ class SensMainViewController: UIViewController, UITextViewDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         dictVC.addViewToWindow()
+        dictVC.delegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -162,8 +163,13 @@ class SensMainViewController: UIViewController, UITextViewDelegate {
         if let text = textView.text(in: range) {
             let rect = textView.caretRect(for: range.start)
             let point = CGPoint(x: rect.minX, y: rect.minY)
-            dictVC.show(textView.convert(point, to: nil), word: text, sentence: "", index: 0, bookId: sens.bookId)
+            // TODO
+            dictVC.show(point, UnknownDefinitionTuple(text, sens.bookId, "", 0))
         }
+    }
+    
+    func dictViewControllerDidSelect(_ dictViewController: DictViewController, _ tuple: UnknownDefinitionTuple, _ word: DictEntry, _ def: DictDefinition) {
+         RealmService.shared.putUnknownWord(word, def, tuple)
     }
     
     @IBAction func openChapterList(_ sender: Any) {
@@ -283,7 +289,7 @@ extension SensMainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! AnswerListTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! RoundOptionCell
         if !hasEnoughAnswers {
             cell.isOpaque = true
             return cell

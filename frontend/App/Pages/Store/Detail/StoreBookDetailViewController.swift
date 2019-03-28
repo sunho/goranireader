@@ -8,14 +8,20 @@
 
 import UIKit
 import Kingfisher
+import Cosmos
 
 class StoreBookDetailViewController: UIViewController {
     @IBOutlet weak var coverView: UIImageView!
     @IBOutlet weak var nameView: UILabel!
     @IBOutlet weak var nativeNameView: UILabel!
     @IBOutlet weak var typeStackView: UIStackView!
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var button: RoundButton!
+    @IBOutlet weak var totalStarView: CosmosView!
+    @IBOutlet weak var descView: UILabel!
+    @IBOutlet weak var reviewCountView: UILabel!
+    @IBOutlet weak var reviewTableView: UITableView!
     
+    var owned: Bool!
     var book: Book!
     
     override func viewDidLoad() {
@@ -28,28 +34,43 @@ class StoreBookDetailViewController: UIViewController {
         }
         nameView.text = book.name
         nativeNameView.text = book.nativeName
+        descView.lineBreakMode = .byWordWrapping
+        descView.text = "as dfasdf asfas safadfasf asfsafdasdf asdf ㅇㅁㄴㄹ ㅁㅇㄴㄹ ㅁㄴㅇㄹ ㄴㅁㅇㄹ ㅁㄴㅇㄹ s"
+        descView.sizeToFit()
         
         typeStackView.removeAllArrangedSubviews()
+        
         for type in book.types {
             typeStackView.addArrangedSubview(
                 ContentTypeIconView(type: type)
             )
         }
+        
+        button.setTitle("보유중", for: .disabled)
+        
+        if owned {
+            button.isEnabled = false
+        }
     }
     
     @IBAction func purchase(_ sender: Any) {
-        APIService.shared.request(.buyShopBook(bookId: book.id))
-            .filterSuccessfulStatusCodes()
-            .start { event in
-            DispatchQueue.main.async {
-                switch event {
-                case .value(let resp):
-                    NotificationCenter.default.post(name: .didPurchaseBook, object: nil)
-                case .failed(let error):
-                    AlertService.shared.alertError(error)
-                default:
-                    print(event)
-                }
+        if !owned {
+            APIService.shared.request(.buyShopBook(bookId: book.id))
+                .filterSuccessfulStatusCodes()
+                .start { event in
+                    DispatchQueue.main.async {
+                        switch event {
+                        case .value(let resp):
+                            NotificationCenter.default.post(name: .didPurchaseBook, object: nil)
+                            self.owned = true
+                            self.button.isEnabled = false
+                            
+                        case .failed(let error):
+                            AlertService.shared.alertError(error)
+                        default:
+                            print(event)
+                        }
+                    }
             }
         }
     }

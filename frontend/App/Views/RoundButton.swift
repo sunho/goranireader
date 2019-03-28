@@ -21,5 +21,9 @@ import UIKit
     
     func layout() {
         borderRadius = .small
+        setBackgroundImage(UIImage.imageWithColor(tintColor: Color.tint), for: .normal)
+        setBackgroundImage(UIImage.imageWithColor(tintColor: Color.gray), for: .disabled)
+        setTitleColor(Color.white, for: .normal)
+        setTitleColor(Color.darkGray, for: .disabled)
     }
 }

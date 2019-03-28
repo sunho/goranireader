@@ -10,4 +10,5 @@ import Foundation
 
 extension Notification.Name {
     static let didPurchaseBook = Notification.Name(rawValue: "didPurchaseBook")
+    static let unknownWordAdded = Notification.Name(rawValue: "unknownWordAdded")
 }

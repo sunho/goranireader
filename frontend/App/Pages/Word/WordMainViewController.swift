@@ -1,6 +1,11 @@
 import UIKit
 
 class WordMainViewController: UIViewController, CardSliderDelegate, WordCardViewControllerDelegate {
+    @IBOutlet weak var remainView: UILabel!
+    @IBOutlet weak var clickIcon: UIImageView!
+    @IBOutlet weak var leftIcon: UIView!
+    @IBOutlet weak var rightIcon: UIView!
+    
     var memoryForm: MemoryBulletPageManager!
     var cardDetailOpen: Bool = false
     var cardOpen: Bool = false
@@ -17,18 +22,6 @@ class WordMainViewController: UIViewController, CardSliderDelegate, WordCardView
     
     override func viewDidLoad() {
         memoryForm = MemoryBulletPageManager()
-        words[0].word = "hello"
-        words[0].memory = "HOOOOasdf asdf asddf asdf asdf adsf asdf sadf asdf asdf asdfdsaf sa"
-        var def = UnknownWordDefinition()
-        def.definition = "HOOOOasdf asdf asddf asdf asdf adsf asdf sadf asdf asdf asdfdsaf sa"
-        var ex = UnknownWordExample()
-        ex.sentence = "231423143214"
-        def.examples.append(ex)
-        words[0].definitions.append(def)
-        words.append(words[0])
-        words.append(words[0])
-        words.append(words[0])
-        words.append(words[0])
         
         cardSliderContainer = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: cardHeight))
         cardSliderContainer.clipsToBounds = false
@@ -48,7 +41,12 @@ class WordMainViewController: UIViewController, CardSliderDelegate, WordCardView
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         memoryForm.prepare()
+        words = RealmService.shared.getTodayUnknownWords().shuffled()
+        updateRemainView()
+        layout()
+        cardSlider.reload()
     }
     
     func cardSlider(_ cardSlider: CardSlider, itemAt: Int) -> CardView {
@@ -61,25 +59,61 @@ class WordMainViewController: UIViewController, CardSliderDelegate, WordCardView
         return vc.cardView
     }
     
+    func layout() {
+        if cardOpen {
+            leftIcon.isHidden = false
+            rightIcon.isHidden = false
+            clickIcon.isHidden = true
+            if cardDetailOpen {
+                leftIcon.isHidden = true
+                rightIcon.isHidden = true
+            }
+        } else {
+            leftIcon.isHidden = true
+            rightIcon.isHidden = true
+            clickIcon.isHidden = false
+        }
+    }
+    
+    func updateRemainView() {
+        remainView.text = "\(RealmService.shared.getTodayUnknownWords().count)"
+    }
+    
     func cardSlider(_ cardSlider: CardSlider, numberOfItems: ()) -> Int {
         return words.count
     }
     
-    func cardSliderDidProceed(_ cardSlider: CardSlider, index: Int, option: CardOption) {
+    func cardSliderDidProceed(_ cardSlider: CardSlider, index: Int, option: CardAnswerQuality) {
         cardOpen = false
         cardDetailOpen = false
+        RealmService.shared.write {
+            words[index].update(option)
+        }
+        updateRemainView()
+        layout()
+    }
+    
+    func cardSliderDidClear(_ cardSlider: CardSlider) {
+        words = RealmService.shared.getTodayUnknownWords().shuffled()
+        if words.count == 0 {
+            return
+        }
+        cardSlider.reload()
     }
     
     func wordCardViewDidFlip() {
         cardOpen = true
+        layout()
     }
     
     func wordCardViewDidOpenDetail() {
         cardDetailOpen = true
+        layout()
     }
     
     func wordCardViewDidHideDetail() {
         cardDetailOpen = false
+        layout()
     }
     
     func cardSliderShouldSlide(_ cardSlider: CardSlider) -> Bool {
