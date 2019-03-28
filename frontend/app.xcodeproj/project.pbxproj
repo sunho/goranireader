@@ -74,6 +74,7 @@
 		C7C63E92209905900093CC02 /* BookMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C63E91209905900093CC02 /* BookMainViewController.swift */; };
 		C7CF0053224CF56300524D80 /* EventLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CF0052224CF56200524D80 /* EventLog.swift */; };
 		C7CF0058224D191700524D80 /* StoreBookDetailReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CF0057224D191700524D80 /* StoreBookDetailReviewCell.swift */; };
+		C7CF005C224D293800524D80 /* EventLogService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CF005B224D293800524D80 /* EventLogService.swift */; };
 		C7D5F503224C904900E7A40A /* WordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D5F502224C904900E7A40A /* WordCard.swift */; };
 		C7D5F507224CC49C00E7A40A /* dict.db in Resources */ = {isa = PBXBuildFile; fileRef = C7D5F506224CC49200E7A40A /* dict.db */; };
 		C7D5F509224CC98F00E7A40A /* RoundOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D5F508224CC98F00E7A40A /* RoundOptionCell.swift */; };
@@ -238,6 +239,7 @@
 		C7C63EA9209946A50093CC02 /* FolioReaderKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FolioReaderKit.xcodeproj; path = FolioReaderKit/FolioReaderKit.xcodeproj; sourceTree = "<group>"; };
 		C7CF0052224CF56200524D80 /* EventLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLog.swift; sourceTree = "<group>"; };
 		C7CF0057224D191700524D80 /* StoreBookDetailReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreBookDetailReviewCell.swift; sourceTree = "<group>"; };
+		C7CF005B224D293800524D80 /* EventLogService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLogService.swift; sourceTree = "<group>"; };
 		C7D5F502224C904900E7A40A /* WordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCard.swift; sourceTree = "<group>"; };
 		C7D5F506224CC49200E7A40A /* dict.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = dict.db; path = ../../../backend/dataserver/scripts/dictmake/removesup/dict.db; sourceTree = "<group>"; };
 		C7D5F508224CC98F00E7A40A /* RoundOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundOptionCell.swift; sourceTree = "<group>"; };
@@ -607,6 +609,7 @@
 				C7FC18B8223A364E007172ED /* RealmService.swift */,
 				C77043B2223E214700B91831 /* ContentService.swift */,
 				C7C117662244A4920084C799 /* AlertService.swift */,
+				C7CF005B224D293800524D80 /* EventLogService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -845,6 +848,7 @@
 				C74CEFD8208C899F002765D6 /* AppDelegate.swift in Sources */,
 				C7BF8C692246301A0037FD68 /* MemoryCloudCell.swift in Sources */,
 				C7BF8C652246102A0037FD68 /* MemoryBulletPage.swift in Sources */,
+				C7CF005C224D293800524D80 /* EventLogService.swift in Sources */,
 				C7FC188F2239D748007172ED /* Book.swift in Sources */,
 				C78ECA9B2206E57F001909C3 /* StoreMainViewController.swift in Sources */,
 				C7D915C22240DF8F0073E860 /* SensCollectionViewCell.swift in Sources */,

@@ -12,6 +12,9 @@ class BookMainViewController: UIViewController {
     var currentBookId: Int?
     var folioReader = FolioReader()
     var currentHTML: String?
+    var currentText: String?
+    var lastPage: Int = 0
+    var lastTextUpdated: Date = Date()
     
     
     var dictVC: DictViewController!
@@ -27,7 +30,6 @@ class BookMainViewController: UIViewController {
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 160
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
-        
         
         self.folioReader.delegate = self
         
@@ -132,6 +134,7 @@ class BookMainViewController: UIViewController {
             config.canChangeScrollDirection = false
             config.shouldHideNavigationOnTap = false
             config.hideBars = false
+            config.enableTTS = false
             config.scrollDirection = .horizontal
 
             folioReader.presentReader(parentViewController: self, book: book, config: config)

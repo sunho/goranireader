@@ -44,6 +44,8 @@ enum API {
     case login(username: String, password: String)
     case checkAuth
     
+    case createEventLog(evlog: EventLog)
+    
     case download(url: String, file: String)
 }
 
@@ -114,6 +116,8 @@ extension API: TargetType {
             return "/user/login"
         case .checkAuth:
             return "/user/me"
+        case .createEventLog:
+            return "/evlog"
         }
     }
     
@@ -125,7 +129,7 @@ extension API: TargetType {
              .getShopBook, .searchShopBooks, .listRecommendedBooks, .getRecommendInfo,
              .listQuizResults, .listSensResults, .checkAuth:
             return .get
-        case .createReview, .createMemory, .buyShopBook, .register, .login:
+        case .createReview, .createMemory, .buyShopBook, .register, .login, .createEventLog:
             return .post
         case .updateReview, .rateReview, .rateMemory, .updateRecommendInfo,
              .rateRecommendedBook,
@@ -155,6 +159,8 @@ extension API: TargetType {
         case .createMemory(_, let body):
             return .requestJSONEncodable(body)
         case .createReview(_, let body), .updateReview(_, let body):
+            return .requestJSONEncodable(body)
+        case .createEventLog(let body):
             return .requestJSONEncodable(body)
         case .updateRecommendInfo(let body):
             return .requestJSONEncodable(body)

@@ -41,5 +41,27 @@ struct SentenceUtil {
         end = String(end.prefix(maxChar - frontLength))
         return (front, " \(arr[index]) ", end)
     }
+    
+    // https://stackoverflow.com/questions/32168581/split-paragraphs-into-sentences
+    static func splitParagraph(_ paragraph: String) -> [String] {
+        var r = [Range<String.Index>]()
+        let t = paragraph.linguisticTags(
+            in: paragraph.startIndex..<paragraph.endIndex,
+            scheme: NSLinguisticTagScheme.lexicalClass.rawValue,
+            tokenRanges: &r)
+        var result = [String]()
+        let ixs = t.enumerated().filter {
+            $0.1 == "SentenceTerminator"
+            }.map {r[$0.0].lowerBound}
+        var prev = paragraph.startIndex
+        for ix in ixs {
+            let r = prev...ix
+            result.append(
+                paragraph[r].trimmingCharacters(
+                    in: NSCharacterSet.whitespaces))
+            prev = paragraph.index(after: ix)
+        }
+        return result
+    }
 }
 

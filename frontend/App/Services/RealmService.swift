@@ -13,7 +13,7 @@ class RealmService {
         if let config = realm.object(ofType: Config.self, forPrimaryKey: 1) {
             return config
         }
-        RealmService.shared.write {
+        write {
             realm.add(Config(), update: true)
         }
         return Config()
@@ -24,7 +24,7 @@ class RealmService {
             return res
         }
         let res = SensResult()
-        RealmService.shared.write {
+        write {
             res.configure(bookId: bookId, sensId: sensId)
             realm.add(res, update: true)
         }
@@ -36,7 +36,7 @@ class RealmService {
             return res
         }
         let res = UnknownWord()
-        RealmService.shared.write {
+        write {
             res.word = word
             realm.add(res, update: true)
         }
@@ -57,12 +57,12 @@ class RealmService {
             udef.id = Int(def.id)
             udef.def = def.def
             udef.examples.append(uex)
-            RealmService.shared.write {
+            write {
                 uw.definitions.append(udef)
             }
         } else {
             let udef = defs.first!
-            RealmService.shared.write {
+            write {
                 uw.ef = 2.5
                 uw.repetitions = 0
                 uw.update(.retry)
@@ -83,11 +83,31 @@ class RealmService {
             return res
         }
         let res = EpubProgress()
-        RealmService.shared.write {
+        write {
             res.bookId = bookId
             realm.add(res, update: true)
         }
         return res
+    }
+    
+    func getEventLogs() -> Results<EventLog> {
+        return realm.objects(EventLog.self)
+    }
+    
+    func clearEventLogs() {
+        write {
+            realm.delete(getEventLogs())
+        }
+    }
+    
+    func addEventLog(_ payload: EventLogPayload) {
+        let log = EventLog()
+        log.payload = String(data: try! JSONEncoder().encode(payload), encoding: .utf8)!
+        log.time = Date()
+        log.kind = payload.kind()
+        write {
+            realm.add(log, update: true)
+        }
     }
     
     func write(_ block: (() throws -> Void)) {

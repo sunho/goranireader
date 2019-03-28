@@ -9,6 +9,8 @@
 import Foundation
 import FolioReaderKit
 
+let MinInterval: Double = 2
+
 extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate, DictViewControllerDelegate {
     fileprivate func updateKnownWords() {
         guard let html = self.currentHTML else {
@@ -24,6 +26,11 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
     func folioReaderDidClose(_ folioReader: FolioReader) {
         self.currentHTML = nil
         dictVC.removeViewFromWindow()
+    }
+    
+    func pageDidLoad() {
+        lastPage = folioReader.readerCenter!.webViewPage
+        print(lastPage)
     }
     
     func presentDictView(bookName: String, point: CGPoint, page: Int, scroll: CGFloat, sentence: String, word: String, index: Int) {
@@ -66,5 +73,27 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
         out.offsetY = pro.offsetY
         out.progress = pro.progress
         return out
+    }
+    
+    func pageItemChanged(_ pageNumber: Int) {
+        if lastPage != pageNumber {
+            lastPage = pageNumber
+            let interval = NSDate().timeIntervalSince(lastTextUpdated)
+            if interval > MinInterval {
+                let sentences = SentenceUtil.splitParagraph(currentText ?? "")
+                let sizes = sentences.map { s in s.count }
+                let payload = FlipPagePayload()
+                payload.bookId = currentBookId!
+                payload.interval = interval
+                payload.sentences = sizes
+                payload.type = "epub"
+                EventLogService.shared.send(payload)
+            }
+        }
+    }
+    
+    func currentText(_ text: String) {
+        lastTextUpdated = Date()
+        currentText = text
     }
 }
