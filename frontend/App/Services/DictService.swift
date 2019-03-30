@@ -21,7 +21,7 @@ class DictService {
         return DictEntry.get(connection: connection, word: word, firstDefPos: firstDefPos, policy: self.defSortPolicy)
     }
     
-    func search(word: String, firstWordType: VerbType? = nil, firstDefPos: POS? = nil) -> [DictEntry] {
-        return DictEntry.search(connection: connection, word: word, firstWordType: firstWordType, firstDefPos: firstDefPos, policy: self.defSortPolicy)
+    func search(word: String, firstDefPos: POS? = nil) -> [DictEntry] {
+        return DictEntry.search(connection: connection, word: word, firstDefPos: firstDefPos, policy: self.defSortPolicy)
     }
 }

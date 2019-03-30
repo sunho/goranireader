@@ -12,6 +12,8 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @IBOutlet weak var wordView: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var prevButton: UIButton!
+    @IBOutlet weak var nextButton: UIButton!
     
     fileprivate var hidden: Bool = true
     fileprivate var tuple: UnknownDefinitionTuple?
@@ -23,7 +25,8 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var delegate: DictViewControllerDelegate?
     
-    var entry: DictEntry?
+    var entries: [DictEntry]?
+    var currentEntry: Int = 0
     
     func addViewToWindow() {
         let window = UIApplication.shared.keyWindow!
@@ -53,7 +56,8 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
             return
         }
     
-        entry = entries[0]
+        self.entries = entries
+        currentEntry = 0
         reloadData()
     
         let centerY = UIScreen.main.bounds.height/2
@@ -82,8 +86,18 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func reloadData() {
-        wordView.text = entry?.word ?? ""
-        tableView.reloadData()
+        if let entries = entries {
+            nextButton.isEnabled = true
+            prevButton.isEnabled = true
+            if currentEntry == entries.count - 1 {
+                nextButton.isEnabled = false
+            }
+            if currentEntry == 0 {
+                prevButton.isEnabled = false
+            }
+            wordView.text = entries[currentEntry].word ?? ""
+            tableView.reloadData()
+        }
     }
     
     func hide() {
@@ -102,14 +116,14 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if entry == nil {
+        if entries == nil {
             return 0
         }
-        return self.entry!.defs.count
+        return self.entries![currentEntry].defs.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = self.entry!.defs[indexPath.row]
+        let item = self.entries![currentEntry].defs[indexPath.row]
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! RoundOptionCell
         cell.normalColor = Color.white
         cell.indexView.text = "\(indexPath.row + 1)"
@@ -118,7 +132,17 @@ class DictViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        delegate?.dictViewControllerDidSelect(self, tuple!, entry!, entry!.defs[indexPath.row])
+        delegate?.dictViewControllerDidSelect(self, tuple!, entries![currentEntry], entries![currentEntry].defs[indexPath.row])
         hide()
+    }
+    
+    @IBAction func prev(_ sender: Any) {
+        currentEntry -= 1
+        reloadData()
+    }
+    
+    @IBAction func next(_ sender: Any) {
+        currentEntry += 1
+        reloadData()
     }
 }

@@ -19,12 +19,18 @@ class EventLogService {
         if ReachabilityService.shared.reach.value {
             for ev in RealmService.shared.getEventLogs() {
                 APIService.shared.request(.createEventLog(evlog: ev)).start { event in
-                    if case .failed(let error) = event {
-                        print(error)
+                    switch event {
+                    case .value:
+                        DispatchQueue.main.async {
+                            RealmService.shared.clearEventLogs()
+                        }
+                    default:
+//print(event)
+                        ()
                     }
                 }
             }
-            RealmService.shared.clearEventLogs()
+            
         }
     }
 }

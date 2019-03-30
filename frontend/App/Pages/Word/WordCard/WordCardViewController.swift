@@ -87,7 +87,6 @@ class WordCardViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func handleTapMemory(_ sender: UITapGestureRecognizer) {
-        print("Asdf")
         if opened && cardView.isDetail {
             memoryForm.show(word, above: self)
         }

@@ -1,87 +1,54 @@
 import Foundation
 
-enum VerbType {
-    case present
-    case past
-    case complete
-    case both
-}
-
-fileprivate func appendPastExceptDuplicate(arr: inout [(String, VerbType?)], element: (String, VerbType?)) {
-    for ele in arr.indices {
-        if element.0 == arr[ele].0 {
-            arr[ele].1 = .both
-            return
-        }
-    }
-    arr.append(element)
-}
-
 extension String {
     
-    // TODO: refactor
-    var verbCandidates: [(String, VerbType?)] {
+    var baseCandidates: [String] {
         let word = self.lowercased()
-        var arr: [(String, VerbType?)] = []
+        var arr: [String] = [word]
         
         // these can be same
         if let base = irregularPasts[word] {
-            appendPastExceptDuplicate(arr: &arr, element: (base, .past))
+            arr.append(base)
         }
         if let base = irregularCompletes[word] {
-            appendPastExceptDuplicate(arr: &arr, element: (base, .complete))
+            arr.append(base)
         }
-        if word.hasSuffix("ied") {
-            // cry -> cried
-            appendPastExceptDuplicate(arr: &arr, element: (trimString(word, 3) + "y", .both))
-        }
-        if word.hasSuffix("ed") {
-            // swirl -> swirled
-            appendPastExceptDuplicate(arr: &arr, element: (trimString(word, 2), .both))
-            // produce -> produced
-            appendPastExceptDuplicate(arr: &arr, element: (trimString(word, 1), .both))
-            if  word.count >= 4 &&
-                word[word.index(word.endIndex, offsetBy: -3)]
-                == word[word.index(word.endIndex, offsetBy: -4)]{
-                // stop -> stopped
-                appendPastExceptDuplicate(arr: &arr, element: (trimString(word, 3), .both))
+        
+        let suffixes = ["able", "ible", "al", "ial", "ed", "en", "en", "er", "est", "ful", "ic", "ing", "ion", "tion", "ation", "ition", "ity", "ty", "ive", "ative", "itive", "less", "ly", "ment", "ness", "ous", "eous", "ious", "s", "es", "y"]
+        
+        for suffix in suffixes {
+            if let word = word.trimmingSuffix("y" + suffix) {
+                arr.append(word + "ie")
+            }
+            
+            if let word = word.trimmingSuffix("i" + suffix) {
+                arr.append(word + "y")
+            }
+            
+            if let word = word.trimmingSuffix("al" + suffix) {
+                arr.append(word)
+            }
+            
+            if let word = word.trimmingSuffix(suffix) {
+                arr.append(word + "e")
+                if  word.count >= 2 &&
+                    word.charAtBack(1) == word.charAtBack(2) {
+                    // get -> getting
+                    arr.append(word.trimming(1))
+                }
+                // go -> going
+                arr.append(word)
+                arr.append(word + "le")
+                arr.append(word + "y")
             }
         }
         
-        // these are not
-        if word.hasSuffix("ying") {
-            // tie -> tying
-            arr.append((trimString(word, 4) + "ie", .present))
-        }
-        if word.hasSuffix("ing") {
-            // go -> going
-            arr.append((trimString(word, 3), .present))
-            // infringe -> infringing
-            arr.append((trimString(word, 3) + "e", .present))
-            if  word.count >= 5 &&
-                word[word.index(word.endIndex, offsetBy: -4)]
-                == word[word.index(word.endIndex, offsetBy: -5)]{
-                // get -> getting
-                arr.append((trimString(word, 4), .present))
-            }
-        }
-        
-        // these includes plural form as well
-        if word.hasSuffix("es") {
-            arr.append((trimString(word, 2), nil))
-        }
-        if word.hasSuffix("s") {
-            arr.append((trimString(word, 1), nil))
-        }
-        
-        return arr
+        return arr.unique
     }
 }
 
 
-fileprivate func trimString(_ str: String, _ back: Int) -> String {
-    return String(str.prefix(str.count-back))
-}
+
 
 // https://en.wikipedia.org/wiki/List_of_English_irregular_verbs
 

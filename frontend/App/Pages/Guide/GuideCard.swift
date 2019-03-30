@@ -28,9 +28,9 @@ class GuideCard: UITableViewCell {
         
         container.box.clipsToBounds = false
         container.box.backgroundColor = .white
-        container.box.borderRadius = .normal
-        container.box.shadowOffset = CGSize(width: 0, height: 0)
-        container.box.shadowRadius = 14
+        container.box.borderRadius = .small
+        container.box.shadowOffset = CGSize(width: 0, height: 5)
+        container.box.shadowRadius = 8
         container.clipsToBounds = false
         
         clipsToBounds = false

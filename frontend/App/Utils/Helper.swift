@@ -211,3 +211,40 @@ extension UIStoryboard {
     }
 }
 
+extension String {
+    func trimmingSuffix(_ str: String) -> String? {
+        if self.hasSuffix(str) {
+            return self.trimming(str.count)
+        }
+        return nil
+    }
+    
+    func trimming(_ n: Int) -> String {
+        return String(self.prefix(self.count - n))
+    }
+    
+    func charAtBack(_ i: Int) -> Character {
+        return self[self.index(self.endIndex, offsetBy: -i)]
+    }
+}
+
+extension Array where Element : Equatable {
+    var unique: [Element] {
+        var uniqueValues: [Element] = []
+        forEach { item in
+            if !uniqueValues.contains(item) {
+                uniqueValues += [item]
+            }
+        }
+        return uniqueValues
+    }
+}
+
+extension UISearchController {
+    var hairlineView: UIView? {
+        guard let barBackgroundView = self.searchBar.superview?.subviews.filter({ String(describing: type(of: $0)) == "_UIBarBackground" }).first
+            else { return nil }
+        
+        return barBackgroundView.subviews.filter({ $0.bounds.height == 1 / self.traitCollection.displayScale }).first
+    }
+}

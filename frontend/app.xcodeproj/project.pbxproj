@@ -19,6 +19,14 @@
 		B143B05820A47617003341A3 /* IPA.swift in Sources */ = {isa = PBXBuildFile; fileRef = B143AF9520A4704F003341A3 /* IPA.swift */; };
 		B143B05A20A47617003341A3 /* Verb.swift in Sources */ = {isa = PBXBuildFile; fileRef = B143AF9720A4704F003341A3 /* Verb.swift */; };
 		B143B05B20A47617003341A3 /* UIUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B143AF9820A4704F003341A3 /* UIUtil.swift */; };
+		C70F55BD224FCD4D006DBB0E /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55BC224FCD4D006DBB0E /* TabBarViewController.swift */; };
+		C70F55C5224FE508006DBB0E /* BubbleTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55C2224FE508006DBB0E /* BubbleTabBar.swift */; };
+		C70F55C6224FE508006DBB0E /* CBTabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55C3224FE508006DBB0E /* CBTabBarButton.swift */; };
+		C70F55C7224FE508006DBB0E /* BubbleTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55C4224FE508006DBB0E /* BubbleTabBarController.swift */; };
+		C70F55CB22500779006DBB0E /* GuideTargetBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55CA22500779006DBB0E /* GuideTargetBookView.swift */; };
+		C70F55CD225008D0006DBB0E /* GuideProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55CC225008D0006DBB0E /* GuideProgressView.swift */; };
+		C70F55CF2250094A006DBB0E /* GuideWordCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55CE2250094A006DBB0E /* GuideWordCardView.swift */; };
+		C70F55D122500959006DBB0E /* GuideRecommendedBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55D022500959006DBB0E /* GuideRecommendedBookView.swift */; };
 		C7403AEB209176D800099119 /* WordMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7403AEA209176D800099119 /* WordMainViewController.swift */; };
 		C742DD8B2209567A00CD737A /* SearchHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C742DD8A2209567A00CD737A /* SearchHomeViewController.swift */; };
 		C742DD8F2209568800CD737A /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C742DD8E2209568800CD737A /* SearchResultViewController.swift */; };
@@ -180,6 +188,14 @@
 		B143AF9520A4704F003341A3 /* IPA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPA.swift; sourceTree = "<group>"; };
 		B143AF9720A4704F003341A3 /* Verb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Verb.swift; sourceTree = "<group>"; };
 		B143AF9820A4704F003341A3 /* UIUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtil.swift; sourceTree = "<group>"; };
+		C70F55BC224FCD4D006DBB0E /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		C70F55C2224FE508006DBB0E /* BubbleTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleTabBar.swift; sourceTree = "<group>"; };
+		C70F55C3224FE508006DBB0E /* CBTabBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CBTabBarButton.swift; sourceTree = "<group>"; };
+		C70F55C4224FE508006DBB0E /* BubbleTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleTabBarController.swift; sourceTree = "<group>"; };
+		C70F55CA22500779006DBB0E /* GuideTargetBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideTargetBookView.swift; sourceTree = "<group>"; };
+		C70F55CC225008D0006DBB0E /* GuideProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideProgressView.swift; sourceTree = "<group>"; };
+		C70F55CE2250094A006DBB0E /* GuideWordCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideWordCardView.swift; sourceTree = "<group>"; };
+		C70F55D022500959006DBB0E /* GuideRecommendedBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideRecommendedBookView.swift; sourceTree = "<group>"; };
 		C7403AEA209176D800099119 /* WordMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordMainViewController.swift; sourceTree = "<group>"; };
 		C742DD8A2209567A00CD737A /* SearchHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHomeViewController.swift; sourceTree = "<group>"; };
 		C742DD8E2209568800CD737A /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
@@ -376,6 +392,16 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		C70F55C1224FE4F0006DBB0E /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				C70F55C2224FE508006DBB0E /* BubbleTabBar.swift */,
+				C70F55C4224FE508006DBB0E /* BubbleTabBarController.swift */,
+				C70F55C3224FE508006DBB0E /* CBTabBarButton.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
 		C7403AE72091767D00099119 /* Word */ = {
 			isa = PBXGroup;
 			children = (
@@ -430,12 +456,14 @@
 		C759AD7A221EDB1E00166B2A /* Pages */ = {
 			isa = PBXGroup;
 			children = (
+				C70F55C1224FE4F0006DBB0E /* TabBar */,
 				C77043C0223E52EB00B91831 /* Auth */,
 				C759AD7D221EEA6300166B2A /* Guide */,
 				C78ECA942206E51E001909C3 /* Store */,
 				C7403AE72091767D00099119 /* Word */,
 				C7C1E2FF2098016D00C909D7 /* Book */,
 				C757D2CE2247C1140050E0A2 /* NavigationController.swift */,
+				C70F55BC224FCD4D006DBB0E /* TabBarViewController.swift */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -514,6 +542,10 @@
 			isa = PBXGroup;
 			children = (
 				C7B26250224BFC6E00ED5333 /* WordGuideCard.swift */,
+				C70F55CA22500779006DBB0E /* GuideTargetBookView.swift */,
+				C70F55CC225008D0006DBB0E /* GuideProgressView.swift */,
+				C70F55CE2250094A006DBB0E /* GuideWordCardView.swift */,
+				C70F55D022500959006DBB0E /* GuideRecommendedBookView.swift */,
 			);
 			path = Cards;
 			sourceTree = "<group>";
@@ -812,12 +844,14 @@
 				C7FC18A52239F0F9007172ED /* RecommendInfo.swift in Sources */,
 				C7742BAD22433BEE00925081 /* CardSlider.swift in Sources */,
 				C7FC18AD223A014A007172ED /* Result.swift in Sources */,
+				C70F55C6224FE508006DBB0E /* CBTabBarButton.swift in Sources */,
 				C7BF8C67224613740037FD68 /* MemoryBulletPageManager.swift in Sources */,
 				C7742BAB22433B4500925081 /* CardView.swift in Sources */,
 				C7C63E92209905900093CC02 /* BookMainViewController.swift in Sources */,
 				C7BF8C6B224632BB0037FD68 /* MemoryCloudViewController.swift in Sources */,
 				C7C1177C22453CE10084C799 /* MemoryButton.swift in Sources */,
 				C7FC18A12239EEE9007172ED /* Category.swift in Sources */,
+				C70F55C5224FE508006DBB0E /* BubbleTabBar.swift in Sources */,
 				C757D2C22247A1D80050E0A2 /* BookMainTableViewCell.swift in Sources */,
 				C7C117762244DC8E0084C799 /* LineInputField.swift in Sources */,
 				C757D2DE2247F9750050E0A2 /* ShadowView.swift in Sources */,
@@ -840,6 +874,7 @@
 				C7D915C92240FAA60073E860 /* HorizontalPageLayout.swift in Sources */,
 				C7FC18BB223A3C45007172ED /* GoraniError.swift in Sources */,
 				C7742BB122437B4900925081 /* WordCardViewController.swift in Sources */,
+				C70F55BD224FCD4D006DBB0E /* TabBarViewController.swift in Sources */,
 				C7742BB52243953D00925081 /* WordCardTableViewCell.swift in Sources */,
 				C7C117742244D8930084C799 /* InputFormView.swift in Sources */,
 				C7403AEB209176D800099119 /* WordMainViewController.swift in Sources */,
@@ -853,12 +888,16 @@
 				C78ECA9B2206E57F001909C3 /* StoreMainViewController.swift in Sources */,
 				C7D915C22240DF8F0073E860 /* SensCollectionViewCell.swift in Sources */,
 				B143B05220A47613003341A3 /* POS.swift in Sources */,
+				C70F55C7224FE508006DBB0E /* BubbleTabBarController.swift in Sources */,
+				C70F55D122500959006DBB0E /* GuideRecommendedBookView.swift in Sources */,
 				C7FC18AF223A12DD007172ED /* APIService.swift in Sources */,
 				B143B05320A47613003341A3 /* DictEntry.swift in Sources */,
 				C757D2D32247D7690050E0A2 /* Notification.swift in Sources */,
 				C783AABA2242332500D0D7BB /* SwipeSubmitScreen.swift in Sources */,
 				B143B04C20A47613003341A3 /* Sens.swift in Sources */,
 				C7C11763224489F90084C799 /* LineTextField.swift in Sources */,
+				C70F55CD225008D0006DBB0E /* GuideProgressView.swift in Sources */,
+				C70F55CF2250094A006DBB0E /* GuideWordCardView.swift in Sources */,
 				C7BF8C5E2245D8BC0037FD68 /* MultilineLabel.swift in Sources */,
 				C757D2D12247D5A10050E0A2 /* ContentTypeIconView.swift in Sources */,
 				B143B05A20A47617003341A3 /* Verb.swift in Sources */,
@@ -869,6 +908,7 @@
 				C7742BB72243967A00925081 /* WordCardExampleTableViewCell.swift in Sources */,
 				C757D2C72247A7450050E0A2 /* BookShopTableViewCell.swift in Sources */,
 				C77043B3223E214700B91831 /* ContentService.swift in Sources */,
+				C70F55CB22500779006DBB0E /* GuideTargetBookView.swift in Sources */,
 				C7FC18A72239F1F7007172ED /* Memory.swift in Sources */,
 				C7BF8C5B224546D60037FD68 /* UIConsts.swift in Sources */,
 				C759AD7F221EEA9400166B2A /* GuideMainViewController.swift in Sources */,

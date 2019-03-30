@@ -13,6 +13,10 @@ import ReactiveMoya
 import Moya
 import Kingfisher
 
+protocol SearchResultViewControllerDelegate {
+    func searchResultViewControllerDidSelect(_ viewController: SearchResultViewController, _ book: Book, _ owned: Bool)
+}
+
 class SearchResultViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
@@ -23,6 +27,7 @@ class SearchResultViewController: UIViewController {
     var books: [Book] = []
     var ownBooks: [Book] = []
     var p: Int = 0
+    var delegate: SearchResultViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -123,9 +128,8 @@ extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! BookShopTableViewCell
         cell.name = item.name
         cell.author = item.author
-    
-        
         cell.types = item.types
+        
         if let cover = URL(string: item.cover) {
             cell.setCover(with: Source.network(ImageResource(downloadURL: cover)))
         }
@@ -141,9 +145,7 @@ extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource
         let item = self.books[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
         let owned = ownBooks.filter({b in b.id == item.id}).count != 0
-        let vc = storyboard?.instantiateViewController(withIdentifier: "StoreBookDetailViewController") as! StoreBookDetailViewController
-        vc.book = item
-        vc.owned = owned
-        parent?.navigationController?.pushViewController(vc, animated: true)
+        delegate?.searchResultViewControllerDidSelect(self, item, owned)
     }
 }
+

@@ -33,12 +33,13 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
         print(lastPage)
     }
     
-    func presentDictView(bookName: String, point: CGPoint, page: Int, scroll: CGFloat, sentence: String, word: String, index: Int) {
-        dictVC.show(point, UnknownDefinitionTuple(word, currentBookId!, sentence, index))
-    }
-    
-    func hideDictView() {
-        dictVC.hide()
+    func selectionChanged(bookName: String, point: CGPoint, page: Int, scroll: CGFloat, sentence: String, word: String, index: Int) {
+        print(word)
+        if word == "" {
+            dictVC.hide()
+        } else {
+            dictVC.show(point, UnknownDefinitionTuple(word, currentBookId!, sentence, index))
+        }
     }
     
     func htmlContentForPage(_ page: FolioReaderPage, htmlContent: String) -> String {

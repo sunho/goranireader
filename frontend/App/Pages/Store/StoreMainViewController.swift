@@ -8,14 +8,18 @@
 
 import UIKit
 
-class StoreMainViewController: UIViewController, UISearchBarDelegate, UISearchResultsUpdating {
+protocol StoreMainViewControllerDelegate {
+    func storeMainViewControllerDidSelect(_ viewController: StoreMainViewController, _ book: Book)
+}
 
+class StoreMainViewController: UIViewController, UISearchBarDelegate, UISearchResultsUpdating, SearchResultViewControllerDelegate {
     @IBOutlet weak var contentView: UIView!
     
     let searchController = UISearchController(searchResultsController: nil)
     var searchHomeVC: SearchHomeViewController!
     var searchResultVC: SearchResultViewController!
     var currentVC: UIViewController?
+    var delegate: StoreMainViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,11 +30,18 @@ class StoreMainViewController: UIViewController, UISearchBarDelegate, UISearchRe
         searchController.dimsBackgroundDuringPresentation = false
         searchHomeVC = storyboard!.instantiateViewController(withIdentifier: "SearchHomeViewController") as? SearchHomeViewController
         searchResultVC = storyboard!.instantiateViewController(withIdentifier: "SearchResultViewController") as? SearchResultViewController
+        searchResultVC.delegate = self
         navigationItem.hidesSearchBarWhenScrolling = false
         definesPresentationContext = true
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.tintColor = Color.tint
+        searchController.searchBar.setBackgroundImage(UIImage.imageWithColor(tintColor: .white), for: .any, barMetrics: .default)
         switchVC(searchHomeVC)
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        searchController.hairlineView?.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -84,7 +95,16 @@ class StoreMainViewController: UIViewController, UISearchBarDelegate, UISearchRe
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-        
     }
-
+    
+    func searchResultViewControllerDidSelect(_ viewController: SearchResultViewController, _ book: Book, _ owned: Bool) {
+        if let delegate = delegate {
+            delegate.storeMainViewControllerDidSelect(self, book)
+            return
+        }
+        let vc = storyboard?.instantiateViewController(withIdentifier: "StoreBookDetailViewController") as! StoreBookDetailViewController
+        vc.book = book
+        vc.owned = owned
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }

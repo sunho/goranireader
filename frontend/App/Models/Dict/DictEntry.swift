@@ -36,7 +36,7 @@ class DictEntry {
     }
     
     
-    class func search(connection: Connection, word: String, firstWordType: VerbType?, firstDefPos: POS?, policy: DefSortPolicy?) -> [DictEntry] {
+    class func search(connection: Connection, word: String, firstDefPos: POS?, policy: DefSortPolicy?) -> [DictEntry] {
         if word == "" {
             return []
         }
@@ -44,19 +44,11 @@ class DictEntry {
         var entries: [DictEntry] = []
         let word = SentenceUtil.removePunctuations(word)
             .trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        let candidates = word.verbCandidates
+        let candidates = word.baseCandidates
         for candidate in candidates {
-            if let entry = DictEntry.get(connection: connection, word: candidate.0, firstDefPos: firstDefPos, policy: policy) {
-                if candidate.1 == firstWordType {
-                    entries.insert(entry, at: 0)
-                } else {
-                    entries.append(entry)
-                }
+            if let entry = DictEntry.get(connection: connection, word: candidate, firstDefPos: firstDefPos, policy: policy) {
+                entries.append(entry)
             }
-        }
-
-        if let entry = DictEntry.get(connection: connection, word: word, firstDefPos: firstDefPos, policy: policy) {
-            entries.append(entry)
         }
         
         return entries

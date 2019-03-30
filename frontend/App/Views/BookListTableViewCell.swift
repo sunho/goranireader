@@ -50,7 +50,7 @@ class BookListTableViewCell: UITableViewCell {
         
         selectedBackgroundView?.backgroundColor = Color.gray
         
-        let margin = UIEdgeInsets(top: 12, left: 24, bottom: 12, right: 24)
+        let margin = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
         container = PaddingMarginView()
         container.margin = margin
         container.layout()

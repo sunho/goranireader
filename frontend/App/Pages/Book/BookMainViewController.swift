@@ -29,7 +29,7 @@ class BookMainViewController: UIViewController {
         self.tableView.dataSource = self
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 160
-        self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
+        self.tableView.separatorStyle = .singleLine
         
         self.folioReader.delegate = self
         
@@ -158,7 +158,7 @@ class BookMainViewController: UIViewController {
     }
 }
 
-extension BookMainViewController: UITableViewDelegate, UITableViewDataSource {
+extension BookMainViewController: UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = self.contents[indexPath.row]
         
@@ -221,5 +221,4 @@ extension BookMainViewController: UITableViewDelegate, UITableViewDataSource {
         
         return [delete]
     }
-
 }

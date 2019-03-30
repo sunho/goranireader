@@ -106,7 +106,7 @@ class RealmService {
         log.time = Date()
         log.kind = payload.kind()
         write {
-            realm.add(log, update: true)
+            realm.add(log)
         }
     }
     
