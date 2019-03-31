@@ -40,8 +40,8 @@ class WordMainViewController: UIViewController, CardSliderDelegate, WordCardView
         cardSliderContainer.center.x = view.center.x
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         memoryForm.prepare()
         words = RealmService.shared.getTodayUnknownWords().shuffled()
         updateRemainView()

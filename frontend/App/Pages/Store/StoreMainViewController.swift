@@ -9,6 +9,7 @@
 import UIKit
 
 protocol StoreMainViewControllerDelegate {
+    func title() -> String
     func storeMainViewControllerDidSelect(_ viewController: StoreMainViewController, _ book: Book)
 }
 
@@ -23,7 +24,7 @@ class StoreMainViewController: UIViewController, UISearchBarDelegate, UISearchRe
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         navigationItem.searchController = searchController
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
@@ -33,9 +34,12 @@ class StoreMainViewController: UIViewController, UISearchBarDelegate, UISearchRe
         searchResultVC.delegate = self
         navigationItem.hidesSearchBarWhenScrolling = false
         definesPresentationContext = true
-        searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.tintColor = Color.white
-        searchController.searchBar.barTintColor = Color.white
+        modalPresentationStyle = .overFullScreen
+        if let delegate = delegate {
+            navigationItem.largeTitleDisplayMode = .never
+            navigationItem.title = delegate.title()
+        }
         
         if let textfield =  searchController.searchBar.value(forKey: "searchField") as? UITextField {
             if let backgroundview = textfield.subviews.first {

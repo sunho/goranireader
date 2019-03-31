@@ -58,7 +58,7 @@ class MemoryBulletPageManager {
         RealmService.shared.write {
             uword!.memory = text
         }
-        APIService.shared.request(.createMemory(word: uword!.word, sentence: text)).start { event in
+        APIService.shared.request(.updateMemory(word: uword!.word, sentence: text)).start { event in
             switch event {
             case .failed(let error):
                 AlertService.shared.alertError(error)

@@ -29,6 +29,7 @@ class KnownWordPayload: EventLogPayload {
 }
 
 class UnknownDefinitionPayload: EventLogPayload {
+    var original: String = ""
     var word: String = ""
     var defId: Int?
     var sentence: String = ""

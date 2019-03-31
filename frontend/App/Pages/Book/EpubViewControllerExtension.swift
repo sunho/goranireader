@@ -40,7 +40,7 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
             if currentWord != "" {
                 let payload = UnknownDefinitionPayload()
                 payload.sentence = currentSentence
-                payload.word = currentWord
+                payload.original = currentWord
                 payload.type = "epub"
                 EventLogService.shared.send(payload)
             }
@@ -63,6 +63,7 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
         let payload = UnknownDefinitionPayload()
         payload.sentence = tuple.sentence
         payload.word = word.word
+        payload.original = tuple.word
         payload.defId = Int(def.id)
         payload.type = "epub"
         EventLogService.shared.send(payload)

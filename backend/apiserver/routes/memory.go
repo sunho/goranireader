@@ -20,10 +20,9 @@ type Memory struct {
 func (m *Memory) Register(d *dim.Group) {
 	d.Use(&middles.AuthMiddle{})
 	d.GET("/:word", m.List)
-	d.POST("/:word", m.Post)
+	d.PUT("/:word", m.Post)
 	d.RouteFunc("/:word/:memoryid", func(g *dim.Group) {
 		g.GET("", m.Get)
-		g.PUT("", m.Put)
 		g.DELETE("", m.Delete)
 		g.PUT("/rate", m.PutRate)
 	}, &middles.MemoryParamMiddle{})
@@ -48,8 +47,7 @@ func (m *Memory) Post(c2 echo.Context) error {
 	}
 	memory.UserID = c.User.ID
 	memory.Word = c.Param("word")
-	err := c.Tx.Create(&memory)
-	if err != nil {
+	if err := m.DB.Upsert(c.Tx, &memory); err != nil {
 		return err
 	}
 	return c.NoContent(200)

@@ -40,13 +40,14 @@ class WordCardBackView: UIView {
         
         detailButton = UIButton()
         container.addSubview(detailButton)
+        detailButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0.01, bottom: 0.01, right: 0)
         detailButton.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.centerY.equalTo(wordView.snp.centerY)
             make.left.equalTo(wordView.snp.right)
-            make.width.equalTo(50)
             make.right.equalToSuperview()
         }
-        detailButton.setTitleColor(UIColor.white, for: .normal)
+        detailButton.titleLabel?.font = UIFont.systemFont(ofSize: 17)
+        detailButton.setTitleColor(Color.tint, for: .normal)
         detailButton.setTitle("상세", for: .normal)
         
         tableView = UITableView()

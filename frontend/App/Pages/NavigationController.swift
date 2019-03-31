@@ -14,6 +14,7 @@ class NavigationController: UINavigationController {
         UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
 //        navigationBar.setBackgroundImage(UIImage.imageWithColor(tintColor: .white), for: .default)
 //        view.backgroundColor = UIColor.white
+        view.backgroundColor = Color.strongGray
         for viewController in tabBarController?.viewControllers ?? [] {
             if let navigationVC = viewController as? UINavigationController, let rootVC = navigationVC.viewControllers.first {
                 let _ = rootVC.view

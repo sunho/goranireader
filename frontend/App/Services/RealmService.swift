@@ -51,6 +51,7 @@ class RealmService {
         uex.bookId = tuple.bookId
         uex.index = tuple.index
         uex.sentence = tuple.sentence
+        uex.original = tuple.word
         
         if defs.count == 0 {
             let udef = UnknownWordDefinition()

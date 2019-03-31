@@ -105,8 +105,8 @@ class WordCardViewController: UIViewController, UITableViewDelegate, UITableView
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! WordCardTableViewCell
         
-        cell.examples = item.examples.map { i -> String in
-            return i.sentence
+        cell.examples = item.examples.map { i -> NSAttributedString in
+            return SentenceUtil.attributedText(withString: i.sentence, boldString: i.original, font: UIFont.systemFont(ofSize: 12))
         }
         cell.definitionView.text = item.def
         cell.updateState(false)

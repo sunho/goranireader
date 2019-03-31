@@ -11,7 +11,7 @@ import UIKit
 class WordCardTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource {
     let space: CGFloat = 8
     
-    var examples: [String]!
+    var examples: [NSAttributedString]!
     var container: PaddingMarginView!
     var definitionView: UILabel!
     var exampleTableView: UITableView!
@@ -69,7 +69,8 @@ class WordCardTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = self.examples[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! WordCardExampleTableViewCell
-        cell.sentenceView.text = item
+        cell.sentenceView.attributedText = item
+        
         return cell
     }
     

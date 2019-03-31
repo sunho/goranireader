@@ -88,6 +88,7 @@ class UnknownWordExample: Object, Codable {
     @objc dynamic var sentence: String = ""
     @objc dynamic var bookId: Int = 0
     @objc dynamic var index: Int = 0
+    @objc dynamic var original: String = ""
 }
 
 typealias UnknownDefinitionTuple = (word: String, bookId: Int, sentence: String, index: Int)

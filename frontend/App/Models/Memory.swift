@@ -9,10 +9,10 @@
 import Foundation
 
 struct Memory: Codable {
-    var id: Int
-    var userId: Int
-    var sentence: String
-    var rate: Int
+    var id: Int?
+    var userId: Int?
+    var sentence: String = ""
+    var rate: Int?
     
     enum CodingKeys: String, CodingKey
     {

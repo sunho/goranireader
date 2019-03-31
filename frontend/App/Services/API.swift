@@ -18,8 +18,7 @@ enum API {
     case rateReview(bookId: Int, reviewId: Int, rate: Int)
     
     case listMemories(word: String, p: Int)
-    case createMemory(word: String, sentence: String)
-    case deleteMemory(word: String)
+    case updateMemory(word: String, sentence: String)
     case getMyMemory(word: String)
     case rateMemory(word: String, memoryId: Int, rate: Int)
     
@@ -76,10 +75,8 @@ extension API: TargetType {
             return "/shop/book/\(bid)/review/\(rid)/rate"
         case .listMemories(let word, _):
             return "/memory/\(word)"
-        case .createMemory(let word, _):
-            return "/memroy/\(word)"
-        case .deleteMemory(let word):
-            return "/memory/\(word)/my"
+        case .updateMemory(let word, _):
+            return "/memory/\(word)"
         case .getMyMemory(let word):
             return "/memory/\(word)/my"
         case .rateMemory(let word, let mid, _):
@@ -129,13 +126,13 @@ extension API: TargetType {
              .getShopBook, .searchShopBooks, .listRecommendedBooks, .getRecommendInfo,
              .listQuizResults, .listSensResults, .checkAuth:
             return .get
-        case .createReview, .createMemory, .buyShopBook, .register, .login, .createEventLog:
+        case .createReview,  .buyShopBook, .register, .login, .createEventLog:
             return .post
         case .updateReview, .rateReview, .rateMemory, .updateRecommendInfo,
-             .rateRecommendedBook,
+             .rateRecommendedBook, .updateMemory,
              .updateQuizResult, .updateSensResult:
             return .put
-        case .deleteReview, .deleteMemory:
+        case .deleteReview:
             return .delete
         }
     }
@@ -158,8 +155,10 @@ extension API: TargetType {
             return .downloadDestination(downloadDestination)
         case .listReviews(_, let p), .listMemories(_, let p):
             return .requestParameters(parameters: ["p": p], encoding: URLEncoding.default)
-        case .createMemory(_, let body):
-            return .requestCustomJSONEncodable(body, encoder: encoder)
+        case .updateMemory(_, let sentence):
+            var memory = Memory()
+            memory.sentence = sentence
+            return .requestCustomJSONEncodable(memory, encoder: encoder)
         case .createReview(_, let body), .updateReview(_, let body):
             return .requestCustomJSONEncodable(body, encoder: encoder)
         case .createEventLog(let body):
@@ -181,7 +180,7 @@ extension API: TargetType {
         case .getMyReview, .listBooks, .getMyMemory, .listCategories, .getShopBook,
              .listRecommendedBooks, .getRecommendInfo,
              .listQuizResults, .listSensResults, .buyShopBook,
-             .deleteReview, .deleteMemory, .checkAuth:
+             .deleteReview, .checkAuth:
             return .requestPlain
         }
     }

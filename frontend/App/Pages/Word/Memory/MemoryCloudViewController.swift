@@ -57,7 +57,7 @@ class MemoryCloudViewController: UIViewController {
                     switch event {
                     case .value(let memories):
                         for memory in memories {
-                            self.addSentenceCloud(id: memory.id, sentence: memory.sentence, rate: memory.rate)
+                            self.addSentenceCloud(id: memory.id ?? -1, sentence: memory.sentence, rate: memory.rate ?? 0)
                         }
                     case .failed(let error):
                         AlertService.shared.alertError(error)

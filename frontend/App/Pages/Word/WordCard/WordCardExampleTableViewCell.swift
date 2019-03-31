@@ -20,11 +20,18 @@ class WordCardExampleTableViewCell: UITableViewCell {
         backgroundColor = .clear
         selectionStyle = .none
         
-        sentenceView = UILabel()
+        sentenceView = MultilineLabel()
         contentView.addSubview(sentenceView)
         sentenceView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.right.bottom.top.equalToSuperview()
+            make.left.equalToSuperview().offset(5)
         }
-        sentenceView.setFont()
+        sentenceView.setFont(.normal, Color.strongGray)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.contentView.layoutIfNeeded()
+        self.sentenceView.preferredMaxLayoutWidth = self.sentenceView.frame.size.width
     }
 }

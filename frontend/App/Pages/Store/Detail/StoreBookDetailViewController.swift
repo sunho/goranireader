@@ -26,6 +26,7 @@ class StoreBookDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        modalPresentationStyle = .overFullScreen
         navigationController?.isNavigationBarHidden = false
         navigationItem.largeTitleDisplayMode = .never
         

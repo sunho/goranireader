@@ -88,6 +88,12 @@ class GuideMainViewController: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
+    @IBAction func targetBookChange(_ sender: Any) {
+        let vc = storyboard!.instantiateViewController(withIdentifier: "StoreMainViewController") as! StoreMainViewController
+        vc.delegate = self
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     func layout() {
         if wordCount == 0 {
             wordCardView.button.isEnabled = false
@@ -103,10 +109,37 @@ class GuideMainViewController: UIViewController {
             targetBookView.coverView.setBookCover(targetBook.cover)
         }
         if shouldSelectTargetBook {
-            targetBookView.nameView.text = "옆의 회색 상자를 눌러서"
+            targetBookView.nameView.text = "위의 변경 버튼을 눌러서"
             targetBookView.nativeNameView.text = "원서로 한번 읽어보고 싶은 책을 골라주세요"
             targetBookView.coverView.setBookPlaceholder()
         }
+    }
+}
+
+extension GuideMainViewController: StoreMainViewControllerDelegate {
+    func title() -> String {
+        return "목표책 선택"
+    }
+    
+    func storeMainViewControllerDidSelect(_ viewController: StoreMainViewController, _ book: Book) {
+        navigationController?.popViewController(animated: true)
+        viewController.dismiss(animated: true, completion: nil)
+        var info = RecommendInfo()
+        info.targetBookId = book.id
+        APIService.shared.request(.updateRecommendInfo(info: info))
+            .filterSuccessfulStatusCodes()
+            .start { event in
+                DispatchQueue.main.async {
+                    switch event {
+                    case .value(_):
+                        self.fetchTargetBook()
+                    case .failed(let error):
+                        AlertService.shared.alertError(error)
+                    default:
+                        print(event)
+                    }
+                }
+            }
     }
 }
 
@@ -128,5 +161,4 @@ extension GuideMainViewController: UICollectionViewDelegate, UICollectionViewDat
 //        return CGSize(width: itemWidth, height: itemHeight)
 //    }
 }
-
 

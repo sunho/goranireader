@@ -134,6 +134,8 @@ class BookMainViewController: UIViewController {
             
             let config = FolioReaderConfig()
             config.tintColor = Color.tint
+            config.barTintColor = Color.white
+            config.barColor = Color.strongGray
             config.canChangeScrollDirection = false
             config.shouldHideNavigationOnTap = false
             config.hideBars = false

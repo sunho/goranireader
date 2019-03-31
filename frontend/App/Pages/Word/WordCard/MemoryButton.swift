@@ -12,7 +12,11 @@ import UIKit
 class MemoryButton: UIButton {
     var text: String? {
         didSet {
-            setTitle(text, for: .normal)
+            if text == nil || text! == "" {
+                setTitle("암기 문장이 없습니다", for: .normal)
+            } else {
+                setTitle(text, for: .normal)
+            }
             layoutSubviews()
         }
     }
@@ -20,7 +24,7 @@ class MemoryButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         borderRadius = .small
-        setTitle("", for: .normal)
+        text = nil
         setTitleColor(Color.strongGray, for: .normal)
         titleLabel!.numberOfLines = 0
         titleLabel!.lineBreakMode = .byWordWrapping

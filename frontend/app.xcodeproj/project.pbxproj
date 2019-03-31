@@ -67,7 +67,6 @@
 		C783AABA2242332500D0D7BB /* SwipeSubmitScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C783AAB92242332500D0D7BB /* SwipeSubmitScreen.swift */; };
 		C78ECA9B2206E57F001909C3 /* StoreMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78ECA9A2206E57F001909C3 /* StoreMainViewController.swift */; };
 		C7B2624C224BF6FC00ED5333 /* GuideCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B2624B224BF6FC00ED5333 /* GuideCard.swift */; };
-		C7B26251224BFC6E00ED5333 /* WordGuideCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B26250224BFC6E00ED5333 /* WordGuideCard.swift */; };
 		C7BF8C5B224546D60037FD68 /* UIConsts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BF8C5A224546D60037FD68 /* UIConsts.swift */; };
 		C7BF8C5E2245D8BC0037FD68 /* MultilineLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BF8C5D2245D8BC0037FD68 /* MultilineLabel.swift */; };
 		C7BF8C652246102A0037FD68 /* MemoryBulletPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BF8C642246102A0037FD68 /* MemoryBulletPage.swift */; };
@@ -245,7 +244,6 @@
 		C783AAB92242332500D0D7BB /* SwipeSubmitScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeSubmitScreen.swift; sourceTree = "<group>"; };
 		C78ECA9A2206E57F001909C3 /* StoreMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreMainViewController.swift; sourceTree = "<group>"; };
 		C7B2624B224BF6FC00ED5333 /* GuideCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideCard.swift; sourceTree = "<group>"; };
-		C7B26250224BFC6E00ED5333 /* WordGuideCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordGuideCard.swift; sourceTree = "<group>"; };
 		C7BF8C5A224546D60037FD68 /* UIConsts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConsts.swift; sourceTree = "<group>"; };
 		C7BF8C5D2245D8BC0037FD68 /* MultilineLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineLabel.swift; sourceTree = "<group>"; };
 		C7BF8C642246102A0037FD68 /* MemoryBulletPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryBulletPage.swift; sourceTree = "<group>"; };
@@ -577,7 +575,6 @@
 		C7B2624F224BFC0600ED5333 /* Cards */ = {
 			isa = PBXGroup;
 			children = (
-				C7B26250224BFC6E00ED5333 /* WordGuideCard.swift */,
 				C70F55CA22500779006DBB0E /* GuideTargetBookView.swift */,
 				C70F55CC225008D0006DBB0E /* GuideProgressView.swift */,
 				C70F55CE2250094A006DBB0E /* GuideWordCardView.swift */,
@@ -879,7 +876,6 @@
 				C7C117722244D05D0084C799 /* FeedbackBulletPage.swift in Sources */,
 				C70F55DF22502A18006DBB0E /* SocialShareCommentCell.swift in Sources */,
 				C7FC18952239E4E5007172ED /* API.swift in Sources */,
-				C7B26251224BFC6E00ED5333 /* WordGuideCard.swift in Sources */,
 				C7FC18A52239F0F9007172ED /* RecommendInfo.swift in Sources */,
 				C70F55D6225029AE006DBB0E /* SocialMainViewController.swift in Sources */,
 				C70F55DB225029EC006DBB0E /* SocialMainBestMemoryCell.swift in Sources */,
