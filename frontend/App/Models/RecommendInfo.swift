@@ -9,12 +9,10 @@
 import Foundation
 
 struct RecommendInfo: Codable {
-    var targetBookId: Int
-    var categories: [Category]
+    var targetBookId: Int?
     
     enum CodingKeys: String, CodingKey
     {
         case targetBookId = "target_book_id"
-        case categories
     }
 }

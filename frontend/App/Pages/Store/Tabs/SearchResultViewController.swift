@@ -73,7 +73,7 @@ class SearchResultViewController: UIViewController {
             isFetching = true
             let currentKeyword = keyword
             let currentP = p
-            APIService.shared.request(.searchShopBooks(name: keyword, p: p + 1))
+            APIService.shared.request(.searchShopBooks(name: keyword, p: p + 1, orderBy: "name desc"))
                 .filterSuccessfulStatusCodes()
                 .map([Book].self)
                 .start { event in

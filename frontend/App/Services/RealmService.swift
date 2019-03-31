@@ -100,7 +100,7 @@ class RealmService {
         }
     }
     
-    func addEventLog(_ payload: EventLogPayload) {
+    func addEventLog<T: EventLogPayload>(_ payload: T)  {
         let log = EventLog()
         log.payload = String(data: try! JSONEncoder().encode(payload), encoding: .utf8)!
         log.time = Date()

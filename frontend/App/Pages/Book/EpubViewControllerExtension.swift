@@ -37,7 +37,16 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
         print(word)
         if word == "" {
             dictVC.hide()
+            if currentWord != "" {
+                let payload = UnknownDefinitionPayload()
+                payload.sentence = currentSentence
+                payload.word = currentWord
+                payload.type = "epub"
+                EventLogService.shared.send(payload)
+            }
         } else {
+            currentWord = word
+            currentSentence = sentence
             dictVC.show(point, UnknownDefinitionTuple(word, currentBookId!, sentence, index))
         }
     }
@@ -51,6 +60,12 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
     
     func dictViewControllerDidSelect(_ dictViewController: DictViewController, _ tuple: UnknownDefinitionTuple, _ word: DictEntry, _ def: DictDefinition) {
         RealmService.shared.putUnknownWord(word, def, tuple)
+        let payload = UnknownDefinitionPayload()
+        payload.sentence = tuple.sentence
+        payload.word = word.word
+        payload.defId = Int(def.id)
+        payload.type = "epub"
+        EventLogService.shared.send(payload)
     }
     
     func saveLocation(_ location: Location?) {
@@ -77,24 +92,30 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
     }
     
     func pageItemChanged(_ pageNumber: Int) {
-        if lastPage != pageNumber {
-            lastPage = pageNumber
+        let chapter = folioReader.readerCenter?.currentPageNumber ?? 0
+        print("page:", pageNumber)
+        if lastPage != pageNumber || lastChapter != chapter {
             let interval = NSDate().timeIntervalSince(lastTextUpdated)
-            if interval > MinInterval {
-                let sentences = SentenceUtil.splitParagraph(currentText ?? "")
-                let sizes = sentences.map { s in s.count }
+            lastTextUpdated = Date()
+            if interval > MinInterval && (lastChapter == chapter && pageNumber > lastPage || lastChapter != chapter && pageNumber == 1){
                 let payload = FlipPagePayload()
                 payload.bookId = currentBookId!
                 payload.interval = interval
-                payload.sentences = sizes
+                payload.paragraph = currentText ?? ""
+                payload.page = lastPage
+                payload.chapter = chapter
                 payload.type = "epub"
                 EventLogService.shared.send(payload)
             }
+            lastPage = pageNumber
+            lastChapter = chapter
         }
     }
     
     func currentText(_ text: String) {
-        lastTextUpdated = Date()
-        currentText = text
+        if text != currentText {
+            lastTextUpdated = Date()
+            currentText = text
+        }
     }
 }

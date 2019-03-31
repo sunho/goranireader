@@ -88,6 +88,7 @@ class WordMainViewController: UIViewController, CardSliderDelegate, WordCardView
         cardDetailOpen = false
         RealmService.shared.write {
             words[index].update(option)
+            NotificationCenter.default.post(name: .unknownWordAdded, object: nil)
         }
         updateRemainView()
         layout()

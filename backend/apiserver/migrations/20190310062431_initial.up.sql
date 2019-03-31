@@ -78,8 +78,7 @@ create table users_books (
 create table recommend_infoes (
     id uuid not null unique,
     user_id integer primary key references users on delete cascade,
-    target_book_id integer,
-    categories character varying(1024)
+    target_book_id integer
 );
 
 create table memories (

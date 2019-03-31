@@ -11,13 +11,12 @@ import BLTNBoard
 
 class SignUpBulletPage: FeedbackBulletPage {
     
-    @objc public var usernameInput: LineInputField!
-    @objc public var passwordInput: LineInputField!
-    @objc public var emailInput: LineInputField!
+    var usernameInput: LineInputField!
+    var passwordInput: LineInputField!
+    var emailInput: LineInputField!
+    var container: UIView!
     
-    @objc public var textInputHandler: ((BLTNActionItem, String?) -> Void)? = nil
-    
-    override init() {
+    init(_ delegate: UITextFieldDelegate?) {
         super.init(title: "회원가입")
         descriptionText =  ""
         
@@ -27,24 +26,37 @@ class SignUpBulletPage: FeedbackBulletPage {
         appearance.actionButtonColor = Color.tint
         appearance.alternativeButtonTitleColor = Color.tint
         appearance.actionButtonTitleColor = .white
+        
+        usernameInput = LineInputField(frame: CGRect(), delegate: delegate)
+        usernameInput.textField.returnKeyType = .next
+        usernameInput.placeholder = "아이디"
+        passwordInput = LineInputField(frame: CGRect(), delegate: delegate)
+        passwordInput.textField.returnKeyType = .next
+        passwordInput.placeholder = "비밀번호"
+        passwordInput.textField.isSecureTextEntry = true
+        emailInput = LineInputField(frame: CGRect(), delegate: delegate)
+        emailInput.placeholder = "이메일"
+        emailInput.textField.keyboardType = .emailAddress
     }
     
     override func makeViewsUnderDescription(with interfaceBuilder: BLTNInterfaceBuilder) -> [UIView]? {
-        usernameInput = LineInputField()
-        usernameInput.placeholder = "아이디"
-        passwordInput = LineInputField()
-        passwordInput.placeholder = "비밀번호"
-        emailInput = LineInputField()
-        emailInput.placeholder = "이메일"
-        return [InputFormView(views: [usernameInput, passwordInput, emailInput])]
+        print("?")
+        print(self)
+        print(emailInput)
+        print(emailInput.textField)
+        print(emailInput.textField.delegate)
+        container = InputFormView(views: [usernameInput, emailInput, passwordInput])
+        return [container]
     }
     
     override func tearDown() {
         super.tearDown()
+        usernameInput.textField.text = nil
+        passwordInput.textField.text = nil
+        emailInput.textField.text = nil
     }
     
     override func actionButtonTapped(sender: UIButton) {
         super.actionButtonTapped(sender: sender)
     }
-    
 }

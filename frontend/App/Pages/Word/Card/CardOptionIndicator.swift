@@ -20,6 +20,11 @@ class CardOptionIndicator: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.like1Emoji.isHidden = true
+        self.like2Emoji.isHidden = true
+        self.dislike1Emoji.isHidden = true
+        self.dislike2Emoji.isHidden = true
         self.isUserInteractionEnabled = false
         self.layer.zPosition = CGFloat(Float.greatestFiniteMagnitude)
         

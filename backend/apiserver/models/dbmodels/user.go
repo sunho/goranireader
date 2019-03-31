@@ -1,8 +1,9 @@
 package dbmodels
 
 import (
-	"gorani/utils"
 	"time"
+
+	"github.com/gobuffalo/nulls"
 
 	"github.com/gofrs/uuid"
 )
@@ -23,8 +24,7 @@ type UsersBooks struct {
 }
 
 type RecommendInfo struct {
-	ID           uuid.UUID        `db:"id" json:"-"`
-	UserID       int              `db:"user_id" json:"-"`
-	TargetBookID int              `db:"target_book_id" json:"target_book_id"`
-	Categories   utils.SQLStrings `db:"categories" json:"categories"`
+	ID           uuid.UUID `db:"id" json:"-"`
+	UserID       int       `db:"user_id" json:"-"`
+	TargetBookID nulls.Int `db:"target_book_id" json:"target_book_id"`
 }

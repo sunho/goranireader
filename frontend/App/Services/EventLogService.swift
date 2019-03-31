@@ -14,7 +14,7 @@ class EventLogService {
     init() {
     }
     
-    func send(_ payload: EventLogPayload) {
+    func send<T: EventLogPayload>(_ payload: T) {
         RealmService.shared.addEventLog(payload)
         if ReachabilityService.shared.reach.value {
             for ev in RealmService.shared.getEventLogs() {

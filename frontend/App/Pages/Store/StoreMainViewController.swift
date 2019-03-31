@@ -34,14 +34,17 @@ class StoreMainViewController: UIViewController, UISearchBarDelegate, UISearchRe
         navigationItem.hidesSearchBarWhenScrolling = false
         definesPresentationContext = true
         searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.tintColor = Color.tint
-        searchController.searchBar.setBackgroundImage(UIImage.imageWithColor(tintColor: .white), for: .any, barMetrics: .default)
+        searchController.searchBar.tintColor = Color.white
+        searchController.searchBar.barTintColor = Color.white
+        
+        if let textfield =  searchController.searchBar.value(forKey: "searchField") as? UITextField {
+            if let backgroundview = textfield.subviews.first {
+                backgroundview.backgroundColor = Color.white
+                backgroundview.layer.cornerRadius = 10
+                backgroundview.clipsToBounds = true
+            }
+        }
         switchVC(searchHomeVC)
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        searchController.hairlineView?.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {

@@ -17,4 +17,5 @@ func RegisterRoutes(g *dim.Group) {
 	g.Route("/user", &User{})
 	g.Route("/admin", &Admin{})
 	g.Route("/word", &Word{})
+	g.Route("/evlog", &Evlog{})
 }

@@ -5,6 +5,7 @@ import ReactiveSwift
 import Moya
 import ReactiveMoya
 import RealmSwift
+import Kingfisher
 
 extension Date {
     var yesterday: Date {
@@ -246,5 +247,24 @@ extension UISearchController {
             else { return nil }
         
         return barBackgroundView.subviews.filter({ $0.bounds.height == 1 / self.traitCollection.displayScale }).first
+    }
+}
+
+extension String {
+    var source: Source? {
+        if let url = URL(string: self) {
+            return Source.network(ImageResource(downloadURL: url))
+        }
+        return nil
+    }
+}
+
+extension UIImageView {
+    func setBookCover(_ str: String) {
+        self.kf.setImage(with: str.source, placeholder: UIImage(named: "book_placeholder"))
+    }
+    
+    func setBookPlaceholder() {
+        self.image = UIImage(named: "book_placeholder")
     }
 }

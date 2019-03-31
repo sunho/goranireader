@@ -1,14 +1,16 @@
 import Foundation
 import BLTNBoard
 
-class SignupBulletPageManager {
-    fileprivate let page = SignUpBulletPage()
-    fileprivate var manager: BLTNItemManager
+class SignupBulletPageManager: NSObject, UITextFieldDelegate {
+    fileprivate var page: SignUpBulletPage!
+    fileprivate var manager: BLTNItemManager!
     
-    init() {
-        manager = BLTNItemManager(rootItem: page)
+    override init() {
+        super.init()
+        page = SignUpBulletPage(self)
         page.alternativeHandler = didCancel
         page.actionHandler = didAction
+        manager = BLTNItemManager(rootItem: page)
     }
     
     func show(above: UIViewController) {
@@ -29,7 +31,7 @@ class SignupBulletPageManager {
             .start { event in
                 DispatchQueue.main.async {
                     switch event {
-                    case .value(let resp):
+                    case .value(_):
                         self.manager.dismissBulletin()
                     case .failed(let error):
                         AlertService.shared.alertError(error)
@@ -38,5 +40,25 @@ class SignupBulletPageManager {
                     }
                 }
             }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print("aSFASfasdf")
+        if textField.text! == "" {
+            return false
+        } else if textField == page.usernameInput.textField {
+            textField.resignFirstResponder()
+            page.passwordInput.becomeFirstResponder()
+            return true
+        } else if textField == page.emailInput.textField {
+            textField.resignFirstResponder()
+            page.passwordInput.becomeFirstResponder()
+            return true
+        } else if textField == page.passwordInput.textField {
+            textField.resignFirstResponder()
+            return true
+        } else {
+            return false
+        }
     }
 }

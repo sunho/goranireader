@@ -17,7 +17,7 @@ class LineInputField: UIView {
     }
     var textField: LineTextField!
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, delegate: UITextFieldDelegate?) {
         super.init(frame: frame)
         nameView = UILabel()
         addSubview(nameView)
@@ -27,12 +27,14 @@ class LineInputField: UIView {
         nameView.setFont(.medium, Color.strongGray, .medium)
         
         textField = LineTextField()
+        textField.delegate = delegate
         addSubview(textField)
         textField.snp.makeConstraints { make in
             make.top.equalTo(nameView.snp.bottom)
             make.left.right.bottom.equalToSuperview()
         }
         textField.placeholder = "입력"
+        textField.autocapitalizationType = .none
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -19,6 +19,7 @@ class GuideWordCardView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         button.setImage(UIImage(named: "word_tab_icon")?.maskWithColor(color: .white), for: .normal)
+        button.setImage(UIImage(named: "word_tab_icon")?.maskWithColor(color: Color.darkGray), for: .disabled)
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
     }

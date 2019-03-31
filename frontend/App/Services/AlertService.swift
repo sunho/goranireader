@@ -45,8 +45,12 @@ class AlertService {
             if let error = error as? NSError {
                 if error.code == -1004 {
                     alert(attributes: bottomErrorAttr, title: "에러", description: "서버가 맛이 간 것 같네요")
+                } else {
+                    alert(attributes: bottomErrorAttr, title: "에러", description: error.description)
                 }
             }
+        } else {
+            alert(attributes: bottomErrorAttr, title: "에러", description: error.errorDescription ?? "")
         }
     }
     

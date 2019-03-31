@@ -27,6 +27,14 @@
 		C70F55CD225008D0006DBB0E /* GuideProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55CC225008D0006DBB0E /* GuideProgressView.swift */; };
 		C70F55CF2250094A006DBB0E /* GuideWordCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55CE2250094A006DBB0E /* GuideWordCardView.swift */; };
 		C70F55D122500959006DBB0E /* GuideRecommendedBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55D022500959006DBB0E /* GuideRecommendedBookView.swift */; };
+		C70F55D322501596006DBB0E /* GuideRecommendedBookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55D222501596006DBB0E /* GuideRecommendedBookCell.swift */; };
+		C70F55D6225029AE006DBB0E /* SocialMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55D5225029AE006DBB0E /* SocialMainViewController.swift */; };
+		C70F55D8225029C4006DBB0E /* SocialShareDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55D7225029C4006DBB0E /* SocialShareDetailViewController.swift */; };
+		C70F55DB225029EC006DBB0E /* SocialMainBestMemoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55DA225029EC006DBB0E /* SocialMainBestMemoryCell.swift */; };
+		C70F55DD22502A05006DBB0E /* SocialMainShareCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55DC22502A05006DBB0E /* SocialMainShareCell.swift */; };
+		C70F55DF22502A18006DBB0E /* SocialShareCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55DE22502A18006DBB0E /* SocialShareCommentCell.swift */; };
+		C70F55E122502A3B006DBB0E /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55E022502A3B006DBB0E /* Share.swift */; };
+		C70F55E322502B2B006DBB0E /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55E222502B2B006DBB0E /* Post.swift */; };
 		C7403AEB209176D800099119 /* WordMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7403AEA209176D800099119 /* WordMainViewController.swift */; };
 		C742DD8B2209567A00CD737A /* SearchHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C742DD8A2209567A00CD737A /* SearchHomeViewController.swift */; };
 		C742DD8F2209568800CD737A /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C742DD8E2209568800CD737A /* SearchResultViewController.swift */; };
@@ -83,7 +91,6 @@
 		C7CF0053224CF56300524D80 /* EventLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CF0052224CF56200524D80 /* EventLog.swift */; };
 		C7CF0058224D191700524D80 /* StoreBookDetailReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CF0057224D191700524D80 /* StoreBookDetailReviewCell.swift */; };
 		C7CF005C224D293800524D80 /* EventLogService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CF005B224D293800524D80 /* EventLogService.swift */; };
-		C7D5F503224C904900E7A40A /* WordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D5F502224C904900E7A40A /* WordCard.swift */; };
 		C7D5F507224CC49C00E7A40A /* dict.db in Resources */ = {isa = PBXBuildFile; fileRef = C7D5F506224CC49200E7A40A /* dict.db */; };
 		C7D5F509224CC98F00E7A40A /* RoundOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D5F508224CC98F00E7A40A /* RoundOptionCell.swift */; };
 		C7D915C22240DF8F0073E860 /* SensCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D915C12240DF8F0073E860 /* SensCollectionViewCell.swift */; };
@@ -196,6 +203,14 @@
 		C70F55CC225008D0006DBB0E /* GuideProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideProgressView.swift; sourceTree = "<group>"; };
 		C70F55CE2250094A006DBB0E /* GuideWordCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideWordCardView.swift; sourceTree = "<group>"; };
 		C70F55D022500959006DBB0E /* GuideRecommendedBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideRecommendedBookView.swift; sourceTree = "<group>"; };
+		C70F55D222501596006DBB0E /* GuideRecommendedBookCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideRecommendedBookCell.swift; sourceTree = "<group>"; };
+		C70F55D5225029AE006DBB0E /* SocialMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialMainViewController.swift; sourceTree = "<group>"; };
+		C70F55D7225029C4006DBB0E /* SocialShareDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialShareDetailViewController.swift; sourceTree = "<group>"; };
+		C70F55DA225029EC006DBB0E /* SocialMainBestMemoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialMainBestMemoryCell.swift; sourceTree = "<group>"; };
+		C70F55DC22502A05006DBB0E /* SocialMainShareCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialMainShareCell.swift; sourceTree = "<group>"; };
+		C70F55DE22502A18006DBB0E /* SocialShareCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialShareCommentCell.swift; sourceTree = "<group>"; };
+		C70F55E022502A3B006DBB0E /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
+		C70F55E222502B2B006DBB0E /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		C7403AEA209176D800099119 /* WordMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordMainViewController.swift; sourceTree = "<group>"; };
 		C742DD8A2209567A00CD737A /* SearchHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHomeViewController.swift; sourceTree = "<group>"; };
 		C742DD8E2209568800CD737A /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
@@ -256,7 +271,6 @@
 		C7CF0052224CF56200524D80 /* EventLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLog.swift; sourceTree = "<group>"; };
 		C7CF0057224D191700524D80 /* StoreBookDetailReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreBookDetailReviewCell.swift; sourceTree = "<group>"; };
 		C7CF005B224D293800524D80 /* EventLogService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLogService.swift; sourceTree = "<group>"; };
-		C7D5F502224C904900E7A40A /* WordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCard.swift; sourceTree = "<group>"; };
 		C7D5F506224CC49200E7A40A /* dict.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = dict.db; path = ../../../backend/dataserver/scripts/dictmake/removesup/dict.db; sourceTree = "<group>"; };
 		C7D5F508224CC98F00E7A40A /* RoundOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundOptionCell.swift; sourceTree = "<group>"; };
 		C7D915C12240DF8F0073E860 /* SensCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -374,8 +388,9 @@
 				C77043B4223E219E00B91831 /* Content.swift */,
 				C7742BB222438D8500925081 /* UnknownWord.swift */,
 				C757D2D22247D7690050E0A2 /* Notification.swift */,
-				C7D5F502224C904900E7A40A /* WordCard.swift */,
 				C7CF0052224CF56200524D80 /* EventLog.swift */,
+				C70F55E022502A3B006DBB0E /* Share.swift */,
+				C70F55E222502B2B006DBB0E /* Post.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -400,6 +415,26 @@
 				C70F55C3224FE508006DBB0E /* CBTabBarButton.swift */,
 			);
 			path = TabBar;
+			sourceTree = "<group>";
+		};
+		C70F55D422502978006DBB0E /* Social */ = {
+			isa = PBXGroup;
+			children = (
+				C70F55D9225029CC006DBB0E /* Cells */,
+				C70F55D5225029AE006DBB0E /* SocialMainViewController.swift */,
+				C70F55D7225029C4006DBB0E /* SocialShareDetailViewController.swift */,
+			);
+			path = Social;
+			sourceTree = "<group>";
+		};
+		C70F55D9225029CC006DBB0E /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				C70F55DA225029EC006DBB0E /* SocialMainBestMemoryCell.swift */,
+				C70F55DC22502A05006DBB0E /* SocialMainShareCell.swift */,
+				C70F55DE22502A18006DBB0E /* SocialShareCommentCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		C7403AE72091767D00099119 /* Word */ = {
@@ -456,6 +491,7 @@
 		C759AD7A221EDB1E00166B2A /* Pages */ = {
 			isa = PBXGroup;
 			children = (
+				C70F55D422502978006DBB0E /* Social */,
 				C70F55C1224FE4F0006DBB0E /* TabBar */,
 				C77043C0223E52EB00B91831 /* Auth */,
 				C759AD7D221EEA6300166B2A /* Guide */,
@@ -546,6 +582,7 @@
 				C70F55CC225008D0006DBB0E /* GuideProgressView.swift */,
 				C70F55CE2250094A006DBB0E /* GuideWordCardView.swift */,
 				C70F55D022500959006DBB0E /* GuideRecommendedBookView.swift */,
+				C70F55D222501596006DBB0E /* GuideRecommendedBookCell.swift */,
 			);
 			path = Cards;
 			sourceTree = "<group>";
@@ -837,12 +874,17 @@
 				C7E242E9224721A5000892D0 /* StoreBookDetailViewController.swift in Sources */,
 				C7D5F509224CC98F00E7A40A /* RoundOptionCell.swift in Sources */,
 				C742DD8B2209567A00CD737A /* SearchHomeViewController.swift in Sources */,
+				C70F55DD22502A05006DBB0E /* SocialMainShareCell.swift in Sources */,
 				B143B05B20A47617003341A3 /* UIUtil.swift in Sources */,
 				C7C117722244D05D0084C799 /* FeedbackBulletPage.swift in Sources */,
+				C70F55DF22502A18006DBB0E /* SocialShareCommentCell.swift in Sources */,
 				C7FC18952239E4E5007172ED /* API.swift in Sources */,
 				C7B26251224BFC6E00ED5333 /* WordGuideCard.swift in Sources */,
 				C7FC18A52239F0F9007172ED /* RecommendInfo.swift in Sources */,
+				C70F55D6225029AE006DBB0E /* SocialMainViewController.swift in Sources */,
+				C70F55DB225029EC006DBB0E /* SocialMainBestMemoryCell.swift in Sources */,
 				C7742BAD22433BEE00925081 /* CardSlider.swift in Sources */,
+				C70F55D322501596006DBB0E /* GuideRecommendedBookCell.swift in Sources */,
 				C7FC18AD223A014A007172ED /* Result.swift in Sources */,
 				C70F55C6224FE508006DBB0E /* CBTabBarButton.swift in Sources */,
 				C7BF8C67224613740037FD68 /* MemoryBulletPageManager.swift in Sources */,
@@ -867,6 +909,7 @@
 				C7742BAF22436A6D00925081 /* CardOptionIndicator.swift in Sources */,
 				C7FC18B5223A346D007172ED /* ReachabilityService.swift in Sources */,
 				C7BF8C6D22466BE00037FD68 /* SignUpBulletPageManager.swift in Sources */,
+				C70F55D8225029C4006DBB0E /* SocialShareDetailViewController.swift in Sources */,
 				C7D915C52240E2D50073E860 /* EpubViewControllerExtension.swift in Sources */,
 				C7CF0058224D191700524D80 /* StoreBookDetailReviewCell.swift in Sources */,
 				B143B04F20A47613003341A3 /* DictService.swift in Sources */,
@@ -875,6 +918,7 @@
 				C7FC18BB223A3C45007172ED /* GoraniError.swift in Sources */,
 				C7742BB122437B4900925081 /* WordCardViewController.swift in Sources */,
 				C70F55BD224FCD4D006DBB0E /* TabBarViewController.swift in Sources */,
+				C70F55E122502A3B006DBB0E /* Share.swift in Sources */,
 				C7742BB52243953D00925081 /* WordCardTableViewCell.swift in Sources */,
 				C7C117742244D8930084C799 /* InputFormView.swift in Sources */,
 				C7403AEB209176D800099119 /* WordMainViewController.swift in Sources */,
@@ -901,8 +945,8 @@
 				C7BF8C5E2245D8BC0037FD68 /* MultilineLabel.swift in Sources */,
 				C757D2D12247D5A10050E0A2 /* ContentTypeIconView.swift in Sources */,
 				B143B05A20A47617003341A3 /* Verb.swift in Sources */,
+				C70F55E322502B2B006DBB0E /* Post.swift in Sources */,
 				B143B05620A47617003341A3 /* FileUtil.swift in Sources */,
-				C7D5F503224C904900E7A40A /* WordCard.swift in Sources */,
 				C742DD8F2209568800CD737A /* SearchResultViewController.swift in Sources */,
 				C7FC18A32239F07F007172ED /* Review.swift in Sources */,
 				C7742BB72243967A00925081 /* WordCardExampleTableViewCell.swift in Sources */,

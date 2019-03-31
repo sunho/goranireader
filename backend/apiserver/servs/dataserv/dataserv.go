@@ -26,9 +26,15 @@ func (d *DataServ) AddKnownWord(userid int, word string, n int) error {
 	return d.s.Query(`update known_words set n = n + ? where word = ? and user_id = ?`, n, word, userid).Exec()
 }
 
-func (d *DataServ) AddUserEventLog(userid int, payload datamodels.UserEventLogPayload) error {
+func (d *DataServ) AddUserEventLogPayload(userid int, payload datamodels.UserEventLogPayload) error {
 	evlog := datamodels.NewUserEventLog(userid, payload)
-	err := d.s.Query(`insert into user_event_day_logs (user_id, day, kind, time, payload) VALUES(?, ?, ?, ?, ?)`,
+	return d.AddUserEventLog(evlog)
+}
+
+func (d *DataServ) AddUserEventLog(evlog *datamodels.UserEventLog) error {
+	id := gocql.TimeUUID()
+	err := d.s.Query(`insert into user_event_day_logs (id, user_id, day, kind, time, payload) VALUES(?, ?, ?, ?, ?, ?)`,
+		id,
 		evlog.UserID,
 		evlog.Day,
 		evlog.Kind,
@@ -38,7 +44,8 @@ func (d *DataServ) AddUserEventLog(userid int, payload datamodels.UserEventLogPa
 	if err != nil {
 		return err
 	}
-	return d.s.Query(`insert into user_event_kind_logs (user_id, day, kind, time, payload) VALUES(?, ?, ?, ?, ?)`,
+	return d.s.Query(`insert into user_event_kind_logs (id, user_id, day, kind, time, payload) VALUES(?, ?, ?, ?, ?, ?)`,
+		id,
 		evlog.UserID,
 		evlog.Day,
 		evlog.Kind,

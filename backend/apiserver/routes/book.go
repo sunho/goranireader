@@ -19,7 +19,6 @@ func (b *Book) Register(d *dim.Group) {
 	d.Use(&middles.AuthMiddle{})
 	d.GET("", b.List)
 	d.RouteFunc("/:bookid", func(d *dim.Group) {
-
 	}, &middles.BookParamMiddle{}, &middles.BookOfUserMiddle{})
 }
 

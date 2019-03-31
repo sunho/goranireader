@@ -79,10 +79,10 @@ class ContentService {
             .flatMap(.latest) { (downloadedContents: [Content]) -> SignalProducer<[Content], NoError> in
                 return self.getDownloadableContents()
                     .map { (downloadableContents: [Content]) -> [Content] in
-                        return downloadedContents + downloadableContents
+                        return downloadedContents.sorted(by: { $0.updatedAt > $1.updatedAt}) + downloadableContents.sorted(by: { $0.updatedAt > $1.updatedAt})
                     }
                     .flatMapError { _ -> SignalProducer<[Content], NoError> in
-                        return SignalProducer<[Content], NoError>(value: downloadedContents)
+                        return SignalProducer<[Content], NoError>(value: downloadedContents.sorted(by: { $0.updatedAt > $1.updatedAt}))
                     }
             }
     }

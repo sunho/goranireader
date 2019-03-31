@@ -25,7 +25,7 @@ enum API {
     
     case listBooks
     
-    case searchShopBooks(name: String, p: Int)
+    case searchShopBooks(name: String, p: Int, orderBy: String)
     case getShopBook(bookId: Int)
     case buyShopBook(bookId: Int)
     case listCategories
@@ -151,31 +151,33 @@ extension API: TargetType {
     }
     
     public var task: Task {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
         switch self {
         case .download:
             return .downloadDestination(downloadDestination)
         case .listReviews(_, let p), .listMemories(_, let p):
             return .requestParameters(parameters: ["p": p], encoding: URLEncoding.default)
         case .createMemory(_, let body):
-            return .requestJSONEncodable(body)
+            return .requestCustomJSONEncodable(body, encoder: encoder)
         case .createReview(_, let body), .updateReview(_, let body):
-            return .requestJSONEncodable(body)
+            return .requestCustomJSONEncodable(body, encoder: encoder)
         case .createEventLog(let body):
-            return .requestJSONEncodable(body)
+            return .requestCustomJSONEncodable(body, encoder: encoder)
         case .updateRecommendInfo(let body):
-            return .requestJSONEncodable(body)
+            return .requestCustomJSONEncodable(body, encoder: encoder)
         case .rateReview(_, _, let rate), .rateMemory(_, _, let rate), .rateRecommendedBook(_, let rate):
-            return .requestJSONEncodable(["rate": rate])
-        case .searchShopBooks(let name, let p):
-            return .requestParameters(parameters: ["name": name, "p": p], encoding: URLEncoding.default)
+            return .requestCustomJSONEncodable(["rate": rate], encoder: encoder)
+        case .searchShopBooks(let name, let p, let orderBy):
+            return .requestParameters(parameters: ["name": name, "p": p, "by": orderBy], encoding: URLEncoding.default)
         case .updateSensResult(let result):
-            return .requestJSONEncodable(result)
+            return .requestCustomJSONEncodable(result, encoder: encoder)
         case .updateQuizResult(let result):
-            return .requestJSONEncodable(result)
+            return .requestCustomJSONEncodable(result, encoder: encoder)
         case .register(let username, let password, let email):
-            return .requestJSONEncodable(["username": username, "password": password, "email": email])
+            return .requestCustomJSONEncodable(["username": username, "password": password, "email": email], encoder: encoder)
         case .login(let username, let password):
-            return .requestJSONEncodable(["username": username, "password": password])
+            return .requestCustomJSONEncodable(["username": username, "password": password], encoder: encoder)
         case .getMyReview, .listBooks, .getMyMemory, .listCategories, .getShopBook,
              .listRecommendedBooks, .getRecommendInfo,
              .listQuizResults, .listSensResults, .buyShopBook,
