@@ -11,13 +11,12 @@ class BookMainViewController: UIViewController {
     // TODO: separate
     var currentBookId: Int?
     var folioReader = FolioReader()
-    var currentHTML: String?
-    var currentText: String?
-    var currentWord: String = ""
-    var currentSentence: String = ""
+    var currentSentences: [FlipPageSentence]?
+    var currentSentence: SelectedSentence?
     var lastPage: Int = 0
     var lastChapter: Int = 0
     var lastTextUpdated: Date = Date()
+    var lastUnknown: Date = Date()
     
     
     var dictVC: DictViewController!

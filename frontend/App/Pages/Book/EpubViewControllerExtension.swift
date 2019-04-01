@@ -12,19 +12,12 @@ import FolioReaderKit
 let MinInterval: Double = 2
 
 extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate, DictViewControllerDelegate {
-    fileprivate func updateKnownWords() {
-        guard let html = self.currentHTML else {
-            return
-        }
-    }
-    
     func folioReaderDidAppear(_ folioReader: FolioReader) {
         dictVC.addViewToWindow()
         dictVC.delegate = self
     }
     
     func folioReaderDidClose(_ folioReader: FolioReader) {
-        self.currentHTML = nil
         dictVC.removeViewFromWindow()
     }
     
@@ -33,28 +26,33 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
         print(lastPage)
     }
     
-    func selectionChanged(bookName: String, point: CGPoint, page: Int, scroll: CGFloat, sentence: String, word: String, index: Int) {
-        print(word)
-        if word == "" {
+    func selectionChanged(bookName: String, point: CGPoint, sentence: SelectedSentence?) {
+        if let sentence = sentence{
+            currentSentence = sentence
+            dictVC.show(point, UnknownDefinitionTuple(sentence.word, currentBookId!, sentence.sentence, sentence.index))
+            if currentSentences != nil && sentence.sentenceIndex < currentSentences!.count {
+                var uword = FlipPageUword()
+                let interval = NSDate().timeIntervalSince(lastUnknown)
+                uword.interval = interval
+                uword.index = sentence.index
+                lastUnknown = Date()
+                if currentSentences![sentence.sentenceIndex].sentence == sentence.sentence {
+                    currentSentences![sentence.sentenceIndex].uwords.append(uword)
+                }
+            }
+        } else {
             dictVC.hide()
-            if currentWord != "" {
+            if let currentSentence = currentSentence {
                 let payload = UnknownDefinitionPayload()
-                payload.sentence = currentSentence
-                payload.original = currentWord
+                payload.sentence = currentSentence.sentence
+                payload.original = currentSentence.word
                 payload.type = "epub"
                 EventLogService.shared.send(payload)
             }
-        } else {
-            currentWord = word
-            currentSentence = sentence
-            dictVC.show(point, UnknownDefinitionTuple(word, currentBookId!, sentence, index))
         }
     }
     
     func htmlContentForPage(_ page: FolioReaderPage, htmlContent: String) -> String {
-        self.updateKnownWords()
-        
-        self.currentHTML = htmlContent
         return htmlContent
     }
     
@@ -94,7 +92,6 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
     
     func pageItemChanged(_ pageNumber: Int) {
         let chapter = folioReader.readerCenter?.currentPageNumber ?? 0
-        print("page:", pageNumber)
         if lastPage != pageNumber || lastChapter != chapter {
             let interval = NSDate().timeIntervalSince(lastTextUpdated)
             lastTextUpdated = Date()
@@ -102,7 +99,7 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
                 let payload = FlipPagePayload()
                 payload.bookId = currentBookId!
                 payload.interval = interval
-                payload.paragraph = currentText ?? ""
+                payload.sentences = currentSentences ?? []
                 payload.page = lastPage
                 payload.chapter = chapter
                 payload.type = "epub"
@@ -113,10 +110,21 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
         }
     }
     
-    func currentText(_ text: String) {
-        if text != currentText {
-            lastTextUpdated = Date()
-            currentText = text
+    func currentText(_ sentences: [String]) {
+        if let currentSentences = currentSentences {
+            let same = currentSentences.map { sen -> String in
+                return sen.sentence
+            }.elementsEqual(sentences)
+            if same {
+                return
+            }
+        }
+        lastTextUpdated = Date()
+        lastUnknown = Date()
+        currentSentences = sentences.map { sen in
+            var out = FlipPageSentence()
+            out.sentence = sen
+            return out
         }
     }
 }

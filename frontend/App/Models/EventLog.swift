@@ -43,16 +43,27 @@ class UnknownDefinitionPayload: EventLogPayload {
         case defId = "def_id"
         case sentence = "sentence"
         case type
+        case original
     }
+}
+
+struct FlipPageUword: Codable {
+    var index: Int = 0
+    var interval: Double = 0
+}
+
+struct FlipPageSentence: Codable {
+    var sentence: String = ""
+    var uwords: [FlipPageUword] = []
 }
 
 class FlipPagePayload: EventLogPayload {
     var bookId: Int = 0
     var chapter: Int = 0
     var page: Int = 0
+    var sentences: [FlipPageSentence] = []
     var type: String = "epub"
     var interval: Double = 0
-    var paragraph: String = ""
     func kind() -> String {
         return "flip_page"
     }
@@ -63,7 +74,7 @@ class FlipPagePayload: EventLogPayload {
         case page
         case type
         case interval
-        case paragraph
+        case sentences
     }
 }
 
