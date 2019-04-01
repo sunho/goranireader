@@ -29,7 +29,7 @@ func (ev *Evlog) Post(c2 echo.Context) error {
 		return err
 	}
 	evlog.UserID = c.User.ID
-	evlog.Day = utils.RoundTime(time.Now())
+	evlog.Day = utils.RoundTime(time.Now().UTC())
 	if err := ev.Data.AddUserEventLog(&evlog); err != nil {
 		return err
 	}

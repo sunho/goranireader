@@ -3,8 +3,9 @@ module gorani
 require (
 	github.com/PuerkitoBio/goquery v1.4.1
 	github.com/andybalholm/cascadia v1.0.0 // indirect
+	github.com/confluentinc/confluent-kafka-go v1.0.0 // indirect
 	github.com/go-ini/ini v1.38.3 // indirect
-	github.com/go-redis/redis v6.14.2+incompatible
+	github.com/go-redis/redis v6.15.2+incompatible
 	github.com/gobuffalo/envy v1.6.8 // indirect
 	github.com/gobuffalo/fizz v1.1.2 // indirect
 	github.com/gobuffalo/flect v0.0.0-20181109221320-179d36177b5b // indirect
@@ -26,6 +27,7 @@ require (
 	github.com/minio/minio-go v6.0.14+incompatible
 	github.com/pkg/errors v0.8.1
 	github.com/relops/cqlr v0.0.0-20141111204017-0ac35893ea3f // indirect
+	github.com/segmentio/kafka-go v0.2.2
 	github.com/smartystreets/assertions v0.0.0-20180927180507-b2de0cb4f26d // indirect
 	github.com/smartystreets/goconvey v0.0.0-20181108003508-044398e4856c // indirect
 	github.com/stretchr/testify v1.3.0

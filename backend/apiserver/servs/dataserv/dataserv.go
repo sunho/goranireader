@@ -1,29 +1,34 @@
 package dataserv
 
 import (
+	"context"
+	"encoding/json"
 	"gorani/models/datamodels"
 
-	"github.com/gocql/gocql"
+	"github.com/segmentio/kafka-go"
 )
 
 type DataServ struct {
-	s *gocql.Session
+	userEvWriter *kafka.Writer
 }
 
-func Provide() (*DataServ, error) {
-	cluster := gocql.NewCluster("127.0.0.1")
-	cluster.Keyspace = "gorani"
-	s, err := cluster.CreateSession()
-	if err != nil {
-		return nil, err
-	}
+type DataServConfig struct {
+	Host string `yaml:"host"`
+}
+
+func Provide(conf DataServConfig) (*DataServ, error) {
+	userEvWriter := kafka.NewWriter(kafka.WriterConfig{
+		Brokers:  []string{conf.Host},
+		Topic:    "user_evlog",
+		Balancer: &kafka.LeastBytes{},
+	})
 	return &DataServ{
-		s: s,
+		userEvWriter: userEvWriter,
 	}, nil
 }
 
-func (d *DataServ) AddKnownWord(userid int, word string, n int) error {
-	return d.s.Query(`update known_words set n = n + ? where word = ? and user_id = ?`, n, word, userid).Exec()
+func (DataServ) ConfigName() string {
+	return "data"
 }
 
 func (d *DataServ) AddUserEventLogPayload(userid int, payload datamodels.UserEventLogPayload) error {
@@ -32,26 +37,16 @@ func (d *DataServ) AddUserEventLogPayload(userid int, payload datamodels.UserEve
 }
 
 func (d *DataServ) AddUserEventLog(evlog *datamodels.UserEventLog) error {
-	id := gocql.TimeUUID()
-	err := d.s.Query(`insert into user_event_day_logs (id, user_id, day, kind, time, payload) VALUES(?, ?, ?, ?, ?, ?)`,
-		id,
-		evlog.UserID,
-		evlog.Day,
-		evlog.Kind,
-		evlog.Time,
-		evlog.Payload,
-	).Exec()
+	buf, err := json.Marshal(evlog)
 	if err != nil {
 		return err
 	}
-	return d.s.Query(`insert into user_event_kind_logs (id, user_id, day, kind, time, payload) VALUES(?, ?, ?, ?, ?, ?)`,
-		id,
-		evlog.UserID,
-		evlog.Day,
-		evlog.Kind,
-		evlog.Time,
-		evlog.Payload,
-	).Exec()
+	d.userEvWriter.WriteMessages(context.Background(),
+		kafka.Message{
+			Value: buf,
+		},
+	)
+	return nil
 }
 
 func (d *DataServ) AddSystemEventLog(payload datamodels.SystemEventLogPayload) error {

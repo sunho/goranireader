@@ -6,8 +6,8 @@ import (
 )
 
 type UserEventLog struct {
-	UserID  int       `db:"user_id" json:"-"`
-	Day     time.Time `db:"day" json:"-"`
+	UserID  int       `db:"user_id" json:"user_id"`
+	Day     time.Time `db:"day" json:"day"`
 	Kind    string    `db:"kind" json:"kind"`
 	Time    time.Time `db:"time" json:"time"`
 	Payload string    `db:"payload" json:"payload"`
@@ -22,9 +22,9 @@ type UserEventLogPayload interface {
 func NewUserEventLog(userid int, payload UserEventLogPayload) *UserEventLog {
 	return &UserEventLog{
 		UserID:  userid,
-		Day:     utils.RoundTime(time.Now()),
+		Day:     utils.RoundTime(time.Now().UTC()),
 		Payload: payload.Payload(),
-		Time:    time.Now(),
+		Time:    time.Now().UTC(),
 		Kind:    payload.Kind(),
 	}
 }
@@ -44,8 +44,8 @@ type SystemEventLogPayload interface {
 
 func NewSystemEventLog(payload SystemEventLogPayload) *SystemEventLog {
 	return &SystemEventLog{
-		Day:     utils.RoundTime(time.Now()),
-		Time:    time.Now(),
+		Day:     utils.RoundTime(time.Now().UTC()),
+		Time:    time.Now().UTC(),
 		Kind:    payload.Kind(),
 		Payload: payload.Payload(),
 	}

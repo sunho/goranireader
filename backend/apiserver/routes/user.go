@@ -6,7 +6,6 @@ import (
 	"gorani/models/dbmodels"
 	"gorani/servs/authserv"
 	"gorani/servs/dbserv"
-	"gorani/servs/redserv"
 
 	"github.com/labstack/echo"
 	"github.com/sunho/dim"
@@ -15,7 +14,6 @@ import (
 type User struct {
 	Auth *authserv.AuthServ `dim:"on"`
 	DB   *dbserv.DBServ     `dim:"on"`
-	Red  *redserv.RedServ   `dim:"on"`
 }
 
 func (u *User) Register(d *dim.Group) {

@@ -63,7 +63,7 @@ func (s *FileServ) UploadFileHeader(f *multipart.FileHeader) (string, error) {
 }
 
 func (s *FileServ) UploadFile(r io.Reader, contentType string, ext string) (string, error) {
-	key := strconv.Itoa(int(time.Now().UnixNano())) + utils.RandString(30) + ext
+	key := strconv.Itoa(int(time.Now().UTC().UnixNano())) + utils.RandString(30) + ext
 	_, err := s.cli.PutObject(s.bucket, key, r, -1, minio.PutObjectOptions{ContentType: contentType})
 	if err != nil {
 		return "", err
