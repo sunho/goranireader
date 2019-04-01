@@ -51,9 +51,9 @@ enum API {
 extension API: TargetType {
     public var baseURL: URL {
         if case .download(let url, _) = self {
-            return URL(string: url.replacingOccurrences(of: "127.0.0.1", with: "172.30.1.20")) ?? URL(string: "http://fnfnffnfnfn.asdf")!
+            return URL(string: url.replacingOccurrences(of: "127.0.0.1", with: "172.30.1.47")) ?? URL(string: "http://fnfnffnfnfn.asdf")!
         } else {
-            return URL(string: "http://172.30.1.20:8081")!
+            return URL(string: "http://172.30.1.47:8081")!
         }
     }
     
