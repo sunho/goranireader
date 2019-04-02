@@ -2,9 +2,8 @@ SPARKSUBMIT := ~/spark/bin/spark-submit
 .venv:
 	if [ ! -e ".venv/bin/activate_this.py" ] ; then virtualenv --clear .venv ; fi
 
-dev-deps: .venv
+deps: .venv
 	. .venv/bin/activate && pip install -U -r ./requirements.txt
-	. .venv/bin/activate && pip install -U -r ./requirements-miner.txt
 
 clean: clean-build clean-pyc
 
@@ -22,14 +21,14 @@ build: clean
 	mkdir ./dist
 	cp ./workercli.py ./dist
 	zip -r ./dist/worker.zip ./worker
-	zip -r ./dist/common.zip ./common
 
 dev: .venv
 	zip -r ./dist/in.zip ./in
-	. .venv/bin/activate && $(SPARKSUBMIT) --master spark://localhost:7077 --py-files ./dist/workercli.py,./dist/worker.zip,./dist/common.zip --archives ./dist/in.zip workercli.py ${ARGS}
+	. .venv/bin/activate && $(SPARKSUBMIT) --master spark://localhost:7077 --py-files ./dist/workercli.py,./dist/worker.zip --archives ./dist/in.zip workercli.py ${ARGS}
 
 # TODO
 run-spark: dev
 
 run: .venv
 	. .venv/bin/activate && python workercli.py ${ARGS}
+

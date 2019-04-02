@@ -41,7 +41,7 @@ func (d *DataServ) AddUserEventLog(evlog *datamodels.UserEventLog) error {
 	if err != nil {
 		return err
 	}
-	d.userEvWriter.WriteMessages(context.Background(),
+	go d.userEvWriter.WriteMessages(context.Background(),
 		kafka.Message{
 			Value: buf,
 		},

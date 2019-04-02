@@ -1,6 +1,9 @@
 import pyspark.sql.functions as F
 from pyspark.sql import types as T
+from pyspark.sql import DataFrame
+from pyspark.sql.functions import from_json, col
 from pyspark.ml.linalg import SparseVector, DenseVector
+from uuid import uuid4
 
 # https://danvatterott.com/blog/2018/07/08/aggregating-sparse-and-dense-vectors-in-pyspark/
 def _sparse_to_array(v):
@@ -16,3 +19,11 @@ def _dense_to_array(v):
   return new_array
 
 dense_to_array = F.udf(_dense_to_array, T.ArrayType(T.FloatType()))
+
+def _uuid():
+    return str(uuid4())
+
+uuid = F.udf(_uuid, T.StringType())
+
+def binary_to_string(column: str, df: DataFrame) -> DataFrame:
+    return df.withColumn(column, col(column).cast(T.StringType()))

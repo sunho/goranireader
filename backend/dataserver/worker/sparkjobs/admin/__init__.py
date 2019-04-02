@@ -1,4 +1,4 @@
-from .createbook import CreateBook
+from .create_book import CreateBook
 
 __all__ = [
     'CreateBook'

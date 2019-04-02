@@ -2,10 +2,7 @@ package routes
 
 import (
 	"gorani/middles"
-	"gorani/models"
-	"gorani/servs/dataserv"
 
-	"github.com/labstack/echo"
 	"github.com/sunho/dim"
 )
 
@@ -15,7 +12,6 @@ type Word struct {
 func (u *Word) Register(d *dim.Group) {
 	d.Use(&middles.AuthMiddle{})
 	// d.Route("/uword", &Uword{})
-	d.Route("/nword", &Nword{})
 }
 
 // type Uword struct {
@@ -67,28 +63,3 @@ func (u *Word) Register(d *dim.Group) {
 
 // 	return c.NoContent(200)
 // }
-
-type Nword struct {
-	Data *dataserv.DataServ `dim:"on"`
-}
-
-func (n *Nword) Register(d *dim.Group) {
-	d.POST("/:word", n.Post)
-	d.DELETE("/:word", n.Delete)
-}
-
-func (n *Nword) Post(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	if err := n.Data.AddKnownWord(c.User.ID, c.Param("word"), 1); err != nil {
-		return err
-	}
-	return c.NoContent(201)
-}
-
-func (n *Nword) Delete(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	if err := n.Data.AddKnownWord(c.User.ID, c.Param("word"), -1); err != nil {
-		return err
-	}
-	return c.NoContent(200)
-}

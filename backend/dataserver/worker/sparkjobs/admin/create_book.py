@@ -1,18 +1,18 @@
-from worker.shared import SparkJob
+from worker.shared import FinalSparkJob, SparkJobContext
 import pyspark.sql.functions as F
 
-class CreateBook(SparkJob):
-    def __init__(self):
-        SparkJob.__init__(self, 'Create Book')
+class CreateBook(FinalSparkJob):
+    def __init__(self, context: SparkJobcontext):
+        FinalSparkJob.__init__(self, context, 'Create Book')
 
     def create_all(self):
-        files = self.context.list_input_files()
+        files = self.list_input_files()
         for file in files:
             if file.endswith('.epub'):
                 self._create(file, self._get_id(file))
 
     def create_one(self, id):
-        files = self.context.list_input_files()
+        files = self.list_input_files()
         for file in files:
             if file.endswith('.epub'):
                 if id == self._get_id(file):
@@ -26,7 +26,7 @@ class CreateBook(SparkJob):
         return int(match.group(1))
 
     def _create(self, file, id):
-        self.context.log('Creating {}'.format(file))
+        self.log('Creating {}'.format(file))
 
         from ebooklib import epub
         from nltk.corpus import stopwords
@@ -74,12 +74,12 @@ class CreateBook(SparkJob):
         df = df.groupBy('word').count()\
         .select('word', F.col('count').alias('n'))\
         .withColumn('book_id', F.lit(id))
-        self.context.write_data('book_words',df)
+        self.write_data('book_words',df)
 
     def _covert_to_book(self, df, id):
         df = df.agg(F.collect_list('word').alias('content'))\
         .withColumn('id', F.lit(id))\
         .withColumn('name', F.lit(self.book.title))
-        self.context.write_data('books',df)
+        self.write_data('books',df)
 
 

@@ -2,14 +2,14 @@ import pyspark.sql.functions as F
 from pyspark.ml.feature import CountVectorizer, Normalizer
 from pyspark.mllib.linalg.distributed import IndexedRow, IndexedRowMatrix
 
-from worker.shared import SparkJob
+from worker.shared import FinalSparkJob, SparkJobContext
 from worker.shared.utils import sparse_to_array
 
-class ComputeCosineSimilarity(SparkJob):
+class ComputeCosineSimilarity(FinalSparkJob):
     SIMILARITY_TYPE = 'cosine'
 
-    def __init__(self):
-        SparkJob.__init__(self, 'Compute Cosine Similarity')
+    def __init__(self, context: SparkJobContext):
+        FinalSparkJob.__init__(self, context, 'Compute Cosine Similarity')
 
     def compute(self):
         words = self.context.read_data_all('words', cache = True)
