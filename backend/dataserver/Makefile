@@ -20,11 +20,11 @@ clean-pyc:
 build: clean
 	mkdir ./dist
 	cp ./workercli.py ./dist
-	zip -r ./dist/worker.zip ./worker
+	zip -r ./dist/gorani.zip ./gorani
 
 dev: .venv
 	zip -r ./dist/in.zip ./in
-	. .venv/bin/activate && $(SPARKSUBMIT) --master spark://localhost:7077 --py-files ./dist/workercli.py,./dist/worker.zip --archives ./dist/in.zip workercli.py ${ARGS}
+	. .venv/bin/activate && $(SPARKSUBMIT) --master spark://localhost:7077 --py-files ./dist/workercli.py,./dist/gorani.zip --archives ./dist/in.zip workercli.py ${ARGS}
 
 # TODO
 run-spark: dev

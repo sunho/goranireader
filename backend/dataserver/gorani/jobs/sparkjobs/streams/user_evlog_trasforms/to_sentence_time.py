@@ -1,10 +1,10 @@
-from worker.shared import PartialStreamJob, StreamJobContext
-from worker.shared.schema import FlipPagePayloadSchema
+from gorani.shared import PartialStreamJob, StreamJobContext
+from gorani.shared.schema import FlipPagePayloadSchema
 from pyspark.sql import DataFrame
 from pyspark.sql.functions import explode, monotonically_increasing_id, udf, from_json
 from pyspark.sql.types import *
 from typing import Optional
-from worker.shared.utils import uuid
+from gorani.shared.utils import uuid
 from nltk import word_tokenize, pos_tag
 from nltk.corpus import stopwords
 import traceback

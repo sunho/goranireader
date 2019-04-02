@@ -1,4 +1,4 @@
-from worker.shared import FinalSparkJob, SparkJobContext
+from gorani.shared import FinalSparkJob, SparkJobContext
 import pyspark.sql.functions as F
 
 class CreateBook(FinalSparkJob):

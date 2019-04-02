@@ -1,4 +1,4 @@
-from worker.shared import Job, JobContext
+from gorani.shared import Job, JobContext
 
 class DeleteBook(Job):
     def __init__(self, context: JobContext):

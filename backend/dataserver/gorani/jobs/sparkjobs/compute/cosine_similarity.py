@@ -2,8 +2,8 @@ import pyspark.sql.functions as F
 from pyspark.ml.feature import CountVectorizer, Normalizer
 from pyspark.mllib.linalg.distributed import IndexedRow, IndexedRowMatrix
 
-from worker.shared import FinalSparkJob, SparkJobContext
-from worker.shared.utils import sparse_to_array
+from gorani.shared import FinalSparkJob, SparkJobContext
+from gorani.shared.utils import sparse_to_array
 
 class ComputeCosineSimilarity(FinalSparkJob):
     SIMILARITY_TYPE = 'cosine'

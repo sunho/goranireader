@@ -1,9 +1,9 @@
-from worker.shared import FinalStreamJob, StreamJobContext
-from worker.shared.schema import UserEventLogSchema
+from gorani.shared import FinalStreamJob, StreamJobContext
+from gorani.shared.schema import UserEventLogSchema
 from pyspark.sql.functions import from_json, lit
 from pyspark.sql import DataFrame
 from pyspark.sql.types import StructType
-from worker.shared.utils import binary_to_string, uuid
+from gorani.shared.utils import binary_to_string, uuid
 from .user_evlog_trasforms import factory
 
 class StreamEvlogJob(FinalStreamJob):
