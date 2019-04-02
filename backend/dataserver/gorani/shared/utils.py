@@ -4,6 +4,7 @@ from pyspark.sql import DataFrame
 from pyspark.sql.functions import from_json, col
 from pyspark.ml.linalg import SparseVector, DenseVector
 from uuid import uuid4
+import pickle
 
 # https://danvatterott.com/blog/2018/07/08/aggregating-sparse-and-dense-vectors-in-pyspark/
 def _sparse_to_array(v):
@@ -24,6 +25,11 @@ def _uuid():
     return str(uuid4())
 
 uuid = F.udf(_uuid, T.StringType())
+
+def _pickle_dump(col):
+    return pickle.dumps(col)
+
+pickle_dump = F.udf(_pickle_dump, T.BinaryType())
 
 def binary_to_string(column: str, df: DataFrame) -> DataFrame:
     return df.withColumn(column, col(column).cast(T.StringType()))

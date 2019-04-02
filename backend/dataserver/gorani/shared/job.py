@@ -23,7 +23,7 @@ class SparkJob(Job):
         Job.__init__(self, context)
         self.context = context
 
-    def read_data_all(self, table, cache = False, keyspace = 'gorani'):
+    def read_data_all(self, table: str, cache: bool = False, keyspace: str = 'gorani') -> DataFrame:
         out = self.context.spark.read\
             .format('org.apache.spark.sql.cassandra')\
             .options(table=table, keyspace=keyspace)\
@@ -33,11 +33,18 @@ class SparkJob(Job):
             return out.cache()
         return out
 
-    def write_data(self, table, df, keyspace = 'gorani'):
+    def write_data(self, table: str, df: DataFrame, keyspace: str = 'gorani'):
         df.write\
             .format('org.apache.spark.sql.cassandra')\
             .mode('append')\
             .options(table=table, keyspace=keyspace)\
+            .save()
+
+    def write_api(self, table: str, df: DataFrame):
+        url = 'jdbc:postgresql://localhost:5432/gorani'
+        properties = {'user': 'postgres','password': 'postgres','driver': 'org.postgresql.Driver'}
+        df.write\
+            .jdbc(url=url, table=table, mode='append', properties=properties)\
             .save()
 
 class PartialSparkJob(SparkJob):

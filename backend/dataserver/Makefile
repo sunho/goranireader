@@ -4,6 +4,7 @@ SPARKSUBMIT := ~/spark/bin/spark-submit
 
 deps: .venv
 	. .venv/bin/activate && pip install -U -r ./requirements.txt
+	. .venv/bin/activate && venv-pack -o ./dist/.venv.tar.gz
 
 clean: clean-build clean-pyc
 
@@ -24,7 +25,7 @@ build: clean
 
 dev: .venv
 	zip -r ./dist/in.zip ./in
-	. .venv/bin/activate && $(SPARKSUBMIT) --master spark://localhost:7077 --py-files ./dist/workercli.py,./dist/gorani.zip --archives ./dist/in.zip workercli.py ${ARGS}
+	. .venv/bin/activate && PYSPARK_PYTHON="./.venv/bin/python" PYSPARK_DRIVER_PYTHON="./.venv/bin/python" $(SPARKSUBMIT) --master local --py-files ./dist/workercli.py,./dist/gorani.zip --archives ./dist/in.zip,./dist/.venv.tar.gz#.venv workercli.py ${ARGS}
 
 # TODO
 run-spark: dev

@@ -34,14 +34,14 @@ def sparkjob():
 @click.option('--all', is_flag=True, help='Process all files that ends with .epub in input folder')
 @click.option('--id', default=1, help='The id in name of epub file')
 def create_book(all, id):
-    from gorani.sparkjobs.admin import CreateBook
+    from gorani.jobs.sparkjobs.admin import CreateBook
     job = CreateBook(create_spark_context())
     if all:
         job.create_all()
     else:
         job.create_one(id)
 
-from gorani.sparkjobs.compute import ComputeCosineSimilarity
+from gorani.jobs.sparkjobs.compute import ComputeCosineSimilarity
 @sparkjob.command()
 @click.option('--type', default=ComputeCosineSimilarity.SIMILARITY_TYPE, help='Type of similarity')
 def compute_similarity(type):
@@ -51,7 +51,13 @@ def compute_similarity(type):
     else:
         print('no such similarity type')
 
-from gorani.sparkjobs.streams import StreamEvlogJob
+from gorani.jobs.sparkjobs.compute import ComputeSimilarWord
+@sparkjob.command()
+def compute_similar_word():
+    job = ComputeSimilarWord(create_spark_context())
+    job.compute()
+
+from gorani.jobs.sparkjobs.streams import StreamEvlogJob
 @sparkjob.command()
 def stream_evlog():
    job = StreamEvlogJob(create_stream_context())

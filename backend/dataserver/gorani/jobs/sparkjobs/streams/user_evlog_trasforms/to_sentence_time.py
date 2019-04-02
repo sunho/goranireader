@@ -1,5 +1,6 @@
 from gorani.shared import PartialStreamJob, StreamJobContext
 from gorani.shared.schema import FlipPagePayloadSchema
+from gorani.shared.utils import pickle_dump
 from pyspark.sql import DataFrame
 from pyspark.sql.functions import explode, monotonically_increasing_id, udf, from_json
 from pyspark.sql.types import *
@@ -43,14 +44,28 @@ def _convert_sentence(sentence):
                 isuword = True
                 break
 
-        item = (tok[0], tok[1], tok in stop_words, isuword)
+        item = {
+            'word': tok[0].lower(),
+            'pos': tok[1],
+            'stop': tok in stop_words,
+            'uword': isuword
+        }
         out.append(item)
     return out
 
 def _convert_sentences(sentences):
-    return pickle.dumps([_convert_sentence(s) for s in sentences])
+    return [_convert_sentence(s) for s in sentences]
 
-convert_sentences = udf(_convert_sentences, BinaryType())
+convert_sentences = udf(_convert_sentences, ArrayType(ArrayType(
+    StructType(
+        [
+            StructField('word', StringType()),
+            StructField('pos', StringType()),
+            StructField('stop', BooleanType()),
+            StructField('uword', BooleanType())
+        ]
+    )
+)))
 
 class TransformToSentenceTime(PartialStreamJob):
     def __init__(self, context: StreamJobContext):
@@ -60,9 +75,9 @@ class TransformToSentenceTime(PartialStreamJob):
         paragraph_df = df.where('kind = "flip_page"')\
             .withColumn('payload', from_json('payload', FlipPagePayloadSchema))\
             .withColumn('id', uuid())\
-            .select('id', 'user_id', 'time', 'payload.interval', convert_sentences('payload.sentences').alias('paragraph'))\
+            .select('id', 'user_id', 'time', 'payload.interval', convert_sentences('payload.sentences').alias('paragraph'))
 
-        self.write_data_stream('user_flipped_paragraphs', paragraph_df)\
+        self.write_data_stream('user_flipped_paragraphs', paragraph_df.withColumn('paragraph', pickle_dump('paragraph')))\
             .start()
 
-        return None
+        return paragraph_df
