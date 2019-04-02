@@ -9,3 +9,4 @@ tensorflow-gpu
 pyspark
 hug
 pyspark
+psycopg2

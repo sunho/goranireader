@@ -26,6 +26,12 @@ def delete_book(all, id):
     else:
         job.delete_one(id)
 
+@cli.command()
+def compute_similar_word():
+    from gorani.jobs import ComputeSimilarWord
+    job = ComputeSimilarWord(create_context())
+    print(len(job.compute(5)))
+
 @cli.group()
 def sparkjob():
     pass
@@ -50,12 +56,6 @@ def compute_similarity(type):
         job.compute()
     else:
         print('no such similarity type')
-
-from gorani.jobs.sparkjobs.compute import ComputeSimilarWord
-@sparkjob.command()
-def compute_similar_word():
-    job = ComputeSimilarWord(create_spark_context())
-    job.compute()
 
 from gorani.jobs.sparkjobs.streams import StreamEvlogJob
 @sparkjob.command()
