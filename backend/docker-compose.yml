@@ -18,6 +18,7 @@ services:
   airflow:
     volumes:
       - datadb_data:/var/lib/cassandra
+        
   data:
 
   kafka:

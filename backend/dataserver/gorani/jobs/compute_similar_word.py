@@ -38,6 +38,9 @@ class ComputeSimilarWord(Job):
         rows = self.context.data_db.get_all('words').current_rows
         words = [row.word for row in rows]
 
+        for word in words:
+
+
 
     def compute_all(self, user_id: int, min_score: int):
         words = self.context.data_db.get_all('words')
