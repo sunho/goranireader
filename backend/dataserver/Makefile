@@ -1,10 +1,9 @@
-SPARKSUBMIT := ~/spark/bin/spark-submit
 .venv:
-	if [ ! -e ".venv/bin/activate_this.py" ] ; then virtualenv --clear .venv ; fi
+	if [ ! -e ".venv/bin/activate_this.py" ] ; then virtualenv --clear .venv --python=python3.6; fi
 
 deps: .venv
 	. .venv/bin/activate && pip install -U -r ./requirements.txt
-	. .venv/bin/activate && venv-pack -o ./dist/.venv.tar.gz
+	. .venv/bin/activate && venv-pack -o ./.venv.tar.gz
 
 clean: clean-build clean-pyc
 
@@ -17,18 +16,14 @@ clean-pyc:
 	find . -name '*~' -exec rm -f {} +
 	find . -name '__pycache__' -exec rm -fr {} +
 
-
 build: clean
 	mkdir ./dist
 	cp ./workercli.py ./dist
 	zip -r ./dist/gorani.zip ./gorani
 
-dev: .venv
+run-spark: .venv build
 	zip -r ./dist/in.zip ./in
-	. .venv/bin/activate && PYSPARK_PYTHON="./.venv/bin/python" PYSPARK_DRIVER_PYTHON="./.venv/bin/python" $(SPARKSUBMIT) --master local --py-files ./dist/workercli.py,./dist/gorani.zip --archives ./dist/in.zip,./dist/.venv.tar.gz#.venv workercli.py ${ARGS}
-
-# TODO
-run-spark: dev
+	. .venv/bin/activate && PYSPARK_PYTHON="./.venv/bin/python" PYSPARK_DRIVER_PYTHON="./.venv/bin/python" $(SPARK_SUBMIT) ${SPARK_ARGS} --py-files ./dist/workercli.py,./dist/gorani.zip --archives ./dist/in.zip,./.venv.tar.gz#.venv workercli.py ${ARGS}
 
 run: .venv
 	. .venv/bin/activate && python workercli.py ${ARGS}

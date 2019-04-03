@@ -53,7 +53,7 @@ extension API: TargetType {
         if case .download(let url, _) = self {
             return URL(string: url.replacingOccurrences(of: "127.0.0.1", with: "172.30.1.47")) ?? URL(string: "http://fnfnffnfnfn.asdf")!
         } else {
-            return URL(string: "http://172.30.1.47:8081")!
+            return URL(string: "https://gorani.sunho.kim")!
         }
     }
     

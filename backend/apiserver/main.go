@@ -15,5 +15,5 @@ func main() {
 	d.Provide(authserv.Provide, dbserv.Provide, fileserv.Provide, dataserv.Provide)
 	d.Init("")
 	d.Register(routes.RegisterRoutes)
-	d.Start(":8081")
+	d.Start(":5353")
 }

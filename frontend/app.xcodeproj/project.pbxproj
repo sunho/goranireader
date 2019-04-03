@@ -62,6 +62,7 @@
 		C7742BB322438D8500925081 /* UnknownWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7742BB222438D8500925081 /* UnknownWord.swift */; };
 		C7742BB52243953D00925081 /* WordCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7742BB42243953D00925081 /* WordCardTableViewCell.swift */; };
 		C7742BB72243967A00925081 /* WordCardExampleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7742BB62243967A00925081 /* WordCardExampleTableViewCell.swift */; };
+		C77A4302225565F700B4661D /* dict.db in Resources */ = {isa = PBXBuildFile; fileRef = C77A4301225565F700B4661D /* dict.db */; };
 		C783AAB62241E0CB00D0D7BB /* SensMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C783AAB52241E0CB00D0D7BB /* SensMainViewController.swift */; };
 		C783AAB822420C0200D0D7BB /* SelfSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C783AAB722420C0200D0D7BB /* SelfSizedTableView.swift */; };
 		C783AABA2242332500D0D7BB /* SwipeSubmitScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C783AAB92242332500D0D7BB /* SwipeSubmitScreen.swift */; };
@@ -90,7 +91,6 @@
 		C7CF0053224CF56300524D80 /* EventLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CF0052224CF56200524D80 /* EventLog.swift */; };
 		C7CF0058224D191700524D80 /* StoreBookDetailReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CF0057224D191700524D80 /* StoreBookDetailReviewCell.swift */; };
 		C7CF005C224D293800524D80 /* EventLogService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CF005B224D293800524D80 /* EventLogService.swift */; };
-		C7D5F507224CC49C00E7A40A /* dict.db in Resources */ = {isa = PBXBuildFile; fileRef = C7D5F506224CC49200E7A40A /* dict.db */; };
 		C7D5F509224CC98F00E7A40A /* RoundOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D5F508224CC98F00E7A40A /* RoundOptionCell.swift */; };
 		C7D915C22240DF8F0073E860 /* SensCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D915C12240DF8F0073E860 /* SensCollectionViewCell.swift */; };
 		C7D915C52240E2D50073E860 /* EpubViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D915C42240E2D50073E860 /* EpubViewControllerExtension.swift */; };
@@ -237,6 +237,7 @@
 		C7742BB222438D8500925081 /* UnknownWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnknownWord.swift; sourceTree = "<group>"; };
 		C7742BB42243953D00925081 /* WordCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCardTableViewCell.swift; sourceTree = "<group>"; };
 		C7742BB62243967A00925081 /* WordCardExampleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCardExampleTableViewCell.swift; sourceTree = "<group>"; };
+		C77A4301225565F700B4661D /* dict.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = dict.db; path = ../../../backend/dataserver/old/dictmake/removesup/dict.db; sourceTree = "<group>"; };
 		C78217C7209BD32700C19E2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C78217C8209BD32700C19E2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C783AAB52241E0CB00D0D7BB /* SensMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensMainViewController.swift; sourceTree = "<group>"; };
@@ -269,7 +270,6 @@
 		C7CF0052224CF56200524D80 /* EventLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLog.swift; sourceTree = "<group>"; };
 		C7CF0057224D191700524D80 /* StoreBookDetailReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreBookDetailReviewCell.swift; sourceTree = "<group>"; };
 		C7CF005B224D293800524D80 /* EventLogService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLogService.swift; sourceTree = "<group>"; };
-		C7D5F506224CC49200E7A40A /* dict.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = dict.db; path = ../../../backend/dataserver/scripts/dictmake/removesup/dict.db; sourceTree = "<group>"; };
 		C7D5F508224CC98F00E7A40A /* RoundOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundOptionCell.swift; sourceTree = "<group>"; };
 		C7D915C12240DF8F0073E860 /* SensCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensCollectionViewCell.swift; sourceTree = "<group>"; };
 		C7D915C42240E2D50073E860 /* EpubViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpubViewControllerExtension.swift; sourceTree = "<group>"; };
@@ -556,7 +556,7 @@
 		C78217BB209BC1CF00C19E2F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C7D5F506224CC49200E7A40A /* dict.db */,
+				C77A4301225565F700B4661D /* dict.db */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -783,7 +783,7 @@
 				B124047520A8CD90005EAE4F /* Cartfile in Resources */,
 				C74CEFE5208C89A1002765D6 /* LaunchScreen.storyboard in Resources */,
 				C74CEFE2208C89A1002765D6 /* Assets.xcassets in Resources */,
-				C7D5F507224CC49C00E7A40A /* dict.db in Resources */,
+				C77A4302225565F700B4661D /* dict.db in Resources */,
 				B13393B320A8F78D00F34525 /* .gitignore in Resources */,
 				C74CEFDD208C899F002765D6 /* Main.storyboard in Resources */,
 			);

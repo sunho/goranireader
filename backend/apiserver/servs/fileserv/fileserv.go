@@ -69,5 +69,5 @@ func (s *FileServ) UploadFile(r io.Reader, contentType string, ext string) (stri
 		return "", err
 	}
 
-	return "http://" + s.endpoint + "/" + s.bucket + "/" + key, nil
+	return "https://" + s.endpoint + "/" + s.bucket + "/" + key, nil
 }
