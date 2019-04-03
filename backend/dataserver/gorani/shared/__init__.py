@@ -1,5 +1,5 @@
-from .context import JobContext, SparkJobContext, StreamJobContext
-from .job import Job, SparkJob, StreamJob, FinalSparkJob, FinalStreamJob, PartialSparkJob, PartialStreamJob
+from .context import JobContext, SparkJobContext, StreamJobContext, TFJobContext
+from .job import Job, SparkJob, StreamJob, FinalSparkJob, FinalStreamJob, PartialSparkJob, PartialStreamJob, TFJob
 from .datadb import DataDB
 
 __all__ = [
@@ -13,5 +13,7 @@ __all__ = [
     'FinalStreamJob',
     'PartialSparkJob',
     'PartialStreamJob',
-    'DataDB'
+    'DataDB',
+    'TFJob',
+    'TFJobContext'
 ]

@@ -4,7 +4,7 @@ import click
 def cli():
     pass
 
-from gorani.shared import JobContext, SparkJobContext, StreamJobContext
+from gorani.shared import JobContext, SparkJobContext, StreamJobContext, TFJobContext
 
 def create_context() -> JobContext:
     return JobContext()
@@ -14,6 +14,9 @@ def create_spark_context() -> SparkJobContext:
 
 def create_stream_context() -> StreamJobContext:
     return StreamJobContext(['localhost:9092'])
+
+def create_tf_context() -> TFJobContext:
+    return TFJobContext()
 
 @cli.command()
 @click.option('--all', is_flag=True, help='Delete all books')
@@ -63,6 +66,16 @@ def stream_evlog():
    job = StreamEvlogJob(create_stream_context())
    job.start()
    job.awaitTermination()
+
+@cli.group()
+def tfjob():
+    pass
+
+@tfjob.command()
+def train_time_model():
+    from gorani.jobs.tfjobs import TrainTimeModel
+    job = TrainTimeModel(create_tf_context())
+    job.train()
 
 if __name__ == '__main__':
     cli()

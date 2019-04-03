@@ -1,4 +1,4 @@
-from .context import JobContext, SparkJobContext, StreamJobContext
+from .context import JobContext, SparkJobContext, StreamJobContext, TFJobContext
 from pyspark.sql import SparkSession, DataFrame
 from typing import Optional, List
 
@@ -123,3 +123,9 @@ class FinalStreamJob(StreamJob):
 
     def awaitTermination(self):
         self.context.spark.streams.awaitAnyTermination()
+
+class TFJob(Job):
+    def __init__(self, context: TFJobContext):
+        Job.__init__(self, context)
+        self.context = context
+

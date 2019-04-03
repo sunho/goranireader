@@ -14,15 +14,14 @@ import codecs
 
 stop_words = set(stopwords.words('english'))
 
-# TODO
-def sentences_to_uwords(sentences):
+def _sentences_to_uwords(sentences):
     uwords = []
     for i in range(len(sentences)):
         current_index = 0
         for sentence in sentences[:i]:
             current_index += len(sentence.sentence) + 1
         for uword in sentences[i].uwords:
-            uwords.append(uword.index + current_index)
+            uwords.append(uword['index'] + current_index)
     return uwords
 
 def spans(toks, sentence):
@@ -32,15 +31,17 @@ def spans(toks, sentence):
         yield tok[0], tok[1], offset, offset+len(tok[0])
         offset += len(tok[0])
 
-def _convert_sentence(sentence):
-    toks = word_tokenize(sentence.sentence)
+def _convert_sentences(sentences):
+    text = ' '.join([s.sentence for s in sentences])
+    uwords = _sentences_to_uwords(sentences)
+    toks = word_tokenize(text)
     pos_toks = pos_tag(toks)
-    span_toks = spans(pos_toks, sentence.sentence)
+    span_toks = spans(pos_toks, text)
     out = []
     for tok in span_toks:
         isuword = False
-        for uword in sentence.uwords:
-            if tok[2] <= uword['index'] and uword['index'] <= tok[3]:
+        for uword in uwords:
+            if tok[2] <= uword and uword <= tok[3]:
                 isuword = True
                 break
 
@@ -53,10 +54,7 @@ def _convert_sentence(sentence):
         out.append(item)
     return out
 
-def _convert_sentences(sentences):
-    return [_convert_sentence(s) for s in sentences]
-
-convert_sentences = udf(_convert_sentences, ArrayType(ArrayType(
+convert_sentences = udf(_convert_sentences, ArrayType(
     StructType(
         [
             StructField('word', StringType()),
@@ -65,7 +63,7 @@ convert_sentences = udf(_convert_sentences, ArrayType(ArrayType(
             StructField('uword', BooleanType())
         ]
     )
-)))
+))
 
 class TransformToSentenceTime(PartialStreamJob):
     def __init__(self, context: StreamJobContext):

@@ -1,5 +1,6 @@
 from cassandra.cluster import Cluster
 from cassandra import query
+import pickle
 
 class DataDB:
     def __init__(self):
@@ -12,6 +13,17 @@ class DataDB:
 
     def get_all(self, table):
         return self._session.execute('select * from {}'.format(table))
+
+    def get_flipped_paragraphs(self, user_id: int):
+        ps = self._session.execute('select * from user_flipped_paragraphs where user_id = %s', (user_id, )).current_rows
+        out = list()
+        for p in ps:
+            out.append({
+                'interval': p.interval,
+                'time': p.time,
+                'paragraph': pickle.loads(p.paragraph)
+            })
+        return out
 
     def delete_book(self, id):
         self._session.execute('delete from books where id = %s', (id, ))

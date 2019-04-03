@@ -1,0 +1,27 @@
+version: '3'
+services:
+  apidb:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: 'postgres'
+    volumes:
+      - apidb_data:/var/lib/postgresql/data
+  
+  api:
+    image: ksunhokim/api
+
+  datadb:
+    image: cassandra
+    volumes:
+      - datadb_data:/var/lib/cassandra
+
+  airflow:
+    volumes:
+      - datadb_data:/var/lib/cassandra
+  data:
+
+  kafka:
+
+  spark:
+
+  minio:

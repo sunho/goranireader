@@ -15,6 +15,7 @@ class SparkJobContext(JobContext):
             .builder\
             .appName(appname)\
             .getOrCreate()
+
 class StreamJobContext(SparkJobContext):
     def __init__(self, brokers: List[str]):
         SparkJobContext.__init__(self)
@@ -27,3 +28,7 @@ class StreamJobContext(SparkJobContext):
             .option('kafka.bootstrap.servers', ','.join(self.brokers))\
             .option('subscribe', ','.join(topics))\
             .load()
+
+class TFJobContext(JobContext):
+    def __init__(self):
+       JobContext.__init__(self)

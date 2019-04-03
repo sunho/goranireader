@@ -10,8 +10,7 @@ class TransformToKnownWordsJob(PartialStreamJob):
     def partial(self, df: DataFrame) -> Optional[DataFrame]:
         words = self.read_data_all('words').cache()
 
-        nword_df = df.select('user_id', explode('paragraph').alias('sentence'))\
-            .select('user_id', explode('sentence').alias('part'))\
+        nword_df = df.select('user_id', explode('paragraph').alias('part'))\
             .select('user_id', 'part.word', 'part.uword')\
             .withColumn('score', when(col('uword') == False, 1).otherwise(-3))\
             .join(words.withColumnRenamed('word', 'word2'), col('word') == col('word2'), 'left_semi')\
