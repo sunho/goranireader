@@ -3,7 +3,7 @@ import pickle
 import numpy as np
 
 PUNC_LIST = ['.', '(', ')', ',', ';', ':', '-', '—']
-POS_TAG_LIST = ['CC', 'CD', 'EX', 'IN', 'JJ', 'JJR', 'JJS', 'LS', 'MD', 'NN', 'NNS','NNP', 'NNPS', 'PDT', 'POS', 'PRP', 'PRP$', 'RB', 'RBR', 'RBS', 'RP', 'TO', 'UH', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'WDT', 'WP', 'WP$', 'WRB'] + PUNC_LIST
+POS_TAG_LIST = ['FW', 'CC', 'CD', 'EX', 'IN', 'JJ', 'JJR', 'JJS', 'LS', 'MD', 'NN', 'NNS','NNP', 'NNPS', 'PDT', 'POS', 'PRP', 'PRP$', 'RB', 'RBR', 'RBS', 'RP', 'TO', 'UH', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'WDT', 'WP', 'WP$', 'WRB'] + PUNC_LIST
 FEATURE_LEN = len(POS_TAG_LIST) + 2
 UWORD_INDEX = FEATURE_LEN - 2
 SIZE_INDEX = FEATURE_LEN - 1
