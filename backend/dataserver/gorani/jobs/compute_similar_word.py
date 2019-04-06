@@ -60,34 +60,36 @@ def get_graph(suf_tok_word_arr, words):
         out.extend(get_node(suf_tok_word_arr, word))
     return out
 
-def get_node(suf_tok_word_arr, word, min_score):
+def get_node(suf_tok_word_arr, word, min_rate):
     out = list()
     toks = word.pron.split(' ')
     toks.reverse()
+    min_score = int(len(toks) * min_rate)
     s = suf_tok_word_arr[0][toks[0]]
-    score = 0
     for i in range(1, len(toks)):
-        s = s - suf_tok_word_arr[i][toks[i]]
-        score +=
-        if score >= min_score:
-            for word2 in suf_tok_word_arr[i][toks[i]]:
+        s2 = s.intersection(suf_tok_word_arr[i][toks[i]])
+        if i >= min_score:
+            for word2 in s - s2:
                 out.append({
                     'id': str(uuid4()),
                     'word': word.word,
                     'other_word': word2,
-                    'score': score
+                    'score': i
                 })
+        s = s2
         if len(s) == 0:
             break
 
     if len(s) != 0:
-        if score >= min_score:
+        if len(toks) >= min_score:
             for word2 in s:
+                if word2 == word.word:
+                    continue
                 out.append({
                     'id': str(uuid4()),
                     'word': word.word,
                     'other_word': word2,
-                    'score': score
+                    'score': len(toks)
                 })
     return out
 

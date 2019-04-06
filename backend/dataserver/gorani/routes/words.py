@@ -4,8 +4,8 @@ from cachetools import cached, LRUCache, TTLCache
 from gorani.shared import DataDB
 from gorani.jobs.compute_similar_word import get_node, get_suf_tok_word_arr
 
-MIN_SCORE = 3
-MAX_LEN = 15
+MIN_RATE = 0.6
+MAX_LEN = 30
 
 def init(_data_db: DataDB):
     global data_db
@@ -20,13 +20,13 @@ def init(_data_db: DataDB):
 @hug.get('/similar', output=hug.output_format.json)
 @cached(cache=TTLCache(maxsize=102400, ttl=600))
 def get_similar_word(user_id: int, word: str):
+    ns = set(data_db.get_user_known_words(user_id))
     wobj = word_to_obj[str(word)]
-    ws = data_db.get_user_known_words(user_id)
-    words = [word_to_obj[w] for w in ws if w in word_to_obj]
-    ns = get_node(suf_tok_word_arr, wobj, MIN_SCORE)
-    ns.sort(key=lambda n: n['score'], reverse=True)
-    if len(ns) > MAX_LEN:
-        ns = ns[:MAX_LEN]
-    return [{'word': n['other_word'], 'score': n['score']} for n in ns]
+    sw = get_node(suf_tok_word_arr, wobj, MIN_RATE)
+    sw.sort(key=lambda n: (n['score'], -len(n['other_word'])), reverse=True)
+    sw = [s for s in sw if s['other_word'] in ns]
+    if len(sw) > MAX_LEN:
+        sw = sw[:MAX_LEN]
+    return [{'word': s['other_word'], 'score': s['score']} for s in sw]
 
 
