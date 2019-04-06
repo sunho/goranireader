@@ -1,14 +1,12 @@
-.venv:
-	if [ ! -e ".venv/bin/activate_this.py" ] ; then virtualenv --clear .venv --python=python3.6; fi
+VENV=/gorani/venv
 
-deps: .venv
-	. .venv/bin/activate && pip install -U -r ./requirements.txt
-	. .venv/bin/activate && venv-pack -o ./.venv.tar.gz
+deps:
+	pip install -U -r ./requirements.txt
 
 clean: clean-build clean-pyc
 
 clean-build:
-	rm -fr dist/
+	sudo rm -fr dist/
 
 clean-pyc:
 	find . -name '*.pyc' -exec rm -f {} +
@@ -21,10 +19,10 @@ build: clean
 	cp ./workercli.py ./dist
 	zip -r ./dist/gorani.zip ./gorani
 
-run-spark: .venv build
+run-spark: build
 	zip -r ./dist/in.zip ./in
-	. .venv/bin/activate && PYSPARK_PYTHON="./.venv/bin/python" PYSPARK_DRIVER_PYTHON="./.venv/bin/python" $(SPARK_SUBMIT) ${SPARK_ARGS} --py-files ./dist/workercli.py,./dist/gorani.zip --archives ./dist/in.zip,./.venv.tar.gz#.venv workercli.py ${ARGS}
+	. $(VENV)/bin/activate && $(SPARK_SUBMIT) ${SPARK_ARGS} --py-files ./dist/workercli.py,./dist/gorani.zip --archives ./dist/in.zip#in workercli.py ${ARGS}
 
-run: .venv
-	. .venv/bin/activate && python workercli.py ${ARGS}
+run:
+	. $(VENV)/bin/activate && python workercli.py ${ARGS}
 

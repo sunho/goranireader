@@ -75,3 +75,5 @@ unittests.cfg
 
 notebooks/logs
 notebooks/checkpoints
+
+.ipynb_checkpoints
