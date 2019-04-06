@@ -28,7 +28,7 @@ class PrepareTimeDataset(TFJob):
         pos = np.array(pos)
         uword = np.array(uword)
         size = np.array(size)
-        out = np.zeros((len(pos), FEATURE_LEN))
+        out = np.zeros((len(pos), FEATURE_LEN), dtype = 'float32')
         out[np.arange(len(pos)), pos] = 1
         out[:, UWORD_INDEX] = uword
         out[:, SIZE_INDEX] = size
@@ -37,10 +37,10 @@ class PrepareTimeDataset(TFJob):
     def transform_paragraphs(self, paragraphs):
         ps2 = [self._transform_paragraph(p['paragraph']) for p in paragraphs]
         max_len = max([p.shape[0] for p in ps2])
-        x = np.zeros((len(ps2), max_len, FEATURE_LEN))
+        x = np.zeros((len(ps2), max_len, FEATURE_LEN), dtype='float32')
         for i, p in enumerate(ps2):
             x[i, :p.shape[0], :] += p
-        y = np.zeros((len(ps2), 1))
-        interval = np.array([p['interval'] for p in paragraphs])
+        y = np.zeros((len(ps2), 1), dtype='float32')
+        interval = np.array([p['interval'] for p in paragraphs], dtype = 'float32')
         y[:, 0] = interval
         return x, y
