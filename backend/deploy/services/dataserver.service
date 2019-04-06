@@ -1,0 +1,16 @@
+[Unit]
+Description=Dataserver
+Wants=syslog.target cassandra.service
+After=syslog.target cassandra.service
+
+[Service]
+ExecStart=/gorani/venv/bin/hug -p 5691 server.py
+WorkingDirectory=/gorani/gorani/dataserver
+Restart=always
+LimitNOFILE=65536
+TimeoutStopSec=infinity
+SendSIGKILL=no
+Type=simple
+
+[Install]
+WantedBy=multi-user.target

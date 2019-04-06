@@ -14,6 +14,10 @@ class DataDB:
     def get_all(self, table):
         return self._session.execute('select * from {}'.format(table))
 
+    def get_user_known_words(self, user_id: int):
+        ws = self._session.execute('select * from user_known_words where user_id = %s and score > 1 allow filtering', (user_id, )).current_rows
+        return [w.word for w in ws]
+
     def get_flipped_paragraphs(self, user_id: int):
         ps = self._session.execute('select * from user_flipped_paragraphs where user_id = %s', (user_id, )).current_rows
         out = list()
