@@ -72,3 +72,6 @@ airflow.db
 airflow.db-journal
 airflow-webserver.pid
 unittests.cfg
+
+notebooks/logs
+notebooks/checkpoints
