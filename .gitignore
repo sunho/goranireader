@@ -73,7 +73,7 @@ airflow.db-journal
 airflow-webserver.pid
 unittests.cfg
 
-notebooks/logs
-notebooks/checkpoints
+/backend/dataserver/notebooks/logs
+/backend/dataserver/notebooks/checkpoints
 
 .ipynb_checkpoints
