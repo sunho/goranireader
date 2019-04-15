@@ -19,7 +19,10 @@ func (r *Recommend) Register(d *dim.Group) {
 	d.GET("/info", r.GetInfo)
 	d.PUT("/info", r.PutInfo)
 	d.GET("/book", r.GetBooks)
-	d.PUT("/book/:bookid/rate", r.PutRate, &middles.BookParamMiddle{})
+	d.DELETE("/book/:bookid", r.DeleteBook, &middles.BookParamMiddle{})
+	d.Route("/book/:bookid/rate", &Rate{kind: "recommended_book", targetID: func(c *models.Context) int {
+		return c.BookParam.ID
+	}}, &middles.BookParamMiddle{})
 }
 
 func (r *Recommend) GetInfo(c2 echo.Context) error {
@@ -53,7 +56,7 @@ func (r *Recommend) PutInfo(c2 echo.Context) error {
 
 func (r *Recommend) GetBooks(c2 echo.Context) error {
 	c := c2.(*models.Context)
-	var out []dbmodels.RecommendBook
+	var out []dbmodels.RecommendedBook
 	err := c.Tx.Where("user_id = ?", c.User.ID).All(&out)
 	if err != nil {
 		return err
@@ -61,17 +64,14 @@ func (r *Recommend) GetBooks(c2 echo.Context) error {
 	return c.JSON(200, out)
 }
 
-func (r *Recommend) PutRate(c2 echo.Context) error {
+func (r *Recommend) DeleteBook(c2 echo.Context) error {
 	c := c2.(*models.Context)
-	var rate dbmodels.Rate
-	if err := c.Bind(&rate); err != nil {
+	var item dbmodels.RecommendedBook
+	err := c.Tx.Where("user_id = ? AND book_id = ?", c.User.ID, c.BookParam.ID).First(&item)
+	if err != nil {
 		return err
 	}
-	rate.UserID = c.User.ID
-	rate.Kind = "recommended_book"
-	rate.TargetID = c.BookParam.ID
-
-	err := r.DB.Upsert(c.Tx, &rate)
+	err = c.Tx.Destroy(&item)
 	if err != nil {
 		return err
 	}

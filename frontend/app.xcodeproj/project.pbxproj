@@ -114,7 +114,6 @@
 		C7F1DA4A2249222E00E1AF84 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA492249222E00E1AF84 /* Result.framework */; };
 		C7F1DA4C2249223500E1AF84 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA4B2249223500E1AF84 /* SnapKit.framework */; };
 		C7F1DA4F22492A4600E1AF84 /* IQKeyboardManagerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA4D22492A4600E1AF84 /* IQKeyboardManagerSwift.framework */; };
-		C7F1DA5022492A4600E1AF84 /* IQKeyboardManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA4E22492A4600E1AF84 /* IQKeyboardManager.framework */; };
 		C7F1DA5B22492DC000E1AF84 /* FolioReaderKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7C63EAF209946A50093CC02 /* FolioReaderKit.framework */; };
 		C7F1DA5C22492DC000E1AF84 /* FolioReaderKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C7C63EAF209946A50093CC02 /* FolioReaderKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C7FA5428223476BD006F94C7 /* DictViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FA5427223476BD006F94C7 /* DictViewController.swift */; };
@@ -321,7 +320,6 @@
 				C7F1DA462249222400E1AF84 /* RealmSwift.framework in Frameworks */,
 				C7E243A422477EEF000892D0 /* Realm.framework in Frameworks */,
 				C7F1DA402249220900E1AF84 /* Moya.framework in Frameworks */,
-				C7F1DA5022492A4600E1AF84 /* IQKeyboardManager.framework in Frameworks */,
 				C7E2434E22475593000892D0 /* Reachability.framework in Frameworks */,
 				C7F1DA442249221800E1AF84 /* ReactiveSwift.framework in Frameworks */,
 				C7E243522247559D000892D0 /* SwiftEntryKit.framework in Frameworks */,
@@ -807,7 +805,6 @@
 				"$(SRCROOT)/FolioReaderKit/Carthage/Build/iOS/FontBlaster.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Realm.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Cosmos.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/IQKeyboardManager.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/IQKeyboardManagerSwift.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Kingfisher.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Moya.framework",
@@ -835,7 +832,6 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/FontBlaster.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Realm.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Cosmos.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/IQKeyboardManager.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/IQKeyboardManagerSwift.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Kingfisher.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Moya.framework",

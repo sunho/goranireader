@@ -16,6 +16,7 @@ func Provide() (*DBServ, error) {
 	if err != nil {
 		return nil, err
 	}
+	pop.Debug = true
 	return &DBServ{
 		Connection: conn,
 	}, nil

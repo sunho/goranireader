@@ -25,8 +25,10 @@ func (s *ShopBook) Register(d *dim.Group) {
 	d.RouteFunc("/:bookid", func(d *dim.Group) {
 		d.Use(&middles.BookParamMiddle{})
 		d.GET("", s.Get)
+		d.Route("/rate", &Rate{kind: "book", targetID: func(c *models.Context) int {
+			return c.BookParam.ID
+		}})
 		d.POST("/buy", s.PostBuy)
-		d.Route("/review", &BookReview{})
 	})
 }
 
@@ -35,8 +37,8 @@ func (s *ShopBook) List(c2 echo.Context) error {
 	name := c.QueryParam("name")
 	p, _ := strconv.Atoi(c.QueryParam("p"))
 	by := c.QueryParam("by")
-	out := []dbmodels.Book{}
-	err := c.Tx.Eager().Where("name LIKE ?", "%"+name+"%").
+	out := []dbmodels.ShopBook{}
+	err := c.Tx.Eager().Where("user_id = ? OR user_id is NULL", c.User.ID).Where("name LIKE ?", "%"+name+"%").
 		Paginate(p, booksPerPage).Order(by).
 		All(&out)
 	if err != nil {

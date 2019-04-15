@@ -21,8 +21,24 @@ type Book struct {
 	Cover       string           `db:"cover" json:"cover"`
 	Epub        BookEpub         `has_one:"book_epub" json:"epub"`
 	Sens        BookSens         `has_one:"book_sens" json:"sens"`
-	Rate        float64          `db:"rate" json:"rate"`
 	Categories  utils.SQLStrings `db:"categories" json:"categories"`
+}
+
+type ShopBook struct {
+	ID          int              `db:"id" json:"id" pk:"true"`
+	CreatedAt   time.Time        `db:"created_at" json:"created_at"`
+	UpdatedAt   time.Time        `db:"updated_at" json:"updated_at"`
+	Description string           `db:"description" json:"description"`
+	ISBN        string           `db:"isbn" json:"isbn"`
+	Name        string           `db:"name" json:"name"`
+	NativeName  nulls.String     `db:"native_name" json:"native_name"`
+	Author      string           `db:"author" json:"author"`
+	Cover       string           `db:"cover" json:"cover"`
+	Epub        BookEpub         `has_one:"book_epub" json:"epub" fk_id:"book_id"`
+	Sens        BookSens         `has_one:"book_sens" json:"sens" fk_id:"book_id"`
+	Rate        nulls.Float64    `db:"rate" json:"rate"`
+	Categories  utils.SQLStrings `db:"categories" json:"categories"`
+	Difficulty  nulls.Int        `db:"difficulty" rw:"r" json:"difficulty"`
 }
 
 type BookEpub struct {

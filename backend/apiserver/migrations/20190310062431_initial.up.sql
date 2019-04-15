@@ -96,5 +96,5 @@ create table rates (
     target_id integer not null,
     kind character varying(1024),
     rate integer not null,
-    primary key(target_id, user_id, kind)
-)
+    primary key(target_id, kind, user_id)
+);

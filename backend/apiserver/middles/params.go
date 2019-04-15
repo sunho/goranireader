@@ -66,41 +66,6 @@ func (b *BookOfUserMiddle) Act(c2 echo.Context) error {
 	return echo.NewHTTPError(403, "You don't own the book")
 }
 
-type ReviewParamMiddle struct {
-}
-
-func (r *ReviewParamMiddle) Require() []string {
-	return []string{
-		"ContextMiddle",
-		"TxMiddle",
-		"AuthMiddle",
-		"BookParamMiddle",
-	}
-}
-
-func (r *ReviewParamMiddle) Act(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	str := c.Param("reviewid")
-	var review dbmodels.Review
-	if str == "my" {
-		err := c.Tx.Where("user_id = ? and book_id = ?", c.User.ID, c.BookParam.ID).First(&review)
-		if err != nil {
-			return echo.NewHTTPError(404, "No such review")
-		}
-	} else {
-		id, err := strconv.Atoi(str)
-		if err != nil {
-			return err
-		}
-		err = c.Tx.Where("id = ?", id).First(&review)
-		if err != nil {
-			return echo.NewHTTPError(404, "No such review")
-		}
-	}
-	c.ReviewParam = review
-	return nil
-}
-
 type MemoryParamMiddle struct {
 }
 
