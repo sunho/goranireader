@@ -1,10 +1,10 @@
 import hug
-from gorani.routes import words
+from gorani.routes import word
 from gorani.shared import DataDB
 
 data_db = DataDB()
-words.init(data_db)
+word.init(data_db)
 
-@hug.extend_api('/words')
+@hug.extend_api('/word')
 def words():
-    return [words]
+    return [word]

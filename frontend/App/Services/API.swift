@@ -10,12 +10,7 @@ import Foundation
 import Moya
 
 enum API {
-    case listReviews(bookId: Int, p: Int)
-    case createReview(bookId: Int, review: Review)
-    case updateReview(bookId: Int, review: Review)
-    case deleteReview(bookId: Int)
-    case getMyReview(bookId: Int)
-    case rateReview(bookId: Int, reviewId: Int, rate: Int)
+    case listSimilarWords(word: String)
     
     case listMemories(word: String, p: Int)
     case updateMemory(word: String, sentence: String)
@@ -27,12 +22,14 @@ enum API {
     case searchShopBooks(name: String, p: Int, orderBy: String)
     case getShopBook(bookId: Int)
     case buyShopBook(bookId: Int)
+    case getMyBookRate(bookId: Int)
+    case rateBook(bookId: Int, rate: Int)
+    
     case listCategories
     
-    case getRecommendInfo
-    case updateRecommendInfo(info: RecommendInfo)
     case listRecommendedBooks
     case rateRecommendedBook(bookId: Int, rate: Int)
+    case deleteRecommendedBook(bookId: Int)
     
     case listSensResults
     case updateSensResult(result: SensResult)
@@ -61,18 +58,8 @@ extension API: TargetType {
         switch self {
         case .download:
             return ""
-        case .listReviews(let id, _):
-            return "/shop/book/\(id)/review"
-        case .createReview(let id, _):
-            return "/shop/book/\(id)/review"
-        case .updateReview(let id, _):
-            return "/shop/book/\(id)/review/my"
-        case .deleteReview(let id):
-            return "/shop/book/\(id)/review/my"
-        case .getMyReview(let id):
-            return "/shop/book/\(id)/review/my"
-        case .rateReview(let bid, let rid, _):
-            return "/shop/book/\(bid)/review/\(rid)/rate"
+        case .listSimilarWords(let word):
+            return "/memory/\(word)/similar"
         case .listMemories(let word, _):
             return "/memory/\(word)"
         case .updateMemory(let word, _):
@@ -85,20 +72,22 @@ extension API: TargetType {
             return "/book"
         case .searchShopBooks:
             return "/shop/book"
+        case .getMyBookRate(let bookId):
+            return "/shop/book/\(bookId)/rate"
+        case .rateBook(let bookId, _):
+            return "/shop/book/\(bookId)/rate"
         case .getShopBook(let id):
             return "/shop/book/\(id)"
         case .buyShopBook(let id):
             return "/shop/book/\(id)/buy"
         case .listCategories:
             return "/shop/category"
-        case .getRecommendInfo:
-            return "/recommend/info"
-        case .updateRecommendInfo:
-            return "/recommend/info"
         case .listRecommendedBooks:
             return "/recommend/book"
         case .rateRecommendedBook(let id):
             return "/recommend/book/\(id)/rate"
+        case .deleteRecommendedBook(let bookId):
+            return "/recommend/book/\(bookId)"
         case .listSensResults:
             return "/result/sens"
         case .updateSensResult(let result):
@@ -122,17 +111,18 @@ extension API: TargetType {
         switch self {
         case .download:
             return .get
-        case .listReviews, .listMemories, .getMyReview, .listBooks, .getMyMemory, .listCategories,
-             .getShopBook, .searchShopBooks, .listRecommendedBooks, .getRecommendInfo,
+        case .listMemories, .listBooks, .getMyMemory, .listCategories,
+             .getShopBook, .searchShopBooks, .listRecommendedBooks,
+             .listSimilarWords, .getMyBookRate,
              .listQuizResults, .listSensResults, .checkAuth:
             return .get
-        case .createReview,  .buyShopBook, .register, .login, .createEventLog:
+        case .buyShopBook, .register, .login, .createEventLog:
             return .post
-        case .updateReview, .rateReview, .rateMemory, .updateRecommendInfo,
+        case .rateBook, .rateMemory,
              .rateRecommendedBook, .updateMemory,
              .updateQuizResult, .updateSensResult:
             return .put
-        case .deleteReview:
+        case .deleteRecommendedBook:
             return .delete
         }
     }
@@ -153,22 +143,18 @@ extension API: TargetType {
         switch self {
         case .download:
             return .downloadDestination(downloadDestination)
-        case .listReviews(_, let p), .listMemories(_, let p):
-            return .requestParameters(parameters: ["p": p], encoding: URLEncoding.default)
         case .updateMemory(_, let sentence):
             var memory = Memory()
             memory.sentence = sentence
             return .requestCustomJSONEncodable(memory, encoder: encoder)
-        case .createReview(_, let body), .updateReview(_, let body):
-            return .requestCustomJSONEncodable(body, encoder: encoder)
         case .createEventLog(let body):
             return .requestCustomJSONEncodable(body, encoder: encoder)
-        case .updateRecommendInfo(let body):
-            return .requestCustomJSONEncodable(body, encoder: encoder)
-        case .rateReview(_, _, let rate), .rateMemory(_, _, let rate), .rateRecommendedBook(_, let rate):
+        case .rateBook(_, let rate), .rateMemory(_, _, let rate), .rateRecommendedBook(_, let rate):
             return .requestCustomJSONEncodable(["rate": rate], encoder: encoder)
         case .searchShopBooks(let name, let p, let orderBy):
             return .requestParameters(parameters: ["name": name, "p": p, "by": orderBy], encoding: URLEncoding.default)
+        case .listMemories(_, let p):
+            return .requestParameters(parameters: ["p": p], encoding: URLEncoding.default)
         case .updateSensResult(let result):
             return .requestCustomJSONEncodable(result, encoder: encoder)
         case .updateQuizResult(let result):
@@ -177,10 +163,10 @@ extension API: TargetType {
             return .requestCustomJSONEncodable(["username": username, "password": password, "email": email], encoder: encoder)
         case .login(let username, let password):
             return .requestCustomJSONEncodable(["username": username, "password": password], encoder: encoder)
-        case .getMyReview, .listBooks, .getMyMemory, .listCategories, .getShopBook,
-             .listRecommendedBooks, .getRecommendInfo,
+    case .getMyBookRate, .listBooks, .getMyMemory, .listCategories, .getShopBook,
+             .listRecommendedBooks, .deleteRecommendedBook, .listSimilarWords,
              .listQuizResults, .listSensResults, .buyShopBook,
-             .deleteReview, .checkAuth:
+             .checkAuth:
             return .requestPlain
         }
     }

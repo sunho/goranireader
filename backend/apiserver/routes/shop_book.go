@@ -37,7 +37,7 @@ func (s *ShopBook) List(c2 echo.Context) error {
 	name := c.QueryParam("name")
 	p, _ := strconv.Atoi(c.QueryParam("p"))
 	by := c.QueryParam("by")
-	out := []dbmodels.ShopBook{}
+	out := []dbmodels.DetailedBook{}
 	err := c.Tx.Eager().Where("user_id = ? OR user_id is NULL", c.User.ID).Where("name LIKE ?", "%"+name+"%").
 		Paginate(p, booksPerPage).Order(by).
 		All(&out)

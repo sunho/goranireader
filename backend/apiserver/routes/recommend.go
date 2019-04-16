@@ -56,7 +56,7 @@ func (r *Recommend) PutInfo(c2 echo.Context) error {
 
 func (r *Recommend) GetBooks(c2 echo.Context) error {
 	c := c2.(*models.Context)
-	var out []dbmodels.RecommendedBook
+	var out []dbmodels.DetailedRecommendedBook
 	err := c.Tx.Where("user_id = ?", c.User.ID).All(&out)
 	if err != nil {
 		return err

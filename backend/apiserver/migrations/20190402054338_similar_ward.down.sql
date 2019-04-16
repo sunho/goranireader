@@ -1,1 +1,1 @@
-drop database similar_words;
+drop table similar_words;

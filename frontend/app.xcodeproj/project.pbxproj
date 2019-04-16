@@ -19,6 +19,7 @@
 		B143B05820A47617003341A3 /* IPA.swift in Sources */ = {isa = PBXBuildFile; fileRef = B143AF9520A4704F003341A3 /* IPA.swift */; };
 		B143B05A20A47617003341A3 /* Verb.swift in Sources */ = {isa = PBXBuildFile; fileRef = B143AF9720A4704F003341A3 /* Verb.swift */; };
 		B143B05B20A47617003341A3 /* UIUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B143AF9820A4704F003341A3 /* UIUtil.swift */; };
+		C70CD181226621BA00D38AB9 /* RecommendedBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70CD180226621BA00D38AB9 /* RecommendedBook.swift */; };
 		C70F55BD224FCD4D006DBB0E /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55BC224FCD4D006DBB0E /* TabBarViewController.swift */; };
 		C70F55C5224FE508006DBB0E /* BubbleTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55C2224FE508006DBB0E /* BubbleTabBar.swift */; };
 		C70F55C6224FE508006DBB0E /* CBTabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55C3224FE508006DBB0E /* CBTabBarButton.swift */; };
@@ -193,6 +194,7 @@
 		B143AF9520A4704F003341A3 /* IPA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPA.swift; sourceTree = "<group>"; };
 		B143AF9720A4704F003341A3 /* Verb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Verb.swift; sourceTree = "<group>"; };
 		B143AF9820A4704F003341A3 /* UIUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtil.swift; sourceTree = "<group>"; };
+		C70CD180226621BA00D38AB9 /* RecommendedBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedBook.swift; sourceTree = "<group>"; };
 		C70F55BC224FCD4D006DBB0E /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		C70F55C2224FE508006DBB0E /* BubbleTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleTabBar.swift; sourceTree = "<group>"; };
 		C70F55C3224FE508006DBB0E /* CBTabBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CBTabBarButton.swift; sourceTree = "<group>"; };
@@ -387,6 +389,7 @@
 				C7CF0052224CF56200524D80 /* EventLog.swift */,
 				C70F55E022502A3B006DBB0E /* Share.swift */,
 				C70F55E222502B2B006DBB0E /* Post.swift */,
+				C70CD180226621BA00D38AB9 /* RecommendedBook.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -942,6 +945,7 @@
 				C742DD8F2209568800CD737A /* SearchResultViewController.swift in Sources */,
 				C7FC18A32239F07F007172ED /* Review.swift in Sources */,
 				C7742BB72243967A00925081 /* WordCardExampleTableViewCell.swift in Sources */,
+				C70CD181226621BA00D38AB9 /* RecommendedBook.swift in Sources */,
 				C757D2C72247A7450050E0A2 /* BookShopTableViewCell.swift in Sources */,
 				C77043B3223E214700B91831 /* ContentService.swift in Sources */,
 				C70F55CB22500779006DBB0E /* GuideTargetBookView.swift in Sources */,

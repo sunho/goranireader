@@ -12,7 +12,7 @@ struct Memory: Codable {
     var id: Int?
     var userId: Int?
     var sentence: String = ""
-    var rate: Int?
+    var rate: Float?
     
     enum CodingKeys: String, CodingKey
     {
@@ -21,4 +21,9 @@ struct Memory: Codable {
         case sentence
         case rate
     }
+}
+
+struct SimilarWord: Codable {
+    var word: String = ""
+    var score: Int = 0
 }

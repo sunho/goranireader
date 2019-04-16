@@ -3,6 +3,7 @@ package dbmodels
 import (
 	"time"
 
+	"github.com/gobuffalo/nulls"
 	"github.com/gofrs/uuid"
 )
 
@@ -24,6 +25,15 @@ type RecommendedBook struct {
 	ID        uuid.UUID `db:"id" json:"-"`
 	UserID    int       `db:"user_id" json:"-"`
 	BookID    int       `db:"book_id" json:"book_id"`
+	CreatedAt time.Time `db:"created_at" json:"created_at"`
+	UpdatedAt time.Time `db:"updated_at" json:"updated_at"`
+}
+
+type DetailedRecommendedBook struct {
+	ID        uuid.UUID `db:"id" json:"-"`
+	UserID    int       `db:"user_id" json:"-"`
+	BookID    int       `db:"book_id" json:"book_id"`
+	Rate      nulls.Int `db:"rate" json:"rate"`
 	CreatedAt time.Time `db:"created_at" json:"created_at"`
 	UpdatedAt time.Time `db:"updated_at" json:"updated_at"`
 }

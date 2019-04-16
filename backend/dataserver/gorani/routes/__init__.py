@@ -1,5 +1,5 @@
-from . import words
+from . import word
 
 __all__ = [
-    'words'
+    'word'
 ]
