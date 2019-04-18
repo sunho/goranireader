@@ -19,6 +19,7 @@
 		B143B05820A47617003341A3 /* IPA.swift in Sources */ = {isa = PBXBuildFile; fileRef = B143AF9520A4704F003341A3 /* IPA.swift */; };
 		B143B05A20A47617003341A3 /* Verb.swift in Sources */ = {isa = PBXBuildFile; fileRef = B143AF9720A4704F003341A3 /* Verb.swift */; };
 		B143B05B20A47617003341A3 /* UIUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B143AF9820A4704F003341A3 /* UIUtil.swift */; };
+		C70AD3052268F2CF00BAD495 /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C70AD3032268F2CF00BAD495 /* OAuthSwift.framework */; };
 		C70CD181226621BA00D38AB9 /* RecommendedBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70CD180226621BA00D38AB9 /* RecommendedBook.swift */; };
 		C70F55BD224FCD4D006DBB0E /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55BC224FCD4D006DBB0E /* TabBarViewController.swift */; };
 		C70F55C5224FE508006DBB0E /* BubbleTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55C2224FE508006DBB0E /* BubbleTabBar.swift */; };
@@ -194,6 +195,7 @@
 		B143AF9520A4704F003341A3 /* IPA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPA.swift; sourceTree = "<group>"; };
 		B143AF9720A4704F003341A3 /* Verb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Verb.swift; sourceTree = "<group>"; };
 		B143AF9820A4704F003341A3 /* UIUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtil.swift; sourceTree = "<group>"; };
+		C70AD3032268F2CF00BAD495 /* OAuthSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuthSwift.framework; path = Carthage/Build/iOS/OAuthSwift.framework; sourceTree = "<group>"; };
 		C70CD180226621BA00D38AB9 /* RecommendedBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedBook.swift; sourceTree = "<group>"; };
 		C70F55BC224FCD4D006DBB0E /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		C70F55C2224FE508006DBB0E /* BubbleTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleTabBar.swift; sourceTree = "<group>"; };
@@ -330,6 +332,7 @@
 				C7F1DA38224921E900E1AF84 /* Alamofire.framework in Frameworks */,
 				C7F1DA482249222900E1AF84 /* Regex.framework in Frameworks */,
 				C7F1DA4A2249222E00E1AF84 /* Result.framework in Frameworks */,
+				C70AD3052268F2CF00BAD495 /* OAuthSwift.framework in Frameworks */,
 				C7E243502247559C000892D0 /* SQLite.framework in Frameworks */,
 				C7E2434C22475591000892D0 /* QuickLayout.framework in Frameworks */,
 				C7F1DA3A224921F000E1AF84 /* BLTNBoard.framework in Frameworks */,
@@ -344,6 +347,7 @@
 		702F24C22323D91C0487792D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C70AD3032268F2CF00BAD495 /* OAuthSwift.framework */,
 				C7F1DA4E22492A4600E1AF84 /* IQKeyboardManager.framework */,
 				C7F1DA4D22492A4600E1AF84 /* IQKeyboardManagerSwift.framework */,
 				C7F1DA4B2249223500E1AF84 /* SnapKit.framework */,
@@ -824,6 +828,7 @@
 				"$(SRCROOT)/FolioReaderKit/Carthage/Build/iOS/ZFDragableModalTransition.framework",
 				"$(SRCROOT)/FolioReaderKit/Carthage/Build/iOS/ZipArchive.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/RealmSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/OAuthSwift.framework",
 			);
 			outputFileListPaths = (
 			);
@@ -851,6 +856,7 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/ZFDragableModalTransition.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/ZipArchive.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RealmSwift.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/OAuthSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

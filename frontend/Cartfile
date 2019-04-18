@@ -11,3 +11,4 @@ github "alexaubry/BulletinBoard"
 github "evgenyneu/Cosmos" == 18.0
 github "hackiftekhar/IQKeyboardManager" == 6.0.4
 github "Cuberto/bubble-icon-tabbar"
+github "OAuthSwift/OAuthSwift" ~> 1.2.0

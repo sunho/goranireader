@@ -127,7 +127,7 @@ extension API: TargetType {
         }
     }
     
-    //TODO
+    //TODO what???
     var downloadDestination: DownloadDestination {
         return { [self] (url, resp) in
             if case .download(_, let file) = self {
