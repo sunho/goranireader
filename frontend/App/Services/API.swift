@@ -19,6 +19,9 @@ enum API {
     
     case listBooks
     
+    case getRecommendInfo
+    case updateRecommendInfo(info: RecommendInfo)
+    
     case searchShopBooks(name: String, p: Int, orderBy: String)
     case getShopBook(bookId: Int)
     case buyShopBook(bookId: Int)
@@ -70,6 +73,10 @@ extension API: TargetType {
             return "/memory/\(word)/\(mid)/rate"
         case .listBooks:
             return "/book"
+        case .getRecommendInfo:
+            return "/recommend/info"
+        case .updateRecommendInfo:
+            return "/recommend/info"
         case .searchShopBooks:
             return "/shop/book"
         case .getMyBookRate(let bookId):
@@ -112,7 +119,7 @@ extension API: TargetType {
         case .download:
             return .get
         case .listMemories, .listBooks, .getMyMemory, .listCategories,
-             .getShopBook, .searchShopBooks, .listRecommendedBooks,
+             .getShopBook, .searchShopBooks, .listRecommendedBooks, .getRecommendInfo,
              .listSimilarWords, .getMyBookRate,
              .listQuizResults, .listSensResults, .checkAuth:
             return .get
@@ -120,7 +127,7 @@ extension API: TargetType {
             return .post
         case .rateBook, .rateMemory,
              .rateRecommendedBook, .updateMemory,
-             .updateQuizResult, .updateSensResult:
+             .updateQuizResult, .updateSensResult, .updateRecommendInfo:
             return .put
         case .deleteRecommendedBook:
             return .delete
@@ -147,6 +154,8 @@ extension API: TargetType {
             var memory = Memory()
             memory.sentence = sentence
             return .requestCustomJSONEncodable(memory, encoder: encoder)
+        case .updateRecommendInfo(let body):
+            return .requestCustomJSONEncodable(body, encoder: encoder)
         case .createEventLog(let body):
             return .requestCustomJSONEncodable(body, encoder: encoder)
         case .rateBook(_, let rate), .rateMemory(_, _, let rate), .rateRecommendedBook(_, let rate):
@@ -165,7 +174,7 @@ extension API: TargetType {
             return .requestCustomJSONEncodable(["username": username, "password": password], encoder: encoder)
     case .getMyBookRate, .listBooks, .getMyMemory, .listCategories, .getShopBook,
              .listRecommendedBooks, .deleteRecommendedBook, .listSimilarWords,
-             .listQuizResults, .listSensResults, .buyShopBook,
+             .listQuizResults, .listSensResults, .buyShopBook, .getRecommendInfo,
              .checkAuth:
             return .requestPlain
         }
