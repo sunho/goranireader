@@ -39,8 +39,7 @@ enum API {
     case listQuizResults
     case updateQuizResult(result: QuizResult)
     
-    case register(username: String, password: String, email: String)
-    case login(username: String, password: String)
+    case login(username: String, idToken: String)
     case checkAuth
     
     case createEventLog(evlog: EventLog)
@@ -103,8 +102,6 @@ extension API: TargetType {
             return "/result/quiz"
         case .updateQuizResult(let result):
             return "/result/quiz/\(result.bookId)/\(result.quizId)"
-        case .register:
-            return "/user"
         case .login:
             return "/user/login"
         case .checkAuth:
@@ -123,7 +120,7 @@ extension API: TargetType {
              .listSimilarWords, .getMyBookRate,
              .listQuizResults, .listSensResults, .checkAuth:
             return .get
-        case .buyShopBook, .register, .login, .createEventLog:
+        case .buyShopBook, .login, .createEventLog:
             return .post
         case .rateBook, .rateMemory,
              .rateRecommendedBook, .updateMemory,
@@ -168,10 +165,8 @@ extension API: TargetType {
             return .requestCustomJSONEncodable(result, encoder: encoder)
         case .updateQuizResult(let result):
             return .requestCustomJSONEncodable(result, encoder: encoder)
-        case .register(let username, let password, let email):
-            return .requestCustomJSONEncodable(["username": username, "password": password, "email": email], encoder: encoder)
-        case .login(let username, let password):
-            return .requestCustomJSONEncodable(["username": username, "password": password], encoder: encoder)
+        case .login(let username, let idToken):
+            return .requestCustomJSONEncodable(["username": username, "id_token": idToken], encoder: encoder)
     case .getMyBookRate, .listBooks, .getMyMemory, .listCategories, .getShopBook,
              .listRecommendedBooks, .deleteRecommendedBook, .listSimilarWords,
              .listQuizResults, .listSensResults, .buyShopBook, .getRecommendInfo,

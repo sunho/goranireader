@@ -5,9 +5,11 @@ import (
 	"gorani/models/dbmodels"
 	"gorani/servs/dbserv"
 	"gorani/utils"
+	"net/http"
 	"strconv"
 
 	"golang.org/x/crypto/bcrypt"
+	"google.golang.org/api/oauth2/v2"
 
 	"go.uber.org/zap"
 )
@@ -21,6 +23,7 @@ type AuthServ struct {
 	DB         *dbserv.DBServ `dim:"on"`
 	AdminToken string
 	secret     []byte
+	oauth      *oauth2.Service
 }
 
 type AuthServConf struct {
@@ -28,11 +31,16 @@ type AuthServConf struct {
 	AdminToken string `yaml:"admin_token"`
 }
 
-func Provide(conf AuthServConf) *AuthServ {
+func Provide(conf AuthServConf) (*AuthServ, error) {
+	oauth, err := oauth2.New(&http.Client{})
+	if err != nil {
+		return nil, err
+	}
 	return &AuthServ{
 		AdminToken: conf.AdminToken,
 		secret:     []byte(conf.Secret),
-	}
+		oauth:      oauth,
+	}, nil
 }
 
 func (AuthServ) ConfigName() string {
@@ -66,18 +74,27 @@ func (a *AuthServ) CreateToken(id int) string {
 	return str
 }
 
-func (a *AuthServ) Login(username string, password string) (string, error) {
-	var user dbmodels.User
-	err := a.DB.Q().Where("username = ?", username).First(&user)
+func (a *AuthServ) Login(username string, idtoken string) (string, error) {
+	call := a.oauth.Tokeninfo()
+	call.IdToken(idtoken)
+	info, err := call.Do()
 	if err != nil {
 		return "", err
 	}
-
-	if a.ComparePassword(user.PasswordHash, password) {
-		return a.CreateToken(user.ID), nil
+	var user dbmodels.User
+	err = a.DB.Q().Where("oauth_id = ?", info.UserId).First(&user)
+	if err != nil {
+		user = dbmodels.User{
+			OauthID:  info.UserId,
+			Email:    info.Email,
+			Username: username,
+		}
+		err = a.DB.Eager().Create(&user)
+		if err != nil {
+			return "", err
+		}
 	}
-
-	return "", ErrPassMismatch
+	return a.CreateToken(user.ID), nil
 }
 
 func (a *AuthServ) Authorize(token string) (int, error) {

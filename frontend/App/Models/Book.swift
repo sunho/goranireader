@@ -19,7 +19,7 @@ struct Book: Codable {
     var updatedAt: String = ""
     var cover: String = ""
     var desc: String = ""
-    var rate: Float = 0
+    var rate: Float?
     var categories: [Category]?
     var epub: String?
     var sens: String?

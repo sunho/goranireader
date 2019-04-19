@@ -39,6 +39,7 @@ require (
 	go.uber.org/zap v1.9.1
 	golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2
 	golang.org/x/net v0.0.0-20190327091125-710a502c58a2 // indirect
-	golang.org/x/sync v0.0.0-20181108010431-42b317875d0f // indirect
+	golang.org/x/oauth2 v0.0.0-20190226205417-e64efc72b421
+	google.golang.org/api v0.3.2
 	gopkg.in/ini.v1 v1.39.1 // indirect
 )

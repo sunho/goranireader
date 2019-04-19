@@ -9,12 +9,12 @@ import (
 )
 
 type User struct {
-	ID           int       `db:"id" json:"id"`
-	CreatedAt    time.Time `db:"created_at" json:"created_at"`
-	UpdatedAt    time.Time `db:"updated_at" json:"updated_at"`
-	Username     string    `db:"username" json:"username"`
-	Email        string    `db:"email" json:"email"`
-	PasswordHash string    `db:"password_hash" json:"-"`
+	ID        int       `db:"id" json:"id"`
+	OauthID   string    `db:"oauth_id" json:"-"`
+	CreatedAt time.Time `db:"created_at" json:"created_at"`
+	UpdatedAt time.Time `db:"updated_at" json:"updated_at"`
+	Username  string    `db:"username" json:"username"`
+	Email     string    `db:"email" json:"email"`
 }
 
 type UsersBooks struct {

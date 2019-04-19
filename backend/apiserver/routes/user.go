@@ -3,7 +3,6 @@ package routes
 import (
 	"gorani/middles"
 	"gorani/models"
-	"gorani/models/dbmodels"
 	"gorani/servs/authserv"
 	"gorani/servs/dbserv"
 
@@ -17,7 +16,6 @@ type User struct {
 }
 
 func (u *User) Register(d *dim.Group) {
-	d.POST("", u.PostUser)
 	d.POST("/login", u.Login)
 	d.RouteFunc("/me", func(d *dim.Group) {
 		d.Use(&middles.AuthMiddle{})
@@ -25,51 +23,15 @@ func (u *User) Register(d *dim.Group) {
 	})
 }
 
-func (u *User) PostUser(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	params := struct {
-		Username string `json:"username"`
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}{}
-	if err := c.Bind(&params); err != nil {
-		return err
-	}
-
-	hash, err := u.Auth.HashPassword(params.Password)
-	if err != nil {
-		return err
-	}
-
-	user := dbmodels.User{
-		Username:     params.Username,
-		Email:        params.Email,
-		PasswordHash: hash,
-	}
-
-	if err = c.Tx.Eager().Create(&user); err != nil {
-		return err
-	}
-
-	err = c.Tx.Create(&dbmodels.RecommendInfo{
-		UserID: user.ID,
-	})
-	if err != nil {
-		return err
-	}
-
-	return c.NoContent(201)
-}
-
 func (u *User) Login(c echo.Context) error {
 	params := struct {
 		Username string `json:"username"`
-		Password string `json:"password"`
+		IdToken  string `json:"id_token"`
 	}{}
 	if err := c.Bind(&params); err != nil {
 		return err
 	}
-	token, err := u.Auth.Login(params.Username, params.Password)
+	token, err := u.Auth.Login(params.Username, params.IdToken)
 	if err != nil {
 		return err
 	}
