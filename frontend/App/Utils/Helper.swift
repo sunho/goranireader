@@ -268,3 +268,63 @@ extension UIImageView {
         self.image = UIImage(named: "book_placeholder")
     }
 }
+
+
+
+extension SignalProducerProtocol where Error == MoyaError {
+    public func handlePlain(ignoreError: Bool, _ handler: ((_ offline: Bool, _ value: Value?) -> Void)? = nil) {
+        self.producer.start { event in
+                DispatchQueue.main.async {
+                    switch event {
+                    case .value(let value):
+                        handler?(false, value)
+                    case .failed(let error):
+                        if error.isOffline {
+                            handler?(true, nil)
+                        } else if !ignoreError {
+                            AlertService.shared.alertError(error)
+                        }
+                    default:
+                        print(event)
+                    }
+                }
+            }
+    }
+}
+extension SignalProducerProtocol where Value == Response, Error == MoyaError {
+    public func mapPlain<D: Decodable>(_ type: D.Type) -> SignalProducer<D, Error> {
+        let decoder = JSONDecoder()
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+        decoder.dateDecodingStrategy = .formatted(formatter)
+        return self.map(type, using: decoder, failsOnEmptyData: false)
+    }
+    
+    public func handle(ignoreError: Bool, _ handler: ((_ offline: Bool, _ value: Value?) -> Void)? = nil) {
+        self.filterSuccessfulStatusCodes().handlePlain(ignoreError: ignoreError, handler)
+    }
+    
+    public func handle<D: Decodable>(ignoreError: Bool, type: D.Type, _ handler: ((_ offline: Bool, _ value: D?) -> Void)? = nil) {
+        self.filterSuccessfulStatusCodes()
+            .mapPlain(type)
+            .start { event in
+                DispatchQueue.main.async {
+                    switch event {
+                    case .value(let value):
+                        handler?(false, value)
+                    case .failed(let error):
+                        if error.isOffline {
+                            handler?(true, nil)
+                        } else if !ignoreError {
+                            print(error.response?.description)
+                            AlertService.shared.alertError(error)
+                        }
+                    default:
+                        print(event)
+                    }
+                }
+        }
+    }
+
+}

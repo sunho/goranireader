@@ -9,7 +9,6 @@ protocol DictViewControllerDelegate {
 }
 
 class DictViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
     @IBOutlet weak var wordView: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var prevButton: UIButton!

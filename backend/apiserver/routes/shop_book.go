@@ -51,7 +51,12 @@ func (s *ShopBook) List(c2 echo.Context) error {
 
 func (s *ShopBook) Get(c2 echo.Context) error {
 	c := c2.(*models.Context)
-	return c.JSON(200, c.BookParam)
+	var out dbmodels.DetailedBook
+	err := c.Tx.Eager().Where("id = ?", c.BookParam.ID).First(&out)
+	if err != nil {
+		return err
+	}
+	return c.JSON(200, out)
 }
 
 func (s *ShopBook) PostBuy(c2 echo.Context) error {

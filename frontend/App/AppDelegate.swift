@@ -60,8 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             }
         }
     }
-
-
+    
     func applicationWillResignActive(_ application: UIApplication) {
     }
 

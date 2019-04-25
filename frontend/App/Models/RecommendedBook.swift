@@ -10,14 +10,15 @@ import Foundation
 
 struct RecommendedBook: Codable {
     var bookId: Int = 0
-    var createdAt: Date
-    var updatedAt: Date
-    var rate: Int?
+    var createdAt: Date = Date()
+    var updatedAt: Date = Date()
+    var rate: Int? = 0
     
     enum CodingKeys: String, CodingKey
     {
-        case bookId = "target_book_id"
+        case bookId = "book_id"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
+        case rate
     }
 }

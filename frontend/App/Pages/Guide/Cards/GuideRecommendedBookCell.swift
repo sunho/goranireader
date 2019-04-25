@@ -13,6 +13,15 @@ class GuideRecomendedBookCell: UICollectionViewCell {
     var coverView: UIImageView!
     var closeButton: UIButton!
     var heartButton: UIButton!
+    var heart: Bool = false {
+        didSet {
+            if heart {
+                self.heartButton.setImage(UIImage(named: "heart_icon")?.maskWithColor(color: Color.tint), for: .normal)
+            } else {
+                self.heartButton.setImage(UIImage(named: "heart_blank_icon")?.maskWithColor(color: Color.strongGray), for: .normal)
+            }
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,8 +41,9 @@ class GuideRecomendedBookCell: UICollectionViewCell {
             make.bottom.left.right.equalToSuperview()
         }
         
-        heartButton = UIButton()
+        heartButton = UIButton(type: .custom)
         heartButton.setImage(UIImage(named: "heart_blank_icon")?.maskWithColor(color: Color.strongGray), for: .normal)
+        heart = true
         container.addSubview(heartButton)
         heartButton.snp.makeConstraints { make in
             make.width.equalToSuperview().multipliedBy(0.36)

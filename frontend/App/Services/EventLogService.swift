@@ -16,21 +16,13 @@ class EventLogService {
     
     func send<T: EventLogPayload>(_ payload: T) {
         RealmService.shared.addEventLog(payload)
-        if ReachabilityService.shared.reach.value {
-            for ev in RealmService.shared.getEventLogs() {
-                APIService.shared.request(.createEventLog(evlog: ev)).start { event in
-                    switch event {
-                    case .value:
-                        DispatchQueue.main.async {
-                            RealmService.shared.clearEventLogs()
-                        }
-                    default:
-//print(event)
-                        ()
+        for ev in RealmService.shared.getEventLogs() {
+            APIService.shared.request(.createEventLog(evlog: ev))
+                .handle(ignoreError: true) { offline, _ in
+                    if !offline {
+                        RealmService.shared.clearEventLogs()
                     }
                 }
-            }
-            
         }
     }
 }

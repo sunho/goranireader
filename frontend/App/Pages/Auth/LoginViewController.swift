@@ -20,27 +20,16 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate  {
     
     func sign(inWillDispatch signIn: GIDSignIn!, error: Error!) {
         APIService.shared.request(.checkAuth)
-            .start { event in
-                DispatchQueue.main.async {
-                    switch event {
-                    case let .value(resp):
-                        if resp.statusCode == 200 {
-                            let vc = self.storyboard!.createTabViewController()
-                            self.present(vc, animated: true, completion: nil)
-                        }
-                    case .failed(let error):
-                        if error.isOffline {
-                            if RealmService.shared.getConfig().authorized {
-                                let vc = self.storyboard!.createTabViewController()
-                                self.present(vc, animated: true, completion: nil)
-                            }
-                        } else {
-                            AlertService.shared.alertError(error)
-                        }
-                    default:
-                        print(event)
+            .handle(ignoreError: false) { offline, _ in
+                if !offline {
+                    let vc = self.storyboard!.createTabViewController()
+                    self.present(vc, animated: true, completion: nil)
+                } else {
+                    if RealmService.shared.getConfig().authorized {
+                        let vc = self.storyboard!.createTabViewController()
+                        self.present(vc, animated: true, completion: nil)
                     }
                 }
-        }
+            }
     }
 }

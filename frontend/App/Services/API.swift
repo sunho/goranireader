@@ -90,7 +90,7 @@ extension API: TargetType {
             return "/shop/category"
         case .listRecommendedBooks:
             return "/recommend/book"
-        case .rateRecommendedBook(let id):
+        case .rateRecommendedBook(let id, _):
             return "/recommend/book/\(id)/rate"
         case .deleteRecommendedBook(let bookId):
             return "/recommend/book/\(bookId)"

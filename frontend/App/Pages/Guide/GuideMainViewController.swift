@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Result
 import ReactiveSwift
 import Moya
 
@@ -24,7 +25,7 @@ class GuideMainViewController: UIViewController {
     
     var shouldSelectTargetBook: Bool = false
     var targetBook: Book?
-    var recommendedBooks: [Book] = []
+    var recommendedBooks: [(RecommendedBook, Book)] = []
     var wordCount: Int = 0
     
     override func viewDidLoad() {
@@ -33,24 +34,18 @@ class GuideMainViewController: UIViewController {
         bookView.collectionView.delegate = self
         bookView.collectionView.dataSource = self
         bookView.collectionView.register(GuideRecomendedBookCell.self, forCellWithReuseIdentifier: "cell")
-        var book = Book()
-        book.cover = "https://w.namu.la/s/016844c98b7bffa2c183dca18f05528d0dd4154286e1e73fe84f03e3dd24aec69c9f1de04e4ccc3f6f88086306b392b129c0cfeb814918151683191fba7347670e779f353f60ab5f7f8375361dd73cc9d843add325c7e1ecc38c57ec9b3dc099"
-        recommendedBooks.append(book)
-        recommendedBooks.append(book)
-        recommendedBooks.append(book)
-        recommendedBooks.append(book)
-        recommendedBooks.append(book)
-       
         wordCount = RealmService.shared.getTodayUnknownWords().count
-        layout()
-        fetchTargetBook()
+        ReachabilityService.shared.reach.producer.start { [weak self] _ in
+            self?.reloadData()
+        }
+        
         NotificationCenter.default.addObserver(self, selector: #selector(unknownWordAdded), name: .unknownWordAdded, object: nil)
     }
     
-    func fetchTargetBook() {
+    func reloadData() {
         APIService.shared.request(.getRecommendInfo)
             .filterSuccessfulStatusCodes()
-            .map(RecommendInfo.self)
+            .mapPlain(RecommendInfo.self)
             .flatMap(.latest) { info -> SignalProducer<Book, MoyaError> in
                 if info.targetBookId == nil {
                     DispatchQueue.main.async {
@@ -62,18 +57,28 @@ class GuideMainViewController: UIViewController {
                 return APIService.shared.request(.getShopBook(bookId: info.targetBookId!))
                         .filterSuccessfulStatusCodes()
                         .map(Book.self)
-            }.start { event in
-                DispatchQueue.main.async {
-                    switch event {
-                    case .value(let book):
-                        self.shouldSelectTargetBook = false
-                        self.targetBook = book
-                        self.layout()
-                    case .failed(let error):
-                        AlertService.shared.alertError(error)
-                    default:
-                        print(event)
-                    }
+            }.handlePlain(ignoreError: false) { offline, book in
+                self.shouldSelectTargetBook = false
+                self.targetBook = book
+                self.layout()
+            }
+        
+        APIService.shared.request(.listRecommendedBooks)
+            .mapPlain([RecommendedBook].self)
+            .flatMap(.latest) { raws -> SignalProducer<[(RecommendedBook, Book)], MoyaError> in
+                let arr = raws.map { raw in
+                    return APIService.shared.request(.getShopBook(bookId: raw.bookId))
+                        .filterSuccessfulStatusCodes()
+                        .mapPlain(Book.self)
+                        .map { book in
+                            return (raw, book)
+                        }
+                }
+                return SignalProducer<SignalProducer<(RecommendedBook, Book), MoyaError>, MoyaError>(arr).flatten(.concat).reduce([]) { $0 + [$1] }
+            }.handlePlain(ignoreError: false) { (offline, books) in
+                if !offline {
+                    self.recommendedBooks = books!
+                    self.layout()
                 }
             }
     }
@@ -113,6 +118,7 @@ class GuideMainViewController: UIViewController {
             targetBookView.nativeNameView.text = "원서로 한번 읽어보고 싶은 책을 골라주세요"
             targetBookView.coverView.setBookPlaceholder()
         }
+        bookView.collectionView.reloadData()
     }
 }
 
@@ -127,19 +133,7 @@ extension GuideMainViewController: StoreMainViewControllerDelegate {
         var info = RecommendInfo()
         info.targetBookId = book.id
         APIService.shared.request(.updateRecommendInfo(info: info))
-            .filterSuccessfulStatusCodes()
-            .start { event in
-                DispatchQueue.main.async {
-                    switch event {
-                    case .value(_):
-                        self.fetchTargetBook()
-                    case .failed(let error):
-                        AlertService.shared.alertError(error)
-                    default:
-                        print(event)
-                    }
-                }
-            }
+            .handle(ignoreError: false)
     }
 }
 
@@ -151,8 +145,39 @@ extension GuideMainViewController: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let item = recommendedBooks[indexPath.item]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath) as! GuideRecomendedBookCell
-        cell.coverView.setBookCover(item.cover)
+        cell.coverView.setBookCover(item.1.cover)
+        cell.heart = item.0.rate == 1
+        cell.heartButton.addTarget(self, action: #selector(toggleHeart(sender:)), for: .touchUpInside)
+        cell.closeButton.addTarget(self, action: #selector(closeBook(sender:)), for: .touchUpInside)
+        cell.closeButton.tag = indexPath.item
         return cell
+    }
+    
+    @objc func toggleHeart(sender: UIButton) {
+        let cell = bookView.collectionView.visibleCells[sender.tag] as! GuideRecomendedBookCell
+        let item = recommendedBooks[sender.tag]
+        if cell.heart {
+            cell.heart = false
+            APIService.shared.request(.rateRecommendedBook(bookId: item.0.bookId, rate: 0))
+                .handle(ignoreError: false)
+        } else {
+            cell.heart = true
+            APIService.shared.request(.rateRecommendedBook(bookId: item.0.bookId, rate: 1))
+                .handle(ignoreError: false)
+        }
+    }
+    
+    @objc func closeBook(sender: UIButton) {
+        let item = recommendedBooks[sender.tag]
+        APIService.shared.request(.rateRecommendedBook(bookId: item.0.bookId, rate: -1))
+            .handle(ignoreError: false)
+        APIService.shared.request(.deleteRecommendedBook(bookId: item.0.bookId))
+            .handle(ignoreError: false) { offline, _ in
+                if !offline {
+                    self.recommendedBooks.remove(at: sender.tag)
+                    self.layout()
+                }
+            }
     }
 //
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

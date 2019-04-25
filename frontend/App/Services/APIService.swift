@@ -64,14 +64,10 @@ class APIService {
         case .utility:
             scheduler = QueueScheduler(qos: .utility)
         }
-        return online
-            .filter({(b: Bool) -> Bool in return b })
-            .take(first: 1)
-            .promoteError(MoyaError.self)
-            .timeout(after: 0.2, raising: MoyaError.underlying(GoraniError.offline, nil), on: QueueScheduler.main)
-            .flatMap(.latest) { _ in
-                return req.observe(on: scheduler)
-            }
+        if !ReachabilityService.shared.reach.value {
+             return SignalProducer(error: MoyaError.underlying(GoraniError.offline, nil))
+        }
+        return req.observe(on: scheduler)
     }
     
     func endpointsClosure(_ target: API) -> Endpoint {
