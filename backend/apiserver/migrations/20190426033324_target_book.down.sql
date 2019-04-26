@@ -1,0 +1,1 @@
+drop table target_book_progresses;

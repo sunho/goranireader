@@ -22,6 +22,8 @@ enum API {
     case getRecommendInfo
     case updateRecommendInfo(info: RecommendInfo)
     
+    case getTargetBookProgress
+    
     case searchShopBooks(name: String, p: Int, orderBy: String)
     case getShopBook(bookId: Int)
     case buyShopBook(bookId: Int)
@@ -72,6 +74,8 @@ extension API: TargetType {
             return "/memory/\(word)/\(mid)/rate"
         case .listBooks:
             return "/book"
+        case .getTargetBookProgress:
+            return "/recommend/progress"
         case .getRecommendInfo:
             return "/recommend/info"
         case .updateRecommendInfo:
@@ -118,7 +122,7 @@ extension API: TargetType {
         case .listMemories, .listBooks, .getMyMemory, .listCategories,
              .getShopBook, .searchShopBooks, .listRecommendedBooks, .getRecommendInfo,
              .listSimilarWords, .getMyBookRate,
-             .listQuizResults, .listSensResults, .checkAuth:
+             .listQuizResults, .listSensResults, .checkAuth, .getTargetBookProgress:
             return .get
         case .buyShopBook, .login, .createEventLog:
             return .post
@@ -170,7 +174,7 @@ extension API: TargetType {
     case .getMyBookRate, .listBooks, .getMyMemory, .listCategories, .getShopBook,
              .listRecommendedBooks, .deleteRecommendedBook, .listSimilarWords,
              .listQuizResults, .listSensResults, .buyShopBook, .getRecommendInfo,
-             .checkAuth:
+             .checkAuth, .getTargetBookProgress:
             return .requestPlain
         }
     }

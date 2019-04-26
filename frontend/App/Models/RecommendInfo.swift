@@ -16,3 +16,13 @@ struct RecommendInfo: Codable {
         case targetBookId = "target_book_id"
     }
 }
+
+struct TargetBookProgress: Codable {
+    var bookId: Int = 0
+    var progress: Double = 0
+    enum CodingKeys: String, CodingKey
+    {
+        case bookId = "book_id"
+        case progress
+    }
+}

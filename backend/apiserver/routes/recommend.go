@@ -17,6 +17,7 @@ type Recommend struct {
 func (r *Recommend) Register(d *dim.Group) {
 	d.Use(&middles.AuthMiddle{})
 	d.GET("/info", r.GetInfo)
+	d.GET("/progress", r.GetProgress)
 	d.PUT("/info", r.PutInfo)
 	d.GET("/book", r.GetBooks)
 	d.DELETE("/book/:bookid", r.DeleteBook, &middles.BookParamMiddle{})
@@ -60,6 +61,27 @@ func (r *Recommend) GetBooks(c2 echo.Context) error {
 	err := c.Tx.Where("user_id = ?", c.User.ID).All(&out)
 	if err != nil {
 		return err
+	}
+	return c.JSON(200, out)
+}
+
+func (r *Recommend) GetProgress(c2 echo.Context) error {
+	c := c2.(*models.Context)
+	var info dbmodels.RecommendInfo
+	err := c.Tx.Q().Where("user_id = ?", c.User.ID).
+		First(&info)
+	if err != nil {
+		return err
+	}
+	if !info.TargetBookID.Valid {
+		return echo.NewHTTPError(400, "No target book")
+	}
+	id := info.TargetBookID.Value
+	var out dbmodels.TargetBookProgress
+	err = c.Tx.Q().Where("user_id = ? AND book_id = ?", c.User.ID, id).
+		First(&out)
+	if err != nil {
+		return echo.NewHTTPError(404, "Progress no calculated yet")
 	}
 	return c.JSON(200, out)
 }

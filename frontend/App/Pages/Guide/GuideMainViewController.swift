@@ -43,6 +43,13 @@ class GuideMainViewController: UIViewController {
     }
     
     func reloadData() {
+        APIService.shared.request(.getTargetBookProgress)
+            .handle(ignoreError: true, type: TargetBookProgress.self) { offline, progress in
+                if !offline {
+                    self.progressView.progressBar.progress = Float(progress!.progress)
+                }
+            }
+
         APIService.shared.request(.getRecommendInfo)
             .filterSuccessfulStatusCodes()
             .mapPlain(RecommendInfo.self)

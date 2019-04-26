@@ -11,6 +11,7 @@ import (
 
 type Book struct {
 	ID          int              `db:"id" json:"id" pk:"true"`
+	GoogleID    string           `db:"google_id" json:"google_id"`
 	CreatedAt   time.Time        `db:"created_at" json:"created_at"`
 	UpdatedAt   time.Time        `db:"updated_at" json:"updated_at"`
 	Description string           `db:"description" json:"description"`

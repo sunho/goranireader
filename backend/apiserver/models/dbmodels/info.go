@@ -44,3 +44,10 @@ type ReadableBook struct {
 	BookID     int       `db:"book_id"`
 	Difficulty int       `db:"difficulty"`
 }
+
+type TargetBookProgress struct {
+	ID uuid.UUID `db:"id" json:"-"`
+	UserID int `db:"user_id" json:"-"`
+	BookID int `db:"book_id" json:"-"`
+	Progress float64 `db:"progress" json:"progress"`
+}
