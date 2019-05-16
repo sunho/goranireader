@@ -6,6 +6,8 @@ import Moya
 import ReactiveMoya
 import RealmSwift
 import Kingfisher
+import Regex
+import FolioReaderKit
 
 extension Date {
     var yesterday: Date {
@@ -327,4 +329,28 @@ extension SignalProducerProtocol where Value == Response, Error == MoyaError {
         }
     }
 
+}
+
+extension FRBook {
+    func numberOfWord(_ word: String) -> Int {
+        var out = 0
+        let pat = try! Regex(pattern:"<p>(.|\n)*?</p>", groupNames: "text")
+        for (_, resource) in resources.resources {
+            if resource.mediaType == .xhtml {
+                if let html = try? String(contentsOfFile: resource.fullHref) {
+                    let matches = pat.findAll(in: html)
+                    for match in matches {
+                        let text = match.group(named: "text")!
+                        let words = SentenceUtil.getWords(text)
+                        for word2 in words {
+                            if word == word2 {
+                                out += 1
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return out
+    }
 }

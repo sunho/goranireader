@@ -3,7 +3,7 @@ import Foundation
 fileprivate let fileManager = FileManager.default
 
 class FileUtil {
-    static let sharedDir: URL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: "group.sunho.gorani")!
+    static let sharedDir: URL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: "group.sunho.gorani-reader")!
     
     static let booksDir: URL = {
         let url = sharedDir.appendingPathComponent("books")

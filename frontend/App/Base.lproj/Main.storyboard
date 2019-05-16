@@ -853,7 +853,7 @@
             <objects>
                 <viewController restorationIdentifier="StoreBookDetailViewController" storyboardIdentifier="StoreBookDetailViewController" id="C8d-gr-gGf" customClass="StoreBookDetailViewController" customModule="app" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="KQT-97-P1d">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="410"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Cg-Nf-wR0">
@@ -960,7 +960,7 @@
                                     <constraint firstAttribute="height" constant="1" id="N7E-bD-Apr"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yOq-gJ-0BS" customClass="CosmosView" customModule="Cosmos">
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yOq-gJ-0BS" customClass="CosmosView" customModule="Cosmos">
                                 <rect key="frame" x="16" y="174.5" width="120" height="20"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>

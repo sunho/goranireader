@@ -1,8 +1,8 @@
 package bookparse
 
 import (
-	"gorani/book/sentencer"
 	"errors"
+	"gorani/book/sentencer"
 	"io"
 	"strings"
 
@@ -21,7 +21,6 @@ func Parse(isbn string, r io.ReaderAt, size int64) (b Book, err error) {
 		return
 	}
 
-
 	return
 }
 
@@ -36,10 +35,10 @@ func (b *Book) parseEpub(r io.ReaderAt, size int64) error {
 		return err
 	}
 
-	err = b.parseSentences(epub)
-	if err != nil {
-		return err
-	}
+	// err = b.parseSentences(epub)
+	// if err != nil {
+	// 	return err
+	// }
 
 	return nil
 }

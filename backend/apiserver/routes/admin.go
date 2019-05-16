@@ -11,6 +11,7 @@ import (
 
 	"github.com/gobuffalo/nulls"
 	"github.com/labstack/echo"
+	"go.uber.org/zap"
 
 	"github.com/sunho/dim"
 )
@@ -58,12 +59,12 @@ func (a *Admin) BookFromEpub(c2 echo.Context) error {
 		return err
 	}
 	defer r.Close()
-
-	b, err := bookparse.Parse("", r, f.Size)
+	utils.Log.Info("Asdf", zap.Int64("size", f.Size))
+	b, err := bookparse.Parse("asdf", r, f.Size)
 	if err != nil {
 		return err
 	}
-
+	utils.Log.Info("Asdf2")
 	cover, err := a.File.UploadFile(b.Cover.Reader, mime.TypeByExtension("."+b.Cover.Ext), b.Cover.Ext)
 	if err != nil {
 		return err
@@ -76,6 +77,7 @@ func (a *Admin) BookFromEpub(c2 echo.Context) error {
 		Cover:      cover,
 		Categories: utils.SQLStrings{},
 	}
+	utils.Log.Info("Asdf3")
 
 	err = c.Tx.Eager().Create(&book)
 	if err != nil {
@@ -95,7 +97,7 @@ func (a *Admin) BookFromEpub(c2 echo.Context) error {
 		return err
 	}
 	defer r.Close()
-
+	utils.Log.Info("Asdf3")
 	url, err := a.File.UploadFileHeader(f)
 	if err != nil {
 		return err
@@ -107,6 +109,6 @@ func (a *Admin) BookFromEpub(c2 echo.Context) error {
 	if err != nil {
 		return err
 	}
-
+	utils.Log.Info("Asdf4")
 	return c.NoContent(200)
 }

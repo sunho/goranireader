@@ -10,8 +10,13 @@ import Foundation
 import UIKit
 
 struct SentenceUtil {
-    static func removePunctuations(_ word: String) -> String {
-        return word.replacingOccurrences(of: "[.!?,]+", with: "", options: .regularExpression)
+    static func getWords(_ paragraph: String) -> [String] {
+        let text = SentenceUtil.removePunctuations(paragraph, " ")
+        return text.components(separatedBy: " ")
+    }
+    
+    static func removePunctuations(_ word: String, _ with: String = "") -> String {
+        return word.replacingOccurrences(of: "[.!?,]+", with: with, options: .regularExpression)
     }
     
     static func getFrontMiddleEnd(_ sentence: String, _ index: Int, maxChar: Int = 120) -> (String, String, String) {

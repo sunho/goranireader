@@ -44,6 +44,7 @@
 		C71C5375226A0A93009197F6 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C71C5374226A0A93009197F6 /* SafariServices.framework */; };
 		C71C5377226A0A9D009197F6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C71C5376226A0A9C009197F6 /* SystemConfiguration.framework */; };
 		C7403AEB209176D800099119 /* WordMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7403AEA209176D800099119 /* WordMainViewController.swift */; };
+		C7420F2022805E130077CC0B /* dict.db in Resources */ = {isa = PBXBuildFile; fileRef = C7420F1F22805CDD0077CC0B /* dict.db */; };
 		C742DD8B2209567A00CD737A /* SearchHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C742DD8A2209567A00CD737A /* SearchHomeViewController.swift */; };
 		C742DD8F2209568800CD737A /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C742DD8E2209568800CD737A /* SearchResultViewController.swift */; };
 		C74CEFD8208C899F002765D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74CEFD7208C899F002765D6 /* AppDelegate.swift */; };
@@ -70,7 +71,6 @@
 		C7742BB322438D8500925081 /* UnknownWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7742BB222438D8500925081 /* UnknownWord.swift */; };
 		C7742BB52243953D00925081 /* WordCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7742BB42243953D00925081 /* WordCardTableViewCell.swift */; };
 		C7742BB72243967A00925081 /* WordCardExampleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7742BB62243967A00925081 /* WordCardExampleTableViewCell.swift */; };
-		C77A4302225565F700B4661D /* dict.db in Resources */ = {isa = PBXBuildFile; fileRef = C77A4301225565F700B4661D /* dict.db */; };
 		C783AAB62241E0CB00D0D7BB /* SensMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C783AAB52241E0CB00D0D7BB /* SensMainViewController.swift */; };
 		C783AAB822420C0200D0D7BB /* SelfSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C783AAB722420C0200D0D7BB /* SelfSizedTableView.swift */; };
 		C783AABA2242332500D0D7BB /* SwipeSubmitScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C783AAB92242332500D0D7BB /* SwipeSubmitScreen.swift */; };
@@ -224,6 +224,7 @@
 		C71C5374226A0A93009197F6 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		C71C5376226A0A9C009197F6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C7403AEA209176D800099119 /* WordMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordMainViewController.swift; sourceTree = "<group>"; };
+		C7420F1F22805CDD0077CC0B /* dict.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = dict.db; path = ../../backend/dataserver/old/dictmake/removesup/dict.db; sourceTree = "<group>"; };
 		C742DD8A2209567A00CD737A /* SearchHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHomeViewController.swift; sourceTree = "<group>"; };
 		C742DD8E2209568800CD737A /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		C74CEFD4208C899F002765D6 /* app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = app.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -250,7 +251,6 @@
 		C7742BB222438D8500925081 /* UnknownWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnknownWord.swift; sourceTree = "<group>"; };
 		C7742BB42243953D00925081 /* WordCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCardTableViewCell.swift; sourceTree = "<group>"; };
 		C7742BB62243967A00925081 /* WordCardExampleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCardExampleTableViewCell.swift; sourceTree = "<group>"; };
-		C77A4301225565F700B4661D /* dict.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = dict.db; path = ../../../backend/dataserver/old/dictmake/removesup/dict.db; sourceTree = "<group>"; };
 		C78217C7209BD32700C19E2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C78217C8209BD32700C19E2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C783AAB52241E0CB00D0D7BB /* SensMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensMainViewController.swift; sourceTree = "<group>"; };
@@ -578,9 +578,9 @@
 		C78217BB209BC1CF00C19E2F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C77A4301225565F700B4661D /* dict.db */,
+				C7420F1F22805CDD0077CC0B /* dict.db */,
 			);
-			path = Resources;
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		C78ECA942206E51E001909C3 /* Store */ = {
@@ -802,10 +802,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7420F2022805E130077CC0B /* dict.db in Resources */,
 				B124047520A8CD90005EAE4F /* Cartfile in Resources */,
 				C74CEFE5208C89A1002765D6 /* LaunchScreen.storyboard in Resources */,
 				C74CEFE2208C89A1002765D6 /* Assets.xcassets in Resources */,
-				C77A4302225565F700B4661D /* dict.db in Resources */,
 				B13393B320A8F78D00F34525 /* .gitignore in Resources */,
 				C71C5371226A0A6D009197F6 /* GoogleSignIn.bundle in Resources */,
 				C74CEFDD208C899F002765D6 /* Main.storyboard in Resources */,
@@ -1141,8 +1141,9 @@
 				CLANG_ENABLE_CODE_COVERAGE = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = App/app.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GND7ZFZ8Y8;
+				DEVELOPMENT_TEAM = YT3F53Y6WA;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1162,8 +1163,9 @@
 					"-fprofile-instr-generate",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = kim.sunho.gorani;
+				PRODUCT_BUNDLE_IDENTIFIER = "kim.sunho.gorani-reader";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1177,8 +1179,9 @@
 				CLANG_ENABLE_CODE_COVERAGE = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = App/app.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GND7ZFZ8Y8;
+				DEVELOPMENT_TEAM = YT3F53Y6WA;
 				ENABLE_TESTABILITY = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1198,8 +1201,9 @@
 					"-fprofile-instr-generate",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = kim.sunho.gorani;
+				PRODUCT_BUNDLE_IDENTIFIER = "kim.sunho.gorani-reader";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

@@ -27,8 +27,9 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
     }
     
     func selectionChanged(bookName: String, point: CGPoint, sentence: SelectedSentence?) {
-        if let sentence = sentence{
+        if let sentence = sentence {
             currentSentence = sentence
+            let num = folioReader.readerContainer!.book.numberOfWord(sentence.word)
             dictVC.show(point, UnknownDefinitionTuple(sentence.word, currentBookId!, sentence.sentence, sentence.index))
             if currentSentences != nil && sentence.sentenceIndex < currentSentences!.count {
                 var uword = FlipPageUword()
