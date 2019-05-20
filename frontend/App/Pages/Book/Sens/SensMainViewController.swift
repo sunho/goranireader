@@ -6,6 +6,8 @@
 //  Copyright © 2019 sunho. All rights reserved.
 //
 
+// TODO REFACTOR
+
 import UIKit
 
 fileprivate struct State {
