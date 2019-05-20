@@ -37,14 +37,3 @@ func (p *Post) Register(d *dim.Group) {
 		})
 	}, &middles.MemoryParamMiddle{})
 }
-
-func (p *Post) List(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	var out []dbmodels.DetailedMemory
-	p, _ := strconv.Atoi(c.QueryParam("p"))
-	err := c.Tx.Where("word = ?", c.Param("word")).Paginate(p, memoriesPerPage).All(&out)
-	if err != nil {
-		return err
-	}
-	return c.JSON(200, out)
-}
