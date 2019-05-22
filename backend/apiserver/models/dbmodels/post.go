@@ -30,7 +30,8 @@ type SentencePost struct {
 	Sentence       string       `db:"sentence" json:"sentence"`
 	BottomContent  string       `db:"bottom_content" json:"bottom_content"`
 	Solved         bool         `db:"solved" json:"solved"`
-	SolvingComment nulls.String `db:"solving_comment" json:"solving_comment"`
+	SolvingContent nulls.String `db:"solving_content" json:"solving_content"`
+	SolvingComment nulls.Int    `db:"solving_comment" json:"solving_comment"`
 }
 
 type DetailedSentencePost struct {
@@ -43,9 +44,28 @@ type DetailedSentencePost struct {
 	Sentence       string       `db:"sentence" json:"sentence"`
 	BottomContent  string       `db:"bottom_content" json:"bottom_content"`
 	Solved         bool         `db:"solved" json:"solved"`
-	SolvingComment nulls.String `db:"solving_comment" json:"solving_comment"`
+	SolvingContent nulls.String `db:"solving_content" json:"solving_content"`
+	SolvingComment nulls.Int    `db:"solving_comment" json:"solving_comment"`
 	Rate           nulls.Int    `db:"rate" json:"rate"`
 	CommentCount   nulls.Int    `db:"comment_count" json:"comment_count"`
+}
+
+func (p *DetailedSentencePost) Split() (Post, SentencePost) {
+	return Post{
+			ID:        p.ID,
+			UserID:    p.UserID,
+			CreatedAt: p.CreatedAt,
+			UpdatedAt: p.UpdatedAt,
+		},
+		SentencePost{
+			ID:             p.ID,
+			BookID:         p.BookID,
+			TopContent:     p.TopContent,
+			Sentence:       p.Sentence,
+			BottomContent:  p.BottomContent,
+			Solved:         p.Solved,
+			SolvingComment: p.SolvingComment,
+		}
 }
 
 type DetailedPostComment struct {

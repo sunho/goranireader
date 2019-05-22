@@ -15,7 +15,7 @@ create table post_comments (
 );
 
 create view detailed_post_comments as select
-    posts.*,
+    post_comments.*,
     comment_rates.rate
 from
     post_comments
@@ -36,22 +36,29 @@ on
 
 
 create table sentence_posts (
-    id integer not null,
+    id integer not null primary key references posts on delete cascade,
     book_id integer not null references books on delete cascade,
     top_content character varying(4094) not null,
     sentence character varying(2048) not null,
     bottom_content character varying(4094) not null,
-    solving_comment character varying(4094),
+    solving_content character varying(4094),
+    solving_comment integer,
     solved boolean not null
 );
 
 create view detailed_sentence_posts as select
-    posts.*,
+    p.created_at,
+    p.updated_at,
+    p.user_id,
     sentence_posts.*,
     comment_counts.comment_count,
     post_rates.rate
 from
     sentence_posts
+join
+    posts p
+on
+    sentence_posts.id = p.id
 left join
  (
   select
@@ -66,10 +73,6 @@ left join
 ) post_rates
 on
     sentence_posts.id = post_rates.target_id
-join
-    posts
-on
-    sentence_posts.id = posts.id
 left join
  (
   select

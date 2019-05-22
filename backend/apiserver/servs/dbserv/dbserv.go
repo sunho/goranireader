@@ -3,7 +3,7 @@ package dbserv
 import (
 	"gorani/models/dbmodels"
 
-	"github.com/gobuffalo/pop"
+	"github.com/sunho/pop"
 	"github.com/labstack/echo"
 )
 
@@ -64,6 +64,17 @@ func (db *DBServ) GetBooksOfUser(tx *pop.Connection, user *dbmodels.User) ([]dbm
 		Eager().
 		InnerJoin("users_books", "books.id = users_books.book_id").
 		Where("users_books.user_id = ?", user.ID).All(&out)
+	return out, err
+}
+
+func (db *DBServ) GetSentencePostFromPost(tx *pop.Connection, post *dbmodels.Post) (dbmodels.SentencePost, error) {
+	if tx == nil {
+		tx = db.Connection
+	}
+	var out dbmodels.SentencePost
+	err := tx.Q().
+		Where("id = ?", post.ID).
+		First(&out)
 	return out, err
 }
 

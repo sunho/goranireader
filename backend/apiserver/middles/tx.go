@@ -6,7 +6,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/gobuffalo/pop"
+	"github.com/sunho/pop"
 
 	"github.com/labstack/echo"
 )

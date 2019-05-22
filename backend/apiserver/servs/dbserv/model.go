@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/gobuffalo/pop"
+	"github.com/sunho/pop"
 )
 
 type Model struct {
