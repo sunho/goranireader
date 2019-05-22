@@ -25,15 +25,14 @@
 		C70F55C5224FE508006DBB0E /* BubbleTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55C2224FE508006DBB0E /* BubbleTabBar.swift */; };
 		C70F55C6224FE508006DBB0E /* CBTabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55C3224FE508006DBB0E /* CBTabBarButton.swift */; };
 		C70F55C7224FE508006DBB0E /* BubbleTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55C4224FE508006DBB0E /* BubbleTabBarController.swift */; };
-		C70F55CB22500779006DBB0E /* GuideTargetBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55CA22500779006DBB0E /* GuideTargetBookView.swift */; };
 		C70F55CD225008D0006DBB0E /* GuideProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55CC225008D0006DBB0E /* GuideProgressView.swift */; };
 		C70F55CF2250094A006DBB0E /* GuideWordCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55CE2250094A006DBB0E /* GuideWordCardView.swift */; };
 		C70F55D122500959006DBB0E /* GuideRecommendedBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55D022500959006DBB0E /* GuideRecommendedBookView.swift */; };
 		C70F55D322501596006DBB0E /* GuideRecommendedBookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55D222501596006DBB0E /* GuideRecommendedBookCell.swift */; };
 		C70F55D6225029AE006DBB0E /* SocialMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55D5225029AE006DBB0E /* SocialMainViewController.swift */; };
-		C70F55D8225029C4006DBB0E /* SocialShareDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55D7225029C4006DBB0E /* SocialShareDetailViewController.swift */; };
+		C70F55D8225029C4006DBB0E /* SocialDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55D7225029C4006DBB0E /* SocialDetailViewController.swift */; };
 		C70F55DB225029EC006DBB0E /* SocialMainBestMemoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55DA225029EC006DBB0E /* SocialMainBestMemoryCell.swift */; };
-		C70F55DD22502A05006DBB0E /* SocialMainShareCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55DC22502A05006DBB0E /* SocialMainShareCell.swift */; };
+		C70F55DD22502A05006DBB0E /* SocialMainPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55DC22502A05006DBB0E /* SocialMainPostCell.swift */; };
 		C70F55DF22502A18006DBB0E /* SocialShareCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55DE22502A18006DBB0E /* SocialShareCommentCell.swift */; };
 		C70F55E122502A3B006DBB0E /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55E022502A3B006DBB0E /* Share.swift */; };
 		C70F55E322502B2B006DBB0E /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55E222502B2B006DBB0E /* Post.swift */; };
@@ -43,6 +42,7 @@
 		C71C5373226A0A89009197F6 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C71C5372226A0A89009197F6 /* LocalAuthentication.framework */; };
 		C71C5375226A0A93009197F6 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C71C5374226A0A93009197F6 /* SafariServices.framework */; };
 		C71C5377226A0A9D009197F6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C71C5376226A0A9C009197F6 /* SystemConfiguration.framework */; };
+		C72415EF22956C52003E932E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72415EE22956C52003E932E /* User.swift */; };
 		C7403AEB209176D800099119 /* WordMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7403AEA209176D800099119 /* WordMainViewController.swift */; };
 		C7420F2022805E130077CC0B /* dict.db in Resources */ = {isa = PBXBuildFile; fileRef = C7420F1F22805CDD0077CC0B /* dict.db */; };
 		C742DD8B2209567A00CD737A /* SearchHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C742DD8A2209567A00CD737A /* SearchHomeViewController.swift */; };
@@ -205,15 +205,14 @@
 		C70F55C2224FE508006DBB0E /* BubbleTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleTabBar.swift; sourceTree = "<group>"; };
 		C70F55C3224FE508006DBB0E /* CBTabBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CBTabBarButton.swift; sourceTree = "<group>"; };
 		C70F55C4224FE508006DBB0E /* BubbleTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleTabBarController.swift; sourceTree = "<group>"; };
-		C70F55CA22500779006DBB0E /* GuideTargetBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideTargetBookView.swift; sourceTree = "<group>"; };
 		C70F55CC225008D0006DBB0E /* GuideProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideProgressView.swift; sourceTree = "<group>"; };
 		C70F55CE2250094A006DBB0E /* GuideWordCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideWordCardView.swift; sourceTree = "<group>"; };
 		C70F55D022500959006DBB0E /* GuideRecommendedBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideRecommendedBookView.swift; sourceTree = "<group>"; };
 		C70F55D222501596006DBB0E /* GuideRecommendedBookCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideRecommendedBookCell.swift; sourceTree = "<group>"; };
 		C70F55D5225029AE006DBB0E /* SocialMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialMainViewController.swift; sourceTree = "<group>"; };
-		C70F55D7225029C4006DBB0E /* SocialShareDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialShareDetailViewController.swift; sourceTree = "<group>"; };
+		C70F55D7225029C4006DBB0E /* SocialDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialDetailViewController.swift; sourceTree = "<group>"; };
 		C70F55DA225029EC006DBB0E /* SocialMainBestMemoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialMainBestMemoryCell.swift; sourceTree = "<group>"; };
-		C70F55DC22502A05006DBB0E /* SocialMainShareCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialMainShareCell.swift; sourceTree = "<group>"; };
+		C70F55DC22502A05006DBB0E /* SocialMainPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialMainPostCell.swift; sourceTree = "<group>"; };
 		C70F55DE22502A18006DBB0E /* SocialShareCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialShareCommentCell.swift; sourceTree = "<group>"; };
 		C70F55E022502A3B006DBB0E /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
 		C70F55E222502B2B006DBB0E /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
@@ -223,6 +222,7 @@
 		C71C5372226A0A89009197F6 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		C71C5374226A0A93009197F6 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		C71C5376226A0A9C009197F6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		C72415EE22956C52003E932E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C7403AEA209176D800099119 /* WordMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordMainViewController.swift; sourceTree = "<group>"; };
 		C7420F1F22805CDD0077CC0B /* dict.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = dict.db; path = ../../backend/dataserver/old/dictmake/removesup/dict.db; sourceTree = "<group>"; };
 		C742DD8A2209567A00CD737A /* SearchHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHomeViewController.swift; sourceTree = "<group>"; };
@@ -413,6 +413,7 @@
 				C70F55E022502A3B006DBB0E /* Share.swift */,
 				C70F55E222502B2B006DBB0E /* Post.swift */,
 				C70CD180226621BA00D38AB9 /* RecommendedBook.swift */,
+				C72415EE22956C52003E932E /* User.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -444,7 +445,7 @@
 			children = (
 				C70F55D9225029CC006DBB0E /* Cells */,
 				C70F55D5225029AE006DBB0E /* SocialMainViewController.swift */,
-				C70F55D7225029C4006DBB0E /* SocialShareDetailViewController.swift */,
+				C70F55D7225029C4006DBB0E /* SocialDetailViewController.swift */,
 			);
 			path = Social;
 			sourceTree = "<group>";
@@ -453,7 +454,7 @@
 			isa = PBXGroup;
 			children = (
 				C70F55DA225029EC006DBB0E /* SocialMainBestMemoryCell.swift */,
-				C70F55DC22502A05006DBB0E /* SocialMainShareCell.swift */,
+				C70F55DC22502A05006DBB0E /* SocialMainPostCell.swift */,
 				C70F55DE22502A18006DBB0E /* SocialShareCommentCell.swift */,
 			);
 			path = Cells;
@@ -597,7 +598,6 @@
 		C7B2624F224BFC0600ED5333 /* Cards */ = {
 			isa = PBXGroup;
 			children = (
-				C70F55CA22500779006DBB0E /* GuideTargetBookView.swift */,
 				C70F55CC225008D0006DBB0E /* GuideProgressView.swift */,
 				C70F55CE2250094A006DBB0E /* GuideWordCardView.swift */,
 				C70F55D022500959006DBB0E /* GuideRecommendedBookView.swift */,
@@ -894,7 +894,7 @@
 				C7E242E9224721A5000892D0 /* StoreBookDetailViewController.swift in Sources */,
 				C7D5F509224CC98F00E7A40A /* RoundOptionCell.swift in Sources */,
 				C742DD8B2209567A00CD737A /* SearchHomeViewController.swift in Sources */,
-				C70F55DD22502A05006DBB0E /* SocialMainShareCell.swift in Sources */,
+				C70F55DD22502A05006DBB0E /* SocialMainPostCell.swift in Sources */,
 				B143B05B20A47617003341A3 /* UIUtil.swift in Sources */,
 				C7C117722244D05D0084C799 /* FeedbackBulletPage.swift in Sources */,
 				C70F55DF22502A18006DBB0E /* SocialShareCommentCell.swift in Sources */,
@@ -926,7 +926,8 @@
 				C7742BB322438D8500925081 /* UnknownWord.swift in Sources */,
 				C7742BAF22436A6D00925081 /* CardOptionIndicator.swift in Sources */,
 				C7FC18B5223A346D007172ED /* ReachabilityService.swift in Sources */,
-				C70F55D8225029C4006DBB0E /* SocialShareDetailViewController.swift in Sources */,
+				C70F55D8225029C4006DBB0E /* SocialDetailViewController.swift in Sources */,
+				C72415EF22956C52003E932E /* User.swift in Sources */,
 				C7D915C52240E2D50073E860 /* EpubViewControllerExtension.swift in Sources */,
 				C7CF0058224D191700524D80 /* StoreBookDetailReviewCell.swift in Sources */,
 				B143B04F20A47613003341A3 /* DictService.swift in Sources */,
@@ -970,7 +971,6 @@
 				C70CD181226621BA00D38AB9 /* RecommendedBook.swift in Sources */,
 				C757D2C72247A7450050E0A2 /* BookShopTableViewCell.swift in Sources */,
 				C77043B3223E214700B91831 /* ContentService.swift in Sources */,
-				C70F55CB22500779006DBB0E /* GuideTargetBookView.swift in Sources */,
 				C7FC18A72239F1F7007172ED /* Memory.swift in Sources */,
 				C7BF8C5B224546D60037FD68 /* UIConsts.swift in Sources */,
 				C759AD7F221EEA9400166B2A /* GuideMainViewController.swift in Sources */,

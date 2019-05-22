@@ -8,5 +8,56 @@
 
 import Foundation
 
-class Post {
+struct Post: Codable{
+    var id: Int
+    var userId: Int
+    var createdAt: Date
+    var updatedAt: Date
+    var bookId: Int
+    var topContent: String
+    var sentence: String
+    var bottomContent: String
+    var solved: Bool
+    var solvingContent: String?
+    var solvingComment: Int?
+    var rate: Int?
+    var commentCount: Int?
+    
+    enum CodingKeys: String, CodingKey
+    {
+        case id
+        case userId = "user_id"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case bookId = "book_id"
+        case topContent = "top_content"
+        case sentence
+        case bottomContent = "bottom_content"
+        case solved
+        case solvingContent = "solving_content"
+        case solvingComment = "solving_comment"
+        case rate
+        case commentCount = "comment_count"
+    }
+}
+
+struct Comment: Codable {
+    var id: Int
+    var userId: Int
+    var postId: Int
+    var createdAt: Date
+    var updatedAt: Date
+    var content: String
+    var rate: Int?
+    
+    enum CodingKeys: String, CodingKey
+    {
+        case id
+        case userId = "user_id"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case postId = "post_id"
+        case content
+        case rate
+    }
 }

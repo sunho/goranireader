@@ -1,9 +1,5 @@
 //
-//  APIService.swift
-//  app
-//
-//  Created by sunho on 2019/03/14.
-//  Copyright © 2019 sunho. All rights reserved.
+//  Copyright © 2019 Sunho Kim. All rights reserved.
 //
 
 import Foundation
@@ -40,6 +36,16 @@ enum API {
     case updateSensResult(result: SensResult)
     case listQuizResults
     case updateQuizResult(result: QuizResult)
+    
+    case listPosts
+    case createPost(post: Post)
+    case ratePost(postId: Int, rate: Int)
+    
+    case listComment(postId: Int)
+    case markPostSolved(postId: Int, commentId: Int)
+    case rateComment(postId: Int, commentId: Int, rate: Int)
+    
+    case getUser(userId: Int)
     
     case login(username: String, idToken: String)
     case checkAuth
@@ -112,6 +118,20 @@ extension API: TargetType {
             return "/user/me"
         case .createEventLog:
             return "/evlog"
+        case .listPosts:
+            return "/post"
+        case .createPost:
+            return "/post"
+        case .ratePost(let postId, _):
+            return "/post/\(postId)/rate"
+        case .listComment(let postId):
+            return "/post/\(postId)/comment"
+        case .markPostSolved(let postId, _):
+            return "/post/\(postId)/sentence/solve"
+        case .rateComment(let postId, let commentId, _):
+            return "/post/\(postId)/comment/\(commentId)/rate"
+        case .getUser(let userId):
+            return "/user/\(userId)"
         }
     }
     
@@ -121,12 +141,12 @@ extension API: TargetType {
             return .get
         case .listMemories, .listBooks, .getMyMemory, .listCategories,
              .getShopBook, .searchShopBooks, .listRecommendedBooks, .getRecommendInfo,
-             .listSimilarWords, .getMyBookRate,
+             .listSimilarWords, .getMyBookRate, .listPosts, .listComment, .getUser,
              .listQuizResults, .listSensResults, .checkAuth, .getTargetBookProgress:
             return .get
-        case .buyShopBook, .login, .createEventLog:
+        case .buyShopBook, .login, .createEventLog, .markPostSolved, .createPost:
             return .post
-        case .rateBook, .rateMemory,
+        case .rateBook, .rateMemory, .ratePost, .rateComment,
              .rateRecommendedBook, .updateMemory,
              .updateQuizResult, .updateSensResult, .updateRecommendInfo:
             return .put
@@ -155,12 +175,16 @@ extension API: TargetType {
             var memory = Memory()
             memory.sentence = sentence
             return .requestCustomJSONEncodable(memory, encoder: encoder)
+        case .createPost(let body):
+            return .requestCustomJSONEncodable(body, encoder: encoder)
         case .updateRecommendInfo(let body):
             return .requestCustomJSONEncodable(body, encoder: encoder)
         case .createEventLog(let body):
             return .requestCustomJSONEncodable(body, encoder: encoder)
-        case .rateBook(_, let rate), .rateMemory(_, _, let rate), .rateRecommendedBook(_, let rate):
+        case .rateBook(_, let rate), .rateMemory(_, _, let rate), .rateRecommendedBook(_, let rate), .ratePost(_, let rate), .rateComment(_, _, let rate):
             return .requestCustomJSONEncodable(["rate": rate], encoder: encoder)
+        case .markPostSolved(_, let commentId):
+            return .requestCustomJSONEncodable(["comment_id": commentId], encoder: encoder)
         case .searchShopBooks(let name, let p, let orderBy):
             return .requestParameters(parameters: ["name": name, "p": p, "by": orderBy], encoding: URLEncoding.default)
         case .listMemories(_, let p):
@@ -171,8 +195,8 @@ extension API: TargetType {
             return .requestCustomJSONEncodable(result, encoder: encoder)
         case .login(let username, let idToken):
             return .requestCustomJSONEncodable(["username": username, "id_token": idToken], encoder: encoder)
-    case .getMyBookRate, .listBooks, .getMyMemory, .listCategories, .getShopBook,
-             .listRecommendedBooks, .deleteRecommendedBook, .listSimilarWords,
+    case .getMyBookRate, .listBooks, .getMyMemory, .listCategories, .getShopBook, .listPosts, .listComment, 
+             .listRecommendedBooks, .deleteRecommendedBook, .listSimilarWords, .getUser,
              .listQuizResults, .listSensResults, .buyShopBook, .getRecommendInfo,
              .checkAuth, .getTargetBookProgress:
             return .requestPlain

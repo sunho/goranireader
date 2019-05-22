@@ -11,10 +11,10 @@ import (
 type User struct {
 	ID        int       `db:"id" json:"id"`
 	OauthID   string    `db:"oauth_id" json:"-"`
-	CreatedAt time.Time `db:"created_at" json:"created_at"`
-	UpdatedAt time.Time `db:"updated_at" json:"updated_at"`
+	CreatedAt time.Time `db:"created_at" json:"-"`
+	UpdatedAt time.Time `db:"updated_at" json:"-"`
 	Username  string    `db:"username" json:"username"`
-	Email     string    `db:"email" json:"email"`
+	Email     string    `db:"email" json:"-"`
 }
 
 type UsersBooks struct {

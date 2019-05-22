@@ -18,13 +18,10 @@ struct GuideCardProvider {
 }
 
 class GuideMainViewController: UIViewController {
-    @IBOutlet weak var targetBookView: GuideTargetBookView!
     @IBOutlet weak var progressView: GuideProgressView!
     @IBOutlet weak var wordCardView: GuideWordCardView!
     @IBOutlet weak var bookView: GuideRecommendedBookView!
     
-    var shouldSelectTargetBook: Bool = false
-    var targetBook: Book?
     var recommendedBooks: [(RecommendedBook, Book)] = []
     var wordCount: Int = 0
     
@@ -48,26 +45,6 @@ class GuideMainViewController: UIViewController {
                 if !offline {
                     self.progressView.progressBar.progress = Float(progress!.progress)
                 }
-            }
-
-        APIService.shared.request(.getRecommendInfo)
-            .filterSuccessfulStatusCodes()
-            .mapPlain(RecommendInfo.self)
-            .flatMap(.latest) { info -> SignalProducer<Book, MoyaError> in
-                if info.targetBookId == nil {
-                    DispatchQueue.main.async {
-                        self.shouldSelectTargetBook = true
-                        self.layout()
-                    }
-                    return SignalProducer(error: MoyaError.underlying("stop", nil))
-                }
-                return APIService.shared.request(.getShopBook(bookId: info.targetBookId!))
-                        .filterSuccessfulStatusCodes()
-                        .map(Book.self)
-            }.handlePlain(ignoreError: false) { offline, book in
-                self.shouldSelectTargetBook = false
-                self.targetBook = book
-                self.layout()
             }
         
         APIService.shared.request(.listRecommendedBooks)
@@ -100,12 +77,6 @@ class GuideMainViewController: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    @IBAction func targetBookChange(_ sender: Any) {
-        let vc = storyboard!.instantiateViewController(withIdentifier: "StoreMainViewController") as! StoreMainViewController
-        vc.delegate = self
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
     func layout() {
         if wordCount == 0 {
             wordCardView.button.isEnabled = false
@@ -115,16 +86,6 @@ class GuideMainViewController: UIViewController {
             wordCardView.textView.text = "총 \(wordCount)개의 단어를 복습해야 합니다"
         }
         
-        if let targetBook = targetBook {
-            targetBookView.nameView.text = targetBook.name
-            targetBookView.nativeNameView.text = targetBook.nativeName
-            targetBookView.coverView.setBookCover(targetBook.cover)
-        }
-        if shouldSelectTargetBook {
-            targetBookView.nameView.text = "위의 변경 버튼을 눌러서"
-            targetBookView.nativeNameView.text = "원서로 한번 읽어보고 싶은 책을 골라주세요"
-            targetBookView.coverView.setBookPlaceholder()
-        }
         bookView.collectionView.reloadData()
     }
 }

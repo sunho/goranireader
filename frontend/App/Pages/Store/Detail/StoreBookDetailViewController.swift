@@ -16,10 +16,6 @@ class StoreBookDetailViewController: UIViewController {
     @IBOutlet weak var nativeNameView: UILabel!
     @IBOutlet weak var typeStackView: UIStackView!
     @IBOutlet weak var button: RoundButton!
-    @IBOutlet weak var totalStarView: CosmosView!
-    @IBOutlet weak var descView: UILabel!
-    @IBOutlet weak var reviewCountView: UILabel!
-    @IBOutlet weak var reviewTableView: UITableView!
     
     var owned: Bool!
     var book: Book!
@@ -35,9 +31,6 @@ class StoreBookDetailViewController: UIViewController {
         }
         nameView.text = book.name
         nativeNameView.text = book.nativeName
-        descView.lineBreakMode = .byWordWrapping
-        descView.text = "as dfasdf asfas safadfasf asfsafdasdf asdf ㅇㅁㄴㄹ ㅁㅇㄴㄹ ㅁㄴㅇㄹ ㄴㅁㅇㄹ ㅁㄴㅇㄹ s"
-        descView.sizeToFit()
         
         typeStackView.removeAllArrangedSubviews()
         

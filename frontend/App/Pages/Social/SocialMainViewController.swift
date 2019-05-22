@@ -8,23 +8,49 @@
 
 import UIKit
 
-class SocialMainViewController: UIViewController {
-
+class SocialMainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    var posts: [Post] = []
+    @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        tableView.register(SocialMainPostCell.self, forCellReuseIdentifier: "cell")
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 160
+        tableView.delegate = self
+        tableView.dataSource = self
+        reloadData()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func reloadData() {
+        APIService.shared.request(.listPosts)
+            .handle(ignoreError: true, type: [Post].self) { offline, posts in
+                if !offline {
+                    self.posts = posts!
+                    self.tableView.reloadData()
+                }
+        }
     }
-    */
-
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item = self.posts[indexPath.row]
+        let vc = storyboard?.instantiateViewController(withIdentifier: "SocialDetailViewController") as! SocialDetailViewController
+        vc.post = item
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return posts.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let item = self.posts[indexPath.row]
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SocialMainPostCell
+        cell.sentenceView.text = item.sentence
+        APIService.shared.request(.getUser(userId: item.userId)).mapPlain(User.self).handlePlain(ignoreError: true) { offline, user in
+            if !offline {
+                cell.usernameView.text = user!.username
+            }
+        }
+        return cell
+    }
 }
