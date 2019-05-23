@@ -7,6 +7,8 @@ package dbserv
 import (
 	"gorani/models/dbmodels"
 
+	"github.com/gobuffalo/packr/v2"
+
 	"github.com/labstack/echo"
 	"github.com/sunho/pop"
 )
@@ -27,7 +29,8 @@ func Provide() (*DBServ, error) {
 }
 
 func (db *DBServ) Init() error {
-	mig, err := pop.NewFileMigrator("migrations", db.Connection)
+	box := packr.New("migrations", "./migrations")
+	mig, err := pop.NewMigrationBox(box, db.Connection)
 	if err != nil {
 		return err
 	}
