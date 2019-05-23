@@ -5,6 +5,8 @@
 import Foundation
 import SQLite
 
+// TODO move this to dict controller
+
 class DictService {
     fileprivate static let dictURL: URL = {
         let path = Bundle.main.path(forResource: "dict", ofType: "db")!

@@ -53,6 +53,11 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
         }
     }
     
+    func ask(_ text: String?) {
+        print(text)
+        
+    }
+    
     func htmlContentForPage(_ page: FolioReaderPage, htmlContent: String) -> String {
         return htmlContent
     }

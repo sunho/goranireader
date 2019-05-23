@@ -2,6 +2,8 @@ import Foundation
 
 fileprivate let fileManager = FileManager.default
 
+// TODO make this into a service
+
 class FileUtil {
     static let sharedDir: URL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: "group.sunho.gorani-reader")!
     

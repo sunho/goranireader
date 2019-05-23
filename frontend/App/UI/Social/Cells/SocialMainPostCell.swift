@@ -13,33 +13,36 @@ class SocialMainPostCell: UITableViewCell {
     var sentenceView: UILabel!
     var usernameView: UILabel!
     var commentView: UILabel!
-    var rateView: UILabel!
+    var bottomView: SocialPostBottomView!
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        sentenceView = UILabel()
         usernameView = UILabel()
         // TODO userinfo cache
         usernameView.text = "username"
         contentView.addSubview(usernameView)
-        contentView.addSubview(sentenceView)
         usernameView.snp.makeConstraints { make -> Void in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.top.equalToSuperview()
         }
+        
+        sentenceView = UILabel()
+        contentView.addSubview(sentenceView)
         sentenceView.snp.makeConstraints { make -> Void in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.top.equalTo(usernameView.snp.bottom)
         }
-        let container = UIView()
-        contentView.addSubview(container)
-        container.snp.makeConstraints { make -> Void in
-            make.top.equalTo(sentenceView.snp.bottom)
+        
+        bottomView = SocialPostBottomView()
+        contentView.addSubview(bottomView)
+        bottomView.snp.makeConstraints { make -> Void in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.top.equalTo(sentenceView.snp.bottom)
+             make.bottom.equalToSuperview()
         }
     }
     

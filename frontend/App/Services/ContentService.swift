@@ -11,6 +11,8 @@ import Moya
 import Regex
 import UIKit
 
+// TODO move this to book controller
+
 fileprivate let epubPattern = try! Regex(pattern:"([0-9]+)-([0-9]+)\\-epub", groupNames: "id", "timestamp")
 fileprivate let sensPattern = try! Regex(pattern:"([0-9]+)-([0-9]+)\\.sens", groupNames: "id", "timestamp")
 

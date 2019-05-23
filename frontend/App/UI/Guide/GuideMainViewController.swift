@@ -114,7 +114,7 @@ extension GuideMainViewController: UICollectionViewDelegate, UICollectionViewDat
         let item = recommendedBooks[indexPath.item]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath) as! GuideRecomendedBookCell
         cell.coverView.setBookCover(item.1.cover)
-        cell.heart = item.0.rate == 1
+        cell.heartButton.heart = item.0.rate == 1
         cell.heartButton.addTarget(self, action: #selector(toggleHeart(sender:)), for: .touchUpInside)
         cell.closeButton.addTarget(self, action: #selector(closeBook(sender:)), for: .touchUpInside)
         cell.closeButton.tag = indexPath.item
@@ -124,12 +124,12 @@ extension GuideMainViewController: UICollectionViewDelegate, UICollectionViewDat
     @objc func toggleHeart(sender: UIButton) {
         let cell = bookView.collectionView.visibleCells[sender.tag] as! GuideRecomendedBookCell
         let item = recommendedBooks[sender.tag]
-        if cell.heart {
-            cell.heart = false
+        if cell.heartButton.heart {
+            cell.heartButton.heart = false
             APIService.shared.request(.rateRecommendedBook(bookId: item.0.bookId, rate: 0))
                 .handle(ignoreError: false)
         } else {
-            cell.heart = true
+            cell.heartButton.heart = true
             APIService.shared.request(.rateRecommendedBook(bookId: item.0.bookId, rate: 1))
                 .handle(ignoreError: false)
         }

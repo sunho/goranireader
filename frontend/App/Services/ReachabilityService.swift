@@ -5,6 +5,8 @@
 import Reachability
 import ReactiveSwift
 
+// TODO make the source model take care of this
+
 class ReachabilityService {
     static let shared = ReachabilityService()
     

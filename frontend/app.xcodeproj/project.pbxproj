@@ -33,7 +33,7 @@
 		C70F55D8225029C4006DBB0E /* SocialDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55D7225029C4006DBB0E /* SocialDetailViewController.swift */; };
 		C70F55DB225029EC006DBB0E /* SocialMainBestMemoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55DA225029EC006DBB0E /* SocialMainBestMemoryCell.swift */; };
 		C70F55DD22502A05006DBB0E /* SocialMainPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55DC22502A05006DBB0E /* SocialMainPostCell.swift */; };
-		C70F55DF22502A18006DBB0E /* SocialShareCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55DE22502A18006DBB0E /* SocialShareCommentCell.swift */; };
+		C70F55DF22502A18006DBB0E /* SocialCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55DE22502A18006DBB0E /* SocialCommentCell.swift */; };
 		C70F55E122502A3B006DBB0E /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55E022502A3B006DBB0E /* Share.swift */; };
 		C70F55E322502B2B006DBB0E /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55E222502B2B006DBB0E /* Post.swift */; };
 		C71C536F226A0A6D009197F6 /* GoogleSignInDependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C71C536B226A0A6D009197F6 /* GoogleSignInDependencies.framework */; };
@@ -75,6 +75,8 @@
 		C783AAB822420C0200D0D7BB /* SelfSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C783AAB722420C0200D0D7BB /* SelfSizedTableView.swift */; };
 		C783AABA2242332500D0D7BB /* SwipeSubmitScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C783AAB92242332500D0D7BB /* SwipeSubmitScreen.swift */; };
 		C78ECA9B2206E57F001909C3 /* StoreMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78ECA9A2206E57F001909C3 /* StoreMainViewController.swift */; };
+		C7AD908A2296D5DF00B25509 /* HeartButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AD90892296D5DF00B25509 /* HeartButton.swift */; };
+		C7AD908C2296D97300B25509 /* SocialPostBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AD908B2296D97300B25509 /* SocialPostBottomView.swift */; };
 		C7B2624C224BF6FC00ED5333 /* GuideCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B2624B224BF6FC00ED5333 /* GuideCard.swift */; };
 		C7BF8C5B224546D60037FD68 /* UIConsts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BF8C5A224546D60037FD68 /* UIConsts.swift */; };
 		C7BF8C5E2245D8BC0037FD68 /* MultilineLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BF8C5D2245D8BC0037FD68 /* MultilineLabel.swift */; };
@@ -213,7 +215,7 @@
 		C70F55D7225029C4006DBB0E /* SocialDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialDetailViewController.swift; sourceTree = "<group>"; };
 		C70F55DA225029EC006DBB0E /* SocialMainBestMemoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialMainBestMemoryCell.swift; sourceTree = "<group>"; };
 		C70F55DC22502A05006DBB0E /* SocialMainPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialMainPostCell.swift; sourceTree = "<group>"; };
-		C70F55DE22502A18006DBB0E /* SocialShareCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialShareCommentCell.swift; sourceTree = "<group>"; };
+		C70F55DE22502A18006DBB0E /* SocialCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialCommentCell.swift; sourceTree = "<group>"; };
 		C70F55E022502A3B006DBB0E /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
 		C70F55E222502B2B006DBB0E /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		C71C536B226A0A6D009197F6 /* GoogleSignInDependencies.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleSignInDependencies.framework; path = Frameworks/GoogleSignInDependencies.framework; sourceTree = "<group>"; };
@@ -257,6 +259,8 @@
 		C783AAB722420C0200D0D7BB /* SelfSizedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizedTableView.swift; sourceTree = "<group>"; };
 		C783AAB92242332500D0D7BB /* SwipeSubmitScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeSubmitScreen.swift; sourceTree = "<group>"; };
 		C78ECA9A2206E57F001909C3 /* StoreMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreMainViewController.swift; sourceTree = "<group>"; };
+		C7AD90892296D5DF00B25509 /* HeartButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartButton.swift; sourceTree = "<group>"; };
+		C7AD908B2296D97300B25509 /* SocialPostBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialPostBottomView.swift; sourceTree = "<group>"; };
 		C7B2624B224BF6FC00ED5333 /* GuideCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideCard.swift; sourceTree = "<group>"; };
 		C7BF8C5A224546D60037FD68 /* UIConsts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConsts.swift; sourceTree = "<group>"; };
 		C7BF8C5D2245D8BC0037FD68 /* MultilineLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineLabel.swift; sourceTree = "<group>"; };
@@ -446,6 +450,7 @@
 				C70F55D9225029CC006DBB0E /* Cells */,
 				C70F55D5225029AE006DBB0E /* SocialMainViewController.swift */,
 				C70F55D7225029C4006DBB0E /* SocialDetailViewController.swift */,
+				C7AD908B2296D97300B25509 /* SocialPostBottomView.swift */,
 			);
 			path = Social;
 			sourceTree = "<group>";
@@ -455,7 +460,7 @@
 			children = (
 				C70F55DA225029EC006DBB0E /* SocialMainBestMemoryCell.swift */,
 				C70F55DC22502A05006DBB0E /* SocialMainPostCell.swift */,
-				C70F55DE22502A18006DBB0E /* SocialShareCommentCell.swift */,
+				C70F55DE22502A18006DBB0E /* SocialCommentCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -463,10 +468,10 @@
 		C7403AE72091767D00099119 /* Word */ = {
 			isa = PBXGroup;
 			children = (
-				C7403AEA209176D800099119 /* WordMainViewController.swift */,
-				C7742BA722433B3500925081 /* Card */,
 				C7C117832245455A0084C799 /* WordCard */,
+				C7742BA722433B3500925081 /* Card */,
 				C7BF8C632246100D0037FD68 /* Memory */,
+				C7403AEA209176D800099119 /* WordMainViewController.swift */,
 			);
 			path = Word;
 			sourceTree = "<group>";
@@ -493,9 +498,8 @@
 		C74CEFD6208C899F002765D6 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				C77043AC223DFFDC00B91831 /* Views */,
 				C7FC18912239E178007172ED /* Services */,
-				C759AD7A221EDB1E00166B2A /* Pages */,
+				C759AD7A221EDB1E00166B2A /* UI */,
 				B143AF8720A4704F003341A3 /* Models */,
 				B143AF9220A4704F003341A3 /* Utils */,
 				C78217BB209BC1CF00C19E2F /* Resources */,
@@ -511,9 +515,10 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		C759AD7A221EDB1E00166B2A /* Pages */ = {
+		C759AD7A221EDB1E00166B2A /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				C7AD90882296CCF100B25509 /* Common */,
 				C70F55D422502978006DBB0E /* Social */,
 				C70F55C1224FE4F0006DBB0E /* TabBar */,
 				C77043C0223E52EB00B91831 /* Auth */,
@@ -524,7 +529,7 @@
 				C757D2CE2247C1140050E0A2 /* NavigationController.swift */,
 				C70F55BC224FCD4D006DBB0E /* TabBarViewController.swift */,
 			);
-			path = Pages;
+			path = UI;
 			sourceTree = "<group>";
 		};
 		C759AD7D221EEA6300166B2A /* Guide */ = {
@@ -535,27 +540,6 @@
 				C7B2624B224BF6FC00ED5333 /* GuideCard.swift */,
 			);
 			path = Guide;
-			sourceTree = "<group>";
-		};
-		C77043AC223DFFDC00B91831 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				C7D5F508224CC98F00E7A40A /* RoundOptionCell.swift */,
-				C7C117732244D8930084C799 /* InputFormView.swift */,
-				C7C117712244D05D0084C799 /* FeedbackBulletPage.swift */,
-				C7D915C82240FAA60073E860 /* HorizontalPageLayout.swift */,
-				C783AAB722420C0200D0D7BB /* SelfSizedTableView.swift */,
-				C7C11762224489F90084C799 /* LineTextField.swift */,
-				C7C11764224494CB0084C799 /* RoundButton.swift */,
-				C77043AE223E0E4A00B91831 /* CircleBarView.swift */,
-				C7C117752244DC8E0084C799 /* LineInputField.swift */,
-				C7C11779224526AA0084C799 /* PaddingMarginView.swift */,
-				C7BF8C5D2245D8BC0037FD68 /* MultilineLabel.swift */,
-				C77043AA223DFFD400B91831 /* BookListTableViewCell.swift */,
-				C757D2D02247D5A10050E0A2 /* ContentTypeIconView.swift */,
-				C757D2DD2247F9750050E0A2 /* ShadowView.swift */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		C77043C0223E52EB00B91831 /* Auth */ = {
@@ -593,6 +577,28 @@
 				C757D2C62247A7450050E0A2 /* BookShopTableViewCell.swift */,
 			);
 			path = Store;
+			sourceTree = "<group>";
+		};
+		C7AD90882296CCF100B25509 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				C7D5F508224CC98F00E7A40A /* RoundOptionCell.swift */,
+				C7C117732244D8930084C799 /* InputFormView.swift */,
+				C7C117712244D05D0084C799 /* FeedbackBulletPage.swift */,
+				C7D915C82240FAA60073E860 /* HorizontalPageLayout.swift */,
+				C783AAB722420C0200D0D7BB /* SelfSizedTableView.swift */,
+				C7C11762224489F90084C799 /* LineTextField.swift */,
+				C7C11764224494CB0084C799 /* RoundButton.swift */,
+				C77043AE223E0E4A00B91831 /* CircleBarView.swift */,
+				C7C117752244DC8E0084C799 /* LineInputField.swift */,
+				C7C11779224526AA0084C799 /* PaddingMarginView.swift */,
+				C7BF8C5D2245D8BC0037FD68 /* MultilineLabel.swift */,
+				C77043AA223DFFD400B91831 /* BookListTableViewCell.swift */,
+				C757D2D02247D5A10050E0A2 /* ContentTypeIconView.swift */,
+				C757D2DD2247F9750050E0A2 /* ShadowView.swift */,
+				C7AD90892296D5DF00B25509 /* HeartButton.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		C7B2624F224BFC0600ED5333 /* Cards */ = {
@@ -897,7 +903,7 @@
 				C70F55DD22502A05006DBB0E /* SocialMainPostCell.swift in Sources */,
 				B143B05B20A47617003341A3 /* UIUtil.swift in Sources */,
 				C7C117722244D05D0084C799 /* FeedbackBulletPage.swift in Sources */,
-				C70F55DF22502A18006DBB0E /* SocialShareCommentCell.swift in Sources */,
+				C70F55DF22502A18006DBB0E /* SocialCommentCell.swift in Sources */,
 				C7FC18952239E4E5007172ED /* API.swift in Sources */,
 				C7FC18A52239F0F9007172ED /* RecommendInfo.swift in Sources */,
 				C70F55D6225029AE006DBB0E /* SocialMainViewController.swift in Sources */,
@@ -922,6 +928,7 @@
 				C7C117672244A4920084C799 /* AlertService.swift in Sources */,
 				C7FC18B7223A360D007172ED /* Config.swift in Sources */,
 				C7FC18AB223A0139007172ED /* Progress.swift in Sources */,
+				C7AD908C2296D97300B25509 /* SocialPostBottomView.swift in Sources */,
 				C77043AB223DFFD400B91831 /* BookListTableViewCell.swift in Sources */,
 				C7742BB322438D8500925081 /* UnknownWord.swift in Sources */,
 				C7742BAF22436A6D00925081 /* CardOptionIndicator.swift in Sources */,
@@ -938,6 +945,7 @@
 				C70F55BD224FCD4D006DBB0E /* TabBarViewController.swift in Sources */,
 				C70F55E122502A3B006DBB0E /* Share.swift in Sources */,
 				C7742BB52243953D00925081 /* WordCardTableViewCell.swift in Sources */,
+				C7AD908A2296D5DF00B25509 /* HeartButton.swift in Sources */,
 				C7C117742244D8930084C799 /* InputFormView.swift in Sources */,
 				C7403AEB209176D800099119 /* WordMainViewController.swift in Sources */,
 				B143B05720A47617003341A3 /* Helper.swift in Sources */,
