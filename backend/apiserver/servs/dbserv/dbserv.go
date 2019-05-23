@@ -29,7 +29,7 @@ func Provide() (*DBServ, error) {
 }
 
 func (db *DBServ) Init() error {
-	box := packr.New("migrations", "./migrations")
+	box := packr.New("migrations", "../../migrations")
 	mig, err := pop.NewMigrationBox(box, db.Connection)
 	if err != nil {
 		return err

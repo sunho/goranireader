@@ -6,6 +6,7 @@
 ._*
 Carthage
 
+/backend/config
 /backend/apiserver/gorani
 /backend/apiserver/migrations/schema.sql
 /backend/apiserver/database.yml
