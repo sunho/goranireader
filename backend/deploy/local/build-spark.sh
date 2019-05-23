@@ -1,1 +1,0 @@
-(cd dataserver && make deps)
