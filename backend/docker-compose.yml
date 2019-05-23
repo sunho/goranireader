@@ -4,7 +4,7 @@ services:
   api:
     build: apiserver
     volumes:
-      - ./config/api:/home
+      - ./config/api:/root
     restart: always
     ports:
       - "5353:5353"
