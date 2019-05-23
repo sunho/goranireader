@@ -261,7 +261,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Oh6-0R-mnd" customClass="SelfSizedTableView" customModule="app" customModuleProvider="target">
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Oh6-0R-mnd" customClass="SelfSizedTableView" customModule="app" customModuleProvider="target">
                                                 <rect key="frame" x="8" y="111" width="343" height="387"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </tableView>
@@ -334,6 +334,7 @@
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="bottomContentView" destination="rCm-Lg-Uz5" id="CQY-6v-Egp"/>
+                        <outlet property="bottomSectionView" destination="TQR-t4-djN" id="CAq-e9-NfR"/>
                         <outlet property="commentView" destination="Oh6-0R-mnd" id="FM6-1b-mYD"/>
                         <outlet property="sentenceView" destination="KW8-HV-6Jb" id="G3k-Qr-ve1"/>
                         <outlet property="topContentView" destination="axG-DA-dUP" id="AgB-cx-XhL"/>

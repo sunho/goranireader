@@ -6,6 +6,9 @@
 //  Copyright © 2019 sunho. All rights reserved.
 //
 
+// TODO make common interface
+// TODO why don't use callback why
+
 import Foundation
 import BLTNBoard
 

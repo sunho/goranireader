@@ -9,8 +9,16 @@
 import Foundation
 import UIKit
 
+protocol SocialPostBottomViewDelegate {
+    func didTapHeartButton(_ view: SocialPostBottomView, _ tag: Int)
+    func didTapCommentButton(_ view: SocialPostBottomView, _ tag: Int)
+    func socialPostBottomView(_ view: SocialPostBottomView, didGiveHeart: Int) -> Bool
+    func socialPostBottomView(_ view: SocialPostBottomView, heartNumberFor: Int) -> Int
+    func socialPostBottomView(_ view: SocialPostBottomView, commentNumberFor: Int) -> Int
+}
 
 class SocialPostBottomView: UIView {
+    var delegate: SocialPostBottomViewDelegate!
     var heartButton: HeartButton!
     // TODO make this work
     var commentButton: UIButton!
@@ -72,10 +80,27 @@ class SocialPostBottomView: UIView {
             make.centerY.equalToSuperview()
             make.right.equalTo(commentNumberView.snp.left)
         }
+        
+        heartButton.addTarget(self, action: #selector(addHeart), for: .touchUpInside)
+        commentButton.addTarget(self, action: #selector(addComment), for: .touchUpInside)
     }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
         layout()
+    }
+    
+    @objc func addHeart() {
+        delegate.didTapHeartButton(self, self.tag)
+    }
+    
+    @objc func addComment() {
+        delegate.didTapCommentButton(self, self.tag)
+    }
+    
+    func reloadData() {
+        heartNumberView.text = "\(delegate.socialPostBottomView(self, heartNumberFor: self.tag))"
+        commentNumberView.text = "\(delegate.socialPostBottomView(self, commentNumberFor: self.tag))"
+        heartButton.heart = delegate.socialPostBottomView(self, didGiveHeart: self.tag)
     }
 }

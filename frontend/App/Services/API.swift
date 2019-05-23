@@ -42,6 +42,7 @@ enum API {
     case ratePost(postId: Int, rate: Int)
     
     case listComment(postId: Int)
+    case createComment(postId: Int, comment: Comment)
     case markPostSolved(postId: Int, commentId: Int)
     case rateComment(postId: Int, commentId: Int, rate: Int)
     
@@ -132,6 +133,8 @@ extension API: TargetType {
             return "/post/\(postId)/comment/\(commentId)/rate"
         case .getUser(let userId):
             return "/user/\(userId)"
+        case .createComment(let postId, _):
+            return "/post/\(postId)/comment"
         }
     }
     
@@ -144,7 +147,7 @@ extension API: TargetType {
              .listSimilarWords, .getMyBookRate, .listPosts, .listComment, .getUser,
              .listQuizResults, .listSensResults, .checkAuth, .getTargetBookProgress:
             return .get
-        case .buyShopBook, .login, .createEventLog, .markPostSolved, .createPost:
+        case .buyShopBook, .login, .createEventLog, .markPostSolved, .createPost, .createComment:
             return .post
         case .rateBook, .rateMemory, .ratePost, .rateComment,
              .rateRecommendedBook, .updateMemory,
@@ -176,6 +179,8 @@ extension API: TargetType {
             memory.sentence = sentence
             return .requestCustomJSONEncodable(memory, encoder: encoder)
         case .createPost(let body):
+            return .requestCustomJSONEncodable(body, encoder: encoder)
+        case .createComment(_, let body):
             return .requestCustomJSONEncodable(body, encoder: encoder)
         case .updateRecommendInfo(let body):
             return .requestCustomJSONEncodable(body, encoder: encoder)

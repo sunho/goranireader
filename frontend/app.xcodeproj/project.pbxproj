@@ -77,6 +77,9 @@
 		C78ECA9B2206E57F001909C3 /* StoreMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78ECA9A2206E57F001909C3 /* StoreMainViewController.swift */; };
 		C7AD908A2296D5DF00B25509 /* HeartButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AD90892296D5DF00B25509 /* HeartButton.swift */; };
 		C7AD908C2296D97300B25509 /* SocialPostBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AD908B2296D97300B25509 /* SocialPostBottomView.swift */; };
+		C7AD908E2296EEBD00B25509 /* SocialCreateCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AD908D2296EEBD00B25509 /* SocialCreateCommentCell.swift */; };
+		C7AD90902296F62A00B25509 /* SocialCommentBulletPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AD908F2296F62A00B25509 /* SocialCommentBulletPage.swift */; };
+		C7AD90922296F6A800B25509 /* SocialCommentBulletPageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AD90912296F6A800B25509 /* SocialCommentBulletPageManager.swift */; };
 		C7B2624C224BF6FC00ED5333 /* GuideCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B2624B224BF6FC00ED5333 /* GuideCard.swift */; };
 		C7BF8C5B224546D60037FD68 /* UIConsts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BF8C5A224546D60037FD68 /* UIConsts.swift */; };
 		C7BF8C5E2245D8BC0037FD68 /* MultilineLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BF8C5D2245D8BC0037FD68 /* MultilineLabel.swift */; };
@@ -261,6 +264,9 @@
 		C78ECA9A2206E57F001909C3 /* StoreMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreMainViewController.swift; sourceTree = "<group>"; };
 		C7AD90892296D5DF00B25509 /* HeartButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartButton.swift; sourceTree = "<group>"; };
 		C7AD908B2296D97300B25509 /* SocialPostBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialPostBottomView.swift; sourceTree = "<group>"; };
+		C7AD908D2296EEBD00B25509 /* SocialCreateCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialCreateCommentCell.swift; sourceTree = "<group>"; };
+		C7AD908F2296F62A00B25509 /* SocialCommentBulletPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialCommentBulletPage.swift; sourceTree = "<group>"; };
+		C7AD90912296F6A800B25509 /* SocialCommentBulletPageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialCommentBulletPageManager.swift; sourceTree = "<group>"; };
 		C7B2624B224BF6FC00ED5333 /* GuideCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideCard.swift; sourceTree = "<group>"; };
 		C7BF8C5A224546D60037FD68 /* UIConsts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConsts.swift; sourceTree = "<group>"; };
 		C7BF8C5D2245D8BC0037FD68 /* MultilineLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineLabel.swift; sourceTree = "<group>"; };
@@ -451,6 +457,8 @@
 				C70F55D5225029AE006DBB0E /* SocialMainViewController.swift */,
 				C70F55D7225029C4006DBB0E /* SocialDetailViewController.swift */,
 				C7AD908B2296D97300B25509 /* SocialPostBottomView.swift */,
+				C7AD908F2296F62A00B25509 /* SocialCommentBulletPage.swift */,
+				C7AD90912296F6A800B25509 /* SocialCommentBulletPageManager.swift */,
 			);
 			path = Social;
 			sourceTree = "<group>";
@@ -461,6 +469,7 @@
 				C70F55DA225029EC006DBB0E /* SocialMainBestMemoryCell.swift */,
 				C70F55DC22502A05006DBB0E /* SocialMainPostCell.swift */,
 				C70F55DE22502A18006DBB0E /* SocialCommentCell.swift */,
+				C7AD908D2296EEBD00B25509 /* SocialCreateCommentCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -900,6 +909,7 @@
 				C7E242E9224721A5000892D0 /* StoreBookDetailViewController.swift in Sources */,
 				C7D5F509224CC98F00E7A40A /* RoundOptionCell.swift in Sources */,
 				C742DD8B2209567A00CD737A /* SearchHomeViewController.swift in Sources */,
+				C7AD90902296F62A00B25509 /* SocialCommentBulletPage.swift in Sources */,
 				C70F55DD22502A05006DBB0E /* SocialMainPostCell.swift in Sources */,
 				B143B05B20A47617003341A3 /* UIUtil.swift in Sources */,
 				C7C117722244D05D0084C799 /* FeedbackBulletPage.swift in Sources */,
@@ -915,6 +925,7 @@
 				C7BF8C67224613740037FD68 /* MemoryBulletPageManager.swift in Sources */,
 				C7742BAB22433B4500925081 /* CardView.swift in Sources */,
 				C7C63E92209905900093CC02 /* BookMainViewController.swift in Sources */,
+				C7AD908E2296EEBD00B25509 /* SocialCreateCommentCell.swift in Sources */,
 				C7BF8C6B224632BB0037FD68 /* MemoryCloudViewController.swift in Sources */,
 				C7C1177C22453CE10084C799 /* MemoryButton.swift in Sources */,
 				C7FC18A12239EEE9007172ED /* Category.swift in Sources */,
@@ -968,6 +979,7 @@
 				C7C11763224489F90084C799 /* LineTextField.swift in Sources */,
 				C70F55CD225008D0006DBB0E /* GuideProgressView.swift in Sources */,
 				C70F55CF2250094A006DBB0E /* GuideWordCardView.swift in Sources */,
+				C7AD90922296F6A800B25509 /* SocialCommentBulletPageManager.swift in Sources */,
 				C7BF8C5E2245D8BC0037FD68 /* MultilineLabel.swift in Sources */,
 				C757D2D12247D5A10050E0A2 /* ContentTypeIconView.swift in Sources */,
 				B143B05A20A47617003341A3 /* Verb.swift in Sources */,

@@ -42,13 +42,13 @@ struct Post: Codable{
 }
 
 struct Comment: Codable {
-    var id: Int
-    var userId: Int
-    var postId: Int
-    var createdAt: Date
-    var updatedAt: Date
-    var content: String
-    var rate: Int?
+    var id: Int = 0
+    var userId: Int = 0
+    var postId: Int = 0
+    var createdAt: Date = Date()
+    var updatedAt: Date = Date()
+    var content: String = ""
+    var rate: Int? = nil
     
     enum CodingKeys: String, CodingKey
     {
