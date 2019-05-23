@@ -1,3 +1,7 @@
+//
+// Copyright © 2019 Sunho Kim. All rights reserved.
+//
+
 package middles
 
 import (
@@ -8,7 +12,7 @@ import (
 
 type ContextMiddle struct {
 }
-	
+
 func (c *ContextMiddle) Act(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		return next(&models.Context{

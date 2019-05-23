@@ -1,16 +1,21 @@
+//
+// Copyright © 2019 Sunho Kim. All rights reserved.
+//
+
 package middles
 
 import (
-	"strings"
+	"gorani/utils"
 	"strconv"
+	"strings"
+
 	"github.com/labstack/echo"
 	"go.uber.org/zap"
-	"gorani/utils"
 )
 
 type ErrorMiddle struct {
 }
-	
+
 func (c *ErrorMiddle) Act(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		err := next(c)
@@ -25,7 +30,7 @@ func (c *ErrorMiddle) Act(next echo.HandlerFunc) echo.HandlerFunc {
 			return echo.NewHTTPError(400, "Bad request")
 		default:
 			switch err {
-				default:
+			default:
 				if strings.Contains(err.Error(), "no rows in result") {
 					return echo.NewHTTPError(404, "No such resource")
 				}
@@ -34,4 +39,3 @@ func (c *ErrorMiddle) Act(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 	}
 }
-

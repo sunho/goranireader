@@ -1,6 +1,6 @@
-package dbserv
-
 //https://github.com/gobuffalo/pop/blob/master/model.go
+
+package dbserv
 
 import (
 	"fmt"

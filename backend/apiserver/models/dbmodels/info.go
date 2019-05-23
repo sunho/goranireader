@@ -1,3 +1,7 @@
+//
+// Copyright © 2019 Sunho Kim. All rights reserved.
+//
+
 package dbmodels
 
 import (
@@ -46,8 +50,8 @@ type ReadableBook struct {
 }
 
 type TargetBookProgress struct {
-	ID uuid.UUID `db:"id" json:"-"`
-	UserID int `db:"user_id" json:"-"`
-	BookID int `db:"book_id" json:"-"`
-	Progress float64 `db:"progress" json:"progress"`
+	ID       uuid.UUID `db:"id" json:"-"`
+	UserID   int       `db:"user_id" json:"-"`
+	BookID   int       `db:"book_id" json:"-"`
+	Progress float64   `db:"progress" json:"progress"`
 }
