@@ -1,3 +1,7 @@
+#
+# Copyright © 2019 Sunho Kim. All rights reserved.
+#
+
 from .to_sentence_time import TransformToSentenceTime
 from .to_known_words import TransformToKnownWordsJob
 from gorani.shared import StreamJobContext, PartialStreamJob

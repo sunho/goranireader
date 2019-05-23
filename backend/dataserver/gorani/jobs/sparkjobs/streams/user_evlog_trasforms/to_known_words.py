@@ -1,3 +1,7 @@
+#
+# Copyright © 2019 Sunho Kim. All rights reserved.
+#
+
 from gorani.shared import PartialStreamJob, StreamJobContext
 from pyspark.sql.functions import explode, when, col, lit
 from pyspark.sql import DataFrame

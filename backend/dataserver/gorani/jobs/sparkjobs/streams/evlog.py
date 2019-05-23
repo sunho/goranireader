@@ -1,3 +1,7 @@
+#
+# Copyright © 2019 Sunho Kim. All rights reserved.
+#
+
 from gorani.shared import FinalStreamJob, StreamJobContext
 from gorani.shared.schema import UserEventLogSchema
 from pyspark.sql.functions import from_json, lit

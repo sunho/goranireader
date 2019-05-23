@@ -1,3 +1,7 @@
+#
+# Copyright © 2019 Sunho Kim. All rights reserved.
+#
+
 from pyspark.sql import SparkSession, DataFrame
 from typing import List
 from .datadb import DataDB

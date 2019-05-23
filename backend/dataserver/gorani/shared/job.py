@@ -1,3 +1,7 @@
+#
+# Copyright © 2019 Sunho Kim. All rights reserved.
+#
+
 from .context import JobContext, SparkJobContext, StreamJobContext, TFJobContext
 from pyspark.sql import SparkSession, DataFrame
 from typing import Optional, List

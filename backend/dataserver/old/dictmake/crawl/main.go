@@ -1,22 +1,26 @@
+//
+// Copyright © 2019 Sunho Kim. All rights reserved.
+//
+
 package main
 
 import (
-	"errors"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
 	"os"
+	"os/exec"
 	"regexp"
+	"runtime"
 	"strings"
 	"sync"
 	"time"
-    "os/exec"
-	"runtime"
-	
-	http "github.com/hashicorp/go-retryablehttp"
+
 	"github.com/PuerkitoBio/goquery"
+	http "github.com/hashicorp/go-retryablehttp"
 )
 
 const (
@@ -30,25 +34,25 @@ const (
 var clear map[string]func() //create a map for storing clear funcs
 
 func init() {
-    clear = make(map[string]func()) //Initialize it
-    clear["linux"] = func() { 
-        cmd := exec.Command("clear") //Linux example, its tested
-        cmd.Stdout = os.Stdout
-        cmd.Run()
-    }
-    clear["windows"] = func() {
-        cmd := exec.Command("cmd", "/c", "cls") //Windows example, its tested 
-        cmd.Stdout = os.Stdout
-        cmd.Run()
-    }
+	clear = make(map[string]func()) //Initialize it
+	clear["linux"] = func() {
+		cmd := exec.Command("clear") //Linux example, its tested
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	}
+	clear["windows"] = func() {
+		cmd := exec.Command("cmd", "/c", "cls") //Windows example, its tested
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	}
 }
 
 func callClear() {
-    value, ok := clear[runtime.GOOS] //runtime.GOOS -> linux, windows, darwin etc.
-    if ok { //if we defined a clear func for that platform:
-        value()  //we execute it
-    } else { //unsupported platform
-        panic("Your platform is unsupported! I can't clear terminal screen :(")
+	value, ok := clear[runtime.GOOS] //runtime.GOOS -> linux, windows, darwin etc.
+	if ok {                          //if we defined a clear func for that platform:
+		value() //we execute it
+	} else { //unsupported platform
+		panic("Your platform is unsupported! I can't clear terminal screen :(")
 	}
 }
 
@@ -59,7 +63,6 @@ var mu = &sync.Mutex{}
 var seen = make(map[string]bool)
 var send = make(chan Word)
 var dict = make(map[string]map[int]Word)
-
 
 type Example struct {
 	First  string `json:"foreign"`
@@ -74,7 +77,7 @@ type Def struct {
 
 type Word struct {
 	Word string `json:"word"`
-	Src  int `json:"src"`
+	Src  int    `json:"src"`
 	Pron string `json:"pron"`
 	Defs []Def  `json:"defs"`
 }
@@ -143,7 +146,7 @@ func getDefinition(word string, url string, primary bool, source string) error {
 	// log.Println("source:", source)
 	wor := Word{
 		Word: word,
-		Src: src2,
+		Src:  src2,
 		Pron: "",
 		Defs: []Def{},
 	}
@@ -268,9 +271,9 @@ func worker2() {
 			}
 			dict[item.Word][item.Src] = word
 		}
-		n ++
+		n++
 		mu.Unlock()
-		if n % 10000 == 0 {
+		if n%10000 == 0 {
 			writeFile(time.Now().String())
 		}
 	}
@@ -279,14 +282,14 @@ func worker2() {
 
 func writeFile(t string) {
 	buf, _ := json.Marshal(dict)
-	err := ioutil.WriteFile("output" + t + ".json", buf, 0644)
+	err := ioutil.WriteFile("output"+t+".json", buf, 0644)
 	if err != nil {
 		panic(err)
 	}
 
 	mu.Lock()
 	buf2, _ := json.Marshal(completed)
-	err = ioutil.WriteFile("completed" + t + ".json", buf2, 0644)
+	err = ioutil.WriteFile("completed"+t+".json", buf2, 0644)
 	if err != nil {
 		panic(err)
 	}
@@ -302,16 +305,15 @@ func progress(total int) {
 		var fail = 0
 		for _, val := range completed {
 			if val {
-				success ++
+				success++
 			} else {
-				fail ++
+				fail++
 			}
 		}
 		fmt.Println("success:", success, "fail:", fail, "total:", total, "dict:", len(dict))
 		mu.Unlock()
 	}
 }
-
 
 func main() {
 	txt, err := ioutil.ReadFile("words.txt")

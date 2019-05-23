@@ -1,3 +1,7 @@
+#
+# Copyright © 2019 Sunho Kim. All rights reserved.
+#
+
 import tensorflow as tf
 from tensorflow.keras.layers import LSTM, Dense, Input
 

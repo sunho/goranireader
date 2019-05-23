@@ -1,3 +1,7 @@
+#
+# Copyright © 2019 Sunho Kim. All rights reserved.
+#
+
 from os import listdir
 from bs4 import BeautifulSoup
 import zipfile

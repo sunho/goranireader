@@ -1,3 +1,7 @@
+#
+# Copyright © 2019 Sunho Kim. All rights reserved.
+#
+
 from cassandra.cluster import Cluster
 from cassandra import query
 import pickle

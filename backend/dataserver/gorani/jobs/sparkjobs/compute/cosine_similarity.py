@@ -1,3 +1,7 @@
+#
+# Copyright © 2019 Sunho Kim. All rights reserved.
+#
+
 import pyspark.sql.functions as F
 from pyspark.ml.feature import CountVectorizer, Normalizer
 from pyspark.mllib.linalg.distributed import IndexedRow, IndexedRowMatrix

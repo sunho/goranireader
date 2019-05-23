@@ -1,3 +1,7 @@
+#
+# Copyright © 2019 Sunho Kim. All rights reserved.
+#
+
 from gorani.shared import Job, JobContext
 from uuid import uuid4
 from typing import List

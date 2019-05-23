@@ -1,3 +1,7 @@
+#
+# Copyright © 2019 Sunho Kim. All rights reserved.
+#
+
 from gorani.shared import TFJob, TFJobContext
 import pickle
 import numpy as np

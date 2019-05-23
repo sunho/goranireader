@@ -1,3 +1,7 @@
+#
+# Copyright © 2019 Sunho Kim. All rights reserved.
+#
+
 import pyspark.sql.functions as F
 from pyspark.sql import types as T
 from pyspark.sql import DataFrame

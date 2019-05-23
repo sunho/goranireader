@@ -1,3 +1,7 @@
+#
+# Copyright © 2019 Sunho Kim. All rights reserved.
+#
+
 from gorani.shared import PartialStreamJob, StreamJobContext
 from gorani.shared.schema import FlipPagePayloadSchema
 from gorani.shared.utils import pickle_dump
