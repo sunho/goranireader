@@ -1,11 +1,6 @@
 //
-//  NavigationController.swift
-//  app
+// Copyright © 2019 Sunho Kim. All rights reserved.
 //
-//  Created by sunho on 2019/03/24.
-//  Copyright © 2019 sunho. All rights reserved.
-//
-
 import Foundation
 import UIKit
 

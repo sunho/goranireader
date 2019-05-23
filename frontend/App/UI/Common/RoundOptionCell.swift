@@ -1,3 +1,7 @@
+//
+// Copyright © 2019 Sunho Kim. All rights reserved.
+//
+
 import UIKit
 
 class RoundOptionCell: UITableViewCell {

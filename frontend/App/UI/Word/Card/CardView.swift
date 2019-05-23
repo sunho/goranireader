@@ -1,4 +1,11 @@
 //https://github.com/saoudrizwan/CardSlider
+//
+//  CardView.swift
+//  CardSlider
+//
+//  Created by Saoud Rizwan on 2/26/17.
+//  Copyright © 2017 Saoud Rizwan. All rights reserved.
+//
 
 import Foundation
 import UIKit

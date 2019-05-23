@@ -1,9 +1,5 @@
 //
-//  StoreViewController.swift
-//  app
-//
-//  Created by sunho on 2019/02/03.
-//  Copyright © 2019 sunho. All rights reserved.
+// Copyright © 2019 Sunho Kim. All rights reserved.
 //
 
 import UIKit

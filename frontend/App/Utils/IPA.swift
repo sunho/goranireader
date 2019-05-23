@@ -1,3 +1,7 @@
+//
+// Copyright © 2019 Sunho Kim. All rights reserved.
+//
+
 // https://en.wikipedia.org/wiki/ARPABET
 import Foundation
 import Regex
