@@ -1,13 +1,1 @@
 @import 'mixins';
-
-.header {
-    display: flex;
-    height: 15rem;
-    padding: 0 2rem;
-    justify-content: space-between;
-    align-items: center;
-  
-    @include respond(phone) {
-      height: 10rem;
-    }
-}
