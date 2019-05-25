@@ -14,6 +14,7 @@ import (
 
 type User struct {
 	ID        int       `db:"id" json:"id"`
+	ClassID   nulls.Int `db:"class_id" json:"class_id"`
 	OauthID   string    `db:"oauth_id" json:"-"`
 	CreatedAt time.Time `db:"created_at" json:"-"`
 	UpdatedAt time.Time `db:"updated_at" json:"-"`

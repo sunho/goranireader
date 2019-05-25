@@ -4,21 +4,27 @@
 
 package routes
 
-// type TeacherClass struct {
-// }
+import (
+	"gorani/middles"
 
-// func (c *TeacherClass) Register(d *dim.Group) {
-// 	d.Use(&middles.AuthMiddle{})
-// 	d.GET("", p.List)
-// 	d.RouteFunc("/user", func(d *dim.Group) {
-// 		d.GET("", p.List)
-// 		d.POST("", p.List)
-// 		d.GET("/mission-progresses/:missionid")
-// 	})
-// 	d.RouteFunc("/missions", func(d *dim.Group) {
-// 		d.GET("", p.List)
-// 		d.POST("", p.List)
-// 		d.DELETE("", p.List)
-// 	}, &middles.MemoryParamMiddle{})
+	"github.com/sunho/dim"
+)
 
-// }
+type TeacherClass struct {
+}
+
+func (t *TeacherClass) Register(d *dim.Group) {
+	d.Use(&middles.AuthMiddle{})
+	d.RouteFunc("/:classid", func(d *dim.Group) {
+		d.RouteFunc("/user", func(d *dim.Group) {
+			d.GET("", t.ListUser)
+			d.POST("", t.PostUser)
+			d.GET("/mission-progress/:missionid", t.GetProgress)
+		})
+		d.RouteFunc("/mission", func(d *dim.Group) {
+			d.GET("", p.ListMission)
+			d.POST("", p.PostMission)
+			d.DELETE("/:missionid", p.DeleteMission)
+		})
+	})
+}
