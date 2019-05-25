@@ -11,3 +11,10 @@ create table book_cluster (
     cluster int,
     primary key (id, cluster)
 );
+
+create table user_auwpps (
+    user_id int,
+    book_id int,
+    auwpp float,
+    primary key (user_id, book_id)
+);
