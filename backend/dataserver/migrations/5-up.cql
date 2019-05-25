@@ -18,3 +18,21 @@ create table user_auwpps (
     auwpp float,
     primary key (user_id, book_id)
 );
+
+create table readable_books (
+    user_id int,
+    book_id int,
+    primary key (user_id, book_id)
+);
+
+create table completed_books (
+    user_id int,
+    book_id int,
+    primary key (user_id, book_id)
+);
+
+create table experienced_books (
+    user_id int,
+    book_id int,
+    primary key (user_id, book_id)
+);

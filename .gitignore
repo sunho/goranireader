@@ -149,3 +149,5 @@ yarn-error.log
 .pnp.js
 # Yarn Integrity file
 .yarn-integrity
+
+/backend/dataserver/out

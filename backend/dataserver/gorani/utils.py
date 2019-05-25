@@ -35,5 +35,6 @@ def _pickle_dump(col):
 
 pickle_dump = F.udf(_pickle_dump, T.BinaryType())
 
+
 def binary_to_string(column: str, df: DataFrame) -> DataFrame:
     return df.withColumn(column, col(column).cast(T.StringType()))

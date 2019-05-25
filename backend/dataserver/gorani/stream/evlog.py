@@ -6,9 +6,11 @@ from pyspark.sql.types import StructType
 from gorani.utils import binary_to_string, uuid
 from . import evlog_to_known_words
 from . import evlog_to_sentence_time
+from . import evlog_to_exp
 
 def start(sc, spark, stream):
     user_df = get_stream(stream, 'user', UserEventLogSchema)
+    evlog_to_exp.start(user_df)
     df = evlog_to_sentence_time.start(user_df)
     evlog_to_known_words.start(spark, df)
 

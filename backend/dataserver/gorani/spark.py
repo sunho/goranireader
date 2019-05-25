@@ -8,12 +8,28 @@ def read_data_all(spark, table: str, cache: bool = False, keyspace: str = 'goran
         return out.cache()
     return out
 
+def read_api_all(spark, table: str, cache: bool = False):
+    url = 'jdbc:postgresql://localhost:5432/postgres'
+    properties = {'user': 'postgres','password': 'postgres','driver': 'org.postgresql.Driver'}
+    out = spark.read\
+        .jdbc(url=url, table=table, properties=properties)\
+
+    if cache:
+        return out.cache()
+    return out
+
 def write_data(table: str, df, keyspace: str = 'gorani'):
     df.write\
         .format('org.apache.spark.sql.cassandra')\
         .mode('append')\
         .options(table=table, keyspace=keyspace)\
         .save()
+
+def write_api(table: str, df):
+    url = 'jdbc:postgresql://localhost:5432/postgres'
+    properties = {'user': 'postgres','password': 'postgres','driver': 'org.postgresql.Driver'}
+    df.write\
+        .jdbc(url=url, table=table, mode='append', properties=properties)
 
 def write_data_stream(table: str, df, keyspace = 'gorani'):
     return df.writeStream\

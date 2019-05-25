@@ -55,3 +55,7 @@ type TargetBookProgress struct {
 	BookID   int       `db:"book_id" json:"-"`
 	Progress float64   `db:"progress" json:"progress"`
 }
+
+type StartRecommendedBook struct {
+	ID int `db:"id"`
+}
