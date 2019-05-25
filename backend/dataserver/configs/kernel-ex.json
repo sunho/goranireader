@@ -1,0 +1,17 @@
+{
+  "display_name": "pyspark",
+  "language": "python",
+  "argv": [ "/gorani/venv/bin/python", "-m", "ipykernel", "-f", "{connection_file}" ],
+  "env": {
+    "SPARK_HOME": "/etc/spark",
+
+    "PYTHONPATH": "/etc/spark/python/:/etc/spark/python/lib/py4j-0.10.7-src.zip",
+    "PYSPARK_DRIVER_PYTHON": "/gorani/venv/bin/python",
+
+    "PYSPARK_PYTHON": "/gorani/venv/bin/python",
+    "JAVA_HOME": "/usr/lib/jvm/java-8-oracle",
+    "PYSPARK_SUBMIT_ARGS": "--py-files /gorani/gorani/backend/dataserver/dist/gorani.zip --master spark://localhost:7077 --executor-memory 1G --total-executor-cores 1 pyspark-shell",
+    "PYTHONSTARTUP": "/etc/spark/python/pyspark/shell.py"
+  }
+}
+
