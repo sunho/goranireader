@@ -2,18 +2,15 @@
 # Copyright © 2019 Sunho Kim. All rights reserved.
 #
 
-import tensorflow as tf
-from tensorflow.keras.layers import LSTM, Dense, Input
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import GRU, Dense, Input, Dropout
+from tensorflow.keras.callbacks import ModelCheckpoint
+from tensorflow.keras.callbacks import TensorBoard
 
-class TimeModel(tf.keras.Model):
-    def __init__(self, feature_length: int):
-        super(TimeModel, self).__init__(name='Time Model')
-        self.feature_length = feature_length
-        self.lstm = LSTM(32)
-        self.dense1 = Dense(32, activation='relu')
-        self.dense2 = Dense(1)
+def time_model(feature_len, neuron, dropout):
+    model = Sequential()
+    model.add(GRU(neuron, input_shape=(None, feature_len), dropout=dropout, recurrent_dropout=dropout, kernel_initializer='he_uniform'))
+    model.add(Dense(neuron, activation='relu'))
+    model.add(Dense(1))
+    return model
 
-    def call(self, inputs):
-        x = self.lstm(inputs)
-        x = self.dense1(x)
-        return self.dense2(x)

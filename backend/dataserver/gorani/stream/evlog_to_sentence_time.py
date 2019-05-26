@@ -12,6 +12,7 @@ import traceback
 import pickle
 import codecs
 
+
 stop_words = set(stopwords.words('english'))
 
 def _sentences_to_uwords(sentences):

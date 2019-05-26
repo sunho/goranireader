@@ -31,8 +31,16 @@ create table completed_books (
     primary key (user_id, book_id)
 );
 
-create table experienced_books (
+crete table experienced_books (
     user_id int,
     book_id int,
+    primary key (user_id, book_id)
+);
+
+create table book_estimated_time (
+	user_id int,
+	book_id int,
+	total_words int,
+	estimated_time float,
     primary key (user_id, book_id)
 );

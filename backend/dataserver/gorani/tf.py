@@ -1,3 +1,9 @@
+from typing import Optional
+from gorani.utils import uuid
+from nltk import word_tokenize, pos_tag
+from nltk.corpus import stopwords
+import traceback
+import codecs
 import pickle
 import numpy as np
 
@@ -40,4 +46,38 @@ def transform_paragraphs(paragraphs):
     y[:, 0] = interval
     return x,y
 
+def transform_to_input(paragraphs):
+    ps2 = [_transform_paragraph(p) for p in paragraphs]
+    max_len = max([p.shape[0] for p in ps2])
+    x = np.zeros((len(ps2), max_len, FEATURE_LEN), dtype='float32')
+    for i, p in enumerate(ps2):
+        x[i, :p.shape[0], :] += p
+    return x
+
+
+
+stop_words = set(stopwords.words('english'))
+
+def spans(toks, sentence):
+    offset = 0
+    for tok in toks:
+        offset = sentence.find(tok[0], offset)
+        yield tok[0], tok[1], offset, offset+len(tok[0])
+        offset += len(tok[0])
+
+def convert_words(words):
+    text = ' '.join(words)
+    toks = word_tokenize(text)
+    pos_toks = pos_tag(toks)
+    span_toks = spans(pos_toks, text)
+    out = []
+    for tok in span_toks:
+        item = {
+            'word': tok[0].lower(),
+            'pos': tok[1],
+            'stop': tok in stop_words,
+            'uword': False
+        }
+        out.append(item)
+    return out
 
