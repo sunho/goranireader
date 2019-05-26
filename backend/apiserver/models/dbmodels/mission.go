@@ -13,7 +13,7 @@ type Class struct {
 	UpdatedAt time.Time `db:"updated_at" json:"updated_at"`
 }
 
-type Mission struct {
+type ClassMission struct {
 	ID        int       `db:"id" json:"id"`
 	ClassID   int       `db:"class_id" json:"class_id"`
 	Pages     int       `db:"pages" json:"pages"`
@@ -23,7 +23,7 @@ type Mission struct {
 	EndAt     time.Time `db:"end_at" json:"end_at"`
 }
 
-type MissionProgress struct {
+type UserMissionProgress struct {
 	ID        uuid.UUID `db:"id" json:"-"`
 	UserID    int       `db:"user_id" json:"-" pk:"true"`
 	MissionID int       `db:"mission_id" json:"-" pk:"true"`
