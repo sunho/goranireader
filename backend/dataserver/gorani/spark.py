@@ -27,7 +27,7 @@ def write_data(table: str, df, keyspace: str = 'gorani'):
 
 def write_api(table: str, df):
     url = 'jdbc:postgresql://localhost:5432/postgres'
-    properties = {'user': 'postgres','password': 'postgres','driver': 'org.postgresql.Driver'}
+    properties = {'user': 'postgres','password': 'postgres','driver': 'org.postgresql.Driver', 'stringtype': 'unspecified'}
     df.write\
         .jdbc(url=url, table=table, mode='append', properties=properties)
 

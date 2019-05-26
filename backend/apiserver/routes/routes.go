@@ -23,4 +23,5 @@ func RegisterRoutes(g *dim.Group) {
 	g.Route("/word", &Word{})
 	g.Route("/evlog", &Evlog{})
 	g.Route("/post", &Post{})
+	g.Route("/mission", &Mission{})
 }

@@ -16,12 +16,13 @@ import (
 )
 
 type Mission struct {
-	DB dbserv.DBServ `dim:"on"`
+	DB *dbserv.DBServ `dim:"on"`
 }
 
 func (c *Mission) Register(d *dim.Group) {
 	d.Use(&middles.AuthMiddle{})
-	d.GET("/", c.List)
+	d.GET("", c.List)
+	d.GET("/:missionid/progress", c.Get)
 	d.PUT("/:missionid/progress", c.Put)
 }
 
@@ -29,6 +30,21 @@ func (m *Mission) List(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	var out []dbmodels.Mission
 	err := c.Tx.Q().Where("class_id = ?", c.User.ClassID).All(&out)
+	if err != nil {
+		return err
+	}
+	return c.JSON(200, out)
+}
+
+func (m *Mission) Get(c2 echo.Context) error {
+	c := c2.(*models.Context)
+	id, err := strconv.Atoi(c.Param("missionid"))
+	if err != nil {
+		return err
+	}
+	var out dbmodels.MissionProgress
+	err = c.Tx.Q().Where("user_id = ? AND mission_id = ?", c.User.ID, id).
+		First(&out)
 	if err != nil {
 		return err
 	}
