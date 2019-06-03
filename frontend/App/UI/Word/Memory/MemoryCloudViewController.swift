@@ -33,6 +33,12 @@ class MemoryCloudViewController: UIViewController {
         clouds.append(cloud)
     }
     
+    func addWordCloud(word: String) {
+        let cloud = MemoryCloudCell(type: .word)
+        cloud.textView.text = word
+        clouds.append(cloud)
+    }
+    
     func show(frame: CGRect, word: String) {
         clearData()
         if hidden {
@@ -47,18 +53,19 @@ class MemoryCloudViewController: UIViewController {
         print(view.frame)
         
         APIService.shared.request(.listMemories(word: word, p: 0))
-            .map([Memory].self)
-            .start { event in
-                DispatchQueue.main.async {
-                    switch event {
-                    case .value(let memories):
-                        for memory in memories {
+             .handle(ignoreError: true, type: [Memory].self) { offline, memories in
+                    if !offline {
+                        for memory in memories! {
                             self.addSentenceCloud(id: memory.id ?? -1, sentence: memory.sentence, rate: Int(memory.rate ?? 0))
                         }
-                    case .failed(let error):
-                        AlertService.shared.alertError(error)
-                    default:
-                        print(event)
+                        self.reloadData()
+                    }
+                }
+        APIService.shared.request(.listSimilarWords(word: word))
+            .handle(ignoreError: true, type: [SimilarWord].self) { offline, words in
+                if !offline {
+                    for word in words! {
+                        self.addWordCloud(word: word.word)
                     }
                     self.reloadData()
                 }

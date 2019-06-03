@@ -45,6 +45,16 @@ class SocialDetailViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func reloadData() {
+        APIService.shared.request(.getRatePost(postId: post.id))
+            .handle(ignoreError: true, type: Rate.self) { offline, rate in
+                if !offline {
+                    if rate!.rate == 1 {
+                        self.bottomSectionView.heartButton.heart = true
+                    } else {
+                        self.bottomSectionView.heartButton.heart = false
+                    }
+                }
+        }
         APIService.shared.request(.listComment(postId: post.id))
             .handle(ignoreError: true, type: [Comment].self) { offline, comments in
                 if !offline {
@@ -68,6 +78,16 @@ class SocialDetailViewController: UIViewController, UITableViewDelegate, UITable
                 if !offline {
                     cell.usernameView.text = user!.username
                 }
+            }
+            APIService.shared.request(.getRateComment(postId: item.postId, commentId: item.id))
+                .handle(ignoreError: true, type: Rate.self) { offline, rate in
+                    if !offline {
+                        if rate!.rate == 1 {
+                            cell.heartButton.heart = true
+                        } else {
+                            cell.heartButton.heart = false
+                        }
+                    }
             }
             return cell
         } else {

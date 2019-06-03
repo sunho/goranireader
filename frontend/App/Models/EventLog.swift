@@ -82,6 +82,19 @@ class UnknownWordQuizPayload: EventLogPayload {
     }
 }
 
+class ProgressBookPayload: EventLogPayload {
+    var bookId: Int = 0
+    var completed: Bool = false
+    func kind() -> String {
+        return "progress_book"
+    }
+    enum CodingKeys: String, CodingKey
+    {
+        case bookId = "book_id"
+        case completed
+    }
+}
+
 class RecommendedBookRatePayload: EventLogPayload {
     var bookId: Int = 0
     var rate: Int = 0

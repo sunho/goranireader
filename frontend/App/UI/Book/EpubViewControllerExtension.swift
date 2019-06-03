@@ -4,8 +4,11 @@
 
 import Foundation
 import FolioReaderKit
+import ReactiveSwift
+import Moya
 
 let MinInterval: Double = 2
+let MaxRate = 1.0
 
 extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate, DictViewControllerDelegate {
     func folioReaderDidAppear(_ folioReader: FolioReader) {
@@ -25,7 +28,6 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
     func selectionChanged(bookName: String, point: CGPoint, sentence: SelectedSentence?) {
         if let sentence = sentence {
             currentSentence = sentence
-            let num = folioReader.readerContainer!.book.numberOfWord(sentence.word)
             dictVC.show(point, UnknownDefinitionTuple(sentence.word, currentBookId!, sentence.sentence, sentence.index))
             if currentSentences != nil && sentence.sentenceIndex < currentSentences!.count {
                 var uword = FlipPageUword()
@@ -50,8 +52,19 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
     }
     
     func ask(_ text: String?) {
-        print(text)
-        
+        if let text = text {
+            var post = Post()
+            post.bookId = currentBookId!
+            post.sentence = text
+            APIService.shared.request(.createPost(post: post))
+                .handle(ignoreError: false) { offline, _ in
+                    if (!offline) {
+                        AlertService.shared.alertSuccessMsg("커뮤니티에 질문을 올렸습니다")
+                    } else {
+                        AlertService.shared.alertErrorMsg("오프라인입니다.")
+                    }
+            }
+        }
     }
     
     func htmlContentForPage(_ page: FolioReaderPage, htmlContent: String) -> String {
@@ -59,7 +72,11 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
     }
     
     func dictViewControllerDidSelect(_ dictViewController: DictViewController, _ tuple: UnknownDefinitionTuple, _ word: DictEntry, _ def: DictDefinition) {
-        RealmService.shared.putUnknownWord(word, def, tuple)
+        let (total, num) = folioReader.readerContainer!.book.numberOfWord(word.word)
+        if (Double(num) / Double(total)) < MaxRate {
+            RealmService.shared.putUnknownWord(word, def, tuple)
+        }
+        
         let payload = UnknownDefinitionPayload()
         payload.sentence = tuple.sentence
         payload.word = word.word
@@ -79,6 +96,12 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
                 pro.offsetY = location.offsetY
                 pro.progress = location.progress
             }
+            let payload = ProgressBookPayload()
+            payload.bookId = currentBookId!
+            if location.progress > 0.8 {
+                payload.completed = true
+            }
+            EventLogService.shared.send(payload)
         }
     }
     
@@ -106,6 +129,28 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
                 payload.chapter = chapter
                 payload.type = "epub"
                 EventLogService.shared.send(payload)
+                APIService.shared.request(.getMissions)
+                    .handle(ignoreError: false, type: [Mission].self) { offline, missions in
+                        if !offline {
+                            for mission in missions! {
+                                print(mission)
+                                if mission.startAt < Date() && Date() < mission.endAt {
+                                    APIService.shared.request(.getMissionProgress(missionId: mission.id))
+                                        .map(MissionProgress.self)
+                                        .flatMapError { _ -> SignalProducer<MissionProgress, MoyaError> in
+                                            return SignalProducer<MissionProgress, MoyaError>(value: MissionProgress())
+                                        }.handlePlain(ignoreError: false) { offline, progress in
+                                            if !offline {
+                                                var progress = progress!
+                                                progress.readPages =  progress.readPages + 1
+                                                print(progress)
+                                                APIService.shared.request(.putMissionProgress(missionId: mission.id, progress: progress)).handlePlain(ignoreError: false)
+                                            }
+                                    }
+                                }
+                            }
+                        }
+                }
             }
             lastPage = pageNumber
             lastChapter = chapter

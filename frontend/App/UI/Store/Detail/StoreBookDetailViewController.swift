@@ -13,7 +13,6 @@ class StoreBookDetailViewController: UIViewController {
     @IBOutlet weak var typeStackView: UIStackView!
     @IBOutlet weak var button: RoundButton!
     
-    var owned: Bool!
     var book: Book!
     
     override func viewDidLoad() {
@@ -38,30 +37,40 @@ class StoreBookDetailViewController: UIViewController {
         
         button.setTitle("보유중", for: .disabled)
         
-        if owned {
-            button.isEnabled = false
+        APIService.shared.request(.listBooks)
+            .filterSuccessfulStatusCodes()
+            .map([Book].self)
+            .start { event in
+                DispatchQueue.main.async {
+                    switch event {
+                    case .value(let books):
+                        let owned = books.filter({b in b.id == self.book.id}).count != 0
+                        if owned {
+                            self.button.isEnabled = false
+                        }
+                    default:
+                        print(event)
+                    }
+                }
         }
     }
     
     @IBAction func purchase(_ sender: Any) {
-        if !owned {
-            APIService.shared.request(.buyShopBook(bookId: book.id))
-                .filterSuccessfulStatusCodes()
-                .start { event in
-                    DispatchQueue.main.async {
-                        switch event {
-                        case .value(let resp):
-                            NotificationCenter.default.post(name: .didPurchaseBook, object: nil)
-                            self.owned = true
-                            self.button.isEnabled = false
-                            
-                        case .failed(let error):
-                            AlertService.shared.alertError(error)
-                        default:
-                            print(event)
-                        }
+        APIService.shared.request(.buyShopBook(bookId: book.id))
+            .filterSuccessfulStatusCodes()
+            .start { event in
+                DispatchQueue.main.async {
+                    switch event {
+                    case .value(let resp):
+                        NotificationCenter.default.post(name: .didPurchaseBook, object: nil)
+                        self.button.isEnabled = false
+                        
+                    case .failed(let error):
+                        AlertService.shared.alertError(error)
+                    default:
+                        print(event)
                     }
-            }
+                }
         }
     }
 }

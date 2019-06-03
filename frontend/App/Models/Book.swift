@@ -52,3 +52,7 @@ struct Book: Codable {
         case difficulty
     }
 }
+
+struct Rate: Codable {
+    var rate: Double = 0
+}

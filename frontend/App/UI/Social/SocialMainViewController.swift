@@ -16,6 +16,10 @@ class SocialMainViewController: UIViewController, UITableViewDelegate, UITableVi
         tableView.dataSource = self
         reloadData()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        reloadData()
+    }
     
     func reloadData() {
         APIService.shared.request(.listPosts)
@@ -32,6 +36,7 @@ class SocialMainViewController: UIViewController, UITableViewDelegate, UITableVi
         let item = self.posts[indexPath.row]
         let vc = storyboard?.instantiateViewController(withIdentifier: "SocialDetailViewController") as! SocialDetailViewController
         vc.post = item
+        
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -46,9 +51,24 @@ class SocialMainViewController: UIViewController, UITableViewDelegate, UITableVi
         cell.bottomView.delegate = self
         cell.sentenceView.text = item.sentence
         cell.bottomView.reloadData()
+        APIService.shared.request(.getRatePost(postId: item.id))
+            .handle(ignoreError: true, type: Rate.self) { offline, rate in
+                if !offline {
+                    if rate!.rate == 1 {
+                        cell.bottomView.heartButton.heart = true
+                    } else {
+                        cell.bottomView.heartButton.heart = false
+                    }
+                }
+        }
         APIService.shared.request(.getUser(userId: item.userId)).mapPlain(User.self).handlePlain(ignoreError: true) { offline, user in
             if !offline {
-                cell.usernameView.text = user!.username
+                cell.usernameView.text = "\(user!.username)님이 질문한 문장입니다."
+            }
+        }
+        APIService.shared.request(.getShopBook(bookId: item.bookId)).mapPlain(Book.self).handlePlain(ignoreError: true) { offline, book in
+            if !offline {
+                cell.bookView.text = "\(book!.name)에서 나옴."
             }
         }
         return cell

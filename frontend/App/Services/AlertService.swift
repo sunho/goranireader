@@ -9,12 +9,16 @@ import Moya
 // TODO i18n
 class AlertService {
     fileprivate var bottomErrorAttr = EKAttributes()
+    fileprivate var bottomSuccessAttr = EKAttributes()
     static var shared = AlertService()
     
     init() {
         bottomErrorAttr.position = .bottom
         bottomErrorAttr.precedence = .override(priority: .high, dropEnqueuedEntries: false)
         bottomErrorAttr.entryBackground = .color(color: Color.red)
+        bottomSuccessAttr.position = .bottom
+        bottomSuccessAttr.precedence = .override(priority: .high, dropEnqueuedEntries: false)
+        bottomSuccessAttr.entryBackground = .color(color: Color.green)
     }
     
     func alert(attributes: EKAttributes, title: String, description: String, imageName: String? = nil) {
@@ -30,6 +34,10 @@ class AlertService {
         
         let contentView = EKNotificationMessageView(with: notificationMessage)
         SwiftEntryKit.display(entry: contentView, using: attributes)
+    }
+    
+    func alertSuccessMsg(_ msg: String) {
+        alert(attributes: bottomSuccessAttr, title: "성공", description: msg)
     }
     
     func alertErrorMsg(_ msg: String) {

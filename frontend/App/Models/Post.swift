@@ -5,15 +5,15 @@
 import Foundation
 
 struct Post: Codable{
-    var id: Int
-    var userId: Int
-    var createdAt: Date
-    var updatedAt: Date
-    var bookId: Int
-    var topContent: String
-    var sentence: String
-    var bottomContent: String
-    var solved: Bool
+    var id: Int = 0
+    var userId: Int = 0
+    var createdAt: Date = Date()
+    var updatedAt: Date = Date()
+    var bookId: Int = 0
+    var topContent: String = ""
+    var sentence: String = ""
+    var bottomContent: String = ""
+    var solved: Bool = false
     var solvingContent: String?
     var solvingComment: Int?
     var rate: Int?

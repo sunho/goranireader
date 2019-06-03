@@ -36,6 +36,7 @@
 		C70F55DF22502A18006DBB0E /* SocialCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55DE22502A18006DBB0E /* SocialCommentCell.swift */; };
 		C70F55E122502A3B006DBB0E /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55E022502A3B006DBB0E /* Share.swift */; };
 		C70F55E322502B2B006DBB0E /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55E222502B2B006DBB0E /* Post.swift */; };
+		C71B19B4229A698D00858540 /* Mission.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71B19B3229A698D00858540 /* Mission.swift */; };
 		C71C536F226A0A6D009197F6 /* GoogleSignInDependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C71C536B226A0A6D009197F6 /* GoogleSignInDependencies.framework */; };
 		C71C5370226A0A6D009197F6 /* GoogleSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C71C536D226A0A6D009197F6 /* GoogleSignIn.framework */; };
 		C71C5371226A0A6D009197F6 /* GoogleSignIn.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C71C536E226A0A6D009197F6 /* GoogleSignIn.bundle */; };
@@ -221,6 +222,7 @@
 		C70F55DE22502A18006DBB0E /* SocialCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialCommentCell.swift; sourceTree = "<group>"; };
 		C70F55E022502A3B006DBB0E /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
 		C70F55E222502B2B006DBB0E /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		C71B19B3229A698D00858540 /* Mission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mission.swift; sourceTree = "<group>"; };
 		C71C536B226A0A6D009197F6 /* GoogleSignInDependencies.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleSignInDependencies.framework; path = Frameworks/GoogleSignInDependencies.framework; sourceTree = "<group>"; };
 		C71C536D226A0A6D009197F6 /* GoogleSignIn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleSignIn.framework; path = Frameworks/GoogleSignIn.framework; sourceTree = "<group>"; };
 		C71C536E226A0A6D009197F6 /* GoogleSignIn.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleSignIn.bundle; path = Frameworks/GoogleSignIn.bundle; sourceTree = "<group>"; };
@@ -229,7 +231,7 @@
 		C71C5376226A0A9C009197F6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C72415EE22956C52003E932E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C7403AEA209176D800099119 /* WordMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordMainViewController.swift; sourceTree = "<group>"; };
-		C7420F1F22805CDD0077CC0B /* dict.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = dict.db; path = ../../backend/dataserver/old/dictmake/removesup/dict.db; sourceTree = "<group>"; };
+		C7420F1F22805CDD0077CC0B /* dict.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = dict.db; path = ../../backend/dataserver/jobs/dictmake/dict.db; sourceTree = "<group>"; };
 		C742DD8A2209567A00CD737A /* SearchHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHomeViewController.swift; sourceTree = "<group>"; };
 		C742DD8E2209568800CD737A /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		C74CEFD4208C899F002765D6 /* app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = app.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -424,6 +426,7 @@
 				C70F55E222502B2B006DBB0E /* Post.swift */,
 				C70CD180226621BA00D38AB9 /* RecommendedBook.swift */,
 				C72415EE22956C52003E932E /* User.swift */,
+				C71B19B3229A698D00858540 /* Mission.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -932,6 +935,7 @@
 				C70F55C5224FE508006DBB0E /* BubbleTabBar.swift in Sources */,
 				C757D2C22247A1D80050E0A2 /* BookMainTableViewCell.swift in Sources */,
 				C7C117762244DC8E0084C799 /* LineInputField.swift in Sources */,
+				C71B19B4229A698D00858540 /* Mission.swift in Sources */,
 				C757D2DE2247F9750050E0A2 /* ShadowView.swift in Sources */,
 				C77043C4223E530300B91831 /* LoginViewController.swift in Sources */,
 				C7B2624C224BF6FC00ED5333 /* GuideCard.swift in Sources */,

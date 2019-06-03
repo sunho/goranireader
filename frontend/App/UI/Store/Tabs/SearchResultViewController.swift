@@ -10,7 +10,7 @@ import Moya
 import Kingfisher
 
 protocol SearchResultViewControllerDelegate {
-    func searchResultViewControllerDidSelect(_ viewController: SearchResultViewController, _ book: Book, _ owned: Bool)
+    func searchResultViewControllerDidSelect(_ viewController: SearchResultViewController, _ book: Book)
 }
 
 class SearchResultViewController: UIViewController {
@@ -33,29 +33,11 @@ class SearchResultViewController: UIViewController {
         tableView.estimatedRowHeight = 160
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.singleLine
         tableView.register(BookShopTableViewCell.self, forCellReuseIdentifier: "cell")
-        
-        updateOwnBooks()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
-    }
-    
-    func updateOwnBooks() {
-        APIService.shared.request(.listBooks)
-            .filterSuccessfulStatusCodes()
-            .map([Book].self)
-            .start { event in
-                DispatchQueue.main.async {
-                    switch event {
-                    case .value(let books):
-                        self.ownBooks = books
-                    default:
-                        print(event)
-                    }
-                }
-            }
     }
     
     func search(_ keyword: String) {
@@ -145,8 +127,7 @@ extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = self.books[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
-        let owned = ownBooks.filter({b in b.id == item.id}).count != 0
-        delegate?.searchResultViewControllerDidSelect(self, item, owned)
+        delegate?.searchResultViewControllerDidSelect(self, item)
     }
 }
 

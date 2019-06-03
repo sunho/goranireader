@@ -277,6 +277,9 @@ extension UIImageView {
     }
 }
 
+enum DateError: String, Error {
+    case invalidDate
+}
 
 
 extension SignalProducerProtocol where Error == MoyaError {
@@ -303,9 +306,24 @@ extension SignalProducerProtocol where Value == Response, Error == MoyaError {
     public func mapPlain<D: Decodable>(_ type: D.Type) -> SignalProducer<D, Error> {
         let decoder = JSONDecoder()
         let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .iso8601)
         formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
-        decoder.dateDecodingStrategy = .formatted(formatter)
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        
+        decoder.dateDecodingStrategy = .custom({ (decoder) -> Date in
+            let container = try decoder.singleValueContainer()
+            let dateStr = try container.decode(String.self)
+            
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
+            if let date = formatter.date(from: dateStr) {
+                return date
+            }
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssXXXXX"
+            if let date = formatter.date(from: dateStr) {
+                return date
+            }
+            throw DateError.invalidDate
+        })
         return self.map(type, using: decoder, failsOnEmptyData: false)
     }
     
@@ -338,7 +356,8 @@ extension SignalProducerProtocol where Value == Response, Error == MoyaError {
 }
 
 extension FRBook {
-    func numberOfWord(_ word: String) -> Int {
+    func numberOfWord(_ word: String) -> (Int, Int) {
+        var total = 0
         var out = 0
         let pat = try! Regex(pattern:"<p>(.|\n)*?</p>", groupNames: "text")
         for (_, resource) in resources.resources {
@@ -349,14 +368,39 @@ extension FRBook {
                         let text = match.group(named: "text")!
                         let words = SentenceUtil.getWords(text)
                         for word2 in words {
-                            if word == word2 {
+                            if word.lowercased() == word2.lowercased() || word2.baseCandidates[0].lowercased() == word.lowercased() {
                                 out += 1
                             }
+                            total += 1
                         }
                     }
                 }
             }
         }
-        return out
+        return (total, out)
+    }
+}
+
+extension Date {
+    
+    static func - (lhs: Date, rhs: Date) -> TimeInterval {
+        return lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate
+    }
+    
+}
+
+extension TimeInterval{
+    
+    func stringFromTimeInterval() -> String {
+        
+        let time = NSInteger(self)
+        
+        let ms = Int((self.truncatingRemainder(dividingBy: 1)) * 1000)
+        let seconds = time % 60
+        let minutes = (time / 60) % 60
+        let hours = (time / 3600)
+        
+        return String(format: "%0.2d시간 %0.2d분",hours,minutes)
+        
     }
 }

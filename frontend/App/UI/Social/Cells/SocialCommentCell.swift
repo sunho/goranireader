@@ -12,6 +12,7 @@ protocol SocialCommentCellDelegate {
 }
 
 class SocialCommentCell: UITableViewCell {
+    var container2: PaddingMarginView!
     var usernameView: UILabel!
     var upButton: UIButton!
     var commentView: UILabel!
@@ -21,9 +22,17 @@ class SocialCommentCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        container2 = PaddingMarginView()
+        container2.padding.top = 8
+        container2.padding.bottom = 8
+        container2.layout()
+        contentView.addSubview(container2)
+        container2.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
         
         let container = UIView()
-        contentView.addSubview(container)
+        container2.addSubview(container)
         container.snp.makeConstraints { make -> Void in
             make.left.equalToSuperview()
             make.width.equalTo(50)
@@ -52,7 +61,7 @@ class SocialCommentCell: UITableViewCell {
         usernameView = UILabel()
         // TODO userinfo cache
         usernameView.text = "username"
-        contentView.addSubview(usernameView)
+        container2.addSubview(usernameView)
         usernameView.snp.makeConstraints { make -> Void in
             make.left.equalTo(container.snp.right)
             make.right.equalToSuperview()
@@ -60,7 +69,7 @@ class SocialCommentCell: UITableViewCell {
         }
         
         commentView = UILabel()
-        contentView.addSubview(commentView)
+        container2.addSubview(commentView)
         commentView.snp.makeConstraints { make -> Void in
             make.left.equalTo(container.snp.right)
             make.right.equalToSuperview()

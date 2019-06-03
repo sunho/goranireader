@@ -47,8 +47,8 @@ class SocialPostBottomView: UIView {
         heartButton.snp.makeConstraints { make in
             make.width.equalTo(30)
             make.height.equalTo(heartButton.snp.width)
-            make.centerY.equalToSuperview()
-            make.left.equalToSuperview()
+            make.centerY.equalToSuperview().offset(0.5)
+            make.left.equalToSuperview().offset(-3)
         }
         
         heartNumberView = UILabel()
@@ -56,7 +56,7 @@ class SocialPostBottomView: UIView {
         container.addSubview(heartNumberView)
         heartNumberView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.left.equalTo(heartButton.snp.right)
+            make.left.equalTo(heartButton.snp.right).offset(3)
         }
         
         commentNumberView = UILabel()
@@ -74,7 +74,7 @@ class SocialPostBottomView: UIView {
             make.width.equalTo(25)
             make.height.equalTo(commentButton.snp.width)
             make.centerY.equalToSuperview()
-            make.right.equalTo(commentNumberView.snp.left)
+            make.right.equalTo(commentNumberView.snp.left).offset(-6)
         }
         
         heartButton.addTarget(self, action: #selector(addHeart), for: .touchUpInside)

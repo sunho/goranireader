@@ -100,14 +100,13 @@ class StoreMainViewController: UIViewController, UISearchBarDelegate, UISearchRe
     func updateSearchResults(for searchController: UISearchController) {
     }
     
-    func searchResultViewControllerDidSelect(_ viewController: SearchResultViewController, _ book: Book, _ owned: Bool) {
+    func searchResultViewControllerDidSelect(_ viewController: SearchResultViewController, _ book: Book) {
         if let delegate = delegate {
             delegate.storeMainViewControllerDidSelect(self, book)
             return
         }
         let vc = storyboard?.instantiateViewController(withIdentifier: "StoreBookDetailViewController") as! StoreBookDetailViewController
         vc.book = book
-        vc.owned = owned
         navigationController?.pushViewController(vc, animated: true)
     }
 }

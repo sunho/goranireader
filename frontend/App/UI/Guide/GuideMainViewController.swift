@@ -31,18 +31,12 @@ class GuideMainViewController: UIViewController {
         ReachabilityService.shared.reach.producer.start { [weak self] _ in
             self?.reloadData()
         }
+        reloadData()
         
         NotificationCenter.default.addObserver(self, selector: #selector(unknownWordAdded), name: .unknownWordAdded, object: nil)
     }
     
     func reloadData() {
-        APIService.shared.request(.getTargetBookProgress)
-            .handle(ignoreError: true, type: TargetBookProgress.self) { offline, progress in
-                if !offline {
-                    self.progressView.progressBar.progress = Float(progress!.progress)
-                }
-            }
-        
         APIService.shared.request(.listRecommendedBooks)
             .mapPlain([RecommendedBook].self)
             .flatMap(.latest) { raws -> SignalProducer<[(RecommendedBook, Book)], MoyaError> in
@@ -55,17 +49,51 @@ class GuideMainViewController: UIViewController {
                         }
                 }
                 return SignalProducer<SignalProducer<(RecommendedBook, Book), MoyaError>, MoyaError>(arr).flatten(.concat).reduce([]) { $0 + [$1] }
-            }.handlePlain(ignoreError: false) { (offline, books) in
+            }.handlePlain(ignoreError: true) { (offline, books) in
                 if !offline {
                     self.recommendedBooks = books!
                     self.layout()
                 }
             }
+        
+        APIService.shared.request(.getMissions)
+            .handle(ignoreError: true, type: [Mission].self) { offline, missions in
+            if !offline {
+                for mission in missions! {
+                    print(mission)
+                    if mission.startAt < Date() && Date() < mission.endAt {
+                        APIService.shared.request(.getMissionProgress(missionId: mission.id))
+                            .map(MissionProgress.self)
+                            .flatMapError { _ -> SignalProducer<MissionProgress, MoyaError> in
+                                return SignalProducer<MissionProgress, MoyaError>(value: MissionProgress())
+                            }.handlePlain(ignoreError: true) { offline, progress in
+                                if !offline {
+                                    let rem = mission.pages - progress!.readPages
+                                    if rem > 0 {
+                                        self.progressView.textView.text = "\(rem)장을 읽어야 합니다"
+                                        self.progressView.dueView.text = "\((mission.endAt - Date()).stringFromTimeInterval()) 남음."
+                                    } else {
+                                        self.progressView.textView.text = "과제가 없습니다"
+                                        self.progressView.dueView.text = "0일 남음."
+                                    }
+                                }
+                            }
+                            return
+                        }
+                    }
+                }
+            }
+        wordCount = RealmService.shared.getTodayUnknownWords().count
+        layout()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        reloadData()
     }
     
     @objc func unknownWordAdded(notification: Notification) {
-        wordCount = RealmService.shared.getTodayUnknownWords().count
-        layout()
+        reloadData()
     }
     
     @IBAction func wordCardOpen(_ sender: Any) {
@@ -106,6 +134,13 @@ extension GuideMainViewController: UICollectionViewDelegate, UICollectionViewDat
         return recommendedBooks.count
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let item = recommendedBooks[indexPath.item]
+        let vc = storyboard?.instantiateViewController(withIdentifier: "StoreBookDetailViewController") as! StoreBookDetailViewController
+        vc.book = item.1
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let item = recommendedBooks[indexPath.item]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath) as! GuideRecomendedBookCell
@@ -113,6 +148,7 @@ extension GuideMainViewController: UICollectionViewDelegate, UICollectionViewDat
         cell.heartButton.heart = item.0.rate == 1
         cell.heartButton.addTarget(self, action: #selector(toggleHeart(sender:)), for: .touchUpInside)
         cell.closeButton.addTarget(self, action: #selector(closeBook(sender:)), for: .touchUpInside)
+        cell.heartButton.tag = indexPath.item
         cell.closeButton.tag = indexPath.item
         return cell
     }
@@ -132,9 +168,12 @@ extension GuideMainViewController: UICollectionViewDelegate, UICollectionViewDat
     }
     
     @objc func closeBook(sender: UIButton) {
+        let cell = bookView.collectionView.visibleCells[sender.tag] as! GuideRecomendedBookCell
         let item = recommendedBooks[sender.tag]
-        APIService.shared.request(.rateRecommendedBook(bookId: item.0.bookId, rate: -1))
-            .handle(ignoreError: false)
+        if !cell.heartButton.heart {
+            APIService.shared.request(.rateRecommendedBook(bookId: item.0.bookId, rate: -1))
+                .handle(ignoreError: false)
+        }
         APIService.shared.request(.deleteRecommendedBook(bookId: item.0.bookId))
             .handle(ignoreError: false) { offline, _ in
                 if !offline {
@@ -142,6 +181,7 @@ extension GuideMainViewController: UICollectionViewDelegate, UICollectionViewDat
                     self.layout()
                 }
             }
+            
     }
 //
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

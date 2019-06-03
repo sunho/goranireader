@@ -7,7 +7,7 @@ import UIKit
 class GuideProgressView: UIView {
     @IBOutlet weak var textView: UILabel!
     @IBOutlet weak var progressBar: UIProgressView!
-    
+    @IBOutlet weak var dueView: UILabel!
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }

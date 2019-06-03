@@ -46,6 +46,13 @@ enum API {
     case markPostSolved(postId: Int, commentId: Int)
     case rateComment(postId: Int, commentId: Int, rate: Int)
     
+    case getRateComment(postId: Int, commentId: Int)
+    case getRatePost(postId: Int)
+    
+    case getMissions
+    case putMissionProgress(missionId: Int, progress: MissionProgress)
+    case getMissionProgress(missionId: Int)
+    
     case getUser(userId: Int)
     
     case login(username: String, idToken: String)
@@ -135,6 +142,16 @@ extension API: TargetType {
             return "/user/\(userId)"
         case .createComment(let postId, _):
             return "/post/\(postId)/comment"
+        case .getRateComment(let postId, let commentId):
+            return "/post/\(postId)/comment/\(commentId)/rate"
+        case .getRatePost(let postId):
+            return "/post/\(postId)/rate"
+        case .getMissions:
+            return "/mission"
+        case .putMissionProgress(let missionId, _):
+            return "/mission/\(missionId)/progress"
+        case .getMissionProgress(let missionId):
+            return "/mission/\(missionId)/progress"
         }
     }
     
@@ -142,16 +159,16 @@ extension API: TargetType {
         switch self {
         case .download:
             return .get
-        case .listMemories, .listBooks, .getMyMemory, .listCategories,
+        case .listMemories, .listBooks, .getMyMemory, .listCategories, .getMissions, .getMissionProgress,
              .getShopBook, .searchShopBooks, .listRecommendedBooks, .getRecommendInfo,
              .listSimilarWords, .getMyBookRate, .listPosts, .listComment, .getUser,
-             .listQuizResults, .listSensResults, .checkAuth, .getTargetBookProgress:
+             .listQuizResults, .listSensResults, .checkAuth, .getTargetBookProgress, .getRatePost, .getRateComment:
             return .get
         case .buyShopBook, .login, .createEventLog, .markPostSolved, .createPost, .createComment:
             return .post
         case .rateBook, .rateMemory, .ratePost, .rateComment,
              .rateRecommendedBook, .updateMemory,
-             .updateQuizResult, .updateSensResult, .updateRecommendInfo:
+             .updateQuizResult, .updateSensResult, .updateRecommendInfo, .putMissionProgress:
             return .put
         case .deleteRecommendedBook:
             return .delete
@@ -178,6 +195,8 @@ extension API: TargetType {
             var memory = Memory()
             memory.sentence = sentence
             return .requestCustomJSONEncodable(memory, encoder: encoder)
+        case .putMissionProgress(_, let body):
+            return .requestCustomJSONEncodable(body, encoder: encoder)
         case .createPost(let body):
             return .requestCustomJSONEncodable(body, encoder: encoder)
         case .createComment(_, let body):
@@ -202,8 +221,9 @@ extension API: TargetType {
             return .requestCustomJSONEncodable(["username": username, "id_token": idToken], encoder: encoder)
     case .getMyBookRate, .listBooks, .getMyMemory, .listCategories, .getShopBook, .listPosts, .listComment, 
              .listRecommendedBooks, .deleteRecommendedBook, .listSimilarWords, .getUser,
+             .getMissionProgress, .getMissions,
              .listQuizResults, .listSensResults, .buyShopBook, .getRecommendInfo,
-             .checkAuth, .getTargetBookProgress:
+             .checkAuth, .getTargetBookProgress, .getRateComment, .getRatePost:
             return .requestPlain
         }
     }
