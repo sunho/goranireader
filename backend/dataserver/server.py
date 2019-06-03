@@ -3,11 +3,21 @@
 #
 
 import hug
+import time
 from gorani.routes import word
-from gorani.shared import DataDB
+from gorani.datadb import DataDB
 
-data_db = DataDB()
-word.init(data_db)
+for i in range(0,10):
+    while True:
+        try:
+            data_db = DataDB(addr='cassandra', port=9042)
+            word.init(data_db)
+        except Exception as e:
+            print(e)
+            print('connection error')
+            time.sleep(10)
+            continue
+        break
 
 @hug.extend_api('/word')
 def words():

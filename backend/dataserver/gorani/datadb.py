@@ -7,8 +7,11 @@ from cassandra import query
 import pickle
 
 class DataDB:
-    def __init__(self):
-        self._cluster = Cluster()
+    def __init__(self, addr='127.0.0.1', port=None):
+        if port is not None:
+            self._cluster = Cluster([addr], port=port)
+        else:
+            self._cluster = Cluster([addr])
         self._session = self._cluster.connect('gorani')
 
     def get_book_ids(self):

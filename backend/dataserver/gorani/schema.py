@@ -38,3 +38,10 @@ FlipPagePayloadSchema = StructType(
         StructField('sentences', ArrayType(FilpPageSentence))
     ]
 )
+
+ProgressBookPayloadSchema = StructType(
+    [
+        StructField('book_id', IntegerType()),
+        StructField('completed', BooleanType())
+    ]
+)

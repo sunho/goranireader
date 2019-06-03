@@ -8,9 +8,18 @@ services:
     restart: always
     ports:
       - "5353:5353"
+  data:
+    build: dataserver
+    expose:
+      - "8000"
+    ports:
+      - "5691:8000"
+    restart: always
   ddb:
     image: cassandra:latest
     container_name: cassandra
+    expose:
+      - "7000"
     ports:
       - "9042:9042"
     environment:

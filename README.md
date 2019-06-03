@@ -46,14 +46,14 @@ carthage update
 
 ## API 서버
 
-1. /backend/apiserver에서 아래 커맨드를 실행해주세요.
+1. /backend에서 아래 커맨드를 실행해주세요.
 ```
-go build
+docker-compose up
 ```
 
 ## 데이터 분석 서버
 
-TODO
+
 
 ## 관리자 웹
 

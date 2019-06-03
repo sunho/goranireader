@@ -4,7 +4,12 @@ RUN go get -u github.com/gobuffalo/packr/v2/packr2
 
 WORKDIR /gorani
 
-ADD . .
+COPY go.mod .
+COPY go.sum .
+
+RUN go mod download
+
+COPY . .
 
 RUN GO111MODULE=on packr2
 
