@@ -13,3 +13,4 @@ pyspark
 psycopg2
 cachetools
 jupyter
+papermill
