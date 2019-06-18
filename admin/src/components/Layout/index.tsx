@@ -21,7 +21,7 @@ const Layout: React.SFC = (props) => (
         <Header></Header>
         <Grid container className={styles.grid}>
             <Grid.Column width={4}>
-                    <Sidebar></Sidebar>
+                <Sidebar></Sidebar>
             </Grid.Column>
             <Grid.Column width={12}>
                 {props.children}
