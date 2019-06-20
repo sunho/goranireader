@@ -119,7 +119,7 @@ create table completed_books (
     primary key (user_id, book_id)
 );
 
-crete table experienced_books (
+create table experienced_books (
     user_id int,
     book_id int,
     primary key (user_id, book_id)

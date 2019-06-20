@@ -9,7 +9,7 @@ spark = SparkSession\
 
 sc = spark.sparkContext
 
-evlog_stream = read_kafka_stream(spark, ['user_evlog', 'system_evlog'], ['localhost:9092'])
+evlog_stream = read_kafka_stream(spark, ['user_evlog', 'system_evlog'])
 
 evlog.start(sc, spark, evlog_stream)
 spark.streams.awaitAnyTermination()

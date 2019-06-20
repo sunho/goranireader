@@ -1,0 +1,12 @@
+cassandra-driver
+tabulate
+pymaybe
+click
+ebooklib
+numpy
+beautifulsoup4
+nltk
+numpy
+hug
+psycopg2
+cachetools

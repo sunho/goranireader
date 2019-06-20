@@ -5,9 +5,12 @@
 from cassandra.cluster import Cluster
 from cassandra import query
 import pickle
+import os
+
 
 class DataDB:
-    def __init__(self, addr='127.0.0.1', port=None):
+    def __init__(self, port=None):
+        addr = os.environ['GORANI_DATA_DB_ADDR']
         if port is not None:
             self._cluster = Cluster([addr], port=port)
         else:
