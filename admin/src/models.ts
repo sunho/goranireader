@@ -1,8 +1,8 @@
 export interface Student {
-    name: string;
+  name: string
 }
 
 export interface Class {
-    id: number
-    students: Student[]
+  id: number
+  students: Student[]
 }
