@@ -1,3 +1,5 @@
+import os
+
 def read_data_all(spark, table: str, cache: bool = False, keyspace: str = 'gorani'):
     out = spark.read\
         .format('org.apache.spark.sql.cassandra')\
@@ -9,8 +11,12 @@ def read_data_all(spark, table: str, cache: bool = False, keyspace: str = 'goran
     return out
 
 def read_api_all(spark, table: str, cache: bool = False):
-    url = 'jdbc:postgresql://localhost:5432/postgres'
-    properties = {'user': 'postgres','password': 'postgres','driver': 'org.postgresql.Driver'}
+    addr = os.environ['GORANI_USER_DB_ADDR']
+    db = os.environ['GORANI_USER_DB_DB']
+    url = 'jdbc:postgresql://{}:5432/{}'.format(addr, db)
+    user = os.environ['GORANI_USER_DB_USER']
+    pw = os.environ['GORANI_USER_DB_PASS']
+    properties = {'user': user,'password': pw,'driver': 'org.postgresql.Driver'}
     out = spark.read\
         .jdbc(url=url, table=table, properties=properties)\
 
@@ -35,9 +41,10 @@ def write_data_stream(table: str, df, keyspace = 'gorani'):
     return df.writeStream\
         .foreachBatch(lambda df, _: write_data(table, df, keyspace=keyspace))
 
-def read_kafka_stream(spark, topics, brokers):
+def read_kafka_stream(spark, topics):
+    brokers = os.environ['GORANI_KAFKA_BROKERS']
     return spark.readStream\
         .format('kafka')\
-        .option('kafka.bootstrap.servers', ','.join(brokers))\
+        .option('kafka.bootstrap.servers', brokers)\
         .option('subscribe', ','.join(topics))\
         .load()

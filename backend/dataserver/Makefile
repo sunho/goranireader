@@ -1,26 +1,25 @@
-VENV=/gorani/venv
-SPARK_SUBMIT=/etc/spark/bin/spark-submit
-SPARK_ARGS=--executor-memory 1G --total-executor-cores 1
+KUBE_MASTER:=k8s://https://183.99.225.238:6443
+SPARK_SUBMIT:=$(SPARK_HOME)/bin/spark-submit
 
-deps:
-	pip install -U -r ./requirements.txt
+build-spark: 
+	docker build -t gorani-spark -f spark.Dockerfile .
+build-base: 
+	docker build -t gorani-base -f base.Dockerfile .
+build-stream:
+	docker build -t ksunhokim/gorani-stream:v$(VER) -f stream.Dockerfile . && docker push ksunhokim/gorani-stream:v$(VER)
+build-migrate:
+	docker build -t ksunhokim/gorani-migrate:v$(VER) -f migrate.Dockerfile . && docker push ksunhokim/gorani-migrate:v$(VER)
+run-stream: 
+	$(SPARK_SUBMIT) --master $(KUBE_MASTER) \
+		--deploy-mode cluster \
+		--name stream \
+		--conf spark.executor.instances=1 \
+		--conf spark.kubernetes.container.image=ksunhokim/gorani-stream:v$(VER) \
+		--conf spark.kubernetes.authenticate.driver.serviceAccountName=spark \
+		--conf spark.kubernetes.driver.pod.name=stream \
+		--conf spark.cassandra.connection.host=cassandra \
+		--conf spark.kubernetes.pyspark.pythonVersion=3 \
+		--conf spark.kubernetes.driverEnv.GORANI_KAFKA_BROKERS="kafka:9092" \
+		--jars local:///etc/spark-cassandra-connector_2.11-2.3.2.jar,local:///etc/spark-sql-kafka-0-10_2.11-2.4.0.jar,local:///etc/kafka-clients-0.10.1.0.jar,local:///etc/jsr166e-1.1.0.jar \
+		local:///etc/stream.py
 
-clean: clean-build clean-pyc
-
-clean-build:
-	sudo rm -fr dist/
-
-clean-pyc:
-	find . -name '*.pyc' -exec rm -f {} +
-	find . -name '*.pyo' -exec rm -f {} +
-	find . -name '*~' -exec rm -f {} +
-	find . -name '__pycache__' -exec rm -fr {} +
-
-build: clean
-	mkdir ./dist
-	cp ./stream.py ./dist
-	zip -r ./dist/gorani.zip ./gorani
-
-run-stream: build
-	zip -r ./dist/in.zip ./in
-	. $(VENV)/bin/activate && $(SPARK_SUBMIT) $(SPARK_ARGS) --py-files ./dist/stream.py,./dist/gorani.zip --archives ./dist/in.zip#in stream.py
