@@ -17,6 +17,10 @@ Carthage
 /backend/dataserver/dist
 /backend/dataserver/in
 /backend/dataserver/logs
+/backend/dataserver/ks_app/lib
+/backend/dataserver/ks_app/.ksonnet/registries
+/backend/dataserver/ks_app/app.override.yaml
+/backend/dataserver/ks_app/.ks_environment
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
