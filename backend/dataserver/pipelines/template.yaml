@@ -1,0 +1,8 @@
+  - name: jupyter
+    inputs:
+      parameters:
+      - name: notebook
+      - name: args
+    container:
+      image: ksunhokim/gorani-jupyter:v14
+      command: [python3.6, "/home/run-notebook.py", "{{inputs.parameters.notebook}}", "{{inputs.parameters.args}}", "pyspark"]

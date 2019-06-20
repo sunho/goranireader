@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: update-users-
+spec:
+  entrypoint: dag
+  templates:
+  - name: jupyter
+    inputs:
+      parameters:
+      - name: notebook
+      - name: args
+    container:
+      image: ksunhokim/gorani-jupyter
+      command: [echo, "{{inputs.parameters.notebook}}"]
+  - name: dag
+    dag:
+      tasks:
+      - name: compute-initial-books
+        template: jupyter
+        arguments:
+          parameters: [{name: message, value: A}]
+      - name: recommend-books
+        dependencies: [compute-initial-books]
+        template: jupyter
+        arguments:
+          parameters: [{name: message, value: A}]
+      - name: feed-posts
+        template: jupyter
+        arguments:
+          parameters: [{name: message, value: B}]
