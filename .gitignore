@@ -10,7 +10,6 @@ Carthage
 /backend/apiserver/gorani
 /backend/apiserver/migrations/schema.sql
 /backend/apiserver/database.yml
-/backend/apiserver/*.yaml
 
 /backend/dataserver/.venv
 /backend/dataserver/miner/libs

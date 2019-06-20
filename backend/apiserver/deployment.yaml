@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gorani-apiserver-deployment
+  labels:
+    app: gorani-apiserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gorani-apiserver
+  template:
+    metadata:
+      labels:
+        app: gorani-apiserver
+    spec:
+      containers:
+      - name: apiserver
+        image: ksunhokim/gorani-apiserver:v2
+        volumeMounts:
+        - name: config-volume
+          mountPath: /home/file.yaml
+          subPath: file.yaml
+        - name: config-volume
+          mountPath: /home/database.yml
+          subPath: database.yml
+        - name: config-volume
+          mountPath: /home/auth.yaml
+          subPath: auth.yaml
+        - name: config-volume
+          mountPath: /home/data.yaml
+          subPath: data.yaml
+        ports:
+        - containerPort: 5353
+      volumes:
+        - name: config-volume
+          configMap:
+            name: gorani-apiserver-configmap

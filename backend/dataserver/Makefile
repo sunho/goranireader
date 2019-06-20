@@ -9,6 +9,8 @@ build-stream:
 	docker build -t ksunhokim/gorani-stream:v$(VER) -f stream.Dockerfile . && docker push ksunhokim/gorani-stream:v$(VER)
 build-migrate:
 	docker build -t ksunhokim/gorani-migrate:v$(VER) -f migrate.Dockerfile . && docker push ksunhokim/gorani-migrate:v$(VER)
+build-jupyter:
+	docker build -t ksunhokim/gorani-jupyter:v$(VER) -f jupyter.Dockerfile . && docker push ksunhokim/gorani-jupyter:v$(VER)
 run-stream: 
 	$(SPARK_SUBMIT) --master $(KUBE_MASTER) \
 		--deploy-mode cluster \

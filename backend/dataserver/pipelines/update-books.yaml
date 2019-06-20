@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: update-books-
+spec:
+  entrypoint: dag
+  templates:
+  - name: dag
+    dag:
+      tasks:
+      - name: cluster-books
+        template: jupyter
+        arguments:
+          parameters: [{name: message, value: B}]

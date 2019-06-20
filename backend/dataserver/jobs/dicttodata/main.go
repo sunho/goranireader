@@ -29,7 +29,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	cluster := gocql.NewCluster("127.0.0.1")
+	cluster := gocql.NewCluster("cassandra")
+	cluster.ProtoVersion = 4
+	cluster.DisableInitialHostLookup = true
 	cluster.Keyspace = "gorani"
 	sess, err := cluster.CreateSession()
 	if err != nil {

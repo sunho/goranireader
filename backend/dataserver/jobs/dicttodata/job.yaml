@@ -1,0 +1,13 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dicttodata
+spec:
+  template:
+    spec:
+      containers:
+      - name: dicttodata
+        image: ksunhokim/gorani-dicttodata:v9
+        command: ["/home/dicttodata"]
+      restartPolicy: Never
+  backoffLimit: 0
