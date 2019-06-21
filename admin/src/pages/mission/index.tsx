@@ -16,18 +16,27 @@ import { useInput } from '../../hooks/input';
 import moment from 'moment'
 
 const Mission: React.SFC = () => {
-    const [state, fetch] = useFetchApi<MMission[]>('https://gorani.sunho.kim/admin/missions', [{'id':1, students:[]},{'id':1, students:[]}])
+    const [state, fetchData] = useFetchApi<MMission[]>('https://gorani.sunho.kim/admin/mission', [])
     const { value:page, bind:bindPage, reset:resetPage } = useInput(0);
     const { value:start, bind:bindStart, reset:resetStart } = useInput('');
     const { value:end, bind:bindEnd, reset:resetEnd } = useInput('');
 
     const onSubmit = () => {
         const input = {
-            'page': page,
-            'start': moment(start,"DD-MM-YYYY").format(),
-            'end': moment(end,"DD-MM-YYYY").format()
+            'pages': parseInt(page),
+            'start_at': moment(start,"DD-MM-YYYY").format(),
+            'end_at': moment(end,"DD-MM-YYYY").format(),
+            'class_id': 1
         }
-        console.log(input)
+        fetch('https://gorani.sunho.kim/admin/mission', {
+            method: 'POST', // or 'PUT'
+            body: JSON.stringify(input), // data can be `string` or {object}!
+            headers:{
+              'Content-Type': 'application/json'
+            }
+          }).then(() => {
+            fetchData('https://gorani.sunho.kim/admin/mission?'+Math.random())
+          })
     }
     return (
         <div>
@@ -41,7 +50,7 @@ const Mission: React.SFC = () => {
                                 <Form onSubmit={onSubmit}>
                                     <Form.Field>
                                     <label>페이지 수</label>
-                                    <input name="page" placeholder='Page Number' {...bindPage} />
+                                    <input name="page" type='number' placeholder='Page Number' {...bindPage} />
                                     </Form.Field>
                                     <Form.Field>
                                     <label>시작 일</label>
@@ -70,15 +79,21 @@ const Mission: React.SFC = () => {
                     <Grid.Row>
                         <Grid.Column width={16}>
                             <List divided relaxed >
-                            {state.data.map(mission => {
+                            {state.data && state.data.map(mission => {
                                 return (
                                     <List.Item style={{'padding': '20px 0px'}}>
                                         <List.Content floated='right'>
-                                            <Button>삭제</Button>
+                                            <Button onClick={()=>{
+                                                fetch('https://gorani.sunho.kim/admin/mission/'+mission.id, {
+                                                    method: 'delete'
+                                                }).then(() => {
+                                                    fetchData('https://gorani.sunho.kim/admin/mission?'+Math.random())
+                                                })
+                                                }}>삭제</Button>
                                         </List.Content>
                                         <List.Content>
-                                            <List.Header>과제 1</List.Header>
-                                            <List.Description>10페이지를 2019/05/25~2019/06/01 사이에 읽어오기</List.Description>
+                                            <List.Header>과제 {mission.id}</List.Header>
+                                            <List.Description>{`${mission.pages}페이지를 ${moment(mission.start_at).format("MM/DD")}~${moment(mission.end_at).format("MM/DD")}사이에 읽어오기`}</List.Description>
                                         </List.Content>
                                     </List.Item>
                                 )

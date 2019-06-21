@@ -6,6 +6,7 @@ require (
 	github.com/coreos/etcd v3.3.13+incompatible // indirect
 	github.com/coreos/go-semver v0.3.0 // indirect
 	github.com/go-ini/ini v1.38.3 // indirect
+	github.com/go-redis/redis v6.15.2+incompatible
 	github.com/gobuffalo/depgen v0.1.1 // indirect
 	github.com/gobuffalo/fizz v1.1.2 // indirect
 	github.com/gobuffalo/genny v0.1.1 // indirect

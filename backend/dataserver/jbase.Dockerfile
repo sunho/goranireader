@@ -23,3 +23,10 @@ RUN mkdir /home/ipython
 
 RUN mkdir -p /root/.ipython/profile_pyspark/startup/
 ADD ./configs/profile.py /root/.ipython/profile_pyspark/startup/00-load.py
+
+COPY ./configs/jedis-3.1.0-m1.jar /opt/spark/jars/jedis-3.1.0-m1.jar
+COPY ./configs/spark-redis-2.4.0.jar /opt/spark/jars/spark-redis-2.4.0.jar
+COPY ./configs/commons-pool2-2.0.jar /opt/spark/jars/commons-pool2-2.0.jar
+COPY ./configs/postgresql-42.2.5.jar /opt/spark/jars/postgresql-42.2.5.jar
+
+RUN pip3.6 install minio

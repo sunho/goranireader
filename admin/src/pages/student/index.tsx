@@ -7,22 +7,19 @@ import { useFetchApi } from '../../hooks/fetch';
 import { Student as MStudent } from '../../models'
 
 const Student: React.SFC = () => {
-  const [state, fetch] = useFetchApi<MStudent[]>('https://gorani.sunho.kim/admin/missions', [{name: 'asdf'},{name: 'asdf'}])
+  const [state, fetch] = useFetchApi<MStudent[]>('https://gorani.sunho.kim/admin/student', [])
     return (
         <div>
             <Layout>
               <Card.Group>
-                {state.data.map(student => {
+                {state.data && state.data.map(student => {
                     return (
                       <Card>
-                        <Image src='/images/avatar/large/matthew.png' wrapped ui={false} />
                         <Card.Content>
-                          <Card.Header>Matthew</Card.Header>
-                          <Card.Meta>
-                            <span className='date'>Joined in 2015</span>
-                          </Card.Meta>
+                          <Card.Header>{student.name}</Card.Header>
                           <Card.Description>
-                              과제1 완료
+                            과제 상황 <br/>
+                            {student.complted_missions && student.complted_missions.map(id => `과제 ${id} 완료`).join('<br/>')}
                           </Card.Description>
                         </Card.Content>
                       </Card>

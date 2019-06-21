@@ -26,7 +26,7 @@ run-stream:
 		--conf spark.kubernetes.authenticate.driver.serviceAccountName=spark \
 		--conf spark.kubernetes.driver.pod.name=stream \
 		--conf spark.cassandra.connection.host=cassandra \
+		--conf spark.redis.host=agile-ostrich-redis-master \
 		--conf spark.kubernetes.pyspark.pythonVersion=3 \
-		--conf spark.kubernetes.driverEnv.GORANI_KAFKA_BROKERS="kafka:9092" \
 		local:///etc/stream.py
 
