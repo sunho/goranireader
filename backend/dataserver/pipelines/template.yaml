@@ -3,6 +3,63 @@
       parameters:
       - name: notebook
       - name: args
+    steps:
+      - - name: rand
+          template: gen-random-int-python
+      - - name: service
+          template: jupyter-service
+          arguments:
+            parameters:
+            - name: name
+              value: "{{steps.rand.outputs.result}}"
+      - - name: run
+          template: jupyter-run
+          arguments:
+            parameters:
+            - name: notebook
+              value: "{{inputs.parameters.notebook}}"
+            - name: args
+              value: "{{inputs.parameters.args}}"
+            - name: name
+              value: "{{steps.rand.outputs.result}}"
+  - name: jupyter-service
+    inputs:
+      parameters:
+      - name: name
+    resource:                   # indicates that this is a resource template
+      action: create            # can be any kubectl action (e.g. create, delete, apply, patch)
+      manifest: |               #put your kubernetes spec here
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: "{{inputs.parameters.name}}"
+        spec:
+          clusterIP: None
+          type: ClusterIP
+          ports:
+            - port: 4040
+          selector:
+            workflow: "{{inputs.parameters.name}}" 
+  - name: jupyter-run
+    metadata:
+      labels:
+        workflow: "{{inputs.parameters.name}}"
+    inputs:
+      parameters:
+      - name: notebook
+      - name: args
+      - name: name
     container:
-      image: ksunhokim/gorani-jupyter:v14
+      image: ksunhokim/gorani-jupyter:v34
       command: [python3.6, "/home/run-notebook.py", "{{inputs.parameters.notebook}}", "{{inputs.parameters.args}}", "pyspark"]
+      env:
+        - name: SERVICE_NAME
+          value: "{{inputs.parameters.name}}"
+  - name: gen-random-int-python
+    script:
+      image: python:alpine3.6
+      command: [python]
+      source: |
+        import random
+        i = random.randint(1, 1000000000000000)
+        print("job"+str(i))

@@ -1,13 +1,12 @@
 {
   "display_name": "pyspark",
   "language": "python",
-  "argv": [ "python3.6", "-m", "ipykernel", "-f", "{connection_file}" ],
+  "argv": [ "/opt/spark/run.sh", "-f", "{connection_file}" ],
   "env": {
     "SPARK_HOME": "/opt/spark",
     "JAVA_HOME": "/usr/lib/jvm/java-1.8-openjdk",
     "PYTHONPATH": "/opt/spark/python:/opt/spark/python/lib/py4j-0.10.7-src.zip:/opt/spark/python/lib/pyspark.zip",
-    "PYSPARK_SUBMIT_ARGS": "--master k8s://https://kubernetes:443 --conf spark.kubernetes.container.image=ksunhokim/gorani-stream:v4 --name job --conf spark.executor.instances=1 --conf spark.kubernetes.authenticate.driver.serviceAccountName=spar --conf spark.cassandra.connection.host=cassandra --conf spark.kubernetes.pyspark.pythonVersion=3 --conf spark.kubernetes.driverEnv.GORANI_KAFKA_BROKERS=kafka:9092 --jars local:///etc/spark-cassandra-connector_2.11-2.3.2.jar,local:///etc/spark-sql-kafka-0-10_2.11-2.4.0.jar,local:///etc/kafka-clients-0.10.1.0.jar,local:///etc/jsr166e-1.1.0.jar --executor-memory 1G --total-executor-cores 1 pyspark-shell",
-    "PYTHONSTARTUP": "/opt/spark/python/pyspark/shell.py"
+    "PYTHONSTARTUP": "/opt/spark/shell.py"
   }
 }
 

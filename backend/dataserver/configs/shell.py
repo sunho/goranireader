@@ -15,6 +15,11 @@
 # limitations under the License.
 #
 
+service_name = open('/tmp/service_name2').read()
+os.environ['PYSPARK_SUBMIT_ARGS'] = '--master k8s://https://kubernetes:443 --conf spark.driver.host=' + service_name + ' --conf spark.kubernetes.container.image=ksunhokim/gorani-stream:v5 --name job --conf spark.executor.instances=1 --conf spark.kubernetes.authenticate.driver.serviceAccountName=spark --conf spark.cassandra.connection.host=cassandra --conf spark.kubernetes.pyspark.pythonVersion=3 --conf spark.kubernetes.driverEnv.GORANI_KAFKA_BROKERS=kafka:9092 --executor-memory 2G --total-executor-cores 1 pyspark-shell'
+print(service_name)
+
+
 """
 An interactive shell.
 
