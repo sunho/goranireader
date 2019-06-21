@@ -22,6 +22,5 @@ run-stream:
 		--conf spark.cassandra.connection.host=cassandra \
 		--conf spark.kubernetes.pyspark.pythonVersion=3 \
 		--conf spark.kubernetes.driverEnv.GORANI_KAFKA_BROKERS="kafka:9092" \
-		--jars local:///etc/spark-cassandra-connector_2.11-2.3.2.jar,local:///etc/spark-sql-kafka-0-10_2.11-2.4.0.jar,local:///etc/kafka-clients-0.10.1.0.jar,local:///etc/jsr166e-1.1.0.jar \
 		local:///etc/stream.py
 

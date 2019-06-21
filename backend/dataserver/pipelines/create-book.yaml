@@ -17,4 +17,4 @@ $jupyter
       - name: create-book
         template: jupyter
         arguments:
-          parameters: [{name: notebook, value: create-book}, {name: args, value: '{"url":"{{workflow.parameters.url}}", "id":"{{workflow.parameters.id}}"}'}]
+          parameters: [{name: notebook, value: create-book}, {name: args, value: '{"url":"{{workflow.parameters.url}}", "id": {{workflow.parameters.id}} }'}]
