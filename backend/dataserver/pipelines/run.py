@@ -15,18 +15,15 @@ answers = prompt([
         'name': 'pipeline',
         'message': '어떤 작업을 실행할까요?',
         'choices': [
-            'auwpp와 예상 소요 시간 계산',
             '책 추천 및 답변자 매칭',
-            '페이지-시간 모델 훈련',
             '책 생성하기',
             '책 군집화'
+            '페이지-시간 모델 훈련',
         ]
     }
 ])
-if answers['pipeline'] == 'AUWPP와 예상 소요 시간 계산':
-    pass
-elif answers['pipeline'] == '책 추천 및 답변자 매칭':
-    pass
+if answers['pipeline'] == '책 추천 및 답변자 매칭':
+    run('update', dict())
 elif answers['pipeline'] == '페이지-시간 모델 훈련':
     pass
 elif answers['pipeline'] == '책 생성하기':
