@@ -37,7 +37,7 @@ function dataFetchReducer<T>(state: FetchApiState<T>, action: FetchApiAction<T>)
   }
 }
 
-export function useFetchApi<T>(initialUrl: string, initialData: T) {
+export function useFetchApi<T>(initialUrl: string, initialData: T): [FetchApiState<T>, any]{
   const [url, setUrl] = useState(initialUrl)
 
   const [state, dispatch] = useReducer(dataFetchReducer, {

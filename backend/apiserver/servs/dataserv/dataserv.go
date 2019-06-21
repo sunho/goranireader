@@ -5,35 +5,34 @@
 package dataserv
 
 import (
-	"context"
+	"github.com/go-redis/redis"
 	"encoding/json"
 	"gorani/models/datamodels"
 	"net/http"
 	"strconv"
 	"time"
 
-	"github.com/segmentio/kafka-go"
 )
 
 type DataServ struct {
-	userEvWriter *kafka.Writer
+	writer *redis.Client
 	host         string
 	client       *http.Client
 }
 
 type DataServConfig struct {
-	KafkaHost string `yaml:"kafka_host"`
+	RedisHost string `yaml:"redis_host"`
 	Host      string `yaml:"host"`
 }
 
 func Provide(conf DataServConfig) (*DataServ, error) {
-	userEvWriter := kafka.NewWriter(kafka.WriterConfig{
-		Brokers:  []string{conf.KafkaHost},
-		Topic:    "user_evlog",
-		Balancer: &kafka.LeastBytes{},
+	client := redis.NewClient(&redis.Options{
+		Addr:     conf.RedisHost,
+		Password: "", // no password set
+		DB:       0,  // use default DB
 	})
 	return &DataServ{
-		userEvWriter: userEvWriter,
+		writer:  client,
 		host:         conf.Host,
 		client: &http.Client{
 			Timeout: 5 * time.Second,
@@ -55,12 +54,15 @@ func (d *DataServ) AddUserEventLog(evlog *datamodels.UserEventLog) error {
 	if err != nil {
 		return err
 	}
-	go d.userEvWriter.WriteMessages(context.Background(),
-		kafka.Message{
-			Value: buf,
+	return d.writer.XAdd(&redis.XAddArgs{
+		Stream: "user_evlog",
+		MaxLen: 100,
+		MaxLenApprox: 100,
+		Values: map[string]interface{}{
+			"topic": "user_evlog",
+			"value": buf,
 		},
-	)
-	return nil
+	}).Err()
 }
 
 func (d *DataServ) GetSimilarWords(userid int, word string) ([]datamodels.SimilarWord, error) {

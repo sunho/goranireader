@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: apiserver
-        image: ksunhokim/gorani-apiserver:v2
+        image: ksunhokim/gorani-apiserver:v6
         volumeMounts:
         - name: config-volume
           mountPath: /home/file.yaml
