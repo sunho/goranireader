@@ -17,7 +17,7 @@ answers = prompt([
         'choices': [
             '책 추천 및 답변자 매칭',
             '책 생성하기',
-            '책 군집화'
+            '책 군집화',
             '페이지-시간 모델 훈련',
         ]
     }
@@ -25,7 +25,13 @@ answers = prompt([
 if answers['pipeline'] == '책 추천 및 답변자 매칭':
     run('update', dict())
 elif answers['pipeline'] == '페이지-시간 모델 훈련':
-    pass
+    answers = prompt([
+      {
+        'type': 'input',
+        'name': 'user_id',
+        'message': '유저의 아이디를 입력해주세요.'
+      }])
+    run('train', {'user_id':answers['user_id']})
 elif answers['pipeline'] == '책 생성하기':
     answers = prompt([
       {

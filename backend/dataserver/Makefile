@@ -13,6 +13,8 @@ build-migrate:
 	docker build -t ksunhokim/gorani-migrate:v$(VER) -f migrate.Dockerfile . && docker push ksunhokim/gorani-migrate:v$(VER)
 build-jupyter:
 	docker build -t ksunhokim/gorani-jupyter:v$(VER) -f jupyter.Dockerfile . && docker push ksunhokim/gorani-jupyter:v$(VER)
+build-tbase:
+	docker build -t gorani-tbase -f tbase.Dockerfile .
 build-tf:
 	docker build -t ksunhokim/gorani-tf:v$(VER) -f tf.Dockerfile . && docker push ksunhokim/gorani-tf:v$(VER)
 run-stream: 
