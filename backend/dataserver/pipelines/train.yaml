@@ -6,19 +6,10 @@ spec:
   entrypoint: dag
   templates:
 $jupyter
-  - name: dag
-    dag:
-      tasks:
-      - name: compute-initial-books
-        template: jupyter
-        arguments:
-          parameters: [{name: message, value: A}]
-      - name: recommend-books
-        dependencies: [compute-initial-books]
-        template: jupyter
-        arguments:
-          parameters: [{name: message, value: A}]
-      - name: feed-posts
-        template: jupyter
-        arguments:
-          parameters: [{name: message, value: B}]
+    - name: dag
+      dag:
+        tasks:
+        - name: train-time-model
+          template: tf
+          arguments:
+            parameters: [{name: notebook, value: train-time-model}, {name: args, value: '{}'}]

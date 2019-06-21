@@ -4,8 +4,20 @@
       - name: notebook
       - name: args
     container:
-      image: ksunhokim/gorani-jupyter:v76
+      image: ksunhokim/gorani-jupyter:v101
       command: [python3.6, "/home/run-notebook.py", "{{inputs.parameters.notebook}}", "{{inputs.parameters.args}}", "pyspark"]
+    outputs:
+      artifacts:
+      - name: output-notebook
+        path: /tmp/output.ipynb
+  - name: tf
+    inputs:
+      parameters:
+      - name: notebook
+      - name: args
+    container:
+      image: ksunhokim/gorani-tf:v101
+      command: [python3.6, "/home/run-notebook.py", "{{inputs.parameters.notebook}}", "{{inputs.parameters.args}}", "python3"]
     outputs:
       artifacts:
       - name: output-notebook
