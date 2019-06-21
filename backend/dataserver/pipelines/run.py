@@ -45,4 +45,10 @@ elif answers['pipeline'] == '책 생성하기':
     run('create-book', {'url':answers['url'], 'id':answers['id']})
 
 elif answers['pipeline'] == '책 군집화':
-    pass
+    answers = prompt([
+      {
+        'type': 'input',
+        'name': 'k',
+        'message': '군집의 개수를 입력해주세요.'
+      }])
+    run('cluster-books', {'k': answers['k']})

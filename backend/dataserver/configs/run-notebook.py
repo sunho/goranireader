@@ -11,13 +11,7 @@ import sys
 params = json.loads(args.args)
 
 import os
-
-
-with open('/tmp/service_name', 'w') as f:
-    f.write('export SERVICE_NAME='+os.environ['SERVICE_NAME'])
-
-with open('/tmp/service_name2', 'w') as f:
-    f.write(os.environ['SERVICE_NAME'])
+from string import Template
 
 pm.execute_notebook(
    '/home/'+args.notebook+'.ipynb',
