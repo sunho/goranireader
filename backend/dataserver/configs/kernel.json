@@ -1,11 +1,14 @@
 {
   "display_name": "pyspark",
   "language": "python",
-  "argv": [ "/opt/spark/run.sh", "-f", "{connection_file}" ],
+  "argv": [ "python3.6", "-m", "ipykernel", "-f", "{connection_file}" ],
   "env": {
     "SPARK_HOME": "/opt/spark",
     "JAVA_HOME": "/usr/lib/jvm/java-1.8-openjdk",
+    "PYSPARK_PYTHON": "python3.6",
+    "PYSPARK_DRIVER_PYTHON": "python3.6",
     "PYTHONPATH": "/opt/spark/python:/opt/spark/python/lib/py4j-0.10.7-src.zip:/opt/spark/python/lib/pyspark.zip",
+    "PYSPARK_SUBMIT_ARGS": "--name job --conf spark.executor.instances=1 --conf spark.cassandra.connection.host=cassandra --conf spark.executorEnv.GORANI_KAFKA_BROKERS=kafka:9092 --executor-memory 2G --total-executor-cores 1 pyspark-shell",
     "PYTHONSTARTUP": "/opt/spark/shell.py"
   }
 }
