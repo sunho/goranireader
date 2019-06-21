@@ -14,6 +14,8 @@ RUN ln -s /usr/include/locale.h /usr/include/xlocale.h
 
 RUN pip3.6 install seaborn
 
+RUN python3.6 setup.py install
+
 COPY ./configs/kernel.json /usr/share/jupyter/kernels/pyspark/kernel.json
 COPY ./configs/shell.py /opt/spark/shell.py
 
@@ -21,8 +23,3 @@ RUN mkdir /home/ipython
 
 RUN mkdir -p /root/.ipython/profile_pyspark/startup/
 ADD ./configs/profile.py /root/.ipython/profile_pyspark/startup/00-load.py
-
-ADD gorani gorani
-ADD setup.py setup.py
-
-RUN python3.6 setup.py install

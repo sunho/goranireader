@@ -16,8 +16,11 @@
       - name: notebook
       - name: args
     container:
-      image: ksunhokim/gorani-tf:v101
+      image: ksunhokim/gorani-tf:v103
       command: [python3.6, "/home/run-notebook.py", "{{inputs.parameters.notebook}}", "{{inputs.parameters.args}}", "python3"]
+      resources:
+        limits:
+          nvidia.com/gpu: 1
     outputs:
       artifacts:
       - name: output-notebook
