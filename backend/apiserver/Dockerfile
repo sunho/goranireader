@@ -15,6 +15,6 @@ RUN GO111MODULE=on packr2
 
 RUN GO111MODULE=on go install
 
-WORKDIR /root
+WORKDIR /home
 
 CMD ["gorani"]

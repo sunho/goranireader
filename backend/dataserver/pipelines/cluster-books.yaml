@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: cluster-books-
+spec:
+  entrypoint: dag
+  arguments:
+    parameters:
+    - name: k
+  templates:
+$jupyter
+  - name: dag
+    dag:
+      tasks:
+      - name: cluster-books
+        template: jupyter
+        arguments:
+          parameters: [{name: notebook, value: cluster-books}, {name: args, value: '{"k":{{workflow.parameters.k}}}'}]
