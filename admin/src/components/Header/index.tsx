@@ -17,22 +17,8 @@ const Header: React.SFC = () => (
         <Menu
             borderless
           >
-            <Menu.Item>
-            <Image size='mini' src='/logo.png' />
-            </Menu.Item>
-            <Menu.Item header>고라니 리더 관리자</Menu.Item>
-
-            <Menu.Menu position='right'>
-            <Dropdown text='Dropdown' pointing className='link item'>
-                <Dropdown.Menu>
-                <Dropdown.Item>학급 1</Dropdown.Item>
-                <Dropdown.Item>학급 2</Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Item>로그아웃</Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
-            </Menu.Menu>
-          </Menu>
+            <Menu.Item header>고라니 리더 교사용 페이지</Menu.Item>
+        </Menu>
     </div>
 )
 

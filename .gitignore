@@ -10,13 +10,16 @@ Carthage
 /backend/apiserver/gorani
 /backend/apiserver/migrations/schema.sql
 /backend/apiserver/database.yml
-/backend/apiserver/*.yaml
 
 /backend/dataserver/.venv
 /backend/dataserver/miner/libs
 /backend/dataserver/dist
 /backend/dataserver/in
 /backend/dataserver/logs
+/backend/dataserver/ks_app/lib
+/backend/dataserver/ks_app/.ksonnet/registries
+/backend/dataserver/ks_app/app.override.yaml
+/backend/dataserver/ks_app/.ks_environment
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
