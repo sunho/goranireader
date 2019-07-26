@@ -7,7 +7,6 @@ package middles
 import (
 	"gorani/models"
 	"gorani/models/dbmodels"
-	"gorani/servs/dbserv"
 	"strconv"
 
 	"github.com/labstack/echo"
@@ -43,33 +42,6 @@ func (a *BookParamMiddle) Act(c2 echo.Context) error {
 	return nil
 }
 
-type BookOfUserMiddle struct {
-	DB *dbserv.DBServ `dim:"on"`
-}
-
-func (b *BookOfUserMiddle) Require() []string {
-	return []string{
-		"ContextMiddle",
-		"AuthMiddle",
-		"TxMiddle",
-		"BookParamMiddle",
-	}
-}
-
-func (b *BookOfUserMiddle) Act(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	books, err := b.DB.GetBooksOfUser(c.Tx, &c.User)
-	if err != nil {
-		return err
-	}
-	for _, book := range books {
-		if c.BookParam.ID == book.ID {
-			return nil
-		}
-	}
-	return echo.NewHTTPError(403, "You don't own the book")
-}
-
 type MemoryParamMiddle struct {
 }
 
@@ -101,59 +73,5 @@ func (m *MemoryParamMiddle) Act(c2 echo.Context) error {
 		}
 	}
 	c.MemoryParam = memory
-	return nil
-}
-
-type PostParamMiddle struct {
-}
-
-func (m *PostParamMiddle) Require() []string {
-	return []string{
-		"ContextMiddle",
-		"TxMiddle",
-		"AuthMiddle",
-	}
-}
-
-func (m *PostParamMiddle) Act(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	str := c.Param("postid")
-	var post dbmodels.Post
-	id, err := strconv.Atoi(str)
-	if err != nil {
-		return err
-	}
-	err = c.Tx.Where("id = ?", id).First(&post)
-	if err != nil {
-		return echo.NewHTTPError(404, "No such post")
-	}
-	c.PostParam = post
-	return nil
-}
-
-type PostCommentParamMiddle struct {
-}
-
-func (m *PostCommentParamMiddle) Require() []string {
-	return []string{
-		"ContextMiddle",
-		"TxMiddle",
-		"AuthMiddle",
-	}
-}
-
-func (m *PostCommentParamMiddle) Act(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	str := c.Param("commentid")
-	var comment dbmodels.PostComment
-	id, err := strconv.Atoi(str)
-	if err != nil {
-		return err
-	}
-	err = c.Tx.Where("id = ?", id).First(&comment)
-	if err != nil {
-		return echo.NewHTTPError(404, "No such comment")
-	}
-	c.CommentParam = comment
 	return nil
 }

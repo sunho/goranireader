@@ -3,6 +3,7 @@ module gorani
 require (
 	github.com/PuerkitoBio/goquery v1.4.1
 	github.com/andybalholm/cascadia v1.0.0 // indirect
+	github.com/apache/thrift v0.12.0 // indirect
 	github.com/coreos/etcd v3.3.13+incompatible // indirect
 	github.com/coreos/go-semver v0.3.0 // indirect
 	github.com/go-ini/ini v1.38.3 // indirect
@@ -25,8 +26,10 @@ require (
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/magiconair/properties v1.8.1 // indirect
 	github.com/minio/minio-go v6.0.14+incompatible
+	github.com/openzipkin/zipkin-go v0.1.6 // indirect
 	github.com/pelletier/go-toml v1.4.0 // indirect
 	github.com/pkg/errors v0.8.1
+	github.com/prometheus/client_golang v0.9.3-0.20190127221311-3c4408c8b829 // indirect
 	github.com/russross/blackfriday v2.0.0+incompatible // indirect
 	github.com/segmentio/kafka-go v0.2.2
 	github.com/sirupsen/logrus v1.4.2 // indirect
@@ -45,9 +48,9 @@ require (
 	go.uber.org/zap v1.9.1
 	golang.org/x/crypto v0.0.0-20190513172903-22d7a77e9e5f
 	golang.org/x/net v0.0.0-20190522155817-f3200d17e092 // indirect
+	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 	golang.org/x/sys v0.0.0-20190523142557-0e01d883c5c5 // indirect
-	golang.org/x/text v0.3.2 // indirect
 	golang.org/x/tools v0.0.0-20190523174634-38d8bcfa38af // indirect
-	google.golang.org/api v0.3.2
+	google.golang.org/api v0.7.0
 	gopkg.in/ini.v1 v1.39.1 // indirect
 )

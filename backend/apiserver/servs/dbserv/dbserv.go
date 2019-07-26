@@ -5,8 +5,6 @@
 package dbserv
 
 import (
-	"gorani/models/dbmodels"
-
 	"github.com/gobuffalo/packr/v2"
 
 	"github.com/labstack/echo"
@@ -60,29 +58,6 @@ func (db *DBServ) ReturnErrIfNotExists(bean interface{}) error {
 		return echo.NewHTTPError(404, "not existing resource")
 	}
 	return nil
-}
-
-func (db *DBServ) GetBooksOfUser(tx *pop.Connection, user *dbmodels.User) ([]dbmodels.Book, error) {
-	if tx == nil {
-		tx = db.Connection
-	}
-	var out []dbmodels.Book
-	err := tx.Q().
-		Eager().
-		InnerJoin("users_books", "books.id = users_books.book_id").
-		Where("users_books.user_id = ?", user.ID).All(&out)
-	return out, err
-}
-
-func (db *DBServ) GetSentencePostFromPost(tx *pop.Connection, post *dbmodels.Post) (dbmodels.SentencePost, error) {
-	if tx == nil {
-		tx = db.Connection
-	}
-	var out dbmodels.SentencePost
-	err := tx.Q().
-		Where("id = ?", post.ID).
-		First(&out)
-	return out, err
 }
 
 func (db *DBServ) Upsert(tx *pop.Connection, model interface{}) error {
