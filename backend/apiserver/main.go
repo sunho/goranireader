@@ -16,7 +16,7 @@ import (
 
 func main() {
 	d := dim.New()
-	d.Provide(authserv.Provide, dbserv.Provide, fileserv.Provide, dataserv.Provide)
+	d.Provide(googleserv.Provide, authserv.Provide, dbserv.Provide, fileserv.Provide, dataserv.Provide)
 	d.Init("")
 	d.Register(routes.RegisterRoutes)
 	d.Start(":5353")

@@ -26,7 +26,6 @@ func (a *AdminBook) Register(g *dim.Group) {
 		g.PUT("", a.Put)
 		g.DELETE("", a.Delete)
 		g.PUT("/epub", a.PutEpub)
-		g.PUT("/sens", a.PutSens)
 	}, &middles.BookParamMiddle{})
 
 }
@@ -89,28 +88,6 @@ func (a *AdminBook) PutEpub(c2 echo.Context) error {
 	c.BookParam.Epub.Epub = nulls.NewString(url)
 
 	err = c.Tx.Update(&c.BookParam.Epub)
-	if err != nil {
-		return err
-	}
-
-	return c.NoContent(200)
-}
-
-func (a *AdminBook) PutSens(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	f, err := c.FormFile("file")
-	if err != nil {
-		return err
-	}
-
-	url, err := a.File.UploadFileHeader(f)
-	if err != nil {
-		return err
-	}
-
-	c.BookParam.Sens.Sens = nulls.NewString(url)
-
-	err = c.Tx.Update(&c.BookParam.Sens)
 	if err != nil {
 		return err
 	}

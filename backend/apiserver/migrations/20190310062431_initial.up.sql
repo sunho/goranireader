@@ -1,8 +1,3 @@
-create table categories (
-    id serial primary key,
-    name character varying(255) not null
-);
-
 create table books (
     id serial primary key,
     created_at timestamp without time zone not null,
@@ -40,45 +35,6 @@ create table users (
     username character varying(255) not null unique,
     email character varying(255) not null unique,
     password_hash character varying(255) not null
-);
-
-create table sens_results (
-    id uuid not null,
-    user_id integer references users on delete cascade,
-    book_id integer references books on delete cascade,
-    sens_id integer not null,
-    score integer not null,
-    primary key(user_id, book_id, sens_id)
-);
-
-create table quiz_results (
-    id uuid not null,
-    user_id integer references users on delete cascade,
-    book_id integer references books on delete cascade,
-    quiz_id integer not null,
-    score integer not null,
-    primary key(user_id, book_id, quiz_id)
-);
-
-create table reviews (
-    id serial primary key,
-    book_id integer references books on delete cascade,
-    user_id integer references users on delete cascade,
-    content character varying(1024) not null,
-    rate integer not null
-);
-
-create table users_books (
-    id uuid not null,
-    user_id integer references users on delete cascade,
-    book_id integer references books on delete cascade,
-    primary key(user_id, book_id)
-);
-
-create table recommend_infoes (
-    id uuid not null unique,
-    user_id integer primary key references users on delete cascade,
-    target_book_id integer
 );
 
 create table memories (

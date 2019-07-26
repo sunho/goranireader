@@ -25,25 +25,7 @@ type Book struct {
 	Author      string           `db:"author" json:"author"`
 	Cover       string           `db:"cover" json:"cover"`
 	Epub        BookEpub         `has_one:"book_epub" json:"epub"`
-	Sens        BookSens         `has_one:"book_sens" json:"sens"`
 	Categories  utils.SQLStrings `db:"categories" json:"categories"`
-}
-
-type DetailedBook struct {
-	ID          int              `db:"id" json:"id" pk:"true"`
-	CreatedAt   time.Time        `db:"created_at" json:"created_at"`
-	UpdatedAt   time.Time        `db:"updated_at" json:"updated_at"`
-	Description string           `db:"description" json:"description"`
-	ISBN        string           `db:"isbn" json:"isbn"`
-	Name        string           `db:"name" json:"name"`
-	NativeName  nulls.String     `db:"native_name" json:"native_name"`
-	Author      string           `db:"author" json:"author"`
-	Cover       string           `db:"cover" json:"cover"`
-	Epub        BookEpub         `has_one:"book_epub" json:"epub" fk_id:"book_id"`
-	Sens        BookSens         `has_one:"book_sens" json:"sens" fk_id:"book_id"`
-	Rate        nulls.Float64    `db:"rate" json:"rate"`
-	Categories  utils.SQLStrings `db:"categories" json:"categories"`
-	Difficulty  nulls.Int        `db:"difficulty" rw:"r" json:"difficulty"`
 }
 
 type BookEpub struct {
@@ -59,19 +41,4 @@ func (b BookEpub) MarshalJSON() ([]byte, error) {
 		return []byte("null"), nil
 	}
 	return []byte("\"" + b.Epub.String + "\""), nil
-}
-
-type BookSens struct {
-	ID        uuid.UUID    `db:"id" json:"-"`
-	BookID    int          `db:"book_id" pk:"true" json:"-"`
-	CreatedAt time.Time    `db:"created_at" json:"created_at"`
-	UpdatedAt time.Time    `db:"updated_at" json:"updated_at"`
-	Sens      nulls.String `db:"sens" json:"sens"`
-}
-
-func (b BookSens) MarshalJSON() ([]byte, error) {
-	if !b.Sens.Valid {
-		return []byte("null"), nil
-	}
-	return []byte("\"" + b.Sens.String + "\""), nil
 }

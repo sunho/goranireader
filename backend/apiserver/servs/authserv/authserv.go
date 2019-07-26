@@ -97,24 +97,6 @@ func (a *AuthServ) Login(username string, idtoken string) (string, error) {
 		if err != nil {
 			return "", err
 		}
-
-		var books []dbmodels.StartRecommendedBook
-		err = a.DB.Q().All(&books)
-		if err != nil {
-			return "", err
-		}
-
-		rbooks := []dbmodels.RecommendedBook{}
-		for _, book := range books {
-			rbooks = append(rbooks, dbmodels.RecommendedBook{
-				UserID: user.ID,
-				BookID: book.ID,
-			})
-		}
-		err = a.DB.Create(rbooks)
-		if err != nil {
-			return "", err
-		}
 	}
 	return a.CreateToken(user.ID), nil
 }

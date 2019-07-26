@@ -8,11 +8,10 @@ import (
 	"gorani/book/bookparse"
 	"gorani/models"
 	"gorani/models/dbmodels"
-	"gorani/models/sens"
 	"gorani/servs/fileserv"
 	"gorani/utils"
-	"strconv"
 	"mime"
+	"strconv"
 
 	"github.com/gobuffalo/nulls"
 	"github.com/labstack/echo"
@@ -27,7 +26,6 @@ type Admin struct {
 
 func (a *Admin) Register(d *dim.Group) {
 	d.Route("/book", &AdminBook{})
-	d.GET("/util/initial.sens", a.InitialSens)
 	d.POST("/util/book-from-epub", a.BookFromEpub)
 	d.GET("/student", a.GetStudent)
 	d.GET("/mission", a.GetMission)
@@ -36,8 +34,8 @@ func (a *Admin) Register(d *dim.Group) {
 }
 
 type Student struct {
-	Name string `json:"name"`
-	CompletedMissions []int `json:"complted_missions"`
+	Name              string `json:"name"`
+	CompletedMissions []int  `json:"complted_missions"`
 }
 
 func (a *Admin) GetStudent(c2 echo.Context) error {
@@ -64,7 +62,7 @@ func (a *Admin) GetStudent(c2 echo.Context) error {
 			}
 		}
 		out = append(out, Student{
-			Name: s.Username,
+			Name:              s.Username,
 			CompletedMissions: cp,
 		})
 	}
@@ -111,27 +109,6 @@ func (a *Admin) DeleteMission(c2 echo.Context) error {
 		return err
 	}
 	return c.NoContent(200)
-}
-
-func (a *Admin) InitialSens(c echo.Context) error {
-	f, err := c.FormFile("file")
-	if err != nil {
-		return err
-	}
-	r, err := f.Open()
-	if err != nil {
-		return err
-	}
-	defer r.Close()
-	b, err := bookparse.Parse("", r, f.Size)
-	if err != nil {
-		return err
-	}
-	out, err := sens.NewFromBook(b)
-	if err != nil {
-		return err
-	}
-	return c.Blob(200, sens.MIME, out.Encode())
 }
 
 func (a *Admin) BookFromEpub(c2 echo.Context) error {
