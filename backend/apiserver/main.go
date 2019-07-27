@@ -8,16 +8,18 @@ import (
 	"gorani/routes"
 	"gorani/servs/authserv"
 	"gorani/servs/dataserv"
-	"gorani/servs/dbserv"
-	"gorani/servs/fileserv"
+	"gorani/servs/googleserv"
 
 	"github.com/sunho/dim"
 )
 
 func main() {
-	d := dim.New()
-	d.Provide(googleserv.Provide, authserv.Provide, dbserv.Provide, fileserv.Provide, dataserv.Provide)
-	d.Init("")
-	d.Register(routes.RegisterRoutes)
-	d.Start(":5353")
+	w := webf.New("gorani")
+	w.Use(
+		features.FeatureDBServ(features.DBServDialectPostgresql),
+		features.FeatureS3Serv(),
+	)
+	w.Provide(googleserv.Provide, authserv.Provide, dataserv.Provide)
+	w.Register(routes.RegisterRoutes)
+	w.Start()
 }

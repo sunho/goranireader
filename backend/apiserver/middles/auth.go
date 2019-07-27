@@ -7,7 +7,6 @@ package middles
 import (
 	"fmt"
 	"gorani/models"
-	"gorani/models/dbmodels"
 	"gorani/servs/authserv"
 
 	"github.com/labstack/echo"
@@ -36,7 +35,7 @@ func (a *AuthMiddle) Act(c2 echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(403, "Invalid token")
 	}
-	var user dbmodels.User
+	var user models.User
 	err = c.Tx.Where("id = ?", id).First(&user)
 	if err != nil {
 		return err

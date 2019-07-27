@@ -2,11 +2,12 @@
 // Copyright © 2019 Sunho Kim. All rights reserved.
 //
 
-package dbmodels
+package models
 
 import "github.com/gobuffalo/nulls"
 
 type Memory struct {
+	wfdb.DefaultModel `db:"-"`
 	ID       int    `db:"id" json:"id"`
 	UserID   int    `db:"user_id" pk:"true" json:"user_id"`
 	Word     string `db:"word" pk:"true" json:"-"`
@@ -14,6 +15,7 @@ type Memory struct {
 }
 
 type DetailedMemory struct {
+	wfdb.DefaultModel `db:"-"`
 	ID       int           `db:"id" json:"id"`
 	UserID   int           `db:"user_id" pk:"true" json:"user_id"`
 	Word     string        `db:"word" pk:"true" json:"-"`

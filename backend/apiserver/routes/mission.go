@@ -7,11 +7,10 @@ package routes
 import (
 	"gorani/middles"
 	"gorani/models"
-	"gorani/models/dbmodels"
-	"gorani/servs/dbserv"
 	"strconv"
 
-	"github.com/labstack/echo"
+	"github.com/sunho/webf/servs/dbserv"
+
 	"github.com/sunho/dim"
 )
 
@@ -26,9 +25,8 @@ func (c *Mission) Register(d *dim.Group) {
 	d.PUT("/:missionid/progress", c.Put)
 }
 
-func (m *Mission) List(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	var out []dbmodels.ClassMission
+func (m *Mission) List(c *models.Context) error {
+	var out []models.ClassMission
 	err := c.Tx.Q().Where("class_id = ?", c.User.ClassID.Int).All(&out)
 	if err != nil {
 		return err
@@ -36,13 +34,12 @@ func (m *Mission) List(c2 echo.Context) error {
 	return c.JSON(200, out)
 }
 
-func (m *Mission) Get(c2 echo.Context) error {
-	c := c2.(*models.Context)
+func (m *Mission) Get(c *models.Context) error {
 	id, err := strconv.Atoi(c.Param("missionid"))
 	if err != nil {
 		return err
 	}
-	var out dbmodels.UserMissionProgress
+	var out models.UserMissionProgress
 	err = c.Tx.Q().Where("user_id = ? AND mission_id = ?", c.User.ID, id).
 		First(&out)
 	if err != nil {
@@ -51,8 +48,7 @@ func (m *Mission) Get(c2 echo.Context) error {
 	return c.JSON(200, out)
 }
 
-func (m *Mission) Put(c2 echo.Context) error {
-	c := c2.(*models.Context)
+func (m *Mission) Put(c *models.Context) error {
 	input := struct {
 		ReadPages int `json:"read_pages"`
 	}{}
@@ -63,11 +59,11 @@ func (m *Mission) Put(c2 echo.Context) error {
 	if err != nil {
 		return err
 	}
-	var item dbmodels.UserMissionProgress
+	var item models.UserMissionProgress
 	item.UserID = c.User.ID
 	item.MissionID = id
 	item.ReadPages = input.ReadPages
-	err = m.DB.Upsert(c.Tx, &item)
+	err = m.DB.Upsert(&item)
 	if err != nil {
 		return err
 	}

@@ -7,10 +7,10 @@ package routes
 import (
 	"gorani/middles"
 	"gorani/models"
-	"gorani/models/dbmodels"
 	"gorani/servs/dataserv"
-	"gorani/servs/dbserv"
 	"strconv"
+
+	"github.com/sunho/webf/servs/dbserv"
 
 	"github.com/labstack/echo"
 	"github.com/sunho/dim"
@@ -37,9 +37,8 @@ func (m *Memory) Register(d *dim.Group) {
 	}, &middles.MemoryParamMiddle{})
 }
 
-func (m *Memory) List(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	var out []dbmodels.DetailedMemory
+func (m *Memory) List(c *models.Context) error {
+	var out []models.DetailedMemory
 	p, _ := strconv.Atoi(c.QueryParam("p"))
 	err := c.Tx.Where("word = ?", c.Param("word")).Paginate(p, memoriesPerPage).All(&out)
 	if err != nil {
@@ -48,9 +47,7 @@ func (m *Memory) List(c2 echo.Context) error {
 	return c.JSON(200, out)
 }
 
-func (m *Memory) ListSimilarWord(c2 echo.Context) error {
-	c := c2.(*models.Context)
-
+func (m *Memory) ListSimilarWord(c *models.Context) error {
 	out, err := m.Data.GetSimilarWords(c.User.ID, c.Param("word"))
 	if err != nil {
 		return err
@@ -58,31 +55,28 @@ func (m *Memory) ListSimilarWord(c2 echo.Context) error {
 	return c.JSON(200, out)
 }
 
-func (m *Memory) Post(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	var memory dbmodels.Memory
+func (m *Memory) Post(c *models.Context) error {
+	var memory models.Memory
 	if err := c.Bind(&memory); err != nil {
 		return err
 	}
 	memory.UserID = c.User.ID
 	memory.Word = c.Param("word")
-	if err := m.DB.Upsert(c.Tx, &memory); err != nil {
+	if err := m.DB.Upsert(&memory); err != nil {
 		return err
 	}
 	return c.NoContent(200)
 }
 
-func (m *Memory) Get(c2 echo.Context) error {
-	c := c2.(*models.Context)
+func (m *Memory) Get(c *models.Context) error {
 	return c.JSON(200, c.MemoryParam)
 }
 
-func (m *Memory) Put(c2 echo.Context) error {
-	c := c2.(*models.Context)
+func (m *Memory) Put(c *models.Context) error {
 	if c.MemoryParam.UserID != c.User.ID {
 		return echo.NewHTTPError(403, "That's not your memory")
 	}
-	var memory dbmodels.Memory
+	var memory models.Memory
 	if err := c.Bind(&memory); err != nil {
 		return err
 	}
@@ -96,8 +90,7 @@ func (m *Memory) Put(c2 echo.Context) error {
 	return c.NoContent(200)
 }
 
-func (m *Memory) Delete(c2 echo.Context) error {
-	c := c2.(*models.Context)
+func (m *Memory) Delete(c *models.Context) error {
 	if c.MemoryParam.UserID != c.User.ID {
 		return echo.NewHTTPError(403, "That's not your memory")
 	}
