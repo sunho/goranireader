@@ -12,7 +12,7 @@ import (
 
 func RegisterRoutes(g *dim.Group) {
 	g.Use(&middles.LoggerMiddle{})
-	g.Use(&middles.ContextMiddle{}, &middles.TxMiddle{}, &middles.ErrorMiddle{})
+	g.Use(&middles.ErrorMiddle{})
 	g.Route("/book", &Book{})
 	g.Route("/memory", &Memory{})
 	g.Route("/user", &User{})

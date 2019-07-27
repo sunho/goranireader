@@ -6,8 +6,8 @@ package routes
 
 import (
 	"gorani/models"
-	"gorani/models/dbmodels"
-	"gorani/servs/dbserv"
+
+	"github.com/sunho/webf/servs/dbserv"
 
 	"github.com/labstack/echo"
 	"github.com/sunho/dim"
@@ -24,9 +24,8 @@ func (r *Rate) Register(d *dim.Group) {
 	d.PUT("", r.Put)
 }
 
-func (r *Rate) Get(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	var out dbmodels.Rate
+func (r *Rate) Get(c *models.Context) error {
+	var out models.Rate
 	err := c.Tx.Where("user_id = ? AND kind = ? AND target_id = ?", c.User.ID, r.kind, r.targetID(c)).First(&out)
 	if err != nil {
 		return echo.NewHTTPError(404, "no such resource")
@@ -34,16 +33,15 @@ func (r *Rate) Get(c2 echo.Context) error {
 	return c.JSON(200, out)
 }
 
-func (r *Rate) Put(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	var item dbmodels.Rate
+func (r *Rate) Put(c *models.Context) error {
+	var item models.Rate
 	if err := c.Bind(&item); err != nil {
 		return err
 	}
 	item.UserID = c.User.ID
 	item.Kind = r.kind
 	item.TargetID = r.targetID(c)
-	if err := r.DB.Upsert(c.Tx, &item); err != nil {
+	if err := r.DB.Upsert(&item); err != nil {
 		return err
 	}
 	return c.NoContent(200)

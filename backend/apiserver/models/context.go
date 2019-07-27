@@ -5,16 +5,20 @@
 package models
 
 import (
-	"gorani/models/dbmodels"
+	"github.com/sunho/webf"
 
 	"github.com/labstack/echo"
-	"github.com/sunho/pop"
 )
 
 type Context struct {
-	echo.Context
-	User        dbmodels.User
-	BookParam   dbmodels.Book
-	MemoryParam dbmodels.Memory
-	Tx          *pop.Connection
+	*webf.DefaultContext
+	User        User
+	BookParam   Book
+	MemoryParam Memory
+}
+
+func NewContext(c echo.Context) webf.Context {
+	return &Context{
+		DefaultContext: webf.NewDefaultContext(c),
+	}
 }

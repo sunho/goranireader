@@ -5,7 +5,7 @@
 package dataserv
 
 import (
-	"gorani/models/datamodels"
+	"gorani/models"
 )
 
 type DataServ struct {
@@ -23,19 +23,19 @@ func (DataServ) ConfigName() string {
 	return "data"
 }
 
-func (d *DataServ) AddUserEventLogPayload(userid int, payload datamodels.UserEventLogPayload) error {
-	evlog := datamodels.NewUserEventLog(userid, payload)
+func (d *DataServ) AddUserEventLogPayload(userid int, payload models.UserEventLogPayload) error {
+	evlog := models.NewUserEventLog(userid, payload)
 	return d.AddUserEventLog(evlog)
 }
 
-func (d *DataServ) AddUserEventLog(evlog *datamodels.UserEventLog) error {
+func (d *DataServ) AddUserEventLog(evlog *models.UserEventLog) error {
 	return nil
 }
 
-func (d *DataServ) GetSimilarWords(userid int, word string) ([]datamodels.SimilarWord, error) {
+func (d *DataServ) GetSimilarWords(userid int, word string) ([]models.SimilarWord, error) {
 	return nil, nil
 }
 
-func (d *DataServ) AddSystemEventLog(payload datamodels.SystemEventLogPayload) error {
+func (d *DataServ) AddSystemEventLog(payload models.SystemEventLogPayload) error {
 	return nil
 }

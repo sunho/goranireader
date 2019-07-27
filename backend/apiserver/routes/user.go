@@ -7,12 +7,11 @@ package routes
 import (
 	"gorani/middles"
 	"gorani/models"
-	"gorani/models/dbmodels"
 	"gorani/servs/authserv"
-	"gorani/servs/dbserv"
 	"strconv"
 
-	"github.com/labstack/echo"
+	"github.com/sunho/webf/servs/dbserv"
+
 	"github.com/sunho/dim"
 )
 
@@ -30,7 +29,7 @@ func (u *User) Register(d *dim.Group) {
 	})
 }
 
-func (u *User) Login(c echo.Context) error {
+func (u *User) Login(c *models.Context) error {
 	params := struct {
 		Username string `json:"username"`
 		IdToken  string `json:"id_token"`
@@ -46,18 +45,16 @@ func (u *User) Login(c echo.Context) error {
 	return c.String(200, token)
 }
 
-func (u *User) GetMe(c2 echo.Context) error {
-	c := c2.(*models.Context)
+func (u *User) GetMe(c *models.Context) error {
 	return c.NoContent(200)
 }
 
-func (u *User) Get(c2 echo.Context) error {
-	c := c2.(*models.Context)
+func (u *User) Get(c *models.Context) error {
 	id, err := strconv.Atoi(c.Param("userid"))
 	if err != nil {
 		return err
 	}
-	var user dbmodels.User
+	var user models.User
 	err = c.Tx.Where("id = ?", id).First(&user)
 	if err != nil {
 		return err

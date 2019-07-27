@@ -2,7 +2,7 @@
 // Copyright © 2019 Sunho Kim. All rights reserved.
 //
 
-package datamodels
+package models
 
 import (
 	"gorani/utils"

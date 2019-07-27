@@ -6,7 +6,6 @@ package middles
 
 import (
 	"gorani/models"
-	"gorani/models/dbmodels"
 	"strconv"
 
 	"github.com/labstack/echo"
@@ -31,7 +30,7 @@ func (a *BookParamMiddle) Act(c2 echo.Context) error {
 		return err
 	}
 
-	var book dbmodels.Book
+	var book models.Book
 	err = c.Tx.Eager().Where("id = ?", id).First(&book)
 	if err != nil {
 		return echo.NewHTTPError(404, "No such book")
@@ -56,7 +55,7 @@ func (m *MemoryParamMiddle) Require() []string {
 func (m *MemoryParamMiddle) Act(c2 echo.Context) error {
 	c := c2.(*models.Context)
 	str := c.Param("memoryid")
-	var memory dbmodels.Memory
+	var memory models.Memory
 	if str == "my" {
 		err := c.Tx.Where("user_id = ? and word = ?", c.User.ID, c.Param("word")).First(&memory)
 		if err != nil {

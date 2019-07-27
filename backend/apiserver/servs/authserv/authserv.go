@@ -6,8 +6,10 @@ package authserv
 
 import (
 	"errors"
-	"gorani/models/dbmodels"
-	"gorani/servs/dbserv"
+	"gorani/models"
+
+	"github.com/sunho/webf/servs/dbserv"
+
 	"gorani/utils"
 	"net/http"
 	"strconv"
@@ -55,8 +57,8 @@ func (a *AuthServ) Init() error {
 	return nil
 }
 
-func (a *AuthServ) getUser(id int) (dbmodels.User, error) {
-	user := dbmodels.User{}
+func (a *AuthServ) getUser(id int) (models.User, error) {
+	user := models.User{}
 	err := a.DB.Q().Where("id = ?", id).First(&user)
 	return user, err
 }
@@ -85,10 +87,10 @@ func (a *AuthServ) Login(username string, idtoken string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	var user dbmodels.User
+	var user models.User
 	err = a.DB.Q().Where("oauth_id = ?", info.UserId).First(&user)
 	if err != nil {
-		user = dbmodels.User{
+		user = models.User{
 			OauthID:  info.UserId,
 			Email:    info.Email,
 			Username: username,

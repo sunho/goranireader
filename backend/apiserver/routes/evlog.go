@@ -7,12 +7,9 @@ package routes
 import (
 	"gorani/middles"
 	"gorani/models"
-	"gorani/models/datamodels"
 	"gorani/servs/dataserv"
 	"gorani/utils"
 	"time"
-
-	"github.com/labstack/echo"
 
 	"github.com/sunho/dim"
 )
@@ -26,9 +23,8 @@ func (ev *Evlog) Register(d *dim.Group) {
 	d.POST("", ev.Post)
 }
 
-func (ev *Evlog) Post(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	var evlog datamodels.UserEventLog
+func (ev *Evlog) Post(c *models.Context) error {
+	var evlog models.UserEventLog
 	if err := c.Bind(&evlog); err != nil {
 		return err
 	}

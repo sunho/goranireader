@@ -7,21 +7,20 @@ package routes
 import (
 	"gorani/book/bookparse"
 	"gorani/models"
-	"gorani/models/dbmodels"
-	"gorani/servs/fileserv"
 	"gorani/utils"
 	"mime"
 	"strconv"
 
+	"github.com/sunho/webf/servs/s3serv"
+
 	"github.com/gobuffalo/nulls"
-	"github.com/labstack/echo"
 	"go.uber.org/zap"
 
 	"github.com/sunho/dim"
 )
 
 type Admin struct {
-	File *fileserv.FileServ `dim:"on"`
+	File *s3serv.S3Serv `dim:"on"`
 }
 
 func (a *Admin) Register(d *dim.Group) {
@@ -38,9 +37,8 @@ type Student struct {
 	CompletedMissions []int  `json:"complted_missions"`
 }
 
-func (a *Admin) GetStudent(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	var ss []dbmodels.User
+func (a *Admin) GetStudent(c *models.Context) error {
+	var ss []models.User
 	err := c.Tx.Where("class_id = 1").All(&ss)
 	if err != nil {
 		return err
@@ -48,14 +46,14 @@ func (a *Admin) GetStudent(c2 echo.Context) error {
 
 	out := []Student{}
 	for _, s := range ss {
-		var ps []dbmodels.UserMissionProgress
+		var ps []models.UserMissionProgress
 		err = c.Tx.Where("user_id = ?", s.ID).All(&ps)
 		if err != nil {
 			return err
 		}
 		cp := []int{}
 		for _, p := range ps {
-			var m dbmodels.ClassMission
+			var m models.ClassMission
 			err = c.Tx.Where("id = ?", p.MissionID).First(&m)
 			if p.ReadPages >= m.Pages {
 				cp = append(cp, m.ID)
@@ -69,9 +67,8 @@ func (a *Admin) GetStudent(c2 echo.Context) error {
 	return c.JSON(200, out)
 }
 
-func (a *Admin) GetMission(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	var out []dbmodels.ClassMission
+func (a *Admin) GetMission(c *models.Context) error {
+	var out []models.ClassMission
 	err := c.Tx.Where("class_id = 1").All(&out)
 	if err != nil {
 		return err
@@ -79,9 +76,8 @@ func (a *Admin) GetMission(c2 echo.Context) error {
 	return c.JSON(200, out)
 }
 
-func (a *Admin) PostMission(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	var input dbmodels.ClassMission
+func (a *Admin) PostMission(c *models.Context) error {
+	var input models.ClassMission
 	err := c.Bind(&input)
 	if err != nil {
 		return err
@@ -93,13 +89,12 @@ func (a *Admin) PostMission(c2 echo.Context) error {
 	return c.NoContent(200)
 }
 
-func (a *Admin) DeleteMission(c2 echo.Context) error {
-	c := c2.(*models.Context)
+func (a *Admin) DeleteMission(c *models.Context) error {
 	id, err := strconv.Atoi(c.Param("missionid"))
 	if err != nil {
 		return err
 	}
-	var out dbmodels.ClassMission
+	var out models.ClassMission
 	err = c.Tx.Where("id = ?", id).First(&out)
 	if err != nil {
 		return err
@@ -111,8 +106,7 @@ func (a *Admin) DeleteMission(c2 echo.Context) error {
 	return c.NoContent(200)
 }
 
-func (a *Admin) BookFromEpub(c2 echo.Context) error {
-	c := c2.(*models.Context)
+func (a *Admin) BookFromEpub(c *models.Context) error {
 	f, err := c.FormFile("file")
 	if err != nil {
 		return err
@@ -134,7 +128,7 @@ func (a *Admin) BookFromEpub(c2 echo.Context) error {
 		return err
 	}
 
-	book := dbmodels.Book{
+	book := models.Book{
 		ISBN:       "asdf",
 		Name:       b.Name,
 		Author:     b.Author,

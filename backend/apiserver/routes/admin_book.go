@@ -7,17 +7,16 @@ package routes
 import (
 	"gorani/middles"
 	"gorani/models"
-	"gorani/models/dbmodels"
-	"gorani/servs/fileserv"
+
+	"github.com/sunho/webf/servs/s3serv"
 
 	"github.com/gobuffalo/nulls"
 
-	"github.com/labstack/echo"
 	"github.com/sunho/dim"
 )
 
 type AdminBook struct {
-	File *fileserv.FileServ `dim:"on"`
+	File *s3serv.S3Serv `dim:"on"`
 }
 
 func (a *AdminBook) Register(g *dim.Group) {
@@ -30,9 +29,8 @@ func (a *AdminBook) Register(g *dim.Group) {
 
 }
 
-func (a *AdminBook) Post(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	var book dbmodels.Book
+func (a *AdminBook) Post(c *models.Context) error {
+	var book models.Book
 	if err := c.Bind(&book); err != nil {
 		return err
 	}
@@ -44,9 +42,8 @@ func (a *AdminBook) Post(c2 echo.Context) error {
 	return c.NoContent(201)
 }
 
-func (a *AdminBook) Put(c2 echo.Context) error {
-	c := c2.(*models.Context)
-	var book dbmodels.Book
+func (a *AdminBook) Put(c *models.Context) error {
+	var book models.Book
 	if err := c.Bind(&book); err != nil {
 		return err
 	}
@@ -58,8 +55,7 @@ func (a *AdminBook) Put(c2 echo.Context) error {
 	return c.NoContent(200)
 }
 
-func (a *AdminBook) Delete(c2 echo.Context) error {
-	c := c2.(*models.Context)
+func (a *AdminBook) Delete(c *models.Context) error {
 	err := c.Tx.Destroy(&c.BookParam)
 	if err != nil {
 		return err
@@ -67,8 +63,7 @@ func (a *AdminBook) Delete(c2 echo.Context) error {
 	return c.NoContent(200)
 }
 
-func (a *AdminBook) PutEpub(c2 echo.Context) error {
-	c := c2.(*models.Context)
+func (a *AdminBook) PutEpub(c *models.Context) error {
 	f, err := c.FormFile("file")
 	if err != nil {
 		return err

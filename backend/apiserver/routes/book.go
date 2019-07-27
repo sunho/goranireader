@@ -7,17 +7,16 @@ package routes
 import (
 	"gorani/middles"
 	"gorani/models"
-	"gorani/models/dbmodels"
-	"gorani/servs/dbserv"
-	"gorani/servs/fileserv"
 	"gorani/servs/googleserv"
 
-	"github.com/labstack/echo"
+	"github.com/sunho/webf/servs/dbserv"
+	"github.com/sunho/webf/servs/s3serv"
+
 	"github.com/sunho/dim"
 )
 
 type Book struct {
-	File   *fileserv.FileServ     `dim:"on"`
+	File   *s3serv.S3Serv         `dim:"on"`
 	Google *googleserv.GoogleServ `dim:"on"`
 	DB     *dbserv.DBServ         `dim:"on"`
 }
@@ -27,8 +26,7 @@ func (b *Book) Register(d *dim.Group) {
 	d.GET("", b.List)
 }
 
-func (b *Book) List(c2 echo.Context) error {
-	c := c2.(*models.Context)
+func (b *Book) List(c *models.Context) error {
 	code := c.Request().Header.Get("X-Auth-Code")
 	cli, err := b.Google.GetClient(code)
 	if err != nil {
@@ -40,9 +38,9 @@ func (b *Book) List(c2 echo.Context) error {
 		return err
 	}
 
-	out := make([]dbmodels.Book, 0, len(ids))
+	out := make([]models.Book, 0, len(ids))
 	for _, id := range ids {
-		var book dbmodels.Book
+		var book models.Book
 		err := c.Tx.Q().Where("google_id = ?", id).First(&book)
 		if err == nil {
 			out = append(out, book)
