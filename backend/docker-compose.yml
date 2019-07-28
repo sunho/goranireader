@@ -4,10 +4,10 @@ services:
   api:
     build: apiserver
     volumes:
-      - ./config/api:/root
+      - ./configs/api:/home
     restart: always
     ports:
-      - "5353:5353"
+      - "8080:8080"
   db:
     image: postgres
     restart: always
@@ -21,9 +21,11 @@ services:
     image: minio/minio
     volumes:
       - s3data:/data
-      - ./config/s3:/root/.minio
+      - ./configs/s3:/root/.minio
     ports:
       - "9199:9000"
+    expose:
+      - 9000
     command: server /data
 volumes:
   dbdata:

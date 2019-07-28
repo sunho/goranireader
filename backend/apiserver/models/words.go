@@ -4,21 +4,24 @@
 
 package models
 
-import "github.com/gobuffalo/nulls"
+import (
+	"github.com/gobuffalo/nulls"
+	"github.com/sunho/webf/wfdb"
+)
 
 type Memory struct {
 	wfdb.DefaultModel `db:"-"`
-	ID       int    `db:"id" json:"id"`
-	UserID   int    `db:"user_id" pk:"true" json:"user_id"`
-	Word     string `db:"word" pk:"true" json:"-"`
-	Sentence string `db:"sentence" json:"sentence"`
+	ID                int    `db:"id" json:"id"`
+	UserID            int    `db:"user_id" pk:"true" json:"user_id"`
+	Word              string `db:"word" pk:"true" json:"-"`
+	Sentence          string `db:"sentence" json:"sentence"`
 }
 
 type DetailedMemory struct {
 	wfdb.DefaultModel `db:"-"`
-	ID       int           `db:"id" json:"id"`
-	UserID   int           `db:"user_id" pk:"true" json:"user_id"`
-	Word     string        `db:"word" pk:"true" json:"-"`
-	Sentence string        `db:"sentence" json:"sentence"`
-	Rate     nulls.Float64 `db:"rate" json:"rate"`
+	ID                int           `db:"id" json:"id"`
+	UserID            int           `db:"user_id" pk:"true" json:"user_id"`
+	Word              string        `db:"word" pk:"true" json:"-"`
+	Sentence          string        `db:"sentence" json:"sentence"`
+	Rate              nulls.Float64 `db:"rate" json:"rate"`
 }

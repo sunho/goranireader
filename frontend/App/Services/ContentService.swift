@@ -42,29 +42,15 @@ class ContentService {
             }
             .concat(
                 {
-                    switch content.type {
-                    case .epub:
-                        return SignalProducer<Float, GoraniError> { (observer, _) -> Void in
-                            do {
-                                print(url.absoluteString)
-                                let _ = try FREpubParser().readEpub(epubPath: url.path, removeEpub: true, unzipPath: FileUtil.booksDir.path)
-                                observer.sendCompleted()
-                            } catch let error as FolioReaderError {
-                                observer.send(error: GoraniError.folio(error: error))
-                            } catch {
-                                observer.sendInterrupted()
-                            }
-                        }
-                    case .sens:
-                        return SignalProducer<Float, GoraniError> { (observer, _) -> Void in
-                            do {
-                                try FileManager.default.moveItem(at: url, to: FileUtil.booksDir.appendingPathComponent(file))
-                                observer.sendCompleted()
-                            } catch let error as NSError {
-                                observer.send(error: GoraniError.ns(error: error))
-                            } catch {
-                                observer.sendInterrupted()
-                            }
+                    return SignalProducer<Float, GoraniError> { (observer, _) -> Void in
+                        do {
+                            print(url.absoluteString)
+                            let _ = try FREpubParser().readEpub(epubPath: url.path, removeEpub: true, unzipPath: FileUtil.booksDir.path)
+                            observer.sendCompleted()
+                        } catch let error as FolioReaderError {
+                            observer.send(error: GoraniError.folio(error: error))
+                        } catch {
+                            observer.sendInterrupted()
                         }
                     }
                 }()
@@ -90,19 +76,11 @@ class ContentService {
             let localContents = self.getLocalContents()
             var out: [Content] = []
             for (key, path) in localContents {
-                switch key.type {
-                case .epub:
-                    guard let epub = try? FREpubParser().readEpub(bookBasePath: path) else {
-                        continue
-                    }
-                    let progress = RealmService.shared.getEpubProgress(key.id)
-                    out.append(DownloadedContent(epub: epub, id: key.id, updatedAt: progress.updatedAt, path: path, progress: progress.progress))
-                case .sens:
-                    guard let sens = try? Sens(path: path) else {
-                        continue
-                    }
-                    out.append(DownloadedContent(sens: sens, updatedAt: Date(), path: path, progress: 0))
+                guard let epub = try? FREpubParser().readEpub(bookBasePath: path) else {
+                    continue
                 }
+                let progress = RealmService.shared.getEpubProgress(key.id)
+                out.append(DownloadedContent(epub: epub, id: key.id, updatedAt: progress.updatedAt, path: path, progress: progress.progress))
             }
             observer.send(value: out)
             observer.sendCompleted()
@@ -128,7 +106,7 @@ class ContentService {
                 guard let timestamp = Int(match.group(named: "timestamp") ?? "die") else {
                     continue
                 }
-                let type: ContentType = epubMatch != nil ? .epub : .sens
+                let type: ContentType = .epub
                 let key = ContentKey(id: id, type: type)
                 if let current = visit[key] {
                     if timestamp < current {
@@ -153,9 +131,6 @@ class ContentService {
             .map { (books: [Book]) -> [Content] in
                 var out: [Content] = []
                 for book in books {
-                    if localContents[ContentKey(id: book.id, type: .sens)] == nil && book.sens != nil {
-                        out.append(DownloadableContent(book: book, type: .sens, downloadUrl: book.sens!))
-                    }
                     if localContents[ContentKey(id: book.id, type: .epub)] == nil && book.epub != nil {
                         out.append(DownloadableContent(book: book, type: .epub, downloadUrl: book.epub!))
                     }

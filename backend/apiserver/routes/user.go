@@ -8,6 +8,7 @@ import (
 	"gorani/middles"
 	"gorani/models"
 	"gorani/servs/authserv"
+	"gorani/servs/googleserv"
 	"strconv"
 
 	"github.com/sunho/webf/servs/dbserv"
@@ -16,8 +17,9 @@ import (
 )
 
 type User struct {
-	Auth *authserv.AuthServ `dim:"on"`
-	DB   *dbserv.DBServ     `dim:"on"`
+	Google *googleserv.GoogleServ `dim:"on"`
+	Auth   *authserv.AuthServ     `dim:"on"`
+	DB     *dbserv.DBServ         `dim:"on"`
 }
 
 func (u *User) Register(d *dim.Group) {
@@ -33,11 +35,18 @@ func (u *User) Login(c *models.Context) error {
 	params := struct {
 		Username string `json:"username"`
 		IdToken  string `json:"id_token"`
+		Code     string `json:"code"`
 	}{}
 	if err := c.Bind(&params); err != nil {
 		return err
 	}
-	token, err := u.Auth.Login(params.Username, params.IdToken)
+	user, token, err := u.Auth.Login(params.Username, params.IdToken)
+	if err != nil {
+		return err
+	}
+
+	// TODO return different error
+	err = u.Google.SetClient(user, params.Code)
 	if err != nil {
 		return err
 	}

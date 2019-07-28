@@ -15,47 +15,13 @@ enum API {
     
     case listBooks
     
-    case getRecommendInfo
-    case updateRecommendInfo(info: RecommendInfo)
-    
-    case getTargetBookProgress
-    
-    case searchShopBooks(name: String, p: Int, orderBy: String)
-    case getShopBook(bookId: Int)
-    case buyShopBook(bookId: Int)
-    case getMyBookRate(bookId: Int)
-    case rateBook(bookId: Int, rate: Int)
-    
-    case listCategories
-    
-    case listRecommendedBooks
-    case rateRecommendedBook(bookId: Int, rate: Int)
-    case deleteRecommendedBook(bookId: Int)
-    
-    case listSensResults
-    case updateSensResult(result: SensResult)
-    case listQuizResults
-    case updateQuizResult(result: QuizResult)
-    
-    case listPosts
-    case createPost(post: Post)
-    case ratePost(postId: Int, rate: Int)
-    
-    case listComment(postId: Int)
-    case createComment(postId: Int, comment: Comment)
-    case markPostSolved(postId: Int, commentId: Int)
-    case rateComment(postId: Int, commentId: Int, rate: Int)
-    
-    case getRateComment(postId: Int, commentId: Int)
-    case getRatePost(postId: Int)
-    
     case getMissions
     case putMissionProgress(missionId: Int, progress: MissionProgress)
     case getMissionProgress(missionId: Int)
     
     case getUser(userId: Int)
     
-    case login(username: String, idToken: String)
+    case login(username: String, idToken: String, code: String)
     case checkAuth
     
     case createEventLog(evlog: EventLog)
@@ -68,7 +34,7 @@ extension API: TargetType {
         if case .download(let url, _) = self {
             return URL(string: url.replacingOccurrences(of: "127.0.0.1", with: "172.30.1.47")) ?? URL(string: "http://fnfnffnfnfn.asdf")!
         } else {
-            return URL(string: "https://gorani.sunho.kim")!
+            return URL(string: "http://localhost:8080")!
         }
     }
     
@@ -88,64 +54,14 @@ extension API: TargetType {
             return "/memory/\(word)/\(mid)/rate"
         case .listBooks:
             return "/book"
-        case .getTargetBookProgress:
-            return "/recommend/progress"
-        case .getRecommendInfo:
-            return "/recommend/info"
-        case .updateRecommendInfo:
-            return "/recommend/info"
-        case .searchShopBooks:
-            return "/shop/book"
-        case .getMyBookRate(let bookId):
-            return "/shop/book/\(bookId)/rate"
-        case .rateBook(let bookId, _):
-            return "/shop/book/\(bookId)/rate"
-        case .getShopBook(let id):
-            return "/shop/book/\(id)"
-        case .buyShopBook(let id):
-            return "/shop/book/\(id)/buy"
-        case .listCategories:
-            return "/shop/category"
-        case .listRecommendedBooks:
-            return "/recommend/book"
-        case .rateRecommendedBook(let id, _):
-            return "/recommend/book/\(id)/rate"
-        case .deleteRecommendedBook(let bookId):
-            return "/recommend/book/\(bookId)"
-        case .listSensResults:
-            return "/result/sens"
-        case .updateSensResult(let result):
-            return "/result/sens/\(result.bookId)/\(result.sensId)"
-        case .listQuizResults:
-            return "/result/quiz"
-        case .updateQuizResult(let result):
-            return "/result/quiz/\(result.bookId)/\(result.quizId)"
         case .login:
             return "/user/login"
         case .checkAuth:
             return "/user/me"
         case .createEventLog:
             return "/evlog"
-        case .listPosts:
-            return "/post"
-        case .createPost:
-            return "/post"
-        case .ratePost(let postId, _):
-            return "/post/\(postId)/rate"
-        case .listComment(let postId):
-            return "/post/\(postId)/comment"
-        case .markPostSolved(let postId, _):
-            return "/post/\(postId)/sentence/solve"
-        case .rateComment(let postId, let commentId, _):
-            return "/post/\(postId)/comment/\(commentId)/rate"
         case .getUser(let userId):
             return "/user/\(userId)"
-        case .createComment(let postId, _):
-            return "/post/\(postId)/comment"
-        case .getRateComment(let postId, let commentId):
-            return "/post/\(postId)/comment/\(commentId)/rate"
-        case .getRatePost(let postId):
-            return "/post/\(postId)/rate"
         case .getMissions:
             return "/mission"
         case .putMissionProgress(let missionId, _):
@@ -159,19 +75,16 @@ extension API: TargetType {
         switch self {
         case .download:
             return .get
-        case .listMemories, .listBooks, .getMyMemory, .listCategories, .getMissions, .getMissionProgress,
-             .getShopBook, .searchShopBooks, .listRecommendedBooks, .getRecommendInfo,
-             .listSimilarWords, .getMyBookRate, .listPosts, .listComment, .getUser,
-             .listQuizResults, .listSensResults, .checkAuth, .getTargetBookProgress, .getRatePost, .getRateComment:
+        case .listMemories, .listBooks, .getMyMemory, .getMissions,
+             .getMissionProgress, .listSimilarWords, .getUser,
+             .checkAuth:
             return .get
-        case .buyShopBook, .login, .createEventLog, .markPostSolved, .createPost, .createComment:
+        case .login, .createEventLog:
             return .post
-        case .rateBook, .rateMemory, .ratePost, .rateComment,
-             .rateRecommendedBook, .updateMemory,
-             .updateQuizResult, .updateSensResult, .updateRecommendInfo, .putMissionProgress:
+        case .rateMemory,
+             .updateMemory,
+             .putMissionProgress:
             return .put
-        case .deleteRecommendedBook:
-            return .delete
         }
     }
     
@@ -195,35 +108,20 @@ extension API: TargetType {
             var memory = Memory()
             memory.sentence = sentence
             return .requestCustomJSONEncodable(memory, encoder: encoder)
+        case .rateMemory(_, _, let rate):
+            return .requestCustomJSONEncodable(["rate": rate], encoder: encoder)
         case .putMissionProgress(_, let body):
-            return .requestCustomJSONEncodable(body, encoder: encoder)
-        case .createPost(let body):
-            return .requestCustomJSONEncodable(body, encoder: encoder)
-        case .createComment(_, let body):
-            return .requestCustomJSONEncodable(body, encoder: encoder)
-        case .updateRecommendInfo(let body):
             return .requestCustomJSONEncodable(body, encoder: encoder)
         case .createEventLog(let body):
             return .requestCustomJSONEncodable(body, encoder: encoder)
-        case .rateBook(_, let rate), .rateMemory(_, _, let rate), .rateRecommendedBook(_, let rate), .ratePost(_, let rate), .rateComment(_, _, let rate):
-            return .requestCustomJSONEncodable(["rate": rate], encoder: encoder)
-        case .markPostSolved(_, let commentId):
-            return .requestCustomJSONEncodable(["comment_id": commentId], encoder: encoder)
-        case .searchShopBooks(let name, let p, let orderBy):
-            return .requestParameters(parameters: ["name": name, "p": p, "by": orderBy], encoding: URLEncoding.default)
         case .listMemories(_, let p):
             return .requestParameters(parameters: ["p": p], encoding: URLEncoding.default)
-        case .updateSensResult(let result):
-            return .requestCustomJSONEncodable(result, encoder: encoder)
-        case .updateQuizResult(let result):
-            return .requestCustomJSONEncodable(result, encoder: encoder)
-        case .login(let username, let idToken):
-            return .requestCustomJSONEncodable(["username": username, "id_token": idToken], encoder: encoder)
-    case .getMyBookRate, .listBooks, .getMyMemory, .listCategories, .getShopBook, .listPosts, .listComment, 
-             .listRecommendedBooks, .deleteRecommendedBook, .listSimilarWords, .getUser,
+        case .login(let username, let idToken, let code):
+            return .requestCustomJSONEncodable(["username": username, "id_token": idToken, "code": code], encoder: encoder)
+        case .listBooks, .getMyMemory,
+              .listSimilarWords, .getUser,
              .getMissionProgress, .getMissions,
-             .listQuizResults, .listSensResults, .buyShopBook, .getRecommendInfo,
-             .checkAuth, .getTargetBookProgress, .getRateComment, .getRatePost:
+             .checkAuth:
             return .requestPlain
         }
     }

@@ -16,9 +16,7 @@ struct Book: Codable {
     var cover: String = ""
     var desc: String = ""
     var rate: Float?
-    var categories: [Category]?
     var epub: String?
-    var sens: String?
     var quiz: String?
     var difficulty: Int?
     
@@ -26,9 +24,6 @@ struct Book: Codable {
         var out: [ContentType] = []
         if epub != nil {
             out.append(.epub)
-        }
-        if sens != nil {
-            out.append(.sens)
         }
         return out
     }
@@ -45,9 +40,7 @@ struct Book: Codable {
         case cover
         case desc = "description"
         case rate
-        case categories
         case epub
-        case sens
         case quiz
         case difficulty
     }

@@ -120,15 +120,6 @@ class BookMainViewController: UIViewController {
     func openContent(_ content: DownloadedContent) {
         currentBookId = content.id
         switch content.type {
-        case .sens:
-            guard let sens = try? Sens(path: content.path) else {
-                AlertService.shared.alertErrorMsg("sens 파싱 에러")
-                return
-            }
-            let vc = self.storyboard!.instantiateViewController(withIdentifier: "SensMainViewController") as! SensMainViewController
-            vc.sens = sens
-            vc.dictVC = dictVC
-            self.present(vc, animated: true)
         case .epub:
             guard let book = try? FREpubParser().readEpub(bookBasePath: content.path) else {
                 AlertService.shared.alertErrorMsg("epub 파싱 에러")

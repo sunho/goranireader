@@ -40,7 +40,7 @@ require (
 	github.com/sunho/dim v1.2.4
 	github.com/sunho/epubgo v0.0.0-20180629211917-650a8f2de947
 	github.com/sunho/pop v4.11.2+incompatible
-	github.com/sunho/webf v0.0.1
+	github.com/sunho/webf v0.0.3
 	go.uber.org/atomic v1.3.2 // indirect
 	go.uber.org/multierr v1.1.0 // indirect
 	go.uber.org/zap v1.9.1

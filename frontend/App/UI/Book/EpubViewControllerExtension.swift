@@ -50,21 +50,9 @@ extension BookMainViewController: FolioReaderDelegate, FolioReaderCenterDelegate
             }
         }
     }
-    
+
+    // TODO remove
     func ask(_ text: String?) {
-        if let text = text {
-            var post = Post()
-            post.bookId = currentBookId!
-            post.sentence = text
-            APIService.shared.request(.createPost(post: post))
-                .handle(ignoreError: false) { offline, _ in
-                    if (!offline) {
-                        AlertService.shared.alertSuccessMsg("커뮤니티에 질문을 올렸습니다")
-                    } else {
-                        AlertService.shared.alertErrorMsg("오프라인입니다.")
-                    }
-            }
-        }
     }
     
     func htmlContentForPage(_ page: FolioReaderPage, htmlContent: String) -> String {
