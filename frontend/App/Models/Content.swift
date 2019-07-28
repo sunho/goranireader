@@ -9,7 +9,6 @@ import Kingfisher
 
 enum ContentType: Hashable {
     case epub
-    case sens
 }
 
 struct ContentKey: Hashable {
@@ -47,10 +46,6 @@ class DownloadedContent: Content {
         self.path = path
         self.progress = progress
         super.init(id: id, name: name, author: author, cover: cover, updatedAt: updatedAt, type: type)
-    }
-    
-    convenience init(sens: Sens, updatedAt: Date, path: String, progress: Float) {
-        self.init(id: sens.bookId, name: sens.name, author: sens.author, cover: sens.cover, updatedAt: updatedAt, type: .sens, path: path, progress: progress)
     }
     
     convenience init(epub: FRBook, id: Int, updatedAt: Date, path: String, progress: Float) {

@@ -12,15 +12,8 @@ type DataServ struct {
 	host string
 }
 
-type DataServConfig struct {
-}
-
-func Provide(conf DataServConfig) (*DataServ, error) {
+func Provide() (*DataServ, error) {
 	return &DataServ{}, nil
-}
-
-func (DataServ) ConfigName() string {
-	return "data"
 }
 
 func (d *DataServ) AddUserEventLogPayload(userid int, payload models.UserEventLogPayload) error {

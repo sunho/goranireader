@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		B124047520A8CD90005EAE4F /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = B124047220A8CD90005EAE4F /* Cartfile */; };
 		B13393B320A8F78D00F34525 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = B13393B220A8F78D00F34525 /* .gitignore */; };
-		B143B04C20A47613003341A3 /* Sens.swift in Sources */ = {isa = PBXBuildFile; fileRef = B143AF8820A4704F003341A3 /* Sens.swift */; };
 		B143B04F20A47613003341A3 /* DictService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B143AF8B20A4704F003341A3 /* DictService.swift */; };
 		B143B05220A47613003341A3 /* POS.swift in Sources */ = {isa = PBXBuildFile; fileRef = B143AF8E20A4704F003341A3 /* POS.swift */; };
 		B143B05320A47613003341A3 /* DictEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B143AF8F20A4704F003341A3 /* DictEntry.swift */; };
@@ -20,7 +19,6 @@
 		B143B05A20A47617003341A3 /* Verb.swift in Sources */ = {isa = PBXBuildFile; fileRef = B143AF9720A4704F003341A3 /* Verb.swift */; };
 		B143B05B20A47617003341A3 /* UIUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B143AF9820A4704F003341A3 /* UIUtil.swift */; };
 		C70AD3052268F2CF00BAD495 /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C70AD3032268F2CF00BAD495 /* OAuthSwift.framework */; };
-		C70CD181226621BA00D38AB9 /* RecommendedBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70CD180226621BA00D38AB9 /* RecommendedBook.swift */; };
 		C70F55BD224FCD4D006DBB0E /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55BC224FCD4D006DBB0E /* TabBarViewController.swift */; };
 		C70F55C5224FE508006DBB0E /* BubbleTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55C2224FE508006DBB0E /* BubbleTabBar.swift */; };
 		C70F55C6224FE508006DBB0E /* CBTabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55C3224FE508006DBB0E /* CBTabBarButton.swift */; };
@@ -29,8 +27,6 @@
 		C70F55CF2250094A006DBB0E /* GuideWordCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55CE2250094A006DBB0E /* GuideWordCardView.swift */; };
 		C70F55D122500959006DBB0E /* GuideRecommendedBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55D022500959006DBB0E /* GuideRecommendedBookView.swift */; };
 		C70F55D322501596006DBB0E /* GuideRecommendedBookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55D222501596006DBB0E /* GuideRecommendedBookCell.swift */; };
-		C70F55E122502A3B006DBB0E /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55E022502A3B006DBB0E /* Share.swift */; };
-		C70F55E322502B2B006DBB0E /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55E222502B2B006DBB0E /* Post.swift */; };
 		C71B19B4229A698D00858540 /* Mission.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71B19B3229A698D00858540 /* Mission.swift */; };
 		C71C536F226A0A6D009197F6 /* GoogleSignInDependencies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C71C536B226A0A6D009197F6 /* GoogleSignInDependencies.framework */; };
 		C71C5370226A0A6D009197F6 /* GoogleSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C71C536D226A0A6D009197F6 /* GoogleSignIn.framework */; };
@@ -112,12 +108,8 @@
 		C7FA5428223476BD006F94C7 /* DictViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FA5427223476BD006F94C7 /* DictViewController.swift */; };
 		C7FC188F2239D748007172ED /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FC188E2239D748007172ED /* Book.swift */; };
 		C7FC18952239E4E5007172ED /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FC18942239E4E5007172ED /* API.swift */; };
-		C7FC18A12239EEE9007172ED /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FC18A02239EEE9007172ED /* Category.swift */; };
-		C7FC18A32239F07F007172ED /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FC18A22239F07F007172ED /* Review.swift */; };
-		C7FC18A52239F0F9007172ED /* RecommendInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FC18A42239F0F9007172ED /* RecommendInfo.swift */; };
 		C7FC18A72239F1F7007172ED /* Memory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FC18A62239F1F7007172ED /* Memory.swift */; };
 		C7FC18AB223A0139007172ED /* Progress.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FC18AA223A0139007172ED /* Progress.swift */; };
-		C7FC18AD223A014A007172ED /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FC18AC223A014A007172ED /* Result.swift */; };
 		C7FC18AF223A12DD007172ED /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FC18AE223A12DD007172ED /* APIService.swift */; };
 		C7FC18B5223A346D007172ED /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FC18B4223A346D007172ED /* ReachabilityService.swift */; };
 		C7FC18B7223A360D007172ED /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FC18B6223A360D007172ED /* Config.swift */; };
@@ -176,7 +168,6 @@
 /* Begin PBXFileReference section */
 		B124047220A8CD90005EAE4F /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		B13393B220A8F78D00F34525 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = .gitignore; path = ../.gitignore; sourceTree = "<group>"; };
-		B143AF8820A4704F003341A3 /* Sens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sens.swift; sourceTree = "<group>"; };
 		B143AF8B20A4704F003341A3 /* DictService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictService.swift; sourceTree = "<group>"; };
 		B143AF8E20A4704F003341A3 /* POS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POS.swift; sourceTree = "<group>"; };
 		B143AF8F20A4704F003341A3 /* DictEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictEntry.swift; sourceTree = "<group>"; };
@@ -187,7 +178,6 @@
 		B143AF9720A4704F003341A3 /* Verb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Verb.swift; sourceTree = "<group>"; };
 		B143AF9820A4704F003341A3 /* UIUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtil.swift; sourceTree = "<group>"; };
 		C70AD3032268F2CF00BAD495 /* OAuthSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuthSwift.framework; path = Carthage/Build/iOS/OAuthSwift.framework; sourceTree = "<group>"; };
-		C70CD180226621BA00D38AB9 /* RecommendedBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedBook.swift; sourceTree = "<group>"; };
 		C70F55BC224FCD4D006DBB0E /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		C70F55C2224FE508006DBB0E /* BubbleTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleTabBar.swift; sourceTree = "<group>"; };
 		C70F55C3224FE508006DBB0E /* CBTabBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CBTabBarButton.swift; sourceTree = "<group>"; };
@@ -196,8 +186,6 @@
 		C70F55CE2250094A006DBB0E /* GuideWordCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideWordCardView.swift; sourceTree = "<group>"; };
 		C70F55D022500959006DBB0E /* GuideRecommendedBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideRecommendedBookView.swift; sourceTree = "<group>"; };
 		C70F55D222501596006DBB0E /* GuideRecommendedBookCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideRecommendedBookCell.swift; sourceTree = "<group>"; };
-		C70F55E022502A3B006DBB0E /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
-		C70F55E222502B2B006DBB0E /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		C71B19B3229A698D00858540 /* Mission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mission.swift; sourceTree = "<group>"; };
 		C71C536B226A0A6D009197F6 /* GoogleSignInDependencies.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleSignInDependencies.framework; path = Frameworks/GoogleSignInDependencies.framework; sourceTree = "<group>"; };
 		C71C536D226A0A6D009197F6 /* GoogleSignIn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleSignIn.framework; path = Frameworks/GoogleSignIn.framework; sourceTree = "<group>"; };
@@ -283,12 +271,8 @@
 		C7FA5427223476BD006F94C7 /* DictViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictViewController.swift; sourceTree = "<group>"; };
 		C7FC188E2239D748007172ED /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		C7FC18942239E4E5007172ED /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
-		C7FC18A02239EEE9007172ED /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
-		C7FC18A22239F07F007172ED /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
-		C7FC18A42239F0F9007172ED /* RecommendInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendInfo.swift; sourceTree = "<group>"; };
 		C7FC18A62239F1F7007172ED /* Memory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memory.swift; sourceTree = "<group>"; };
 		C7FC18AA223A0139007172ED /* Progress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progress.swift; sourceTree = "<group>"; };
-		C7FC18AC223A014A007172ED /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		C7FC18AE223A12DD007172ED /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		C7FC18B4223A346D007172ED /* ReachabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityService.swift; sourceTree = "<group>"; };
 		C7FC18B6223A360D007172ED /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
@@ -369,24 +353,16 @@
 			isa = PBXGroup;
 			children = (
 				C7FC18BC223A457F007172ED /* Dict */,
-				B143AF8820A4704F003341A3 /* Sens.swift */,
 				B143AF9720A4704F003341A3 /* Verb.swift */,
 				C7FC188E2239D748007172ED /* Book.swift */,
-				C7FC18A02239EEE9007172ED /* Category.swift */,
-				C7FC18A22239F07F007172ED /* Review.swift */,
-				C7FC18A42239F0F9007172ED /* RecommendInfo.swift */,
 				C7FC18A62239F1F7007172ED /* Memory.swift */,
 				C7FC18AA223A0139007172ED /* Progress.swift */,
 				C7FC18B6223A360D007172ED /* Config.swift */,
-				C7FC18AC223A014A007172ED /* Result.swift */,
 				C7FC18BA223A3C45007172ED /* GoraniError.swift */,
 				C77043B4223E219E00B91831 /* Content.swift */,
 				C7742BB222438D8500925081 /* UnknownWord.swift */,
 				C757D2D22247D7690050E0A2 /* Notification.swift */,
 				C7CF0052224CF56200524D80 /* EventLog.swift */,
-				C70F55E022502A3B006DBB0E /* Share.swift */,
-				C70F55E222502B2B006DBB0E /* Post.swift */,
-				C70CD180226621BA00D38AB9 /* RecommendedBook.swift */,
 				C72415EE22956C52003E932E /* User.swift */,
 				C71B19B3229A698D00858540 /* Mission.swift */,
 			);
@@ -810,17 +786,14 @@
 				B143B05B20A47617003341A3 /* UIUtil.swift in Sources */,
 				C7C117722244D05D0084C799 /* FeedbackBulletPage.swift in Sources */,
 				C7FC18952239E4E5007172ED /* API.swift in Sources */,
-				C7FC18A52239F0F9007172ED /* RecommendInfo.swift in Sources */,
 				C7742BAD22433BEE00925081 /* CardSlider.swift in Sources */,
 				C70F55D322501596006DBB0E /* GuideRecommendedBookCell.swift in Sources */,
-				C7FC18AD223A014A007172ED /* Result.swift in Sources */,
 				C70F55C6224FE508006DBB0E /* CBTabBarButton.swift in Sources */,
 				C7BF8C67224613740037FD68 /* MemoryBulletPageManager.swift in Sources */,
 				C7742BAB22433B4500925081 /* CardView.swift in Sources */,
 				C7C63E92209905900093CC02 /* BookMainViewController.swift in Sources */,
 				C7BF8C6B224632BB0037FD68 /* MemoryCloudViewController.swift in Sources */,
 				C7C1177C22453CE10084C799 /* MemoryButton.swift in Sources */,
-				C7FC18A12239EEE9007172ED /* Category.swift in Sources */,
 				C70F55C5224FE508006DBB0E /* BubbleTabBar.swift in Sources */,
 				C757D2C22247A1D80050E0A2 /* BookMainTableViewCell.swift in Sources */,
 				C7C117762244DC8E0084C799 /* LineInputField.swift in Sources */,
@@ -844,7 +817,6 @@
 				C7FC18BB223A3C45007172ED /* GoraniError.swift in Sources */,
 				C7742BB122437B4900925081 /* WordCardViewController.swift in Sources */,
 				C70F55BD224FCD4D006DBB0E /* TabBarViewController.swift in Sources */,
-				C70F55E122502A3B006DBB0E /* Share.swift in Sources */,
 				C7742BB52243953D00925081 /* WordCardTableViewCell.swift in Sources */,
 				C7AD908A2296D5DF00B25509 /* HeartButton.swift in Sources */,
 				C7C117742244D8930084C799 /* InputFormView.swift in Sources */,
@@ -862,18 +834,14 @@
 				C7FC18AF223A12DD007172ED /* APIService.swift in Sources */,
 				B143B05320A47613003341A3 /* DictEntry.swift in Sources */,
 				C757D2D32247D7690050E0A2 /* Notification.swift in Sources */,
-				B143B04C20A47613003341A3 /* Sens.swift in Sources */,
 				C7C11763224489F90084C799 /* LineTextField.swift in Sources */,
 				C70F55CD225008D0006DBB0E /* GuideProgressView.swift in Sources */,
 				C70F55CF2250094A006DBB0E /* GuideWordCardView.swift in Sources */,
 				C7BF8C5E2245D8BC0037FD68 /* MultilineLabel.swift in Sources */,
 				C757D2D12247D5A10050E0A2 /* ContentTypeIconView.swift in Sources */,
 				B143B05A20A47617003341A3 /* Verb.swift in Sources */,
-				C70F55E322502B2B006DBB0E /* Post.swift in Sources */,
 				B143B05620A47617003341A3 /* FileUtil.swift in Sources */,
-				C7FC18A32239F07F007172ED /* Review.swift in Sources */,
 				C7742BB72243967A00925081 /* WordCardExampleTableViewCell.swift in Sources */,
-				C70CD181226621BA00D38AB9 /* RecommendedBook.swift in Sources */,
 				C77043B3223E214700B91831 /* ContentService.swift in Sources */,
 				C7FC18A72239F1F7007172ED /* Memory.swift in Sources */,
 				C7BF8C5B224546D60037FD68 /* UIConsts.swift in Sources */,

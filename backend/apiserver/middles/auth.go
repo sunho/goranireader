@@ -36,11 +36,11 @@ func (a *AuthMiddle) Act(c2 echo.Context) error {
 		return echo.NewHTTPError(403, "Invalid token")
 	}
 	var user models.User
-	err = c.Tx.Where("id = ?", id).First(&user)
+	err = c.Tx.Q().Where("id = ?", id).First(&user)
 	if err != nil {
 		return err
 	}
-	c.User = user
+	c.User = &user
 	return nil
 }
 

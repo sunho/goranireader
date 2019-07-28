@@ -23,18 +23,6 @@ class RealmService {
         return Config()
     }
     
-    func getSensResult(bookId: Int, sensId: Int) -> SensResult {
-        if let res = realm.object(ofType: SensResult.self, forPrimaryKey: "\(bookId)-\(sensId)") {
-            return res
-        }
-        let res = SensResult()
-        write {
-            res.configure(bookId: bookId, sensId: sensId)
-            realm.add(res, update: true)
-        }
-        return res
-    }
-    
     func getUnknownWord(_ word: String) -> UnknownWord {
         if let res = realm.object(ofType: UnknownWord.self, forPrimaryKey: word) {
             return res

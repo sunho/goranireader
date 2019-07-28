@@ -27,11 +27,11 @@ func (b *Book) Register(d *dim.Group) {
 }
 
 func (b *Book) List(c *models.Context) error {
-	code := c.Request().Header.Get("X-Auth-Code")
-	cli, err := b.Google.GetClient(code)
+	cli, err := b.Google.GetClient(c.User)
 	if err != nil {
 		return err
 	}
+	defer cli.Clean()
 
 	ids, err := cli.GetBookIDs()
 	if err != nil {

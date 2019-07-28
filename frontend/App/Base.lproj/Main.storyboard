@@ -371,7 +371,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" axis="vertical" distribution="equalSpacing" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="nJh-TX-CNj">
-                                        <rect key="frame" x="16" y="16" width="343" height="566"/>
+                                        <rect key="frame" x="16" y="16" width="343" height="291"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M3Y-xb-Hyx" customClass="GuideProgressView" customModule="app" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="125"/>
@@ -491,52 +491,6 @@
                                                     <outlet property="textView" destination="T5q-8V-ZBz" id="dzr-aj-gKs"/>
                                                 </connections>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gwG-QU-ypM" customClass="GuideRecommendedBookView" customModule="app" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="311" width="343" height="255"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="추천 원서" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bb8-ea-9Xr">
-                                                        <rect key="frame" x="0.0" y="0.0" width="81" height="26.5"/>
-                                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="22"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="EsM-Wh-517">
-                                                        <rect key="frame" x="0.0" y="75" width="343" height="180"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="180" id="FyR-Wm-YQb"/>
-                                                        </constraints>
-                                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="9ZV-6W-gBr">
-                                                            <size key="itemSize" width="50" height="50"/>
-                                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                        </collectionViewFlowLayout>
-                                                        <cells/>
-                                                    </collectionView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="목표 원서를 읽기 위한 실력을 쌓기 좋은 원서입니다" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z39-q9-xeA">
-                                                        <rect key="frame" x="0.0" y="38.5" width="343" height="20.5"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <color key="textColor" red="0.50971525910000004" green="0.50991958380000002" blue="0.51380974049999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="trailing" secondItem="z39-q9-xeA" secondAttribute="trailing" id="3VO-4G-yBb"/>
-                                                    <constraint firstItem="z39-q9-xeA" firstAttribute="leading" secondItem="gwG-QU-ypM" secondAttribute="leading" id="6V3-Zq-xz6"/>
-                                                    <constraint firstItem="Bb8-ea-9Xr" firstAttribute="top" secondItem="gwG-QU-ypM" secondAttribute="top" id="IQz-S0-cqe"/>
-                                                    <constraint firstAttribute="trailing" secondItem="EsM-Wh-517" secondAttribute="trailing" id="IrG-2O-VKN"/>
-                                                    <constraint firstItem="z39-q9-xeA" firstAttribute="top" secondItem="Bb8-ea-9Xr" secondAttribute="bottom" constant="12" id="OaT-Az-wXk"/>
-                                                    <constraint firstItem="Bb8-ea-9Xr" firstAttribute="leading" secondItem="gwG-QU-ypM" secondAttribute="leading" id="TVo-H4-5ui"/>
-                                                    <constraint firstItem="EsM-Wh-517" firstAttribute="top" secondItem="z39-q9-xeA" secondAttribute="bottom" constant="16" id="VIW-9U-0n5"/>
-                                                    <constraint firstAttribute="bottom" secondItem="EsM-Wh-517" secondAttribute="bottom" id="awN-GL-65t"/>
-                                                    <constraint firstItem="EsM-Wh-517" firstAttribute="leading" secondItem="gwG-QU-ypM" secondAttribute="leading" id="xrZ-c2-j21"/>
-                                                </constraints>
-                                                <connections>
-                                                    <outlet property="collectionView" destination="EsM-Wh-517" id="Lha-Qm-j9g"/>
-                                                </connections>
-                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </stackView>
@@ -563,7 +517,6 @@
                     </view>
                     <navigationItem key="navigationItem" title="가이드" id="dKR-3K-Jgn"/>
                     <connections>
-                        <outlet property="bookView" destination="gwG-QU-ypM" id="IpD-jJ-L9R"/>
                         <outlet property="progressView" destination="M3Y-xb-Hyx" id="i86-N2-Mew"/>
                         <outlet property="wordCardView" destination="8lw-2m-U4g" id="j1k-Tb-QnQ"/>
                         <segue destination="dmQ-71-kpW" kind="show" id="0tW-19-eQq"/>

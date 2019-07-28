@@ -19,8 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         IQKeyboardManager.shared.enable = true
         GIDSignIn.sharedInstance().clientID = "707156763693-4eu17nhnucmi4io3c10gm6abvr4ue630.apps.googleusercontent.com"
+        GIDSignIn.sharedInstance().serverClientID = "707156763693-3mjdmcu9180togpbgc067es5hiq4ve3n.apps.googleusercontent.com"
+        GIDSignIn.sharedInstance().scopes = ["https://www.googleapis.com/auth/books"]
         GIDSignIn.sharedInstance().delegate = self
-        GIDSignIn.sharedInstance().signInSilently()
         APIService.shared // TODO: find another way
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -45,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         if let error = error {
             print("\(error.localizedDescription)")
         } else {
-            APIService.shared.request(.login(username: user.profile.name, idToken: user.authentication.idToken))
+            APIService.shared.request(.login(username: user.profile.name, idToken: user.authentication.idToken, code: user.serverAuthCode))
                 .filterSuccessfulStatusCodes()
                 .start { event in
                     DispatchQueue.main.async {

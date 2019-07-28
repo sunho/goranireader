@@ -12,7 +12,7 @@ import (
 
 type Context struct {
 	*webf.DefaultContext
-	User        User
+	User        *User
 	BookParam   Book
 	MemoryParam Memory
 }

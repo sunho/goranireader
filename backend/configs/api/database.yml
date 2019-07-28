@@ -1,4 +1,4 @@
-gorani:
+development:
   dialect: postgres
   database: postgres
   user: postgres

@@ -32,12 +32,19 @@ type AuthServ struct {
 	oauth      *oauth2.Service
 }
 
-type AuthServConf struct {
+type AuthServConfig struct {
 	Secret     string `yaml:"secret"`
 	AdminToken string `yaml:"admin_token"`
 }
 
-func Provide(conf AuthServConf) (*AuthServ, error) {
+func (AuthServConfig) Default() AuthServConfig {
+	return AuthServConfig{
+		Secret:     "12345678901234",
+		AdminToken: "admintoken",
+	}
+}
+
+func Provide(conf AuthServConfig) (*AuthServ, error) {
 	oauth, err := oauth2.New(&http.Client{})
 	if err != nil {
 		return nil, err
@@ -80,12 +87,12 @@ func (a *AuthServ) CreateToken(id int) string {
 	return str
 }
 
-func (a *AuthServ) Login(username string, idtoken string) (string, error) {
+func (a *AuthServ) Login(username string, idtoken string) (*models.User, string, error) {
 	call := a.oauth.Tokeninfo()
 	call.IdToken(idtoken)
 	info, err := call.Do()
 	if err != nil {
-		return "", err
+		return nil, "", err
 	}
 	var user models.User
 	err = a.DB.Q().Where("oauth_id = ?", info.UserId).First(&user)
@@ -97,10 +104,10 @@ func (a *AuthServ) Login(username string, idtoken string) (string, error) {
 		}
 		err = a.DB.Eager().Create(&user)
 		if err != nil {
-			return "", err
+			return nil, "", err
 		}
 	}
-	return a.CreateToken(user.ID), nil
+	return &user, a.CreateToken(user.ID), nil
 }
 
 func (a *AuthServ) Authorize(token string) (int, error) {
