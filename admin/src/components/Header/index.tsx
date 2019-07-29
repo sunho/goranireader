@@ -1,25 +1,10 @@
 import React from 'react'
-import {
-    Container,
-    Divider,
-    Dropdown,
-    Grid,
-    Icon,
-    Image,
-    List,
-    Menu,
-    Segment,
-    Visibility,
-  } from 'semantic-ui-react'
+import styles from './index.module.scss'
 
 const Header: React.SFC = () => (
-    <div>
-        <Menu
-            borderless
-          >
-            <Menu.Item header>고라니 리더 교사용 페이지</Menu.Item>
-        </Menu>
-    </div>
+  <div className={styles.Header}>
+    Gorani Reader Admin
+  </div>
 )
 
 export default Header
