@@ -14,8 +14,8 @@ struct Book: Codable {
     var createdAt: String = ""
     var updatedAt: String = ""
     var cover: String = ""
+    var googleId: String = ""
     var desc: String = ""
-    var rate: Float?
     var epub: String?
     var quiz: String?
     var difficulty: Int?
@@ -39,7 +39,7 @@ struct Book: Codable {
         case updatedAt = "updated_at"
         case cover
         case desc = "description"
-        case rate
+        case googleId = "google_id"
         case epub
         case quiz
         case difficulty

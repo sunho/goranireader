@@ -1,5 +1,25 @@
 @import 'mixins';
+@import 'vars';
 
 .Header {
-  padding: 20px;
+  position: relative;
+  z-index: $z-index-1;
+  background: white;
+  display: flex;
+  flex: 1;
+  height: 6rem;
+  padding: 0 2rem;
+  justify-content: space-between;
+  align-items: center;
+  font-size: $font-size-small;
+  .HeaderClass {
+    font-size: $font-size-normal;
+    display: flex;
+    align-items: center;
+
+    .HeaderClassLabel {
+      margin-right: 1rem;
+      font-weight: 600;
+    }
+  }
 }

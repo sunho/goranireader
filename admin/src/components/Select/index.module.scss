@@ -1,0 +1,52 @@
+@import 'mixins';
+@import 'vars';
+
+.Select {
+  position: relative;
+  vertical-align: top;
+
+  select {
+    width: 5.5em;
+    font-size: inherit;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    border-color: $color-gray;
+    background: $color-white;
+    outline: none;
+    position: relative;
+    display: block;
+    padding: 0.5em 0.5em;
+    padding-right: 2.5em;
+    border-radius: 0;
+
+    @include transition(border-color 0.2s);
+    &:focus {
+      border-color: $color-primary;
+    }
+  }
+
+  &::after {
+    font-size: inherit;
+    position: absolute;
+    width: 0.5em;
+    height: 0.5em;
+    top: 50%;
+    right: 0.7em;
+    z-index: 4;
+    margin-top: -0.35em;
+
+    display: block;
+    border: 2px solid transparent;
+    border-right: 0;
+    border-top: 0;
+    border-color: $color-gray;
+
+    content: ' ';
+    pointer-events: none;
+
+    -webkit-transform: rotate(-45deg);
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    transform: rotate(-45deg);
+  }
+}
