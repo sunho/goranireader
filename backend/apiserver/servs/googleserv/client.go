@@ -26,12 +26,18 @@ func (g *Client) GetBookIDs() ([]string, error) {
 		if b.Title == "Browsing history" {
 			continue
 		}
+		if b.VolumeCount == 0 {
+			continue
+		}
 		vol, err := g.cli.Mylibrary.Bookshelves.Volumes.List(strconv.FormatInt(b.Id, 10)).Do()
 		if err != nil {
 			log.Printf("Error in %v %v", b.VolumeCount, err)
+			continue
 		}
 		for _, v := range vol.Items {
-			ids[v.Id] = true
+			if v.UserInfo.IsPurchased {
+				ids[v.Id] = true
+			}
 		}
 	}
 	out := make([]string, 0, len(ids))

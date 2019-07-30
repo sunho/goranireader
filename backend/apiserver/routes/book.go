@@ -41,7 +41,7 @@ func (b *Book) List(c *models.Context) error {
 	out := make([]models.Book, 0, len(ids))
 	for _, id := range ids {
 		var book models.Book
-		err := c.Tx.Q().Where("google_id = ?", id).First(&book)
+		err := c.Tx.Q().Eager().Where("google_id = ?", id).First(&book)
 		if err == nil {
 			out = append(out, book)
 		}

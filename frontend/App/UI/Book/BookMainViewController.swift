@@ -89,6 +89,7 @@ class BookMainViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        reload()
         navigationController?.tabBarItem.badgeValue = nil
     }
     

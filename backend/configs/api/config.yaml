@@ -12,6 +12,7 @@ s3:
   secret: ECk2uqOoNqvtJIMQ3WYugvmNPL_-zm3WcRqP5vUM
   region: ap-southeast-2
   bucket: gorani
+  external_name: localhost:9199
   https: false
   use_subpath: true
   set_policy: true

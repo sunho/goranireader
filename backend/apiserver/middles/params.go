@@ -74,3 +74,28 @@ func (m *MemoryParamMiddle) Act(c2 echo.Context) error {
 	c.MemoryParam = memory
 	return nil
 }
+
+type ClassParamMiddle struct {
+}
+
+func (s *ClassParamMiddle) Require() []string {
+	return []string{
+		"ContextMiddle",
+		"TxMiddle",
+		"AuthMiddle",
+	}
+}
+
+func (s *ClassParamMiddle) Act(c2 echo.Context) error {
+	c := c2.(*models.Context)
+	id, err := strconv.Atoi(c.Param("classid"))
+	if err != nil {
+		return err
+	}
+	class, err := models.Tx(c.Tx).GetClass(id)
+	if err != nil {
+		return err
+	}
+	c.ClassParam = class
+	return nil
+}

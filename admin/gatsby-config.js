@@ -10,6 +10,7 @@ module.exports = {
             }
         },
         'gatsby-plugin-typescript',
-        'gatsby-plugin-tslint'
+        'gatsby-plugin-tslint',
+        'gatsby-plugin-react-svg'
     ],
 }

@@ -13,6 +13,7 @@ import (
 type Context struct {
 	*webf.DefaultContext
 	User        *User
+	ClassParam  *Class
 	BookParam   Book
 	MemoryParam Memory
 }

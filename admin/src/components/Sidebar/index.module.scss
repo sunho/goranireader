@@ -1,0 +1,87 @@
+@import 'mixins';
+@import 'vars';
+
+.Sidebar {
+  list-style: none;
+  font-size: $font-size-small;
+  background: $color-blue;
+  z-index: $z-index-2;
+  overflow: hidden;
+  height: 100%;
+  @include respond(phone) {
+    height: 100vh;
+    width: 100%;
+    max-height: $mobile-header-height;
+  }
+
+  &Open {
+    position: fixed;
+    max-height: 100vh;
+  }
+
+  .Header {
+    padding: 0 2rem;
+    display: flex;
+    height: 6rem;
+    align-items: center;
+    justify-content: space-between;
+
+    @include respond(phone) {
+      height: $mobile-header-height;
+    }
+
+    .Logo {
+      font-size: $font-size-big;
+      color: white;
+      font-weight: 600;
+    }
+
+    .ToggleButton {
+      width: 2rem;
+      height: 2rem;
+
+      display: none;
+      @include respond(phone) {
+        display: initial;
+      }
+    }
+  }
+
+  .Menu {
+    .MenuItem:link,
+    .MenuItem:visited {
+      color: $color-light-gray;
+      text-decoration: none;
+      display: inline-flex;
+      width: 100%;
+      align-items: center;
+      padding: 1rem 2rem;
+      @include respond(phone) {
+        font-size: $font-size-normal;
+        padding: 1.5rem 2rem;
+        app-icon {
+          width: 2rem;
+          height: 2rem;
+        }
+      }
+
+      span {
+        font-weight: 300;
+        margin-left: 1rem;
+      }
+
+      @include transition(color 0.2s, background-color 0.2s);
+    }
+
+    .MenuItem:hover {
+      color: lighten($color-white, 5);
+      background-color: lighten($color-dark-blue, 2);
+    }
+
+    .MenuItemActive:link,
+    .MenuItemActive:visited {
+      color: $color-white;
+      background-color: $color-dark-blue;
+    }
+  }
+}

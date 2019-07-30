@@ -5,14 +5,14 @@
     -o-transition: $args;
     transition: $args;
   }
-  
+
   @mixin absolute-center($top) {
     position: absolute;
     top: $top;
     left: 50%;
     transform: translate(-50%, -50%);
   }
-  
+
   @mixin placeholder {
     &::placeholder {
       @content;
@@ -30,7 +30,7 @@
       @content;
     }
   }
-  
+
   @mixin clearfix {
     &:after {
       content: '';
@@ -38,7 +38,7 @@
       clear: both;
     }
   }
-  
+
   @mixin respond($breakpoint) {
     @if $breakpoint == phone {
       @media only screen and (max-width: 600px) {
