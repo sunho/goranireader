@@ -2,5 +2,15 @@
 @import 'vars';
 
 .StudentList {
-
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  .StudentItem {
+    padding: 1rem;
+    margin-right: .5rem;
+    &Name {
+      margin-top: .2rem;
+      text-align: center;
+    }
+  }
 }

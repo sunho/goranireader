@@ -4,11 +4,12 @@ import classNames from 'classnames'
 
 export interface Props {
   gray?: boolean
+  onClick?: () => void
 }
 
 const Button: React.SFC<Props> = (props) => {
   return (
-    <div className={classNames({[styles.Button]:true, [styles.ButtonGray]: props.gray})}>
+    <div onClick={() => {props.onClick && props.onClick()}}className={classNames({[styles.Button]:true, [styles.ButtonGray]: props.gray})}>
       {props.children}
     </div>
   )

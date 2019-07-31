@@ -76,7 +76,9 @@ func (u *User) GetBookProgress(bookid int) (*UserBookProgress, error) {
 	var out UserBookProgress
 	err := u.Tx().Q().Where("user_id = ? AND book_id = ?", u.ID, bookid).First(&out)
 	if err != nil {
-		return nil, err
+		return &UserBookProgress{
+			ReadPages: 0,
+		}, nil
 	}
 	return &out, err
 }

@@ -22,6 +22,7 @@ func RegisterRoutes(g *dim.Group) {
 	}))
 	g.Route("/book", &Book{})
 	g.Route("/memory", &Memory{})
+	g.Route("/progress", &Progress{})
 	g.Route("/user", &User{})
 	g.Route("/admin", &Admin{})
 	g.Route("/evlog", &Evlog{})

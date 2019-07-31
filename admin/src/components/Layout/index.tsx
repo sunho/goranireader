@@ -6,10 +6,17 @@ import { Class } from '../../models';
 
 export const ClassContext= createContext<Class>({id: -1, name: ''})
 
-const Layout: React.SFC = (props) => {
+interface Props {
+  side?: any
+}
+
+const Layout: React.SFC<Props> = (props) => {
   const [clas, setClas] = useState({id: -1, name: ''})
   return (
     <div className={styles.Background}>
+      <ClassContext.Provider value={clas}>
+        {props.side}
+      </ClassContext.Provider>
       <Sidebar></Sidebar>
       <div className={styles.Container}>
         <Header setClass={setClas}></Header>
