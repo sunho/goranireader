@@ -4,7 +4,8 @@ import { API_TEACHER_URL } from "./consts";
 function request(method: string, body: any = undefined) {
   return {
     headers: {
-      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     },
     method: method,
     body: body ? JSON.stringify(body):undefined,
@@ -31,13 +32,27 @@ export function getMission(id: number): Promise<Mission> {
       .then(resp => resp.json())
 }
 
+export function getMissions(classid: number): Promise<Mission[]> {
+  return fetch(`${API_TEACHER_URL}/class/${classid}/mission`)
+      .then(resp => resp.json())
+}
+
+export function getBook(bookid: number): Promise<Book> {
+  return fetch(`${API_TEACHER_URL}/book/${bookid}`)
+      .then(resp => resp.json())
+}
+
 export function getMissionProgresses(missionid: number): Promise<MissionProgress[]> {
   return fetch(`${API_TEACHER_URL}/mission/${missionid}/progresses`)
       .then(resp => resp.json())
 }
 
 export function putMission(id: number, mission: Mission): Promise<any> {
-  return fetch(`${API_TEACHER_URL}/missino/${id}`, request('PUT', mission))
+  return fetch(`${API_TEACHER_URL}/mission/${id}`, request('POST', mission))
+}
+
+export function postMission(classid: number, mission: Mission): Promise<any> {
+  return fetch(`${API_TEACHER_URL}/class/${classid}/mission`, request('POST', mission))
 }
 
 export function addStudent(classid: number, studentid: number): Promise<any> {

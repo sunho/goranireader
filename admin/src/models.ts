@@ -2,15 +2,23 @@ export interface Student {
   id: number
   name: string
   profile: string
-  mission_progress: MissionProgress
+  progress: number
 }
 
 export interface Mission {
   id: number
   pages: number
+  book_id: number
   class_id: number
   start_at: string
   end_at: string
+}
+
+export interface Book {
+  id: number
+  google_id: number
+  name: number
+  cover: string
 }
 
 export interface MissionProgress {

@@ -19,12 +19,14 @@ type AdminTeacher struct {
 func (a *AdminTeacher) Register(d *dim.Group) {
 	d.GET("/class", a.ListClasses)
 	d.GET("/book", a.ListBooks)
+	d.GET("/book/:bookid", a.GetBook)
 	d.GET("/student", a.ListAllStudents)
 	d.RouteFunc("/class/:classid", func(d *dim.Group) {
 		d.GET("/student", a.ListStudents)
 		d.POST("/student/:studentid", a.PostStudent)
 		d.DELETE("/student/:studentid", a.DeleteStudent)
 		d.GET("/mission", a.ListMissions)
+		d.POST("/mission", a.PostMission)
 		d.PUT("/mission/:missionid", a.PutMission)
 		d.DELETE("/mission/:missionid", a.DeleteMission)
 	}, &middles.ClassParamMiddle{})
@@ -171,4 +173,18 @@ func (a *AdminTeacher) DeleteMission(c *models.Context) error {
 		return err
 	}
 	return c.NoContent(200)
+}
+
+func (a *AdminTeacher) GetBook(c *models.Context) error {
+	id, err := strconv.Atoi(c.Param("bookid"))
+	if err != nil {
+		return err
+	}
+
+	book, err := models.Tx(c.Tx).GetBook(id)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(200, book)
 }

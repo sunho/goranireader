@@ -21,10 +21,14 @@ const StudentList: React.SFC<Props> = (props) => {
     fetchData()
   }, [clas])
   return (
-    <div>
+    <div className={styles.StudentList}>
       {students && students.map(student => {
         return (
-          <div>{student.name}</div>
+          <div className={styles.StudentItem}>
+            <img src={student.profile}/>
+            <div className={styles.StudentItemName}>{student.name}</div>
+            <div className={styles.StudentItemName}>{student.progress}%</div>
+          </div>
         )
       })}
     </div>

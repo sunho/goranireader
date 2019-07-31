@@ -1,0 +1,40 @@
+@import 'mixins';
+@import 'vars';
+
+.MissionCell {
+  width: 5rem;
+  overflow: initial !important;
+}
+
+.MissionRow{
+  cursor: pointer;
+  background-color: rgba($color-light-gray, 0);
+  @include transition(background-color 0.2s);
+  &:hover {
+    background-color: rgba($color-light-gray, 0.3);
+  }
+}
+
+.table {
+  font-size: $font-size-small;
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+
+  th {
+    text-align: left;
+    font-weight: 400;
+
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid $color-light-gray;
+  }
+
+  td {
+    text-align: left;
+    font-weight: 300;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    padding: 0.5rem 0.5rem;
+  }
+}

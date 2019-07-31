@@ -17,7 +17,7 @@ const Card: React.SFC<Props> = (props) => {
   return (
     <div className={styles.Card}>
       <div className={styles.CardHeader}>{props.title}
-        {props.addClick && <Add onClick={props.addClick()} className={styles.CardButton}/>}
+        {props.addClick && <Add onClick={() => {props.addClick && props.addClick()}} className={styles.CardButton}/>}
       </div>
       <div className={styles.CardMain}>
         {props.children}
