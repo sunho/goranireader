@@ -8,29 +8,30 @@ import android.view.ViewGroup
 import kim.sunho.goranireader.R
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.fragment_main.view.*
+import kim.sunho.goranireader.MainActivity
+import kotlinx.android.synthetic.main.fragment_setup.view.*
 
 
-class MainFragment : Fragment() {
+class SetupFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_main, container, false)
+        val view = inflater.inflate(R.layout.fragment_setup, container, false)
         view.startButton.setOnClickListener { view ->
-            findNavController().navigate(R.id.startFragment)
+            findNavController().navigate(R.id.action_setupFragment_to_startFragment)
         }
         return view
     }
 
     override fun onResume() {
         super.onResume()
-        (activity as AppCompatActivity).supportActionBar!!.hide()
+        (activity as MainActivity).hideActionBar()
     }
 
     override fun onStop() {
         super.onStop()
-        (activity as AppCompatActivity).supportActionBar!!.show()
+        (activity as MainActivity).showActionBar()
     }
 }
