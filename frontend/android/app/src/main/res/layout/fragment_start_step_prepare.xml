@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent" android:id="@+id/linearLayout">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+        <TextView
+                android:text="Prepare the secret paper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/textView2"
+                android:layout_marginEnd="24dp" android:layout_marginStart="24dp" android:textSize="30sp"
+                android:gravity="center" android:textColor="@color/ms_black"/>
+        <TextView
+                android:text="Your homeroom teacher should've given you some paper with a title &quot;Gorani Reader Secret&quot; You will need that paper in the following step."
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView4"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp" android:gravity="center" android:layout_marginTop="8dp"
+                android:textSize="18sp"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

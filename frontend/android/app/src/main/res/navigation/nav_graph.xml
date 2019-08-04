@@ -2,7 +2,23 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
-            app:startDestination="@+id/loginFragment">
+            app:startDestination="@+id/splashFragment">
+    <fragment android:id="@+id/setupFragment" android:name="kim.sunho.goranireader.fragments.SetupFragment"
+              android:label="fragment_setup" tools:layout="@layout/fragment_setup"
+              >
+        <action android:id="@+id/action_setupFragment_to_startFragment" app:destination="@id/startFragment"
+                app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim" app:popExitAnim="@anim/nav_default_pop_exit_anim"
+        />
+        <action android:id="@+id/action_setupFragment_to_loginFragment" app:destination="@id/loginFragment"/>
+    </fragment>
+    <fragment android:id="@+id/startFragment" android:name="kim.sunho.goranireader.fragments.start.StartFragment"
+              android:label="fragment_start" tools:layout="@layout/fragment_start"/>
     <fragment android:id="@+id/loginFragment" android:name="kim.sunho.goranireader.fragments.LoginFragment"
               android:label="fragment_login" tools:layout="@layout/fragment_login"/>
+    <fragment android:id="@+id/splashFragment" android:name="kim.sunho.goranireader.fragments.SplashFragment"
+              android:label="fragment_splash" tools:layout="@layout/fragment_splash">
+        <action android:id="@+id/action_splashFragment_to_setupFragment" app:destination="@id/setupFragment"
+                app:launchSingleTop="true"  app:popUpToInclusive="true" app:popUpTo="@id/splashFragment"/>
+    </fragment>
 </navigation>
