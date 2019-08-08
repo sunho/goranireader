@@ -12,13 +12,32 @@
         />
         <action android:id="@+id/action_setupFragment_to_loginFragment" app:destination="@id/loginFragment"/>
     </fragment>
-    <fragment android:id="@+id/startFragment" android:name="kim.sunho.goranireader.fragments.start.StartFragment"
-              android:label="fragment_start" tools:layout="@layout/fragment_start"/>
+    <fragment android:id="@+id/startFragment" android:name="kim.sunho.goranireader.fragments.StartFragment"
+              android:label="fragment_start" tools:layout="@layout/fragment_start">
+        <action android:id="@+id/action_startFragment_to_homeFragment" app:destination="@id/homeFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim" app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
     <fragment android:id="@+id/loginFragment" android:name="kim.sunho.goranireader.fragments.LoginFragment"
-              android:label="fragment_login" tools:layout="@layout/fragment_login"/>
+              android:label="fragment_login" tools:layout="@layout/fragment_login">
+        <action android:id="@+id/action_loginFragment_to_homeFragment" app:destination="@id/homeFragment"/>
+    </fragment>
     <fragment android:id="@+id/splashFragment" android:name="kim.sunho.goranireader.fragments.SplashFragment"
               android:label="fragment_splash" tools:layout="@layout/fragment_splash">
         <action android:id="@+id/action_splashFragment_to_setupFragment" app:destination="@id/setupFragment"
                 app:launchSingleTop="true"  app:popUpToInclusive="true" app:popUpTo="@id/splashFragment"/>
+        <action android:id="@+id/action_splashFragment_to_homeFragment" app:destination="@id/homeFragment"/>
     </fragment>
+    <fragment android:id="@+id/homeFragment" android:name="kim.sunho.goranireader.fragments.HomeFragment"
+              android:label="fragment_home"/>
+    <fragment android:id="@+id/homeBooksTabFragment"
+              android:name="kim.sunho.goranireader.fragments.home.HomeBooksTabFragment"
+              android:label="fragment_home_books_tab" tools:layout="@layout/fragment_home_books_tab"/>
+    <fragment android:id="@+id/homeGuideTabFragment"
+              android:name="kim.sunho.goranireader.fragments.home.HomeGuideTabFragment"
+              android:label="fragment_home_guide_tab"/>
+    <fragment android:id="@+id/homeConfigTabFragment"
+              android:name="kim.sunho.goranireader.fragments.home.HomeConfigTabFragment"
+              android:label="fragment_home_config_tab"/>
 </navigation>

@@ -24,14 +24,4 @@ class SetupFragment : Fragment() {
         }
         return view
     }
-
-    override fun onResume() {
-        super.onResume()
-        (activity as MainActivity).hideActionBar()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        (activity as MainActivity).showActionBar()
-    }
 }

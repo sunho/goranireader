@@ -3,7 +3,6 @@ package kim.sunho.goranireader.fragments.start
 import com.stepstone.stepper.VerificationError
 import kim.sunho.goranireader.R;
 import android.os.Bundle
-import android.util.Log
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,7 @@ class StartGoogleStepFragment : Fragment(), Step {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_start_step_google, container, false)
+        return inflater.inflate(R.layout.fragment_start_google_step, container, false)
     }
 
     override fun verifyStep(): VerificationError? {
