@@ -10,6 +10,9 @@ import android.animation.ValueAnimator
 import android.util.TypedValue
 import androidx.fragment.app.FragmentManager
 import kim.sunho.goranireader.extensions.Easing
+import com.downloader.PRDownloader
+import com.downloader.PRDownloaderConfig
+import kim.sunho.goranireader.services.ContentService
 
 
 class MainActivity : AppCompatActivity() {
@@ -19,22 +22,13 @@ class MainActivity : AppCompatActivity() {
         fun doBack(): Boolean
     }
 
-    private val toolBarAnimDuration = 200
-    private var toolbarHeight: Int = 0
-    private var toolBar: Toolbar? = null
-    private var vaActionBar: ValueAnimator? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        this.toolBar = findViewById(R.id.toolbar)
-        setSupportActionBar(this.toolBar)
-
-        val tv = TypedValue()
-        if (theme.resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
-            toolbarHeight = TypedValue.complexToDimensionPixelSize(tv.data, resources.displayMetrics)
-        }
-
+        val config = PRDownloaderConfig.newBuilder()
+            .build()
+        PRDownloader.initialize(applicationContext, config)
+        ContentService.init(applicationContext)
     }
 
     override fun onBackPressed() {
@@ -46,57 +40,5 @@ class MainActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
-    }
-
-    fun hideActionBar() {
-        if (vaActionBar != null && vaActionBar!!.isRunning) {
-            return
-        }
-
-        vaActionBar = ValueAnimator.ofInt(toolbarHeight, 0)
-        vaActionBar!!.interpolator = Easing.default()
-        vaActionBar!!.addUpdateListener { animation ->
-            (toolBar!!.layoutParams as AppBarLayout.LayoutParams).height = animation.animatedValue as Int
-            toolBar!!.requestLayout()
-        }
-
-        vaActionBar!!.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                super.onAnimationEnd(animation)
-
-                if (supportActionBar != null) {
-                    supportActionBar!!.hide()
-                }
-            }
-        })
-
-        vaActionBar!!.duration = toolBarAnimDuration.toLong()
-        vaActionBar!!.start()
-    }
-
-    fun showActionBar() {
-        if (vaActionBar != null && vaActionBar!!.isRunning) {
-            return
-        }
-
-        vaActionBar = ValueAnimator.ofInt(0, toolbarHeight)
-        vaActionBar!!.interpolator = Easing.default()
-        vaActionBar!!.addUpdateListener { animation ->
-            (toolBar!!.layoutParams as AppBarLayout.LayoutParams).height = animation.animatedValue as Int
-            toolBar!!.requestLayout()
-        }
-
-        vaActionBar!!.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator) {
-                super.onAnimationStart(animation)
-
-                if (supportActionBar != null) {
-                    supportActionBar!!.show()
-                }
-            }
-        })
-
-        vaActionBar!!.duration = toolBarAnimDuration.toLong()
-        vaActionBar!!.start()
     }
 }

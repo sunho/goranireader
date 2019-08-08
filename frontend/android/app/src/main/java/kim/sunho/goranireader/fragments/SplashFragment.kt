@@ -20,9 +20,4 @@ class SplashFragment : Fragment() {
             findNavController().navigate(R.id.action_splashFragment_to_setupFragment)
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-        (activity as MainActivity).supportActionBar!!.hide()
-    }
 }
