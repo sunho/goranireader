@@ -40,7 +40,9 @@ class HomeBooksTabFragment: Fragment() {
         listView.adapter = adapter
         model.contentList.observe(this, Observer<List<Content>> {
             adapter.contentList = it
-            adapter.notifyDataSetChanged()
+            listView.post {
+                adapter.notifyDataSetChanged()
+            }
         })
     }
 }

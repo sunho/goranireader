@@ -30,16 +30,12 @@ abstract class BindBaseAdapter<T, M, H>(private val factory: (binding: T) -> H) 
         position: Int
     ) {
         val obj = getModelForPosition(position)
+        holder.markAttach()
         holder.bind(obj)
     }
 
     override fun getItemViewType(position: Int): Int {
         return getLayoutIdForPosition(position)
-    }
-
-    override fun onViewAttachedToWindow(holder: H) {
-        super.onViewAttachedToWindow(holder)
-        holder.markAttach()
     }
 
     override fun onViewDetachedFromWindow(holder: H) {

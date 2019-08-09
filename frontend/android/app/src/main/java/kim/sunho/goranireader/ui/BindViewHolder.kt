@@ -1,5 +1,6 @@
 package kim.sunho.goranireader.ui
 
+import android.util.Log
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Lifecycle
@@ -20,10 +21,12 @@ abstract class BindViewHolder<T, M>
     }
 
     fun markAttach() {
+        Log.d("assadf", "asfsadf")
         lifecycleRegistry.currentState = Lifecycle.State.STARTED
     }
 
     fun markDetach() {
+        Log.d("assadf", "detstory")
         lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
     }
 

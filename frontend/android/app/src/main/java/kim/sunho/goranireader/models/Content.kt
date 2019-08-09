@@ -1,5 +1,6 @@
 package kim.sunho.goranireader.models
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.downloader.Error
@@ -9,7 +10,7 @@ import com.downloader.PRDownloader
 import com.downloader.Progress
 import com.downloader.request.DownloadRequest
 
-sealed class Content private constructor(val bookId: Int, val img: String) {
+sealed class Content constructor(val bookId: Int, val img: String) {
     class Offline(bookId: Int, img: String, val path: String) : Content(bookId, img)
     class Online(bookId: Int, img: String, val url: String) : Content(bookId, img) {
         fun download(path: String, filename: String): Downloading {
@@ -19,6 +20,7 @@ sealed class Content private constructor(val bookId: Int, val img: String) {
     class Downloading(bookId: Int, img: String, url: String, path: String, filename: String) : Content(bookId, img) {
         val progress: MutableLiveData<Long> = MutableLiveData()
         val complete: MutableLiveData<Boolean> = MutableLiveData()
+        var currentError: Error? = null
         init {
             val request = PRDownloader.download(url, path, filename).build()
             request.onProgressListener = OnProgressListener { progress2 ->
@@ -30,7 +32,7 @@ sealed class Content private constructor(val bookId: Int, val img: String) {
                 }
 
                 override fun onError(error: Error?) {
-                    //TODO
+                    currentError = error
                     complete.value = true
                 }
             })
