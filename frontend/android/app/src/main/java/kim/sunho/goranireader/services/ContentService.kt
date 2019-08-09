@@ -1,6 +1,7 @@
 package kim.sunho.goranireader.services
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.Observer
 import kim.sunho.goranireader.models.Content
 import java.io.File
@@ -25,6 +26,7 @@ object ContentService {
     fun fetchContents(): List<Content> {
         for ((k, v) in downloadingMap) {
             if (v.complete.value ?: false) {
+                Log.d("asdf", "Asdf")
                 downloadingMap.remove(k)
             }
         }
@@ -32,7 +34,7 @@ object ContentService {
             Content.Offline(it, "asdfadfs", DOWNLOAD_PATH.resolve(it.toString() + ".epub").path)
         } + downloadingMap.map {
             it.value
-        } + listOf(Content.Online(1, "Asdf", "Asdf"))).sortedBy { it.bookId }
+        } + listOf(Content.Online(1, "Asdf", "https://www.gutenberg.org/ebooks/28885.epub.images"))).sortedBy { it.bookId }
     }
 
     private fun fetchLocalContents(): List<Int> {
