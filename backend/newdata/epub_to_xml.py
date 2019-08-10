@@ -5,14 +5,15 @@ from urllib.parse import urlencode, urlparse, urlunparse, parse_qs
 import book as mbook
 import uuid
 import re
-import ast
+import json
 import nltk
+import msgpack
 nltk.download('punkt')
 
 MIN_SEN_LEN = 30
 
 def get_contents(book):
-  out = map(lambda item: {'content': get_text(item.get_content().decode('unicode_escape')), 'name': item.file_name},
+  out = map(lambda item: {'content': get_text(item.get_content().decode('utf-8')), 'name': item.file_name},
     filter(lambda item: isinstance(item, epub.EpubHtml), book.items)
   )
   return list(out)
@@ -47,30 +48,51 @@ def book_to_chapters(book):
     for content in contents:
       if chap['href'] == content['name']:
         content['chapter'] = chap['title']
-      else:
-        content['chapter'] = ''
-  content['sentences'] = content_to_sentences(content['content'])
   out = list()
   for content in contents:
+    content['sentences'] = content_to_sentences(content['content'])
+    if 'chapter' not in content:
+      content['chapter'] = None 
     out.append(mbook.Chapter(content['chapter'], content['name'], content['sentences']))
-  return contents
+  return out
 
 def content_to_sentences(content):
   raw = content.split('\n')
   raw = filter(lambda item: len(re.sub(r'[\s+]', '',item)) != 0, raw)
   raw = map(lambda item: item.strip(' \t\n\r'), raw)
   raw = list(raw)
-  sens = list()
-  for sen in raw:
-    sens.extend(sent_tokenize(sen))
   out = list()
-  for sen in sens:
-    out.append(mbook.Sentence(str(uuid.uuid1()), sen))
+  for sen in raw:
+    sens = sent_tokenize(sen)
+    for i in range(0, len(sens)):
+      if i == 0:
+        out.append(mbook.Sentence(str(uuid.uuid1()), True, sens[i]))
+      else:
+        out.append(mbook.Sentence(str(uuid.uuid1()), False, sens[i]))
   return out
 
 def convert_book(book):
-  book.
-  out = mbook.Book()
+  cover = None
+  cover_image = book.get_item_with_id('cover-image')
+  if cover_image is not None:
+    cover = cover_image.get_content()
+  else:
+    cover_id = book.get_metadata('OPF', 'cover')
+    if len(cover_id) != 0:
+      cover_id = cover_id[0][1]['content']
+      cover_image = book.get_item_with_id(cover_id)
+      cover = cover_image.get_content()
+  title = book.get_metadata('DC', 'title')[0][0]
+  author = book.get_metadata('DC', 'creator')[0][0]
+  meta = mbook.Metadata(0, title, cover, author)
+  out = mbook.Book(meta)
+  out.chapters = book_to_chapters(book)
+  return out
+
 
 book = epub.read_epub('test.epub')
-chaps = book_to_chapters(book)
+from xml.dom import minidom
+cbook = convert_book(book)
+buf = minidom.parseString(cbook.toXML().decode('utf-8')).toprettyxml(indent="   ")
+with open("out.xml", "w") as f:
+  f.write(buf)
