@@ -8,8 +8,6 @@ import (
 	"gorani/models"
 	"gorani/routes"
 	"gorani/servs/authserv"
-	"gorani/servs/dataserv"
-	"gorani/servs/googleserv"
 
 	"github.com/gobuffalo/packr/v2"
 	"github.com/sunho/webf/servs/dbserv"
@@ -17,6 +15,7 @@ import (
 	"github.com/sunho/webf"
 	"github.com/sunho/webf/features"
 )
+
 
 func main() {
 	w := webf.New("gorani")
@@ -26,7 +25,7 @@ func main() {
 		features.FeatureS3Serv(),
 	)
 	dbserv.Box = packr.New("migrations", "./migrations")
-	w.Provide(googleserv.Provide, authserv.Provide, dataserv.Provide)
+	w.Provide(authserv.Provide)
 	w.Register(routes.RegisterRoutes)
 	w.Start()
 }

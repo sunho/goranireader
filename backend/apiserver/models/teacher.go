@@ -6,6 +6,13 @@ import (
 	"github.com/sunho/webf/wfdb"
 )
 
+type Admin struct {
+	wfdb.DefaultModel `db:"-"`
+	ID                int       `db:"id" json:"id"`
+	CreatedAt         time.Time `db:"created_at" json:"created_at"`
+	UpdatedAt         time.Time `db:"updated_at" json:"updated_at"`
+}
+
 type Class struct {
 	wfdb.DefaultModel `db:"-"`
 	ID                int       `db:"id" json:"id"`
@@ -40,7 +47,7 @@ type ClassMission struct {
 	wfdb.DefaultModel `db:"-"`
 	ID                int       `db:"id" json:"id"`
 	ClassID           int       `db:"class_id" json:"class_id"`
-	BookID            int       `db:"book_id" json:"book_id"`
+	BookID            string    `db:"book_id" json:"book_id"`
 	CreatedAt         time.Time `db:"created_at" json:"created_at"`
 	UpdatedAt         time.Time `db:"updated_at" json:"updated_at"`
 	StartAt           time.Time `db:"start_at" json:"start_at"`

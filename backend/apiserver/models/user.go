@@ -5,11 +5,8 @@
 package models
 
 import (
-	"encoding/json"
 	"errors"
 	"time"
-
-	"golang.org/x/oauth2"
 
 	"github.com/gofrs/uuid"
 	"github.com/sunho/webf/wfdb"
@@ -20,44 +17,11 @@ import (
 type User struct {
 	wfdb.DefaultModel `db:"-"`
 	ID                int       `db:"id" json:"id"`
+	Username          string    `db:"username" json:"username"`
 	ClassID           nulls.Int `db:"class_id" json:"class_id"`
-	OauthID           string    `db:"oauth_id" json:"-"`
+	SecretCode        string    `db:"secret_code" json:"-"`
 	CreatedAt         time.Time `db:"created_at" json:"-"`
 	UpdatedAt         time.Time `db:"updated_at" json:"-"`
-	Username          string    `db:"username" json:"username"`
-	Profile           string    `db:"profile" json:"profile"`
-	Email             string    `db:"email" json:"-"`
-}
-
-func (u *User) GetToken() (*oauth2.Token, error) {
-	var tok UserToken
-	err := u.Tx().Q().Where("user_id = ?", u.ID).First(&tok)
-	if err != nil {
-		return nil, err
-	}
-
-	var out oauth2.Token
-	err = json.Unmarshal([]byte(tok.Buf), &out)
-	if err != nil {
-		return nil, err
-	}
-	return &out, nil
-}
-
-func (u *User) SetToken(tok *oauth2.Token) error {
-	buf, err := json.Marshal(tok)
-	if err != nil {
-		return err
-	}
-
-	err = u.Tx().Upsert(&UserToken{
-		UserID: u.ID,
-		Buf:    string(buf),
-	})
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func (u *User) GetClass() (*Class, error) {
@@ -72,7 +36,7 @@ func (u *User) GetClass() (*Class, error) {
 	return &out, nil
 }
 
-func (u *User) GetBookProgress(bookid int) (*UserBookProgress, error) {
+func (u *User) GetBookProgress(bookid string) (*UserBookProgress, error) {
 	var out UserBookProgress
 	err := u.Tx().Q().Where("user_id = ? AND book_id = ?", u.ID, bookid).First(&out)
 	if err != nil {
@@ -100,7 +64,6 @@ func (u *User) GetStudentView() (StudentView, error) {
 		return StudentView{
 			ID:       u.ID,
 			Name:     u.Username,
-			Profile:  u.Profile,
 			Progress: 0,
 		}, nil
 	}
@@ -113,7 +76,6 @@ func (u *User) GetStudentView() (StudentView, error) {
 	return StudentView{
 		ID:       u.ID,
 		Name:     u.Username,
-		Profile:  u.Profile,
 		Progress: float32(progress.ReadPages) / 1000.0,
 	}, nil
 }

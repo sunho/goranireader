@@ -9,8 +9,6 @@ import android.widget.BaseAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import com.folioreader.Config
-import com.folioreader.FolioReader
 import kim.sunho.goranireader.R
 import kim.sunho.goranireader.databinding.HomeBooksItemBinding
 import kim.sunho.goranireader.models.Content
@@ -62,15 +60,6 @@ class HomeBooksModelAdapter(val context: Context, var contentList: List<Content>
             if (model is Content.Online) {
                 ContentService.download(model.bookId, model.url)
                 viewModel.fetch()
-            }
-            if (model is Content.Offline) {
-                val folioReader = FolioReader.get()
-                val config = Config()
-                config.allowedDirection = Config.AllowedDirection.VERTICAL_AND_HORIZONTAL
-                config.direction = Config.Direction.HORIZONTAL
-                folioReader.setConfig(config, true)
-                Log.d("path", model.path)
-                folioReader.openBook(model.path)
             }
         }
     }

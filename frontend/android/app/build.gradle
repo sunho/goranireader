@@ -31,7 +31,7 @@ android {
 }
 
 dependencies {
-    def nav_dep = "2.1.0-beta02"
+    def nav_dep = "2.2.0-alpha01"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -49,8 +49,12 @@ dependencies {
 
     implementation 'com.stepstone.stepper:material-stepper:4.3.1'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-
-    implementation 'com.github.sunho:FolioReader-Android:master'
+    implementation 'org.msgpack:msgpack-core:0.8.17'
 
     implementation 'com.mindorks.android:prdownloader:0.6.0'
+
+    implementation 'com.google.firebase:firebase-core:17.0.1'
+
 }
+
+apply plugin: 'com.google.gms.google-services'

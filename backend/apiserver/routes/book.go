@@ -7,7 +7,6 @@ package routes
 import (
 	"gorani/middles"
 	"gorani/models"
-	"gorani/servs/googleserv"
 
 	"github.com/sunho/webf/servs/dbserv"
 	"github.com/sunho/webf/servs/s3serv"
@@ -16,36 +15,21 @@ import (
 )
 
 type Book struct {
-	File   *s3serv.S3Serv         `dim:"on"`
-	Google *googleserv.GoogleServ `dim:"on"`
-	DB     *dbserv.DBServ         `dim:"on"`
+	File *s3serv.S3Serv `dim:"on"`
+	DB   *dbserv.DBServ `dim:"on"`
 }
 
 func (b *Book) Register(d *dim.Group) {
 	d.Use(&middles.AuthMiddle{})
-	d.GET("", b.List)
+	d.GET("/:bookid", b.Get)
 }
 
-func (b *Book) List(c *models.Context) error {
-	cli, err := b.Google.GetClient(c.User)
+func (b *Book) Get(c *models.Context) error {
+	id := c.Param("bookid")
+	var out models.Book
+	err := c.Tx.Q().Eager().Where("id = ?", id).First(&out)
 	if err != nil {
 		return err
 	}
-	defer cli.Clean()
-
-	ids, err := cli.GetBookIDs()
-	if err != nil {
-		return err
-	}
-
-	out := make([]models.Book, 0, len(ids))
-	for _, id := range ids {
-		var book models.Book
-		err := c.Tx.Q().Eager().Where("google_id = ?", id).First(&book)
-		if err == nil {
-			out = append(out, book)
-		}
-	}
-
 	return c.JSON(200, out)
 }
