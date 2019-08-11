@@ -25,11 +25,7 @@ func (c *Progress) Register(d *dim.Group) {
 }
 
 func (m *Progress) Get(c *models.Context) error {
-	id, err := strconv.Atoi(c.Param("bookid"))
-	if err != nil {
-		return err
-	}
-	out, err := c.User.GetBookProgress(id)
+	out, err := c.User.GetBookProgress(c.Param("bookid"))
 	if err != nil {
 		return err
 	}

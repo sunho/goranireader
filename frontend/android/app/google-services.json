@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "319642119337",
+    "firebase_url": "https://gorani-reader-c30f0.firebaseio.com",
+    "project_id": "gorani-reader-c30f0",
+    "storage_bucket": "gorani-reader-c30f0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319642119337:android:f6a46c7c4591a387",
+        "android_client_info": {
+          "package_name": "kim.sunho.goranireader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "319642119337-v2u7f7c0ueqnkegtcb4brc0r6sfndq42.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXibT1zKy8b81m_pzTHCEmBAECq_M18Yg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "319642119337-v2u7f7c0ueqnkegtcb4brc0r6sfndq42.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

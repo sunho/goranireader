@@ -7,7 +7,6 @@ package routes
 import (
 	"gorani/middles"
 	"gorani/models"
-	"gorani/servs/dataserv"
 	"strconv"
 
 	"github.com/sunho/webf/servs/dbserv"
@@ -19,21 +18,16 @@ import (
 const memoriesPerPage = 10
 
 type Memory struct {
-	DB   *dbserv.DBServ     `dim:"on"`
-	Data *dataserv.DataServ `dim:"on"`
+	DB *dbserv.DBServ `dim:"on"`
 }
 
 func (m *Memory) Register(d *dim.Group) {
 	d.Use(&middles.AuthMiddle{})
 	d.GET("/:word", m.List)
-	d.GET("/:word/similar", m.ListSimilarWord)
 	d.PUT("/:word", m.Post)
 	d.RouteFunc("/:word/:memoryid", func(d *dim.Group) {
 		d.GET("", m.Get)
 		d.DELETE("", m.Delete)
-		d.Route("/rate", &Rate{kind: "memory", targetID: func(c *models.Context) int {
-			return c.MemoryParam.ID
-		}})
 	}, &middles.MemoryParamMiddle{})
 }
 
@@ -41,14 +35,6 @@ func (m *Memory) List(c *models.Context) error {
 	var out []models.DetailedMemory
 	p, _ := strconv.Atoi(c.QueryParam("p"))
 	err := c.Tx.Where("word = ?", c.Param("word")).Paginate(p, memoriesPerPage).All(&out)
-	if err != nil {
-		return err
-	}
-	return c.JSON(200, out)
-}
-
-func (m *Memory) ListSimilarWord(c *models.Context) error {
-	out, err := m.Data.GetSimilarWords(c.User.ID, c.Param("word"))
 	if err != nil {
 		return err
 	}
