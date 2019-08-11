@@ -12,10 +12,12 @@ import androidx.fragment.app.FragmentManager
 import kim.sunho.goranireader.extensions.Easing
 import com.downloader.PRDownloader
 import com.downloader.PRDownloaderConfig
+import com.google.firebase.firestore.FirebaseFirestore
 import kim.sunho.goranireader.services.ContentService
 
 
 class MainActivity : AppCompatActivity() {
+    val db = FirebaseFirestore.getInstance()
     var onBackPressedListener: OnBackPressedListener? = null
 
     interface OnBackPressedListener {

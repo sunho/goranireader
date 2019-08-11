@@ -6,7 +6,7 @@ create table classes (
 );
 
 create table books (
-    id character varying(255) not null,
+    id character varying(255) not null primary key,
     created_at timestamp without time zone not null,
     updated_at timestamp without time zone not null,
     name character varying(1024) not null,
