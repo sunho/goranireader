@@ -19,7 +19,7 @@ type User struct {
 	ID                int       `db:"id" json:"id"`
 	Username          string    `db:"username" json:"username"`
 	ClassID           nulls.Int `db:"class_id" json:"class_id"`
-	SecretCode        string    `db:"secret_code" json:"-"`
+	SecretCode        string    `db:"secret_code" json:"secret_code"`
 	CreatedAt         time.Time `db:"created_at" json:"-"`
 	UpdatedAt         time.Time `db:"updated_at" json:"-"`
 }

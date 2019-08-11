@@ -23,7 +23,7 @@ func (a *AdminTeacher) Register(d *dim.Group) {
 	d.GET("/student", a.ListAllStudents)
 	d.RouteFunc("/class/:classid", func(d *dim.Group) {
 		d.GET("/student", a.ListStudents)
-		d.POST("/student/:studentid", a.PostStudent)
+		d.POST("/student", a.PostStudent)
 		d.DELETE("/student/:studentid", a.DeleteStudent)
 		d.GET("/mission", a.ListMissions)
 		d.POST("/mission", a.PostMission)
@@ -92,16 +92,12 @@ func (a *AdminTeacher) ListMissions(c *models.Context) error {
 }
 
 func (a *AdminTeacher) PostStudent(c *models.Context) error {
-	id, err := strconv.Atoi(c.Param("studentid"))
-	if err != nil {
+	var item models.User
+	if err := c.Bind(&item); err != nil {
 		return err
 	}
-	user, err := models.Tx(c.Tx).GetUser(id)
-	if err != nil {
-		return err
-	}
-	user.ClassID = nulls.NewInt(c.ClassParam.ID)
-	err = user.Update()
+	item.ClassID = nulls.NewInt(c.ClassParam.ID)
+	err := c.Tx.Create(&item)
 	if err != nil {
 		return err
 	}
