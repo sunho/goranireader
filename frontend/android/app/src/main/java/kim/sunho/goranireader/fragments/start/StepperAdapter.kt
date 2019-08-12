@@ -14,9 +14,9 @@ class StepperAdapter(fm: FragmentManager, context: Context) : AbstractFragmentSt
     override fun createStep(@IntRange(from=0, to=3) position: Int): Step {
         return when (position) {
             0 -> StartMainStepFragement()
-            1 -> StartPrepareStepFragment()
-            2 -> StartKeyStepFragment()
-            3 -> StartGoogleStepFragment()
+            1 -> StartGoogleStepFragment()
+            2 -> StartPrepareStepFragment()
+            3 -> StartKeyStepFragment()
             else -> throw IllegalArgumentException("wtf")
         }
     }

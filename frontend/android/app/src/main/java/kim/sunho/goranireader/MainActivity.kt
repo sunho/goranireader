@@ -7,10 +7,15 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import com.google.android.material.appbar.AppBarLayout
 import android.animation.ValueAnimator
+import android.app.Activity
 import android.content.Intent
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import androidx.core.view.children
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,13 +31,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import kim.sunho.goranireader.services.DBService
 
 
 class MainActivity : AppCompatActivity() {
-    lateinit var db: FirebaseFirestore
+    lateinit var db: DBService
+    lateinit var fdb: FirebaseFirestore
     lateinit var auth: FirebaseAuth
     lateinit var mainLayout: View
 
@@ -60,12 +68,17 @@ class MainActivity : AppCompatActivity() {
         initServices()
     }
 
+    fun hideSoftKeyboard() {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager;
+        inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+    }
 
     private fun initServices() {
         val config = PRDownloaderConfig.newBuilder()
             .build()
         PRDownloader.initialize(applicationContext, config)
         ContentService.init(applicationContext)
+        db = DBService(fdb, auth)
     }
 
     private fun initFirebase() {
@@ -75,7 +88,7 @@ class MainActivity : AppCompatActivity() {
             .requestEmail()
             .requestScopes(scopeBook)
             .build()
-        db = FirebaseFirestore.getInstance()
+        fdb = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
         oauth = GoogleSignIn.getClient(this, gso)
     }

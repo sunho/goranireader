@@ -20,7 +20,7 @@ class SplashFragment : Fragment() {
         super.onResume()
         Log.d("asdfas","asdfasfs")
         context?.let {
-            if ((activity as MainActivity).auth.currentUser != null) {
+            if ((activity as MainActivity).auth.currentUser == null) {
                 findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
             } else {
                 findNavController().navigate(R.id.action_splashFragment_to_setupFragment)
