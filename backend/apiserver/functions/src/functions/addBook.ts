@@ -36,13 +36,14 @@ export default functions.region('asia-northeast1').storage.object().onFinalize(a
         await bucket.file(coverName).makePublic();
         url = getPublicUrl(bucket.name, coverName);
     }
-   
+    
     const bookRef = db.collection('books').doc(book.meta.id);
     await bookRef.set({
         title: book.meta.title,
         id: book.meta.id,
         author: book.meta.author,
         coverType: book.meta.coverType,
+        downloadLink: getPublicUrl(bucket.name, filePath),
         cover: url
     });
 

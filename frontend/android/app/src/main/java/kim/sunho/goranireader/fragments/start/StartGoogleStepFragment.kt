@@ -25,13 +25,12 @@ class StartGoogleStepFragment : Fragment(), Step {
             mainActivity.googleSignIn()
         }
         mainActivity.currentUser.observe(this, Observer {
-            Log.d("good","good")
+
         })
         return view
     }
 
     override fun verifyStep(): VerificationError? {
-        //return null if the user can go to the next step, create a new VerificationError instance otherwise
         return null
     }
 

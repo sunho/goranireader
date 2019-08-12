@@ -8,6 +8,11 @@
             android:id="@+id/stepperLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:ms_showErrorStateEnabled="true"
+            app:ms_backButtonColor="@color/colorPrimary"
+            app:ms_nextButtonColor="@color/colorPrimary"
+            app:ms_completeButtonColor="@color/colorPrimary"
             app:ms_activeStepColor="@color/colorPrimary"
+            app:ms_stepperFeedbackType="disabled_bottom_navigation"
             app:ms_stepperType="tabs" />
 </androidx.constraintlayout.widget.ConstraintLayout>
