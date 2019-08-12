@@ -26,18 +26,10 @@
     <fragment android:id="@+id/splashFragment" android:name="kim.sunho.goranireader.fragments.SplashFragment"
               android:label="fragment_splash" tools:layout="@layout/fragment_splash">
         <action android:id="@+id/action_splashFragment_to_setupFragment" app:destination="@id/setupFragment"
-                app:launchSingleTop="true"  app:popUpToInclusive="true" app:popUpTo="@id/splashFragment"/>
-        <action android:id="@+id/action_splashFragment_to_homeFragment" app:destination="@id/homeFragment"/>
+                app:launchSingleTop="true" app:popUpToInclusive="true" app:popUpTo="@+id/splashFragment"/>
+        <action android:id="@+id/action_splashFragment_to_homeFragment" app:destination="@id/homeFragment"
+                app:popUpTo="@+id/splashFragment"/>
     </fragment>
     <fragment android:id="@+id/homeFragment" android:name="kim.sunho.goranireader.fragments.HomeFragment"
               android:label="fragment_home"/>
-    <fragment android:id="@+id/homeBooksTabFragment"
-              android:name="kim.sunho.goranireader.fragments.home.HomeBooksTabFragment"
-              android:label="fragment_home_books_tab" tools:layout="@layout/fragment_home_books_tab"/>
-    <fragment android:id="@+id/homeGuideTabFragment"
-              android:name="kim.sunho.goranireader.fragments.home.HomeGuideTabFragment"
-              android:label="fragment_home_guide_tab"/>
-    <fragment android:id="@+id/homeConfigTabFragment"
-              android:name="kim.sunho.goranireader.fragments.home.HomeConfigTabFragment"
-              android:label="fragment_home_config_tab"/>
 </navigation>
