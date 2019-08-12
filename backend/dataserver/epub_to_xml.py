@@ -1,3 +1,4 @@
+import mimetypes
 from nltk.tokenize import sent_tokenize
 from ebooklib import epub
 from inscriptis import get_text
@@ -73,19 +74,23 @@ def content_to_sentences(content):
   return out
 
 def convert_book(book):
+  import base64
   cover = None
+  coverType = ''
   cover_image = book.get_item_with_id('cover-image')
   if cover_image is not None:
-    cover = cover_image.get_content()
+    coverType = mimetypes.guess_type(cover_image.file_name)[0]
+    cover = base64.b64encode(cover_image.get_content()).decode('utf-8')
   else:
     cover_id = book.get_metadata('OPF', 'cover')
     if len(cover_id) != 0:
       cover_id = cover_id[0][1]['content']
       cover_image = book.get_item_with_id(cover_id)
-      cover = cover_image.get_content()
+      coverType = mimetypes.guess_type(cover_image.file_name)[0]
+      cover = base64.b64encode(cover_image.get_content()).decode('utf-8')
   title = book.get_metadata('DC', 'title')[0][0]
   author = book.get_metadata('DC', 'creator')[0][0]
-  meta = mbook.Metadata(0, title, cover, author)
+  meta = mbook.Metadata(0, title, cover, author, coverType)
   out = mbook.Book(meta)
   out.chapters = book_to_chapters(book)
   return out
