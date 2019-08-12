@@ -44,16 +44,18 @@ class Chapter(typing.NamedTuple):
 class Metadata(typing.NamedTuple):
   id: str
   title: str
-  cover: bytes
+  cover: str
   author: str
+  coverType: str
   def toXML(self):
     import base64
     out = xml.Element('meta')
     xml.SubElement(out, 'id').text = self.id
     xml.SubElement(out, 'title').text = self.title
     xml.SubElement(out, 'author').text = self.author
+    xml.SubElement(out, 'coverType').text = self.coverType
     if self.cover is not None:
-      xml.SubElement(out, 'cover').text = base64.standard_b64encode(self.cover).decode('utf-8')
+      xml.SubElement(out, 'cover').text = self.cover
     return out
 
   @staticmethod
@@ -61,12 +63,12 @@ class Metadata(typing.NamedTuple):
     id = tag.find('id').text
     title = tag.find('title').text
     author = tag.find('author').text
+    coverType = tag.find('coverType').text
     cover_raw = tag.find('cover')
     cover = None
     if cover_raw is not None:
-      import base64
-      cover = base64.standard_b64decode(cover_raw.text)
-    return Metadata(id, title, cover, author)
+      cover = cover_raw.text
+    return Metadata(id, title, cover, author, coverType)
 
 class Book:
   def __init__(self, meta):
