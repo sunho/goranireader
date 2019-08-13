@@ -9,6 +9,8 @@ import android.widget.BaseAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.findNavController
 import kim.sunho.goranireader.R
 import kim.sunho.goranireader.databinding.HomeBooksItemBinding
 import kim.sunho.goranireader.models.Content
@@ -35,7 +37,7 @@ class HomeBooksViewHolder(binding: HomeBooksItemBinding, private val viewModel: 
     }
 }
 
-class HomeBooksModelAdapter(val context: Context, var contentList: List<Content>, private val viewModel: HomeBooksViewModel)
+class HomeBooksModelAdapter(val context: Context, var contentList: List<Content>, private val viewModel: HomeBooksViewModel, private var fragment: HomeBooksTabFragment?)
     : BindBaseAdapter<HomeBooksItemBinding, Content, HomeBooksViewHolder>
     ({ binding -> HomeBooksViewHolder(binding, viewModel, context)}) {
     override fun getModelForPosition(position: Int): Content {
@@ -58,9 +60,18 @@ class HomeBooksModelAdapter(val context: Context, var contentList: List<Content>
         view.setOnClickListener {
             val model = it.tag as Content
             if (model is Content.Online) {
-                ContentService.download(model.bookId, model.url)
+                Log.d("aassfaf", model.url)
+                ContentService.download(model)
                 viewModel.fetch()
+            } else if (model is Content.Offline) {
+                context.let {
+                    findNavController(fragment!!).navigate(R.id.action_homeFragment_to_readerFragment)
+                }
             }
         }
+    }
+
+    fun destroy() {
+        fragment = null
     }
 }

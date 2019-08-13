@@ -9,10 +9,14 @@
             android:orientation="vertical"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent">
-
         <TextView
-                android:text="@{model.img}"
+                android:text="@{model.title}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/textView5"/>
+        <TextView
+                android:text="download"
+                android:visibility="@{model.isOnline()}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/textView6"/>
     </LinearLayout>
 </layout>

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kim.sunho.goranireader.R
 import kim.sunho.goranireader.databinding.FragmentHomeBooksTabBinding
+import kim.sunho.goranireader.extensions.main
 import kim.sunho.goranireader.models.Content
 
 class HomeBooksTabFragment: Fragment() {
@@ -29,13 +30,14 @@ class HomeBooksTabFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         model = ViewModelProviders.of(parentFragment!!)[HomeBooksViewModel::class.java]
+        model.db = activity.main().db
         model.fetch()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val listView = view.findViewById<RecyclerView>(R.id.booksList)
-        adapter = HomeBooksModelAdapter(context!!, listOf(), model)
+        adapter = HomeBooksModelAdapter(context!!, listOf(), model, this)
         listView.layoutManager = LinearLayoutManager(context!!, RecyclerView.VERTICAL, false)
         listView.adapter = adapter
         model.contentList.observe(this, Observer<List<Content>> {
@@ -44,5 +46,10 @@ class HomeBooksTabFragment: Fragment() {
                 adapter.notifyDataSetChanged()
             }
         })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        adapter.destroy()
     }
 }

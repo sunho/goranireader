@@ -141,7 +141,7 @@ typings/
 
 # gatsby files
 .cache/
-public
+/admin/public
 
 # Mac files
 .DS_Store

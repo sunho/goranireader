@@ -10,39 +10,38 @@ import java.lang.IllegalStateException
 object ContentService {
     private const val DIR = "books"
     private lateinit var DOWNLOAD_PATH: File
-    private var downloadingMap: HashMap<Int, Content.Downloading> = HashMap()
+    private var downloadingMap: HashMap<String, Content.Downloading> = HashMap()
 
     fun init(context: Context) {
         DOWNLOAD_PATH = context.filesDir.resolve(DIR)
         DOWNLOAD_PATH.mkdir()
     }
 
-    fun download(bookId: Int, url: String) {
-        val content = Content.Online(bookId, "asdf", url)
-            .download(DOWNLOAD_PATH.path, bookId.toString() + ".epub")
-        downloadingMap[bookId] = content
+    fun download(content: Content.Online) {
+        val new = content.download(DOWNLOAD_PATH.path, content.bookId+".book")
+        downloadingMap[content.bookId] = new
     }
 
     fun fetchContents(): List<Content> {
         for ((k, v) in downloadingMap) {
             if (v.complete.value ?: false) {
-                Log.d("asdf", "Asdf")
                 downloadingMap.remove(k)
             }
         }
         return (fetchLocalContents().map {
-            Content.Offline(it, "asdfadfs", DOWNLOAD_PATH.resolve(it.toString() + ".epub").path)
+            Content.Offline(it, "asdfadfs", "asdf,", "asdf", DOWNLOAD_PATH.resolve(it + ".book").path)
         } + downloadingMap.map {
             it.value
-        } + listOf(Content.Online(1, "Asdf", "https://www.gutenberg.org/ebooks/28885.epub.images"))).sortedBy { it.bookId }
+        })
     }
 
-    private fun fetchLocalContents(): List<Int> {
+    private fun fetchLocalContents(): List<String> {
         val files = DOWNLOAD_PATH.listFiles() ?: throw IllegalStateException("failed to list files")
         return files.flatMap {
-            val res = "([0-9]+)\\.epub".toRegex().find(it.name) ?: return listOf()
+            Log.d("asdfa", it.path)
+            val res = "([^.]+)\\.book$".toRegex().find(it.name) ?: return@flatMap listOf<String>()
             val (id) = res.destructured
-            intArrayOf(id.toInt()).toList()
+            listOf(id)
         }
     }
 }

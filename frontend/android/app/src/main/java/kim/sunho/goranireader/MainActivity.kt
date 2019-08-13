@@ -30,12 +30,24 @@ import kim.sunho.goranireader.services.ContentService
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
+import com.google.android.gms.tasks.Tasks
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import com.google.api.client.extensions.android.http.AndroidHttp
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
+import com.google.api.client.json.jackson2.JacksonFactory
+import com.google.api.services.books.Books
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import kim.sunho.goranireader.services.DBService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.HashSet
 
 
 class MainActivity : AppCompatActivity() {
@@ -49,6 +61,9 @@ class MainActivity : AppCompatActivity() {
 
     private val RC_SIGN_IN: Int = 7
     private lateinit var oauth: GoogleSignInClient
+
+    private val job = SupervisorJob()
+    private val scope = CoroutineScope(Dispatchers.Default + job)
 
     var onBackPressedListener: OnBackPressedListener? = null
 
@@ -95,10 +110,47 @@ class MainActivity : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
-        Log.d("asfasdf", "Asdfasdfs1.5")
-        if (auth.currentUser != null) {
-            Log.d("asfasdf", "Asdfasdfs2")
-            _currentUser.value = auth.currentUser
+        if (auth.currentUser == null) {
+            return
+        }
+        _currentUser.value = auth.currentUser
+        reloadOwnedBooks()
+    }
+
+    fun reloadOwnedBooks() {
+        val account = GoogleSignIn.getLastSignedInAccount(this) ?: return
+        val credential = GoogleAccountCredential.usingOAuth2(this,
+            Collections.singleton("https://www.googleapis.com/auth/books")
+        )
+        credential.selectedAccount = account?.account
+        //TODO separate
+        val books = Books.Builder(AndroidHttp.newCompatibleTransport(), JacksonFactory.getDefaultInstance(), credential)
+            .setApplicationName("Gorani Reader Android App")
+            .build()
+        scope.launch {
+            val out = HashSet<String>()
+            val shelves = books.Mylibrary().Bookshelves().list().execute()
+            val udata = db.getUserdata() ?: return@launch
+            for (shelf in shelves.items) {
+                if (shelf.title != "Purchased") continue
+                if (udata.bookCheck == Timestamp(Date(shelf.volumesLastUpdated.value))) continue
+                val vols = books.Mylibrary().Bookshelves().Volumes()
+                    .list(shelf.id.toString()).execute()
+                Tasks.await(fdb.collection("userdata")
+                    .document(auth.currentUser!!.uid)
+                    .update("bookCheck", Timestamp(Date(shelf.volumesLastUpdated.value))))
+                if (vols.size == 0) continue
+                for (vol in vols.items) {
+                    if (vol.userInfo.isPurchased) {
+                        out.add(vol.id)
+                    }
+                }
+            }
+            if (HashSet(udata.ownedBooks) != out) {
+                Tasks.await(fdb.collection("userdata")
+                    .document(auth.currentUser!!.uid)
+                    .update("ownedBooks", ArrayList(out)))
+            }
         }
     }
 

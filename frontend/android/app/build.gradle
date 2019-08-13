@@ -63,6 +63,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
     implementation 'com.google.apis:google-api-services-books:v1-rev106-1.25.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-alpha03'
+
+    implementation 'com.google.api-client:google-api-client:1.25.0'
+    implementation 'com.google.api-client:google-api-client-android:1.22.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

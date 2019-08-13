@@ -8,18 +8,23 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.widget.TextView
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.viewModelScope
 import com.google.android.material.textfield.TextInputEditText
 import kim.sunho.goranireader.services.DBService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 
 class StartKeyStepViewModel: ViewModel() {
+    private val job = SupervisorJob()
+    private val scope = CoroutineScope(Dispatchers.Default + job)
+    lateinit var db: DBService
+
     val keylength = 10
 
     val valid: MutableLiveData<Boolean> = MutableLiveData()
-
-    val complete: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>()
-    }
 
     fun full(): Boolean {
         return word.value?.length == keylength &&
@@ -29,14 +34,23 @@ class StartKeyStepViewModel: ViewModel() {
 
     private fun updateFocus() {
         if (number.value?.length == keylength) {
-            complete.value = true
+            validate()
             return
         } else if (word2.value?.length == keylength) {
             numberFocus.value = true
         } else if (word.value?.length == keylength) {
             word2Focus.value = true
         }
-        complete.value = false
+    }
+
+    private fun validate() {
+        valid.value = false
+        scope.launch {
+            val ok = db.loginable(word.value ?: "", word2.value ?: "", number.value ?: "")
+            launch(Dispatchers.Main.immediate) {
+                valid.value = ok
+            }
+        }
     }
 
     val word: MutableLiveData<String> by lazy {
