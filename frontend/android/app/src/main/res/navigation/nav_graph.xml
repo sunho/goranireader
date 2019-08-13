@@ -31,5 +31,9 @@
                 app:popUpTo="@+id/splashFragment"/>
     </fragment>
     <fragment android:id="@+id/homeFragment" android:name="kim.sunho.goranireader.fragments.HomeFragment"
-              android:label="fragment_home"/>
+              android:label="fragment_home">
+        <action android:id="@+id/action_homeFragment_to_readerFragment" app:destination="@id/readerFragment"/>
+    </fragment>
+    <fragment android:id="@+id/readerFragment" android:name="kim.sunho.goranireader.fragments.ReaderFragment"
+              android:label="fragment_reader" tools:layout="@layout/fragment_reader"/>
 </navigation>

@@ -15,7 +15,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="parent"
                 android:id="@+id/linearLayout2"
-                app:requestFocus="@{safeUnbox(model.complete)}"
+                app:requestFocus="@{safeUnbox(model.valid)}"
                 android:focusable="true"
                 android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintVertical_bias="0.26" android:layout_marginTop="32dp">

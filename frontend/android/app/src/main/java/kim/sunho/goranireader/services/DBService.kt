@@ -3,7 +3,10 @@ package kim.sunho.goranireader.services
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import kim.sunho.goranireader.models.Book
 import kim.sunho.goranireader.models.Userdata
 import kotlinx.coroutines.awaitAll
 import java.lang.Exception
@@ -16,20 +19,41 @@ class DBService(private val db: FirebaseFirestore, private val auth: FirebaseAut
         }
         return auth.currentUser!!
     }
-    fun getUserdata(): Userdata? {
-        val user = authorize()
-        try {
-            val doc = Tasks.await(db.collection("userdata").document(user.uid).get())
-            return doc.toObject(Userdata::class.java)
-        } catch (e: Exception) {
-            setUserdata(Userdata())
+
+    fun getOwnedBooks(): List<Book>? {
+        return getUserdata()?.ownedBooks?.flatMap {
+            val out = getBook(it)
+            if (out == null) {
+                return listOf()
+            }
+            return listOf(out)
         }
-        return Userdata()
     }
 
-    fun setUserdata(udata: Userdata) {
+    fun bookDoc(id: String): DocumentReference {
+        return db.collection("books").document(id)
+    }
+
+    fun getBook(id: String): Book? {
+        val doc = Tasks.await(bookDoc(id).get())
+        if (!doc.exists()) {
+            return null
+        }
+        return doc.toObject(Book::class.java)
+    }
+
+    fun userdataDoc(): DocumentReference {
         val user = authorize()
-        Tasks.await(db.collection("userdata").document(user.uid).set(udata))
+        return db.collection("userdata").document(user.uid)
+    }
+
+    fun getUserdata(): Userdata? {
+        val doc = Tasks.await(userdataDoc().get())
+        if (!doc.exists()) {
+            Tasks.await(userdataDoc().set(Userdata()))
+            return Userdata()
+        }
+        return doc.toObject(Userdata::class.java)
     }
 
     fun loginable(word: String, word2: String, number: String): Boolean {

@@ -22,14 +22,6 @@ import kotlin.coroutines.CoroutineContext
 
 
 class StartKeyStepFragment : Fragment(), Step {
-    private val job = SupervisorJob()
-    private val scope = CoroutineScope(Dispatchers.Default + job)
-
-    override fun onDestroy() {
-        super.onDestroy()
-        scope.cancel()
-    }
-
     private lateinit var model: StartKeyStepViewModel
 
     override fun onCreateView(
@@ -44,17 +36,9 @@ class StartKeyStepFragment : Fragment(), Step {
         binding.lifecycleOwner = this
 
 
-        model.complete.observe(this, Observer {
+        model.valid.observe(this, Observer {
             if (it) {
-                val db = activity.main().db
                 activity.main().hideSoftKeyboard()
-                model.valid.value = false
-                scope.launch {
-                    val ok = db.loginable(model.word.value ?: "", model.word2.value ?: "", model.number.value ?: "")
-                    launch(Dispatchers.Main.immediate) {
-                        model.valid.value = ok
-                    }
-                }
             }
         })
         return view
@@ -63,10 +47,11 @@ class StartKeyStepFragment : Fragment(), Step {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         model = ViewModelProviders.of(parentFragment!!)[StartKeyStepViewModel::class.java]
+        model.db = activity.main().db
     }
 
     override fun verifyStep(): VerificationError? {
-        if (model.valid.value == true && model.complete.value == true && model.full()) {
+        if (model.valid.value == true && model.full()) {
             return null
         }
         return VerificationError("Not valid secret code")

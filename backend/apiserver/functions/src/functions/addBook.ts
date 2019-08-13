@@ -7,7 +7,6 @@ import { readFileSync, writeFileSync } from 'fs';
 
 const getPublicUrl = (bucketName: string, fileName: string) => `https://storage.googleapis.com/${bucketName}/${fileName}`;
 
-
 export default functions.region('asia-northeast1').storage.object().onFinalize(async (object) => {
     const filePath = object.name;
     if (!filePath) {
@@ -25,6 +24,7 @@ export default functions.region('asia-northeast1').storage.object().onFinalize(a
 
     await mkdirp(tempLocalDir);
     await bucket.file(filePath).download({destination: tempLocalFile});
+    await bucket.file(filePath).makePublic();
 
     const data = readFileSync(tempLocalFile);
     const book = JSON.parse(data.toString());

@@ -4,10 +4,6 @@ import com.google.firebase.Timestamp
 import java.util.*
 import kotlin.collections.HashMap
 
-data class UserUnknownWord(
-    val words: MutableMap<String, UnknownWord> = HashMap()
-)
-
 data class UnknownWord(
     val definitions: MutableMap<String, UnknownDefinition> = HashMap(),
     val ef: Double = 2.5,
