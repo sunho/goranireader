@@ -1,48 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import logo from './logo.svg';
 import ReactSwipe from 'react-swipe';
 import './App.css';
 
-
-
+// thanks to  https://github.com/yoo2001818
 const App: React.FC = () => {
-  const data = Array(100).fill("hEllo erasdfasf asdfsadfasfasf asdf asfasf");
-
-  let dummy: Element;
-  let reactSwipeEl: ReactSwipe;
-  const [min, setMin] = useState(3);
-  const [items, setItems]: [Element[], any] = useState([]);
+  const data = Array(200).fill("hEllo erasdfasf asdfsadfasfasf asdf asfasf ㅁㄴㄹㅇ ㅁㄴㅇㄹㅁㄴㅇㄹ ㅁㄴㄹㄴㅁㅇㄹㅁㄴ ㄹㄴㅁㅇㄹㅁㄴ ㄹㅁㄴㅇㄹ ㅁㄴㅇㄹ ㅁㄴㄹㄴㅁ ㄹㅁ ");
+  const [dividePositions, setDividePositions]: [any, any] = useState([]);
+  const swipeItemRefs: any = useRef([]);
   useEffect(() => {
-    setItems(makePages());
-  }, []); 
-  const makePage = (start: number): number => {
-    const targetHeight = window.innerHeight - 40;
-    let tmp = "";
-    for (let i = start; i < data.length; i++) {
-      const tmp2 = tmp + "<div>" + data[i].split(" ").map((it: string) => "<span>" + it + " </span>").join("") + "</div>";
-      dummy.innerHTML = tmp2;
-      if (dummy.clientHeight > targetHeight) {
-        return (i - 1);
+    // 마지막 페이지의 자를 노드 위치 계산
+    const lastItem = swipeItemRefs.current[dividePositions.length];
+    const parentBounds = lastItem.getBoundingClientRect();
+    const parentTop = parentBounds.top;
+    const parentHeight = parentBounds.height;
+    const prevPos = (dividePositions[dividePositions.length - 1] || 0);
+    let pageTop = parentTop;
+    let currentPage = 0;
+    let cutPos: any = [];
+    // HTMLElement.children은 놀랍게도 배열이 아니라서 findIndex같은걸 못써요 ㅠㅠ
+    for (let i = 0; i < lastItem.children.length; i += 1) {
+      const childNode = lastItem.children[i];
+      const childBounds = childNode.getBoundingClientRect();
+      const offset = childBounds.bottom - pageTop;
+      if (offset >= parentHeight) {
+        pageTop = lastItem.children[i - 1].getBoundingClientRect().bottom;
+        // 노드 위치는 dividePositions의 마지막 값만큼 뒤로 가있기 때문에 앞으로 다시
+        // 밀어주는 작업이 필요함
+        cutPos[currentPage] = i + prevPos;
+        currentPage += 1;
       }
-      tmp = tmp2;
     }
-    return data.length;
-  };
-  const makePages = () => {
-    let end = 0;
-    let out: any[] = [];
-    while (end < data.length) {
-      const newEnd = makePage(end);
-      out.push(<div>{
-        data.slice(end, newEnd).map(sen => {
-        return (<div>{sen.split(" ").map((word: string) => <span onClick={(e)=>{console.log((e.target as any).innerText)}}>{word+" "}</span>)}</div>);
-      })
-      }
-      </div>);
-      end = newEnd;
+    // 자를게 있다면 절단
+    if (cutPos.length > 0) {
+      setDividePositions((prevState: any) => [
+        ...prevState,
+        ...cutPos,
+      ]);
     }
-    return out;
-  }
+  }, [dividePositions]);
+  useEffect(() => {
+    function handleResize() {
+      setDividePositions([]); 
+    }
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
   const swipeOptions = {
     startSlide: 0,
     continuous: false,
@@ -53,21 +57,32 @@ const App: React.FC = () => {
     <div className="App">
       <ReactSwipe
         className="Swipe"
-          swipeOptions={swipeOptions}
-          childCount={items.length}
-          ref={el => (reactSwipeEl = el!)}
-        >
-        {items}
+        swipeOptions={swipeOptions}
+        childCount={dividePositions.length + 1}
+      >
+        { [...dividePositions, Infinity].map((endPos, i) => (
+          <div
+            className="SwipeItem"
+            key={i}
+            ref={(node) => swipeItemRefs.current[i] = node}
+          >
+            { data.slice(dividePositions[i - 1] || 0, endPos)
+              .map((paragraph, i) => (
+                <p key={i}>
+                  { paragraph.split(" ").map((word: any, i: any) => (
+                    <span key={i} onClick={() => alert(word)}>
+                      { word + ' ' }
+                    </span>
+                  ))}
+                </p>
+              ))
+            }
+          </div>
+        )) }
       </ReactSwipe>
-      <div
-        className="Dummy"
-        ref={el => (dummy = el!)}
-      />
     </div>
-    
   );
 }
-
 
 
 export default App;

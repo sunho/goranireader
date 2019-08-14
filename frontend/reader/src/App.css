@@ -1,19 +1,26 @@
+.SwipeItem {
+  max-height: 100%; 
+  overflow: hidden;
+}
+
+
 .App {
   height: 100vh;
   width: 100%;
 }
 
-.Dummy {
-  background: black;
-  visibility: hidden;
-  width: 100%;
-}
 
 .Swipe {
   overflow: hidden;
+  height: 100vh;
   width: 100%;
+
 }
 
+
+.Swipe div {
+  height: 100vh;
+}
 .App-link {
   color: #61dafb;
 }

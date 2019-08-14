@@ -30,6 +30,10 @@ class HomeBooksTabFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         model = ViewModelProviders.of(parentFragment!!)[HomeBooksViewModel::class.java]
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         model.db = activity.main().db
         model.fetch()
     }
@@ -48,8 +52,8 @@ class HomeBooksTabFragment: Fragment() {
         })
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         adapter.destroy()
     }
 }
