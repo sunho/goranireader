@@ -1,3 +1,5 @@
+import { Sentence } from "./model";
+
 export interface App {
     initComplete(): void;
     loadComplete(used: string): void;
@@ -21,7 +23,8 @@ export class WebappImpl {
     setIOS() {
     }
 
-    start(buf: string, sdi: string) {
+    start(buf: string, sid: string) {
+        let sentences: Sentence[] = JSON.parse(buf)
     }
 }
 
