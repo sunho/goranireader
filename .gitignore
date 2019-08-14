@@ -154,3 +154,4 @@ yarn-error.log
 .yarn-integrity
 
 /backend/dataserver/out
+/frontend/android/app/src/main/assets/reader
