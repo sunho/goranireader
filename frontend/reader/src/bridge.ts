@@ -6,7 +6,7 @@ export interface App {
 export interface Webapp {
     setDev(): void;
     setIOS(): void;
-    load(buf: string): void;
+    start(buf: string, sid: string): void;
 };
 
 export class WebappImpl {
@@ -21,7 +21,7 @@ export class WebappImpl {
     setIOS() {
     }
 
-    load(buf: string) {
+    start(buf: string, sdi: string) {
     }
 }
 

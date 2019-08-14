@@ -22,7 +22,7 @@ class Sentence(typing.NamedTuple):
 
 class Chapter(typing.NamedTuple):
   title: str
-  file_name: str
+  fileName: str
   items: typing.List[Sentence]
   def toXML(self):
     title = self.title
