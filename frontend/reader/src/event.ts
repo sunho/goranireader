@@ -15,6 +15,7 @@ export class LiteEvent<T> implements ILiteEvent<T> {
   }
 
   public trigger(data?: T) {
+      console.log(this.handlers);
       this.handlers.slice(0).forEach(h => h(data));
   }
 

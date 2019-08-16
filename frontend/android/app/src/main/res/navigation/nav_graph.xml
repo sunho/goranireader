@@ -32,8 +32,14 @@
     </fragment>
     <fragment android:id="@+id/homeFragment" android:name="kim.sunho.goranireader.fragments.HomeFragment"
               android:label="fragment_home">
-        <action android:id="@+id/action_homeFragment_to_readerFragment" app:destination="@id/readerFragment"/>
+        <action android:id="@+id/action_homeFragment_to_readerFragment" app:destination="@id/readerFragment">
+        </action>
     </fragment>
     <fragment android:id="@+id/readerFragment" android:name="kim.sunho.goranireader.fragments.ReaderFragment"
-              android:label="fragment_reader" tools:layout="@layout/fragment_reader"/>
+              android:label="fragment_reader" tools:layout="@layout/fragment_reader">
+        <argument
+                android:name="fileName"
+                app:argType="string"
+                android:defaultValue=".."/>
+    </fragment>
 </navigation>

@@ -3,6 +3,8 @@ package kim.sunho.goranireader.services
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.Observer
+import kim.sunho.goranireader.extensions.JsonDefault
+import kim.sunho.goranireader.models.BookyBook
 import kim.sunho.goranireader.models.Content
 import java.io.File
 import java.lang.IllegalStateException
@@ -29,7 +31,7 @@ object ContentService {
             }
         }
         return (fetchLocalContents().map {
-            Content.Offline(it, "asdfadfs", "asdf,", "asdf", DOWNLOAD_PATH.resolve(it + ".book").path)
+            Content.Offline(it, "asdfadfs", "asdf,", "asdf", it + ".book")
         } + downloadingMap.map {
             it.value
         })
@@ -43,5 +45,10 @@ object ContentService {
             val (id) = res.destructured
             listOf(id)
         }
+    }
+
+    fun readBook(fileName: String): BookyBook {
+        val buf = DOWNLOAD_PATH.resolve(fileName).readText()
+        return JsonDefault().parse(BookyBook.serializer(), buf)
     }
 }

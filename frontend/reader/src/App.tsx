@@ -18,7 +18,7 @@ const App: React.FC<Props> = (props: Props) => {
   const swipeItemRefs: any = useRef([]);
   const swipeRef: MutableRefObject<ReactSwipe | null> = useRef(null);
   const [idToPage, setIdToPage]: [any, any] = useState(new Map());
-  const readingSentence: MutableRefObject<string> = useRef(data[0].id || props.readingSentence);
+  const readingSentence: MutableRefObject<string> = useRef((data[0] || {id: props.readingSentence}).id);
 
   const getPageSentences = (page: number) => {
     if (page === dividePositions.length) {
@@ -26,6 +26,10 @@ const App: React.FC<Props> = (props: Props) => {
     }
     return data.slice(dividePositions[page - 1] || 0, dividePositions[page])
   };
+
+  useEffect(() => {
+    setDividePositions([]);
+  }, [data]);
 
   useEffect(() => {
     // 마지막 페이지의 자를 노드 위치 계산
@@ -72,7 +76,7 @@ const App: React.FC<Props> = (props: Props) => {
   useLiteEventObserver(window.webapp.onFlushPaginate, () => {
     const current = idToPage.get(readingSentence.current) || 0;
     window.app.paginate(getPageSentences(current).map(s => s.id));
-  }, []);
+  }, [idToPage, readingSentence]);
 
   useEffect(() => {
     setIdToPage(Array(dividePositions.length + 1).fill(1).flatMap((_ :any, i: number) => (

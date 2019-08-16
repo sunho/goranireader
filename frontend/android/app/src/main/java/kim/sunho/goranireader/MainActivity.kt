@@ -114,7 +114,6 @@ class MainActivity : AppCompatActivity() {
             return
         }
         _currentUser.value = auth.currentUser
-        reloadOwnedBooks()
     }
 
     fun reloadOwnedBooks() {

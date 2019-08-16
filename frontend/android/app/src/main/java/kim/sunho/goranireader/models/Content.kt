@@ -12,7 +12,7 @@ import com.downloader.Progress
 import com.downloader.request.DownloadRequest
 
 sealed class Content constructor(val bookId: String, val img: String?, val title: String, val author: String) {
-    class Offline(bookId: String, img: String?, title: String, author: String, val path: String) : Content(bookId, img, title, author)
+    class Offline(bookId: String, img: String?, title: String, author: String, val fileName: String) : Content(bookId, img, title, author)
     class Online(bookId: String, img: String?, title: String, author: String, val url: String) : Content(bookId, img, title, author) {
         fun download(path: String, filename: String): Downloading {
             return Downloading(bookId, img,title, author, url, path, filename)

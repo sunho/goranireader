@@ -1,7 +1,6 @@
 import React, { MutableRefObject, useRef, useState, useEffect } from "react";
 import "./SwipeItem.css"
 import { Sentence } from "./model";
-import { useLiteEventObserver } from "./hooks";
 
 interface Props {
   sentences: Sentence[];
