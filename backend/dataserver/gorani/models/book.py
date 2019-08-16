@@ -28,7 +28,7 @@ class Chapter(typing.NamedTuple):
     title = self.title
     if title is None:
       title = ''
-    out = xml.Element('chapter', title=title, fileName=self.file_name)
+    out = xml.Element('chapter', title=title, fileName=self.fileName)
     for item in self.items:
       out.append(item.toXML())
     return out

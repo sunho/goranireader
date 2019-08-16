@@ -1,8 +1,5 @@
 import { Sentence } from "./model";
 import { LiteEvent } from "./event";
-import ReactDOM from "react-dom";
-import React from "react";
-import AppComponent from "./App";
 
 export interface App {
   initComplete(): void;
@@ -18,6 +15,7 @@ export interface App {
 export class Webapp {
   readonly onFlushPaginate = new LiteEvent<void>();
   readonly onCancelSelect = new LiteEvent<void>();
+  readonly onStart = new LiteEvent<{sentences: Sentence[], sid: string}>();
 
   setDev() {
     window.app = new DevAppImpl();
@@ -25,9 +23,12 @@ export class Webapp {
 
   setIOS() {}
 
-  start(buf: string, sid: string) {
-    let sentences: Sentence[] = JSON.parse(buf);
-    ReactDOM.render(<AppComponent sentences={sentences} readingSentence={sid}/>, document.getElementById('root'));
+  start(sentences: Sentence[], sid: string) {
+    console.log("fafasfdasf");
+    this.onStart.trigger({
+      sentences: sentences,
+      sid: sid
+    });
   }
 
   flushPaginate() {

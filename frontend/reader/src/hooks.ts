@@ -22,7 +22,7 @@ export function useOutsideClickObserver(
 export function useLiteEventObserver<T>(
   event: LiteEvent<T>,
   callback: (v?: T) => void,
-  deps: any[]
+  deps: any
 ) {
   function handleEvent(v?: T) {
     callback(v)
@@ -33,5 +33,5 @@ export function useLiteEventObserver<T>(
     return () => {
       event.off(handleEvent);
     }
-  }, deps)
+  }, deps);
 }

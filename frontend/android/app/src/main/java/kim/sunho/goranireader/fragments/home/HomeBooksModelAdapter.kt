@@ -13,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
 import kim.sunho.goranireader.R
 import kim.sunho.goranireader.databinding.HomeBooksItemBinding
+import kim.sunho.goranireader.fragments.HomeFragmentDirections
 import kim.sunho.goranireader.models.Content
 import kim.sunho.goranireader.services.ContentService
 import kim.sunho.goranireader.ui.BindBaseAdapter
@@ -65,7 +66,8 @@ class HomeBooksModelAdapter(val context: Context, var contentList: List<Content>
                 viewModel.fetch()
             } else if (model is Content.Offline) {
                 context.let {
-                    findNavController(fragment!!).navigate(R.id.action_homeFragment_to_readerFragment)
+                    val action = HomeFragmentDirections.actionHomeFragmentToReaderFragment(model.fileName)
+                    findNavController(fragment!!).navigate(action)
                 }
             }
         }
