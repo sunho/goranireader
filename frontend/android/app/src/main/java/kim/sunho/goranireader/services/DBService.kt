@@ -34,6 +34,10 @@ class DBService(private val db: FirebaseFirestore, private val auth: FirebaseAut
         return db.collection("books").document(id)
     }
 
+    fun bookProgressDoc(id: String): DocumentReference {
+        return userdataDoc().collection("bookProgress").document(id)
+    }
+
     fun getBook(id: String): Book? {
         val doc = Tasks.await(bookDoc(id).get())
         if (!doc.exists()) {

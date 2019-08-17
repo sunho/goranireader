@@ -2,9 +2,6 @@ package kim.sunho.goranireader.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.webkit.WebView
 import kim.sunho.goranireader.R
 import android.webkit.WebChromeClient
@@ -12,21 +9,25 @@ import android.webkit.WebSettings
 import kim.sunho.goranireader.fragments.reader.Bridge
 import android.webkit.ConsoleMessage
 import android.util.Log
+import android.view.*
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
+import kim.sunho.goranireader.extensions.*
 import kim.sunho.goranireader.fragments.home.HomeBooksViewModel
 import kim.sunho.goranireader.fragments.reader.ReaderBridgeApp
 import kim.sunho.goranireader.fragments.reader.ReaderViewModel
 import kim.sunho.goranireader.services.ContentService
+import kotlinx.coroutines.launch
 
 
-class ReaderFragment : Fragment() {
+class ReaderFragment: CoroutineFragment() {
     val args: ReaderFragmentArgs by navArgs()
 
     lateinit var viewModel: ReaderViewModel
     lateinit var bridge: Bridge
     lateinit var bridgeApp: ReaderBridgeApp
-    lateinit var webView: WebView
+    lateinit var webView: SwipeWebView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,19 +37,21 @@ class ReaderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        scope.launch {
+            viewModel.initIfNot(activity.main().db, args.bookId)
+            onUi {
+                configureWebview()
+            }
+        }
         webView = view.findViewById(R.id.webView)
         bridge = Bridge(webView)
         bridgeApp = ReaderBridgeApp(this)
         webView.addJavascriptInterface(bridgeApp, "app")
-        configureWebview()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(parentFragment!!)[ReaderViewModel::class.java]
-        if (viewModel.book == null) {
-            viewModel.book = ContentService.readBook(args.fileName)
-        }
+        viewModel = ViewModelProviders.of(this)[ReaderViewModel::class.java]
     }
 
     private fun configureWebview() {
@@ -71,6 +74,22 @@ class ReaderFragment : Fragment() {
                 return super.onConsoleMessage(consoleMessage)
             }
         }
+        webView.setGestureDetector(GestureDetector(object: SwipeGestureListener() {
+            override fun onSwipeLeft() {
+                if (viewModel.isEnd.value == true) {
+                    viewModel.next()
+                }
+            }
+
+            override fun onSwipeRight() {
+                if (viewModel.isStart.value == true) {
+                    viewModel.prev()
+                }
+            }
+        }))
+        viewModel.readingChapter.observe(this, Observer {
+            bridge.start(viewModel.currentChapter()!!.items, viewModel.readingSentence)
+        })
         webView.loadUrl("file:///android_asset/reader/index.html")
     }
 }

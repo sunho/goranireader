@@ -10,6 +10,7 @@ data class BookyBook(
 
 @Serializable
 data class Chapter(
+    val id: String = "",
     val items: List<Sentence> = ArrayList(),
     val title: String = "",
     val fileName: String = ""
