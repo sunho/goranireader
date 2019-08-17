@@ -55,7 +55,7 @@ def book_to_chapters(book):
     content['sentences'] = content_to_sentences(content['content'])
     if 'chapter' not in content:
       content['chapter'] = None 
-    out.append(mbook.Chapter(content['chapter'], content['name'], content['sentences']))
+    out.append(mbook.Chapter(str(uuid.uuid1()), content['chapter'], content['name'], content['sentences']))
   return out
 
 def content_to_sentences(content):

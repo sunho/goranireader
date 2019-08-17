@@ -66,7 +66,7 @@ class HomeBooksModelAdapter(val context: Context, var contentList: List<Content>
                 viewModel.fetch()
             } else if (model is Content.Offline) {
                 context.let {
-                    val action = HomeFragmentDirections.actionHomeFragmentToReaderFragment(model.fileName)
+                    val action = HomeFragmentDirections.actionHomeFragmentToReaderFragment(model.bookId)
                     findNavController(fragment!!).navigate(action)
                 }
             }

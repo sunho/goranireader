@@ -21,6 +21,7 @@ class Sentence(typing.NamedTuple):
     return Sentence(id, start, tag.text)
 
 class Chapter(typing.NamedTuple):
+  id: str
   title: str
   fileName: str
   items: typing.List[Sentence]
@@ -28,7 +29,7 @@ class Chapter(typing.NamedTuple):
     title = self.title
     if title is None:
       title = ''
-    out = xml.Element('chapter', title=title, fileName=self.fileName)
+    out = xml.Element('chapter', id=self.id, title=title, fileName=self.fileName)
     for item in self.items:
       out.append(item.toXML())
     return out
@@ -38,8 +39,9 @@ class Chapter(typing.NamedTuple):
     for item in tag:
       items.append(Sentence.fromXML(item))
     title = tag.get('title')
+    id = tag.get('id')
     file_name = tag.get('fileName')
-    return Chapter(title, file_name, items)
+    return Chapter(id, title, file_name, items)
 
 class Metadata(typing.NamedTuple):
   id: str

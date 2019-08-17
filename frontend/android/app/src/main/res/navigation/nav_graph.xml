@@ -38,7 +38,7 @@
     <fragment android:id="@+id/readerFragment" android:name="kim.sunho.goranireader.fragments.ReaderFragment"
               android:label="fragment_reader" tools:layout="@layout/fragment_reader">
         <argument
-                android:name="fileName"
+                android:name="bookId"
                 app:argType="string"
                 android:defaultValue=".."/>
     </fragment>

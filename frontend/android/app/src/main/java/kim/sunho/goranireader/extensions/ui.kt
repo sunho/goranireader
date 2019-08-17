@@ -4,6 +4,11 @@ import android.app.Activity
 import android.view.animation.Interpolator
 import androidx.core.view.animation.PathInterpolatorCompat
 import kim.sunho.goranireader.MainActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 // https://matthewlein.com/tools/ceaser
 
@@ -15,3 +20,5 @@ class Easing {
 }
 
 fun Activity?.main(): MainActivity = this as MainActivity
+
+suspend fun<T> onUi(block: suspend CoroutineScope.() -> T): T =  withContext(Dispatchers.Main, block)

@@ -1,5 +1,5 @@
 import { Sentence } from "./model";
-import { LiteEvent } from "./event";
+import { LiteEvent } from "./utills/event";
 
 export interface App {
   initComplete(): void;
@@ -10,6 +10,7 @@ export interface App {
   paginate(sids: string[]): void;
   wordSelected(i: number, sid: string): void;
   sentenceSelected(sid: string): void;
+  readingSentenceChange(sid: String): void;
 }
 
 export class Webapp {
@@ -74,5 +75,9 @@ class DevAppImpl implements App {
 
   sentenceSelected(sid: string) {
     console.log("[app] sentence selected sid:"+ sid);
+  }
+
+  readingSentenceChange(sid: string) {
+    console.log("[app] reading setence changed");
   }
 }
