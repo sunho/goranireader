@@ -2,7 +2,7 @@ import { MutableRefObject, useEffect } from "react";
 import { LiteEvent } from "./event";
 
 export function useOutsideClickObserver(
-  ref: MutableRefObject<HTMLElement | undefined>,
+  ref: MutableRefObject<HTMLElement | null | undefined>,
   callback: () => void
 ) {
   function handleClickOutside(event: any) {

@@ -42,6 +42,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import kim.sunho.goranireader.services.DBService
+import kim.sunho.goranireader.services.DictService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -93,6 +94,7 @@ class MainActivity : AppCompatActivity() {
             .build()
         PRDownloader.initialize(applicationContext, config)
         ContentService.init(applicationContext)
+        DictService.init(applicationContext)
         db = DBService(fdb, auth)
     }
 

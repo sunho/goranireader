@@ -22,3 +22,20 @@ class Easing {
 fun Activity?.main(): MainActivity = this as MainActivity
 
 suspend fun<T> onUi(block: suspend CoroutineScope.() -> T): T =  withContext(Dispatchers.Main, block)
+
+fun String.trimmingSuffix(suffix: String): String? {
+    val out = this.removeSuffix(suffix)
+    if (out == this) {
+        return null
+    }
+    return out
+}
+
+
+fun String.charAtBack(n: Int): Char? {
+    val i = this.length - n
+    if (i < 0 || i >= this.length) {
+        return null
+    }
+    return this[i]
+}

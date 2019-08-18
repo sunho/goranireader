@@ -61,7 +61,6 @@ class HomeBooksModelAdapter(val context: Context, var contentList: List<Content>
         view.setOnClickListener {
             val model = it.tag as Content
             if (model is Content.Online) {
-                Log.d("aassfaf", model.url)
                 ContentService.download(model)
                 viewModel.fetch()
             } else if (model is Content.Offline) {

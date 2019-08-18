@@ -37,7 +37,7 @@ const SwipeItem: React.FC<Props> = (props: Props) => {
   const [selectedSentence, setSelectedSentence] = useState<SelectedSentence | undefined>(
     undefined
   );
-  const pat = /([\s])/;
+  const pat = /([\s!,":;.?“”()—]+)/;
   const touch: MutableRefObject<
     { id: string; n: number; timer: number } | undefined
   > = useRef(undefined);
@@ -119,6 +119,10 @@ const SwipeItem: React.FC<Props> = (props: Props) => {
 
   return (
     <>
+      {
+        selectedWord &&
+        <Dict selectedWord={selectedWord}></Dict>
+      }
       {sentences.map((sentence, j) => (
         <SentenceComponent
           selected={selectedSentence ? selectedSentence.id === j.toString() : false}

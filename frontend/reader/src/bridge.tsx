@@ -1,4 +1,4 @@
-import { Sentence } from "./model";
+import { Sentence, DictSearchResult } from "./model";
 import { LiteEvent } from "./utills/event";
 
 export interface App {
@@ -10,7 +10,8 @@ export interface App {
   paginate(sids: string[]): void;
   wordSelected(i: number, sid: string): void;
   sentenceSelected(sid: string): void;
-  readingSentenceChange(sid: String): void;
+  readingSentenceChange(sid: string): void;
+  dictSearch(word: string): string;
 }
 
 export class Webapp {
@@ -25,7 +26,6 @@ export class Webapp {
   setIOS() {}
 
   start(sentences: Sentence[], sid: string) {
-    console.log("fafasfdasf");
     this.onStart.trigger({
       sentences: sentences,
       sid: sid
@@ -79,5 +79,82 @@ class DevAppImpl implements App {
 
   readingSentenceChange(sid: string) {
     console.log("[app] reading setence changed");
+  }
+
+  dictSearch(word: string): string {
+    const out: DictSearchResult = {
+      addable: false,
+      words: [
+        {
+          word: "hello",
+          pron: "",
+          defs: [
+            {
+              def: "asdfasf",
+              id: 1,
+            },
+            {
+              def: "asdfasf",
+              id: 1,
+            },
+            {
+              def: "asdfasf",
+              id: 1,
+            },
+            {
+              def: "asdfasf",
+              id: 1,
+            },
+            {
+              def: "asdfasf",
+              id: 1,
+            },
+            {
+              def: "asdfasf",
+              id: 1,
+            },
+            {
+              def: "asdfasf",
+              id: 1,
+            }
+          ]
+        },
+        {
+          word: "hello",
+          pron: "",
+          defs: [
+            {
+              def: "asdfasf",
+              id: 1,
+            },
+            {
+              def: "asdfasf",
+              id: 1,
+            },
+            {
+              def: "asdfasf",
+              id: 1,
+            },
+            {
+              def: "asdfasf",
+              id: 1,
+            },
+            {
+              def: "asdfasf",
+              id: 1,
+            },
+            {
+              def: "asdfasf",
+              id: 1,
+            },
+            {
+              def: "asdfasf",
+              id: 1,
+            }
+          ]
+        }
+      ]
+    };
+    return JSON.stringify(out);
   }
 }
