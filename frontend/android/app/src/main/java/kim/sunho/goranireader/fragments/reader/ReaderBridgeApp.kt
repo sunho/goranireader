@@ -2,9 +2,12 @@ package kim.sunho.goranireader.fragments.reader
 
 import android.util.Log
 import android.webkit.JavascriptInterface
+import kim.sunho.goranireader.extensions.JsonDefault
 import kim.sunho.goranireader.extensions.main
 import kim.sunho.goranireader.extensions.onUi
 import kim.sunho.goranireader.fragments.ReaderFragment
+import kim.sunho.goranireader.models.DictSearchResult
+import kim.sunho.goranireader.services.DictService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -76,6 +79,11 @@ class ReaderBridgeApp(private val fragment: ReaderFragment) {
         runOnUiThread {
             fragment.viewModel.readingSentence = sid
         }
+    }
+
+    @JavascriptInterface
+    fun dictSearch(word: String): String {
+        return JsonDefault().stringify(DictSearchResult.serializer(), DictSearchResult(DictService.search(word), false))
     }
 
     private fun runOnUiThread(action: () -> Unit) {

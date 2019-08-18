@@ -7,7 +7,6 @@ import {
 import SwipeItemChildren from "../SwipeItemChildren";
 import { Sentence } from "../../model";
 import styled, { css } from "styled-components";
-import Dict from '../Dict';
 
 const Main = styled.div`
   height: calc(100vh - 20px);
@@ -17,6 +16,7 @@ const Main = styled.div`
 
 const SwipeItem = styled.div`
   max-height: 100%;
+  height: 100%;
   overflow: hidden;
 `;
 
@@ -24,7 +24,11 @@ const Swipe = styled(ReactSwipe)<{ loading: boolean }>`
   overflow: hidden;
   height: 100%;
   width: 100%;
-  & div {
+  & > div {
+    height: 100%;
+  }
+
+  & > * > div {
     height: 100%;
   }
 

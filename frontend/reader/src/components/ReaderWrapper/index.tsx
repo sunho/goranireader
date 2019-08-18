@@ -24,7 +24,7 @@ const ReaderWrapper: React.SFC = () => {
         .map(id => ({
           id: id.toString(),
           content:
-            "afdasf asdf safasdf safasd sadf asdfasf sadf asdfsa fsadf sadf sadfasfsadf sad fasdf adsf asdf asdf safsd afsa fsfasd fasf sad",
+            "afdasf asdf safasdf, safasd! (sadf asdfasf, sadf) asdfsa fsadf sadf sadfasfsadf sad fasdf adsf asdf asdf safsd afsa fsfasd fasf sad",
           start: false
         }));
       window.webapp.start(data, "50");

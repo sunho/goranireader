@@ -19,3 +19,20 @@ export interface SelectedSentence {
   bottom: number;
   up: boolean;
 }
+
+export interface DictSearchResult {
+  words: DictWord[];
+  addable: boolean;
+}
+
+export interface DictWord {
+  word: string;
+  pron: string;
+  defs: DictDefinition[];
+}
+
+export interface DictDefinition {
+  id: number;
+  def: string;
+  pos?: string;
+}
