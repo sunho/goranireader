@@ -2,6 +2,7 @@ import React, { MutableRefObject, useRef, useState, useEffect } from "react";
 import { Sentence, SelectedWord, SelectedSentence } from "../../model";
 import styled, { css } from "styled-components";
 import Dict from "../Dict";
+import SentenceSelector from "../SentenceSelector";
 
 const SentenceComponent = styled.p<{ inline: boolean; selected: boolean }>`
   padding: 0;
@@ -82,8 +83,8 @@ const SwipeItem: React.FC<Props> = (props: Props) => {
       setSelectedSentence({
         id: j.toString(),
         sentenceId: sentences[j].id,
-        top: node.getBoundingClientRect().top,
-        bottom: node.getBoundingClientRect().bottom,
+        top: node.parentElement!.getBoundingClientRect().top,
+        bottom: node.parentElement!.getBoundingClientRect().bottom,
         up: figureSentenceUp(node)
       });
       window.app.sentenceSelected(sentences[j].id);
@@ -122,6 +123,10 @@ const SwipeItem: React.FC<Props> = (props: Props) => {
       {
         selectedWord &&
         <Dict selectedWord={selectedWord}></Dict>
+      }
+      {
+        selectedSentence &&
+        <SentenceSelector selectedSentence={selectedSentence}></SentenceSelector>
       }
       {sentences.map((sentence, j) => (
         <SentenceComponent

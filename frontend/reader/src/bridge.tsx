@@ -12,6 +12,8 @@ export interface App {
   sentenceSelected(sid: string): void;
   readingSentenceChange(sid: string): void;
   dictSearch(word: string): string;
+  addUnknownWord(sid: string, wordIndex: number, word: string, def: string): void;
+  addUnknownSentence(sid: string): void;
 }
 
 export class Webapp {
@@ -156,5 +158,13 @@ class DevAppImpl implements App {
       ]
     };
     return JSON.stringify(out);
+  }
+
+  addUnknownSentence(sid: string) {
+    console.log(`addUnknownSentence sid: ${sid}`);
+  }
+
+  addUnknownWord(sid: string, wordIndex: number, word: string, def: string) {
+    console.log(`addUnknownWord sid: ${sid} wordIndex: ${wordIndex} word: ${word} def: ${def}`);
   }
 }

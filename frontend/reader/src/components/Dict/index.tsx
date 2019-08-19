@@ -19,7 +19,7 @@ const DictContainer = styled.div<{ up: boolean; hide: boolean }>`
       visibility: none;
     `}
   background: white;
-  height: calc(50% - 80px);
+  height: calc(40%);
   width: calc(100% - 40px);
   display: flex;
   flex-direction: column;
@@ -48,6 +48,9 @@ const DictDefsComponent = styled.div`
     margin-left: 10px;
     margin-right: 10px;
     border-radius: 10px;
+    &:active {
+      background: gray;
+    }
   }
 `;
 
@@ -80,11 +83,10 @@ const Dict: React.FC<Props> = props => {
   const [res, setRes] = useState<DictSearchResult | undefined>(undefined);
   const [pos, setPos] = useState(0);
   const dictRef = useRef<HTMLElement | null | undefined>(undefined);
-  const { word, up } = props.selectedWord;
+  const { word, wordIndex, up, sentenceId } = props.selectedWord;
 
   useEffect(() => {
     const out: DictSearchResult = JSON.parse(window.app.dictSearch(word));
-    console.log(out);
     setRes(out);
   }, [props]);
 
@@ -117,8 +119,11 @@ const Dict: React.FC<Props> = props => {
         )}
         <DictWordComponent>{resWord.word}</DictWordComponent>
         <DictDefsComponent>
-          {resWord.defs.map(def => (
-            <div>{def.def}</div>
+          {resWord.defs.map((def, i) => (
+            <div key={i} onClick={() => {
+              window.app.addUnknownWord(sentenceId, wordIndex, resWord.word, def.def);
+              window.webapp.cancelSelect();
+            }}>{def.def}</div>
           ))}
         </DictDefsComponent>
       </>
