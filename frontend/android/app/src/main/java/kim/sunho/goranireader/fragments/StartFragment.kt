@@ -30,7 +30,6 @@ class StartFragment : Fragment(), StepperLayout.StepperListener {
         stepperLayout!!.adapter =
             StepperAdapter(childFragmentManager, this.context!!)
         stepperLayout!!.setListener(this)
-
     }
 
     override fun onResume() {

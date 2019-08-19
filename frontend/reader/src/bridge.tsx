@@ -3,7 +3,7 @@ import { LiteEvent } from "./utills/event";
 
 export interface App {
   initComplete(): void;
-  loadComplete(): void;
+  setLoading(loading: boolean): void;
   atStart(): void;
   atMiddle(): void;
   atEnd(): void;
@@ -50,8 +50,8 @@ class DevAppImpl implements App {
     console.log("[app] init complete");
   }
 
-  loadComplete() {
-    console.log("[app] loadComplete used");
+  setLoading(load: boolean) {
+    console.log("[app] loading: " + load);
   }
 
   atStart() {

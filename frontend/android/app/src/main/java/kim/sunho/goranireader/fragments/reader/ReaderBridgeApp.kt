@@ -86,6 +86,16 @@ class ReaderBridgeApp(private val fragment: ReaderFragment) {
         return JsonDefault().stringify(DictSearchResult.serializer(), DictSearchResult(DictService.search(word), false))
     }
 
+    @JavascriptInterface
+    fun addUnknownSentence(sid: String) {
+
+    }
+
+    @JavascriptInterface
+    fun addUnknownWord(sid: String, wordIndex: Int, word: String, def: String) {
+
+    }
+
     private fun runOnUiThread(action: () -> Unit) {
         fragment.activity.main().runOnUiThread(action)
     }

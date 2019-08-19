@@ -48,15 +48,16 @@ interface Props {
 // thanks to  https://github.com/yoo2001818
 const Reader: React.FC<Props> = (props: Props) => {
   const sentences = props.sentences;
-  const [_dividePositions, setDividePositions]: [any, any] = useState(null);
-  const dividePositions = _dividePositions || [];
+  const [_dividePositions, setDividePositions]: [any, any] = useState<number[]|null>(null);
   const swipeItemRefs: any = useRef([]);
 
   const swipeRef: MutableRefObject<ReactSwipe | null> = useRef(null);
-  const [idToPage, setIdToPage]: [any, any] = useState(new Map());
+  const idToPage = useRef(new Map());
   const readingSentence: MutableRefObject<string> = useRef(
     props.readingSentence
   );
+
+  const dividePositions = _dividePositions || [];
 
   const getPageSentences = (page: number) => {
     if (page === dividePositions.length) {
@@ -69,7 +70,7 @@ const Reader: React.FC<Props> = (props: Props) => {
   };
 
   const atHandle = () => {
-    const readingPage = idToPage.get(readingSentence.current) || 0;
+    const readingPage = idToPage.current.get(readingSentence.current) || 0;
     if (readingPage === 0) {
       window.app.atStart();
     }
@@ -83,12 +84,22 @@ const Reader: React.FC<Props> = (props: Props) => {
   };
 
   useEffect(() => {
+    if (readingSentence.current !== props.readingSentence) {
+      atHandle();
+      window.app.setLoading(false);
+      return () => {
+        window.app.setLoading(true);
+      }
+    }
+  });
+
+  useEffect(() => {
     // 마지막 페이지의 자를 노드 위치 계산
-    const lastItem = swipeItemRefs.current[dividePositions.length];
+    const lastItem = swipeItemRefs.current[0];
     const parentBounds = lastItem.getBoundingClientRect();
     const parentTop = parentBounds.top;
     const parentHeight = parentBounds.height;
-    const prevPos = dividePositions[dividePositions.length - 1] || 0;
+    const prevPos = 0;
     let pageTop = parentTop;
     let currentPage = 0;
     let cutPos: any = [];
@@ -105,62 +116,45 @@ const Reader: React.FC<Props> = (props: Props) => {
         currentPage += 1;
       }
     }
-    // 자를게 있다면 절단
-    if (cutPos.length > 0) {
-      setDividePositions((prevState: any) => {
-        if (prevState) {
-          return [...prevState, ...cutPos];
-        }
-        return [...cutPos];
-      });
-    }
-  }, [dividePositions]);
-
-  useEffect(() => {
-    setIdToPage(
-      Array(dividePositions.length + 1)
+    const getPageSentencesByCutPos = (page: number) => {
+      if (page === cutPos.length) {
+        return sentences.slice(cutPos[page - 1] || 0);
+      }
+      return sentences.slice(
+        cutPos[page - 1] || 0,
+        cutPos[page]
+      );
+    };
+    readingSentence.current = props.readingSentence;
+    idToPage.current = Array(cutPos.length + 1)
         .fill(1)
         .flatMap((_: any, i: number) =>
-          getPageSentences(i).map(sen => [sen.id, i])
+          getPageSentencesByCutPos(i).map(sen => [sen.id, i])
         )
         .reduce((map: Map<string, number>, tuple: any) => {
           map.set(tuple[0], tuple[1]);
           return map;
-        }, new Map())
-    );
-    atHandle();
-  }, [dividePositions]);
-
-  useEffect(() => {
-    setDividePositions(null);
-    readingSentence.current = props.readingSentence;
+        }, new Map());
+    setDividePositions(cutPos);
   }, [props]);
-
-  useEffect(() => {
-    function handleResize() {
-      setDividePositions(null);
-    }
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   useLiteEventObserver(
     window.webapp.onFlushPaginate,
     () => {
-      const current = idToPage.get(readingSentence.current) || 0;
+      const current = idToPage.current.get(readingSentence.current) || 0;
       window.app.paginate(getPageSentences(current).map(s => s.id));
     },
-    [idToPage, readingSentence]
+    []
   );
 
   const swipeOptions = {
-    startSlide: idToPage.get(readingSentence.current) || 0,
+    startSlide: idToPage.current.get(readingSentence.current) || 0,
     continuous: false,
     callback: () => {
       if (swipeRef.current) {
         const sens = getPageSentences(swipeRef.current.getPos());
-        const old = idToPage.get(readingSentence.current) || 0;
-        const neww = idToPage.get(sens[0].id) || 0;
+        const old = idToPage.current.get(readingSentence.current) || 0;
+        const neww = idToPage.current.get(sens[0].id) || 0;
         readingSentence.current = sens[0].id;
         if (neww > old) {
           window.app.paginate(getPageSentences(old).map(s => s.id));
@@ -174,7 +168,7 @@ const Reader: React.FC<Props> = (props: Props) => {
   return (
     <Main>
       <Swipe
-        loading={!_dividePositions}
+        loading={readingSentence.current !== props.readingSentence}
         swipeOptions={swipeOptions}
         ref={r => (swipeRef.current = r)}
         childCount={dividePositions.length + 1}

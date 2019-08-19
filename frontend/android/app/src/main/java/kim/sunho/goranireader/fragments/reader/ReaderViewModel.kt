@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.Tasks
+import io.realm.Realm
 import kim.sunho.goranireader.extensions.CoroutineViewModel
 import kim.sunho.goranireader.extensions.onUi
 import kim.sunho.goranireader.fragments.ReaderFragmentArgs
@@ -48,22 +49,26 @@ class ReaderViewModel: CoroutineViewModel() {
     suspend fun initIfNot(db: DBService, bookId: String) {
         this.db = db
         if (book == null) {
-            val (sen, chap) = scope.async {
-                book = ContentService.readBook(bookId + ".book")
-                val doc = db.bookProgressDoc(bookId)
-                val progress = Tasks.await(doc.get())
-                if (progress.exists()) {
-                    Pair(progress["readingSentence"].toString(), progress["readingChapter"].toString())
-                } else {
-                    Pair("", "")
-                }
-            }.await()
-
+            book = ContentService.readBook(bookId + ".book")
             onUi {
-                readingSentence = sen
-                val i = book!!.chapters.indexOfFirst { it.id == chap }
-                readingChapter.value = if (i != -1) i else 0
+                Realm.getDefaultInstance().use { realm ->
+                    val progress = getProgress(realm)
+                    if (progress != null) {
+                        val i = book!!.chapters.indexOfFirst { it.id == progress.chapterId }
+                        val sen = progress.sentenceId
+                        readingChapter.value = if (i != -1) i else 0
+                        readingSentence = sen
+                    } else {
+                        realm.executeTransaction {
+                            it.createObject(BookRead::class.java, book!!.meta.id)
+                        }
+                        val sen = book!!.chapters[0].items[0].id
+                        readingChapter.value = 0
+                        readingSentence = sen
+                    }
+                }
             }
+
         }
     }
 
@@ -98,7 +103,32 @@ class ReaderViewModel: CoroutineViewModel() {
     }
 
     fun paginate(sids: List<String>) {
-
+        Realm.getDefaultInstance().use { realm ->
+            val progress = getProgress(realm)!!
+            var chapRead = progress.chapterReads.where()
+                .equalTo("id", currentChapter()!!.id)
+                .findFirst()
+            if (chapRead == null) {
+                realm.executeTransaction {
+                    val new = it.createObject(ChapterRead::class.java)
+                    new.id = currentChapter()!!.id
+                    new.nSen = currentChapter()!!.items.size
+                    progress.chapterReads.add(new)
+                    chapRead = new
+                }
+            }
+            realm.executeTransaction {
+                chapRead!!.sentences.removeAll(sids)
+                chapRead!!.sentences.addAll(sids)
+                chapRead!!.percent = chapRead!!.sentences.size / ( chapRead!!.nSen.toDouble())
+                val totalSen = progress.chapterReads.map {
+                    it.percent * it.nSen
+                }.sum()
+                progress.percent = totalSen / book!!.chapters.map { it.items.size }.sum()
+                Log.d("percent",  progress.percent.toString())
+                progress.updatedAt = Date()
+            }
+        }
     }
 
 
@@ -122,9 +152,16 @@ class ReaderViewModel: CoroutineViewModel() {
     }
 
     private fun updateProgress() {
-        val obj = HashMap<String, String>()
-        obj["readingSentence"] = readingSentence
-        obj["readingChapter"] = book!!.chapters[readingChapter.value ?: 0].id
-        db.bookProgressDoc(book!!.meta.id).set(obj)
+        Realm.getDefaultInstance().use { realm ->
+            realm.executeTransactionAsync {
+                val progress = getProgress(it)!!
+                progress.chapterId = book!!.chapters[readingChapter.value ?: 0].id
+                progress.sentenceId = readingSentence
+            }
+        }
+    }
+
+    private fun getProgress(realm: Realm): BookRead? {
+        return realm.where(BookRead::class.java).equalTo("id", book!!.meta.id).findFirst()
     }
 }
