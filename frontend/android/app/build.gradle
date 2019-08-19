@@ -82,3 +82,5 @@ dependencies {
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlinx-serialization'
 apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: 'realm-android'
+apply plugin: 'kotlin-kapt'

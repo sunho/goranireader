@@ -41,6 +41,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import io.realm.Realm
 import kim.sunho.goranireader.services.DBService
 import kim.sunho.goranireader.services.DictService
 import kotlinx.coroutines.CoroutineScope
@@ -95,6 +96,7 @@ class MainActivity : AppCompatActivity() {
         PRDownloader.initialize(applicationContext, config)
         ContentService.init(applicationContext)
         DictService.init(applicationContext)
+        Realm.init(applicationContext)
         db = DBService(fdb, auth)
     }
 
