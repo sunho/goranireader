@@ -76,7 +76,7 @@ const SwipeItem: React.FC<Props> = (props: Props) => {
         wordIndex: k/2,
         up: figureWordUp(node)
       });
-      window.app.wordSelected(k / 2, sentences[j].id);
+      window.app.wordSelected(Math.floor(k / 2), sentences[j].id);
       setSelectedSentence(undefined);
     } else if (touch.current.n === 3) {
       setSelectedWord(undefined);

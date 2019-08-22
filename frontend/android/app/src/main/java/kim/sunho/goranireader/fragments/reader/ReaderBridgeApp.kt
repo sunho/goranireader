@@ -8,6 +8,7 @@ import kim.sunho.goranireader.extensions.onUi
 import kim.sunho.goranireader.fragments.ReaderFragment
 import kim.sunho.goranireader.models.DictSearchResult
 import kim.sunho.goranireader.services.DictService
+import kim.sunho.goranireader.services.EventLogService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -18,14 +19,22 @@ class ReaderBridgeApp(private val fragment: ReaderFragment) {
     @JavascriptInterface
     fun initComplete() {
         runOnUiThread {
-            val chapter = fragment.viewModel.currentChapter() ?: return@runOnUiThread;
+            fragment.viewModel.inited = true
+            val chapter = fragment.viewModel.currentChapter() ?: return@runOnUiThread
             fragment.bridge.start(chapter.items, fragment.viewModel.readingSentence)
         }
     }
 
     @JavascriptInterface
-    fun loadComplete() {
-
+    fun setLoading(load: Boolean) {
+        runOnUiThread {
+            if (fragment.viewModel.inited) {
+                fragment.viewModel.loaded = !load
+                if (!load) {
+                    fragment.viewModel.initForPage()
+                }
+            }
+        }
     }
 
     @JavascriptInterface
@@ -56,7 +65,7 @@ class ReaderBridgeApp(private val fragment: ReaderFragment) {
     @JavascriptInterface
     fun wordSelected(i: Int, sid: String) {
         runOnUiThread {
-//            fragment.viewModel.wordSelect(i, sid)
+            fragment.viewModel.wordSelect(i, sid)
         }
     }
 
@@ -70,7 +79,7 @@ class ReaderBridgeApp(private val fragment: ReaderFragment) {
     @JavascriptInterface
     fun sentenceSelected(sid: String) {
         runOnUiThread {
-            //            fragment.viewModel.sentenceSelect(sid)
+            fragment.viewModel.sentenceSelect(sid)
         }
     }
 
@@ -88,12 +97,16 @@ class ReaderBridgeApp(private val fragment: ReaderFragment) {
 
     @JavascriptInterface
     fun addUnknownSentence(sid: String) {
-
+        runOnUiThread {
+            fragment.viewModel.addUnknownSentence(sid)
+        }
     }
 
     @JavascriptInterface
     fun addUnknownWord(sid: String, wordIndex: Int, word: String, def: String) {
-
+        runOnUiThread {
+            fragment.viewModel.addUnknownWord(sid, wordIndex, word, def)
+        }
     }
 
     private fun runOnUiThread(action: () -> Unit) {

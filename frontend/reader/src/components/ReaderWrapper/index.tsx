@@ -4,10 +4,11 @@ import React from "react";
 import Reader from "../Reader";
 
 const ReaderWrapper: React.SFC = () => {
-  const [tmp, setTmp]: [any, any] = useState({ sentences: [{content: "loading", id:"0", start: true}], sid: "" });
+  const [tmp, setTmp]: [any, any] = useState(null);
   useLiteEventObserver(
     window.webapp.onStart,
     (event: any) => {
+      setTmp(null);
       setTmp({
         sentences: event.sentences,
         sid: event.sid
@@ -30,7 +31,9 @@ const ReaderWrapper: React.SFC = () => {
       window.webapp.start(data, "50");
     }
   }, []);
-  return <Reader sentences={tmp.sentences} readingSentence={tmp.sid} />;
+  return (
+    <>{tmp && <Reader sentences={tmp.sentences} readingSentence={tmp.sid} />}</>
+  );
 };
 
 export default ReaderWrapper;

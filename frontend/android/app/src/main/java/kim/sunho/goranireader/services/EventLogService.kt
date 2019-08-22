@@ -2,53 +2,53 @@ package kim.sunho.goranireader.services
 
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
+import io.realm.Realm
+import io.realm.kotlin.createObject
 import kim.sunho.goranireader.extensions.JsonDefault
-import kim.sunho.goranireader.models.PaginateSentenceUnknown
-import kim.sunho.goranireader.models.PaginateWordUnknown
+import kim.sunho.goranireader.models.*
+import java.util.*
 
-class EventLogService(private val analytics: FirebaseAnalytics) {
-    val BOOK_ID = "book_id"
-    val TIME = "time"
-    val SENTENCE_IDS = "sentence_ids"
-    val CHAPTER_ID = "chapter_id"
-    val WORD_UNKNOWNS = "word_unknowns"
-    val SENTENCE_UNKNOWNS = "sentence_unknowns"
-    val EVENT_PAGINATE = "paginate"
-
-
-    fun openBook(bookId: String, name: String) {
-        val bundle = Bundle()
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, bookId)
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name)
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "book")
-        analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
-    }
-
+object EventLogService {
     fun paginate(bookId: String,
                  chapterId: String,
                  time: Int,
                  sids: List<String>,
                  wordUnknowns: List<PaginateWordUnknown>,
                  sentenceUnknowns: List<PaginateSentenceUnknown>) {
-        val bundle = Bundle()
-        bundle.putString(BOOK_ID, bookId)
-        bundle.putInt(TIME, time)
-        bundle.putStringArrayList(SENTENCE_IDS, ArrayList(sids))
-        bundle.putString(CHAPTER_ID, chapterId)
-        bundle.putStringArrayList(WORD_UNKNOWNS, ArrayList(wordUnknowns.map{
-            JsonDefault().stringify(PaginateWordUnknown.serializer(), it)
-        }))
-        bundle.putStringArrayList(SENTENCE_UNKNOWNS, ArrayList(sentenceUnknowns.map{
-            JsonDefault().stringify(PaginateSentenceUnknown.serializer(), it)
-        }))
-        analytics.logEvent(EVENT_PAGINATE, bundle)
+        val payload = ELPaginatePayload(bookId, chapterId, time, sids, wordUnknowns, sentenceUnknowns)
+        postEventLog("paginate", JsonDefault().stringify(ELPaginatePayload.serializer(), payload))
     }
 
-    fun unknownWord(bookId: String, word: String) {
-
+    fun unknownWord(bookId: String, chapterId: String, sentenceId: String, wordIndex: Int, word: String, def: String) {
+        val payload = ELUnknownWord(bookId, chapterId, sentenceId, wordIndex, word, def)
+        postEventLog("unknown_word", JsonDefault().stringify(ELUnknownWord.serializer(), payload))
     }
 
-    fun unknownSentence(bookId: String, sentenceId: String) {
+    fun unknownSentence(bookId: String, chapterId: String, sentenceId: String) {
+        val payload = ELUnknownSentence(bookId, chapterId, sentenceId)
+        postEventLog("unknown_sentence", JsonDefault().stringify(ELUnknownSentence.serializer(), payload))
+    }
 
+    private fun postEventLog(type: String, payload: String) {
+        Realm.getDefaultInstance().use {
+            it.executeTransaction {
+                val ev = it.createObject(EventLog::class.java)
+                ev.time = Date()
+                ev.type = type
+                ev.payload = payload
+            }
+        }
+    }
+
+    fun sync() {
+        if ()
+        Realm.getDefaultInstance().use {
+            it.executeTransaction {realm ->
+                val evs = realm.where(EventLog::class.java).findAll()
+                evs.forEach {  }
+                val bookReads = realm.where(BookRead::class.java).findAll()
+                bookReads.forEach { if (bookReads.) }
+            }
+        }
     }
 }
