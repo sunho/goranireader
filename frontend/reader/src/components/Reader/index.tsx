@@ -84,12 +84,9 @@ const Reader: React.FC<Props> = (props: Props) => {
   };
 
   useEffect(() => {
-    if (readingSentence.current !== props.readingSentence) {
-      atHandle();
+    if (_dividePositions) {
       window.app.setLoading(false);
-      return () => {
-        window.app.setLoading(true);
-      }
+      atHandle();
     }
   });
 
@@ -136,7 +133,7 @@ const Reader: React.FC<Props> = (props: Props) => {
           return map;
         }, new Map());
     setDividePositions(cutPos);
-  }, [props]);
+  }, []);
 
   useLiteEventObserver(
     window.webapp.onFlushPaginate,
@@ -168,7 +165,7 @@ const Reader: React.FC<Props> = (props: Props) => {
   return (
     <Main>
       <Swipe
-        loading={readingSentence.current !== props.readingSentence}
+        loading={!_dividePositions}
         swipeOptions={swipeOptions}
         ref={r => (swipeRef.current = r)}
         childCount={dividePositions.length + 1}

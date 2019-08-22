@@ -12,6 +12,7 @@ import kim.sunho.goranireader.fragments.ReaderFragmentArgs
 import kim.sunho.goranireader.models.*
 import kim.sunho.goranireader.services.ContentService
 import kim.sunho.goranireader.services.DBService
+import kim.sunho.goranireader.services.EventLogService
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -27,6 +28,8 @@ class ReaderViewModel: CoroutineViewModel() {
     var elapsedTime: Int = 0 //ms
     var book: BookyBook? = null
     val timer: Timer = Timer()
+    var inited: Boolean = false
+    var loaded: Boolean = false
     var tt: TimerTask? = null
     var readingSentence: String = ""
         set(value) {
@@ -81,6 +84,10 @@ class ReaderViewModel: CoroutineViewModel() {
         return null
     }
 
+    fun initForChapter() {
+        loaded = false
+    }
+
     fun initForPage() {
         elapsedTime = 0
         startTimer()
@@ -129,6 +136,7 @@ class ReaderViewModel: CoroutineViewModel() {
                 progress.updatedAt = Date()
             }
         }
+        EventLogService.paginate(book!!.meta.id, currentChapter()!!.id, elapsedTime, sids, wordUnknowns, sentenceUnknown)
     }
 
 
@@ -142,13 +150,35 @@ class ReaderViewModel: CoroutineViewModel() {
         val book = this.book!!
         val i = this.readingChapter.value!!
         if (i < book.chapters.size) {
-            readingSentence = book.chapters[i+1].items[0].id
+            readingSentence = book.chapters[i + 1].items[0].id
             this.readingChapter.value = i + 1
         }
     }
 
     fun prev() {
+        val book = this.book!!
+        val i = this.readingChapter.value!!
+        val chap = book.chapters[i - 1]
+        if (i > 0) {
+            readingSentence = book.chapters[i - 1].items[chap.items.size - 1].id
+            this.readingChapter.value = i - 1
+        }
+    }
 
+    fun sentenceSelect(sid: String) {
+        sentenceUnknown.add(PaginateSentenceUnknown(sid, elapsedTime))
+    }
+
+    fun wordSelect(wordIndex: Int, sid: String) {
+        wordUnknowns.add(PaginateWordUnknown(sid, wordIndex, elapsedTime))
+    }
+
+    fun addUnknownSentence(sid: String) {
+        EventLogService.unknownSentence(book!!.meta.id, currentChapter()!!.id, sid)
+    }
+
+    fun addUnknownWord(sid: String, wordIndex: Int, word: String, def: String) {
+        EventLogService.unknownWord(book!!.meta.id, currentChapter()!!.id, sid, wordIndex, word, def)
     }
 
     private fun updateProgress() {

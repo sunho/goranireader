@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 
 class ReaderFragment: CoroutineFragment() {
     val args: ReaderFragmentArgs by navArgs()
-
     lateinit var viewModel: ReaderViewModel
     lateinit var bridge: Bridge
     lateinit var bridgeApp: ReaderBridgeApp
@@ -76,21 +75,30 @@ class ReaderFragment: CoroutineFragment() {
         }
         webView.setGestureDetector(GestureDetector(object: SwipeGestureListener() {
             override fun onSwipeLeft() {
-                if (viewModel.isEnd.value == true) {
+                if (viewModel.isEnd.value == true && viewModel.inited && viewModel.loaded) {
                     viewModel.next()
                 }
             }
 
             override fun onSwipeRight() {
-                if (viewModel.isStart.value == true) {
+                if (viewModel.isStart.value == true && viewModel.inited && viewModel.loaded) {
                     viewModel.prev()
                 }
             }
         }))
         viewModel.readingChapter.observe(this, Observer {
+            viewModel.initForChapter()
             bridge.start(viewModel.currentChapter()!!.items, viewModel.readingSentence)
+            viewModel.loaded = false
         })
         webView.loadUrl("file:///android_asset/reader/index.html")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d("hello", "detach")
+        viewModel.loaded = false
+        viewModel.inited = false
     }
 }
 
