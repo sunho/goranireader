@@ -1,9 +1,9 @@
 import React from "react";
 
-const MissionPage: React.FC = () => {
+const ReportPage: React.FC = () => {
     return (
-        <div></div>
+        <div>report</div>
     );
 };
 
-export default MissionPage;
+export default ReportPage;

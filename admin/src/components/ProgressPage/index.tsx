@@ -1,9 +1,10 @@
 import React from "react";
+import withAuthorization from "../Auth/withAuthorization";
 
 const ProgressPage: React.FC = () => {
     return (
-        <div></div>
+        <div>progress</div>
     );
 };
 
-export default ProgressPage;
+export default withAuthorization(ProgressPage);

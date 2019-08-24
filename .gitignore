@@ -13,6 +13,7 @@ Carthage
 
 /backend/dataserver/.venv
 /backend/dataserver/miner/libs
+key.json
 /backend/dataserver/dist
 /backend/dataserver/in
 /backend/dataserver/logs
