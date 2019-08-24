@@ -52,8 +52,8 @@ const SignUpPage: React.FC<any> = props => {
       .then(() => {
         props.history.push("/");
       })
-      .catch((ignore: any) => {
-        props.history.push("/signup");
+      .catch((err: any) => {
+        alert(err.message);
       });
   };
 

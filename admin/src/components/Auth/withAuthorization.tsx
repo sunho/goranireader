@@ -9,32 +9,11 @@ import { withFirebase } from '../Firebase';
 
 const withAuthorization = (Component: any) => {
   class WithAuthorization extends React.Component<any,any> {
-    listener: any
-    componentDidMount() {
-      this.listener = this.props.firebase.onAuthUserListener(
-        (authUser: any) => {
-          if (!authUser) {
-            this.props.history.push('/login');
-            return;
-          }
-          if (!authUser.admin) {
-            this.props.history.push('/wait');
-            return;
-          }
-        },
-        () => this.props.history.push('/login'),
-      );
-    }
-
-    componentWillUnmount() {
-      this.listener();
-    }
-
     render() {
       return (
         <AuthUserContext.Consumer>
           {authUser =>
-            authUser ? <Component {...this.props} /> : null
+            (authUser && authUser!.admin === true )? <Component {...this.props} /> : null
           }
         </AuthUserContext.Consumer>
       );
