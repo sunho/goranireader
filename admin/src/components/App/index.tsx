@@ -8,6 +8,7 @@ import ReportPage from "../ReportPage";
 import LoginPage from "../LoginPage";
 import SignUpPage from "../SignUpPage";
 import WaitPage from "../WaitPage";
+import withAuthentication from "../Auth/withAuthentication";
 
 const App: React.FC = () => (
   <BrowserRouter>
@@ -21,4 +22,4 @@ const App: React.FC = () => (
   </BrowserRouter>
 );
 
-export default App;
+export default withAuthentication(App);

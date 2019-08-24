@@ -1,9 +1,12 @@
 import React from "react";
 import withAuthorization from "../Auth/withAuthorization";
+import Layout from "../Layout";
 
 const ProgressPage: React.FC = () => {
     return (
-        <div>progress</div>
+        <Layout>
+            <div>progress</div>
+        </Layout>
     );
 };
 

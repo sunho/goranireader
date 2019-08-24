@@ -11,6 +11,7 @@ import {
   Link as MLink
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { withFirebase } from "../Firebase";
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -38,17 +39,25 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const LoginPage: React.FC = props => {
+const LoginPage: React.FC<any> = props => {
   const classes = useStyles();
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
   };
 
-  const addItem = () => {
+  const loginUser = (e: any) => {
+    e.preventDefault();
     const { email, password } = values;
-
     if (!email || !password) return;
+    props.firebase
+      .doSignInWithEmailAndPassword(email, password)
+      .then(() => {
+        props.history.push("/");
+      })
+      .catch((err: any) => {
+        alert(err.message);
+      });
   };
 
   const [values, setValues] = useState({ email: "", password: "" });
@@ -59,7 +68,7 @@ const LoginPage: React.FC = props => {
         <Typography component="h1" variant="h6" color="inherit" noWrap>
           Gorani Reader Admin Login
         </Typography>
-        <form className={classes.form}>
+        <form onSubmit={loginUser} className={classes.form}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -93,21 +102,19 @@ const LoginPage: React.FC = props => {
             color="primary"
             className={classes.submit}
           >
-              Login
+            Login
           </Button>
         </form>
         <Grid container>
-            <Grid item>
-              <Link to="/signup">
-                  <MLink variant="body2">
-                        Don't have an account? Sign Up
-                  </MLink>
-              </Link>
-            </Grid>
+          <Grid item>
+            <Link to="/signup">
+              <MLink variant="body2">Don't have an account? Sign Up</MLink>
+            </Link>
           </Grid>
+        </Grid>
       </Paper>
     </Container>
   );
 };
 
-export default LoginPage;
+export default withFirebase(LoginPage);

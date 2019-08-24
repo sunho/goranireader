@@ -1,6 +1,7 @@
 import app from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
+import "firebase/firestore";
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -12,7 +13,7 @@ const config = {
 };
 
 class Firebase {
-  db: firebase.database.Database;
+  db: firebase.firestore.Firestore;
   auth: firebase.auth.Auth;
   emailAuthProvider: any;
   serverValue: any;
@@ -27,7 +28,7 @@ class Firebase {
     /* Firebase APIs */
 
     this.auth = app.auth();
-    this.db = app.database();
+    this.db = app.firestore();
   }
 
   // *** Auth API ***
@@ -49,17 +50,21 @@ class Firebase {
     this.auth.onAuthStateChanged(authUser => {
       if (authUser) {
         this.user(authUser.uid)
-          .once("value")
-          .then(snapshot => {
-            const dbUser = snapshot.val();
-            authUser = {
-              uid: authUser!.uid,
-              email: authUser!.email,
-              ...dbUser
+          .get()
+          .then(doc => {
+            if (doc.exists) {
+              const dbUser = doc.data();
+              next({
+                uid: authUser!.uid,
+                email: authUser!.email,
+                ...dbUser
+              });
+            } else {
+              next(authUser);
             }
-            next(authUser);
           })
-          .catch( err => {
+          .catch(err => {
+            console.error(err);
             next(authUser);
           });
       } else {
@@ -67,9 +72,7 @@ class Firebase {
       }
     });
 
-  user = (uid: string) => this.db.ref(`users/${uid}`);
-
-  users = () => this.db.ref("users");
+  user = (uid: string) => this.db.collection("users").doc(uid);
 }
 
 export default Firebase;
