@@ -41,7 +41,7 @@ object EventLogService {
     }
 
     fun sync() {
-        if ()
+        if ()ㅇ
         Realm.getDefaultInstance().use {
             it.executeTransaction {realm ->
                 val evs = realm.where(EventLog::class.java).findAll()

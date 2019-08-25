@@ -73,6 +73,8 @@ class Firebase {
     });
 
   user = (uid: string) => this.db.collection("users").doc(uid);
+  users = () => this.db.collection("users");
+  clas = (id: string) => this.db.collection("classes").doc(id);
 }
 
 export default Firebase;

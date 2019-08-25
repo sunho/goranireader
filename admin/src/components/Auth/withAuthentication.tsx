@@ -2,6 +2,7 @@ import React from 'react';
 
 import AuthUserContext from './context';
 import { withFirebase } from '../Firebase';
+import { AdminUser } from '../../model';
 
 const withAuthentication = (Component: any) => {
   class WithAuthentication extends React.Component<any, any> {

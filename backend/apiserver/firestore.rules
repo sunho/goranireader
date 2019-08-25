@@ -8,8 +8,9 @@ service cloud.firestore {
       }
     }
     match /users {
+      allow read, write: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
       match /{document=**} {
-        allow read, update: if true;
+        allow read, update: if true; // TODO block update
         allow delete, create: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
       }
     }
@@ -19,6 +20,13 @@ service cloud.firestore {
       match /{document=**} {
         allow read: if true;
         allow write: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
+      }
+    }
+    match /classes {
+      match /{document=**} {
+        allow read: if true;
+        allow update: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
+        allow delete, create: if false;
       }
     }
     match /clientCompute/{userId} {

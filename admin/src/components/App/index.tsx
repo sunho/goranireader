@@ -9,13 +9,21 @@ import LoginPage from "../LoginPage";
 import SignUpPage from "../SignUpPage";
 import WaitPage from "../WaitPage";
 import withAuthentication from "../Auth/withAuthentication";
+import Layout from "../Layout";
+import withAuthorization from "../Auth/withAuthorization";
+
+const Dashboard: React.FC<any> = ({ match }) => (
+    <Layout>
+        <Route exact path={`${match.url}/`} component={StudentPage} />
+        <Route path={`${match.url}/mission`} component={MissionPage} />
+        <Route path={`${match.url}/progress`} component={ProgressPage} />
+        <Route path={`${match.url}/report`} component={ReportPage} />
+    </Layout>
+)
 
 const App: React.FC = () => (
   <BrowserRouter>
-    <Route exact path="/" component={StudentPage} />
-    <Route path="/mission" component={MissionPage} />
-    <Route path="/progress" component={ProgressPage} />
-    <Route path="/report" component={ReportPage} />
+    <Route path="/dashboard" component={withAuthorization(Dashboard)} />
     <Route path="/login" component={LoginPage} />
     <Route path="/wait" component={WaitPage} />
     <Route path="/signup" component={SignUpPage} />
