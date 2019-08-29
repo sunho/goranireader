@@ -1,50 +1,37 @@
+import React, { useEffect, useState } from "react";
+import { withRouter } from "react-router-dom";
+import { compose } from "recompose";
 
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'recompose';
-
-import AuthUserContext from './context';
-import { withFirebase } from '../Firebase';
-
+import AuthUserContext from "./context";
+import { withFirebase } from "../Firebase";
 
 const withAuthorization = (Component: any) => {
-  class WithAuthorization extends React.Component<any,any> {
-    listener: any
-    componentDidMount() {
-      this.listener = this.props.firebase.onAuthUserListener(
+  const Out: React.FC<any> = props => {
+    const [authed, setAuthed] = useState(false);
+    useEffect(() => {
+      const listner = props.firebase.onAuthUserListener(
         (authUser: any) => {
           if (!authUser) {
-            this.props.history.push('/login');
+            props.history.push("/login");
             return;
           }
           if (!authUser.admin) {
-            this.props.history.push('/wait');
+            props.history.push("/wait");
             return;
           }
+          setAuthed(true);
         },
-        () => this.props.history.push('/login'),
+        () => props.history.push("/login")
       );
-    }
-
-    componentWillUnmount() {
-      this.listener();
-    }
-
-    render() {
-      return (
-        <AuthUserContext.Consumer>
-          {authUser =>
-            authUser ? <Component {...this.props} /> : null
-          }
-        </AuthUserContext.Consumer>
-      );
-    }
-  }
+      return listner;
+    }, []);
+    return <>{authed ? <Component {...props} /> : null}</>;
+  };
 
   return compose(
     withRouter,
-    withFirebase,
-  )(WithAuthorization);
+    withFirebase
+  )(Out);
 };
 
 export default withAuthorization;

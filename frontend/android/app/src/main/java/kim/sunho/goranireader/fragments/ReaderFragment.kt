@@ -19,10 +19,12 @@ import kim.sunho.goranireader.fragments.reader.ReaderBridgeApp
 import kim.sunho.goranireader.fragments.reader.ReaderViewModel
 import kim.sunho.goranireader.services.ContentService
 import kotlinx.coroutines.launch
+import java.util.*
 
 
 class ReaderFragment: CoroutineFragment() {
     val args: ReaderFragmentArgs by navArgs()
+    lateinit var timer: Timer
     lateinit var viewModel: ReaderViewModel
     lateinit var bridge: Bridge
     lateinit var bridgeApp: ReaderBridgeApp
@@ -46,6 +48,15 @@ class ReaderFragment: CoroutineFragment() {
         bridge = Bridge(webView)
         bridgeApp = ReaderBridgeApp(this)
         webView.addJavascriptInterface(bridgeApp, "app")
+        timer = Timer()
+        timer.scheduleAtFixedRate(
+            object : TimerTask() {
+                override fun run() {
+                    viewModel.tick()
+                }
+            },
+            0, 100
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,6 +110,7 @@ class ReaderFragment: CoroutineFragment() {
         Log.d("hello", "detach")
         viewModel.loaded = false
         viewModel.inited = false
+        timer.cancel()
     }
 }
 
