@@ -30,6 +30,7 @@ const MainListItems: React.FC = props => {
         <ListItem
           key={clas.id}
           button
+          onClick={() => {classInfo.setId(clas.id)}}
           {...{ to: `${window.location.pathname}?class=${clas.id}` }}
           component={Link}
           selected={classInfo.currentId === clas.id}

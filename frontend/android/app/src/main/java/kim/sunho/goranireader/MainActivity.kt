@@ -44,6 +44,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import io.realm.Realm
 import kim.sunho.goranireader.services.DBService
 import kim.sunho.goranireader.services.DictService
+import kim.sunho.goranireader.services.EventLogService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -97,6 +98,7 @@ class MainActivity : AppCompatActivity() {
         ContentService.init(applicationContext)
         DictService.init(applicationContext)
         Realm.init(applicationContext)
+        EventLogService.init(auth)
         db = DBService(fdb, auth)
     }
 
@@ -125,7 +127,7 @@ class MainActivity : AppCompatActivity() {
         val credential = GoogleAccountCredential.usingOAuth2(this,
             Collections.singleton("https://www.googleapis.com/auth/books")
         )
-        credential.selectedAccount = account?.account
+        credential.selectedAccount = account.account
         //TODO separate
         val books = Books.Builder(AndroidHttp.newCompatibleTransport(), JacksonFactory.getDefaultInstance(), credential)
             .setApplicationName("Gorani Reader Android App")

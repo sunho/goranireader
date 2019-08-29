@@ -6,15 +6,20 @@ import { FirebaseContext } from "../Firebase";
 export interface ClassInfo {
   currentId: string | null;
   classes: Class[];
+  currentClass?: Class;
+  setId: any;
+  setLastUpdated: any;
 }
 
 export const ClasssContext = React.createContext<ClassInfo | null>(null);
 
 export const withClass = (Component: any) => {
-  const Out: React.FC<any> = (props) => {
+  const Out: React.FC<any> = props => {
     const [teacherClasses, setTeacherClasses] = React.useState<Class[] | null>(
       null
     );
+    const [id, setId] = React.useState<string | null>(null);
+    const [lastUpdated, setLastUpdated] = React.useState<Date>(new Date());
     const authUser = useContext(AuthUserContext)!;
     const firebase = useContext(FirebaseContext)!;
     React.useEffect(() => {
@@ -43,7 +48,10 @@ export const withClass = (Component: any) => {
         );
         setTeacherClasses(classes);
       })();
-    }, []);
+    }, [lastUpdated]);
+    React.useEffect(() => {
+      setId(getClassId());
+    }, [teacherClasses]);
     const getClassId = () => {
       let currentUrlParams = new URLSearchParams(window.location.search);
       const id = currentUrlParams.get("class");
@@ -57,9 +65,15 @@ export const withClass = (Component: any) => {
     };
     return (
       <>
-        {teacherClasses && (
+        {teacherClasses && id && (
           <ClasssContext.Provider
-            value={{ classes: teacherClasses, currentId: getClassId() }}
+            value={{
+              classes: teacherClasses,
+              currentId: id,
+              currentClass: teacherClasses.find(it => it.id === id),
+              setId: setId,
+              setLastUpdated: setLastUpdated
+            }}
           >
             <Component {...props} />
           </ClasssContext.Provider>

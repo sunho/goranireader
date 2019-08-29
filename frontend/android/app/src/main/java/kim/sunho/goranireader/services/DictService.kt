@@ -100,7 +100,7 @@ object DictService {
                 out.add(it + "y")
             }
         }
-        return out
+        return out.distinct()
     }
 
     val irregularPasts = hashMapOf("ached" to "ache",

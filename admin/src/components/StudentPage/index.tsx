@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, useRef, useEffect } from "react";
 
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
@@ -79,11 +79,22 @@ const StudentPage: React.FC = () => {
   const commonStyles = useCommonStyle();
   const classInfo = useContext(ClasssContext)!;
   const firebase = useContext(FirebaseContext)!;
+  const tableRef = useRef<any | null>(null);
+  useEffect(() => {
+    tableRef.current && tableRef.current.onQueryChange();
+    console.log("asdfsadf");
+  }, [classInfo.currentId]);
   const columns: any[] = [
     { title: "Id", field: "id", hidden: true, editable: "never" },
     { title: "Username", field: "username" },
     { title: "Age", field: "age", type: "numeric" },
-    { title: "Deleted", field: "deleted", type: "boolean", editable: "never", hidden: true},
+    {
+      title: "Deleted",
+      field: "deleted",
+      type: "boolean",
+      editable: "never",
+      hidden: true
+    },
     {
       title: "Registered",
       field: "fireId",
@@ -95,26 +106,26 @@ const StudentPage: React.FC = () => {
   return (
     <MuiThemeProvider theme={theme}>
       <Container maxWidth="lg" className={commonStyles.container}>
+        <Typography variant="h5" component="h3">
+          Students
+        </Typography>
         <MaterialTable
+          tableRef={(node: any) => {
+            tableRef.current = node;
+          }}
           icons={tableIcons}
-          title="Studentes"
+          title=""
           columns={columns}
-          data={query =>
-            new Promise((resolve, reject) => {
-              firebase
-                .users()
-                .where("classId", "==", classInfo.currentId!).where("deleted", "==", false)
-                .get()
-                .then(res => res.docs)
-                .then(docs => docs.map(doc => ({ ...doc.data(), id: doc.id })))
-                .then(data => {
-                  resolve({ data: data, page: 0, totalCount: 1 } as any);
-                })
-                .catch(err => {
-                  reject();
-                });
-            })
-          }
+          data={async query => {
+            const data = await firebase
+              .users()
+              .where("classId", "==", classInfo.currentId!)
+              .where("deleted", "==", false)
+              .get()
+              .then(res => res.docs)
+              .then(docs => docs.map(doc => ({ ...doc.data(), id: doc.id })));
+            return { data: data, page: 0, totalCount: 1 } as any;
+          }}
           editable={{
             onRowAdd: async (newData: any) => {
               newData.classId = classInfo.currentId!;
@@ -137,6 +148,7 @@ const StudentPage: React.FC = () => {
           options={{
             selection: false,
             paging: false,
+            search: false,
           }}
         />
       </Container>

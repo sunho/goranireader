@@ -1,14 +1,12 @@
+import uuid
+import re
+import nltk
 import mimetypes
+import gorani.models.book as mbook
+from urllib.parse import urlparse
 from nltk.tokenize import sent_tokenize
 from ebooklib import epub
 from inscriptis import get_text
-from urllib.parse import urlencode, urlparse, urlunparse, parse_qs
-import gorani.models.book as mbook
-import uuid
-import re
-import json
-import nltk
-import msgpack
 
 nltk.download('punkt')
 

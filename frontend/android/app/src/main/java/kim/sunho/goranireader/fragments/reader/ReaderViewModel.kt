@@ -1,5 +1,7 @@
 package kim.sunho.goranireader.fragments.reader
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -25,6 +27,7 @@ class ReaderViewModel: CoroutineViewModel() {
     val isEnd: MutableLiveData<Boolean> = MutableLiveData()
     val wordUnknowns = ArrayList<PaginateWordUnknown>()
     val sentenceUnknown = ArrayList<PaginateSentenceUnknown>()
+    var stopped: Boolean = false
     var elapsedTime: Int = 0 //ms
     var book: BookyBook? = null
     val timer: Timer = Timer()
@@ -97,16 +100,14 @@ class ReaderViewModel: CoroutineViewModel() {
         sentenceUnknown.clear()
     }
 
+    fun tick() {
+        if (!stopped) {
+            elapsedTime += 100
+        }
+    }
+
     fun startTimer() {
-        if (tt != null) {
-            tt!!.cancel()
-        }
-        tt = object: TimerTask() {
-            override fun run() {
-                elapsedTime += 100
-            }
-        }
-        timer.schedule(tt, 100)
+        stopped = false
     }
 
     fun paginate(sids: List<String>) {
@@ -141,9 +142,7 @@ class ReaderViewModel: CoroutineViewModel() {
 
 
     fun stopTimer() {
-        if (tt != null) {
-            tt!!.cancel()
-        }
+        stopped = true
     }
 
     fun next() {
