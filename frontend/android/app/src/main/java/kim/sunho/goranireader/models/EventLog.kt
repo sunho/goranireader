@@ -1,11 +1,16 @@
 package kim.sunho.goranireader.models
 
 import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
+import io.realm.annotations.Required
 import kotlinx.serialization.Serializable
 import java.util.*
 
 open class EventLog (
-    var time: Date = Date(),
+    @PrimaryKey
+    @Required
+    var id: String = "",
+    var time: String = "",
     var type: String = "",
     var payload: String = ""
 ) : RealmObject()

@@ -2,8 +2,11 @@ package kim.sunho.goranireader.models
 
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.bumptech.glide.Glide
 import com.downloader.Error
 import com.downloader.OnDownloadListener
 import com.downloader.OnProgressListener
@@ -44,5 +47,15 @@ sealed class Content constructor(val bookId: String, val img: String?, val title
             return View.VISIBLE
         }
         return View.GONE
+    }
+
+    companion object {
+        @JvmStatic
+        @BindingAdapter("imageUrl")
+        fun imageUrl(view: ImageView, url: String?) {
+            if (url != null) {
+                Glide.with(view).load(url).into(view)
+            }
+        }
     }
 }

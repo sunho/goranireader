@@ -11,18 +11,17 @@ import java.lang.IllegalArgumentException
 
 
 class StepperAdapter(fm: FragmentManager, context: Context) : AbstractFragmentStepAdapter(fm, context) {
-    override fun createStep(@IntRange(from=0, to=3) position: Int): Step {
+    override fun createStep(@IntRange(from=0, to=2) position: Int): Step {
         return when (position) {
             0 -> StartMainStepFragement()
-            1 -> StartGoogleStepFragment()
-            2 -> StartPrepareStepFragment()
-            3 -> StartKeyStepFragment()
+            1 -> StartPrepareStepFragment()
+            2 -> StartKeyStepFragment()
             else -> throw IllegalArgumentException("wtf")
         }
     }
 
     override fun getCount(): Int {
-        return 4
+        return 3
     }
 
     override fun getViewModel(@IntRange(from=0) position: Int): StepViewModel {
