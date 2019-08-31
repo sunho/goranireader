@@ -13,6 +13,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
+import com.stepstone.stepper.BlockingStep
+import com.stepstone.stepper.StepperLayout
 import kim.sunho.goranireader.MainActivity
 import kim.sunho.goranireader.databinding.FragmentStartKeyStepBinding
 import kim.sunho.goranireader.extensions.main
@@ -21,7 +23,7 @@ import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 
-class StartKeyStepFragment : Fragment(), Step {
+class StartKeyStepFragment : Fragment(), BlockingStep {
     private lateinit var model: StartKeyStepViewModel
 
     override fun onCreateView(
@@ -55,6 +57,31 @@ class StartKeyStepFragment : Fragment(), Step {
             return null
         }
         return VerificationError("Not valid secret code")
+    }
+
+
+    override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?) {
+        callback!!.stepperLayout.showProgress("Registering")
+        model.login { success, new ->
+            if (success) {
+                callback.complete()
+                activity.main().setAuthed(true)
+                if (!new) {
+                    Snackbar.make(activity.main().mainLayout, "Another user already registered with this secret code. The previous user will be signed out.", Snackbar.LENGTH_SHORT).show()
+                }
+            } else {
+                Snackbar.make(activity.main().mainLayout, "Unknown error", Snackbar.LENGTH_SHORT).show()
+            }
+            callback.stepperLayout.hideProgress()
+        }
+    }
+
+    override fun onBackClicked(callback: StepperLayout.OnBackClickedCallback?) {
+        callback!!.goToPrevStep()
+    }
+
+    override fun onNextClicked(callback: StepperLayout.OnNextClickedCallback?) {
+        callback!!.goToNextStep()
     }
 
     override fun onSelected() {

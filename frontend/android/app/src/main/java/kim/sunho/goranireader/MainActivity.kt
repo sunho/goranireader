@@ -8,7 +8,9 @@ import android.animation.AnimatorListenerAdapter
 import com.google.android.material.appbar.AppBarLayout
 import android.animation.ValueAnimator
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
@@ -42,6 +44,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import io.realm.Realm
+import kim.sunho.goranireader.extensions.onUi
+import kim.sunho.goranireader.models.AuthConfig
 import kim.sunho.goranireader.services.DBService
 import kim.sunho.goranireader.services.DictService
 import kim.sunho.goranireader.services.EventLogService
@@ -49,6 +53,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.HashSet
 
@@ -59,11 +64,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     lateinit var mainLayout: View
 
-    val currentUser: MediatorLiveData<FirebaseUser> = MediatorLiveData()
-    private val _currentUser: MutableLiveData<FirebaseUser> = MutableLiveData()
-
     private val RC_SIGN_IN: Int = 7
     private lateinit var oauth: GoogleSignInClient
+    private lateinit var timer: Timer
 
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Default + job)
@@ -80,10 +83,64 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         mainLayout = window.decorView.rootView
 
-        currentUser.addSource(_currentUser, currentUser::setValue)
-
         initFirebase()
         initServices()
+
+        timer = Timer()
+        timer.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                try {
+                    if (db.getUser() != null && isNetworkConnected()) {
+                        runOnUiThread {
+                            EventLogService.sync()
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.d("asdf", e.message)
+                }
+            }
+        }, 0, 5000)
+
+    }
+
+    fun loggedIn(): Boolean {
+        var out = false
+        Realm.getDefaultInstance().use {
+            it.executeTransaction { realm ->
+                val config = realm.where(AuthConfig::class.java).equalTo("id", 1 as Int).findFirst()
+                if (config == null) {
+                    realm.createObject(AuthConfig::class.java, 1)
+                    out = false
+                } else {
+                    out = config.authed
+                }
+            }
+        }
+        return out
+    }
+
+    fun setAuthed(value: Boolean) {
+        Realm.getDefaultInstance().use {
+            it.executeTransaction { realm ->
+                val config = realm.where(AuthConfig::class.java).equalTo("id", 1 as Int).findFirst()
+                if (config == null) {
+                    realm.createObject(AuthConfig::class.java, 1).authed = value
+                } else {
+                    config.authed = value
+                }
+            }
+        }
+    }
+
+    private fun isNetworkConnected(): Boolean {
+        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager;
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timer.cancel()
     }
 
     fun hideSoftKeyboard() {
@@ -117,9 +174,16 @@ class MainActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         if (auth.currentUser == null) {
+            auth.signInAnonymously()
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+
+                    } else {
+                        Snackbar.make(mainLayout, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
+                    }
+                }
             return
         }
-        _currentUser.value = auth.currentUser
     }
 
     fun reloadOwnedBooks() {
@@ -129,68 +193,35 @@ class MainActivity : AppCompatActivity() {
         )
         credential.selectedAccount = account.account
         //TODO separate
-        val books = Books.Builder(AndroidHttp.newCompatibleTransport(), JacksonFactory.getDefaultInstance(), credential)
-            .setApplicationName("Gorani Reader Android App")
-            .build()
-        scope.launch {
-            val out = HashSet<String>()
-            val shelves = books.Mylibrary().Bookshelves().list().execute()
-            val udata = db.getUserdata() ?: return@launch
-            for (shelf in shelves.items) {
-                if (shelf.title != "Purchased") continue
-                if (udata.bookCheck == Timestamp(Date(shelf.volumesLastUpdated.value))) continue
-                val vols = books.Mylibrary().Bookshelves().Volumes()
-                    .list(shelf.id.toString()).execute()
-                Tasks.await(fdb.collection("userdata")
-                    .document(auth.currentUser!!.uid)
-                    .update("bookCheck", Timestamp(Date(shelf.volumesLastUpdated.value))))
-                if (vols.size == 0) continue
-                for (vol in vols.items) {
-                    if (vol.userInfo.isPurchased) {
-                        out.add(vol.id)
-                    }
-                }
-            }
-            if (HashSet(udata.ownedBooks) != out) {
-                Tasks.await(fdb.collection("userdata")
-                    .document(auth.currentUser!!.uid)
-                    .update("ownedBooks", ArrayList(out)))
-            }
-        }
+//        val books = Books.Builder(AndroidHttp.newCompatibleTransport(), JacksonFactory.getDefaultInstance(), credential)
+//            .setApplicationName("Gorani Reader Android App")
+//            .build()
+//        scope.launch {
+//            val out = HashSet<String>()
+//            val shelves = books.Mylibrary().Bookshelves().list().execute()
+//            val udata = db.getUserdata() ?: return@launch
+//            for (shelf in shelves.items) {
+//                if (shelf.title != "Purchased") continue
+//                if (udata.bookCheck == Timestamp(Date(shelf.volumesLastUpdated.value))) continue
+//                val vols = books.Mylibrary().Bookshelves().Volumes()
+//                    .list(shelf.id.toString()).execute()
+//                Tasks.await(fdb.collection("userdata")
+//                    .document(auth.currentUser!!.uid)
+//                    .update("bookCheck", Timestamp(Date(shelf.volumesLastUpdated.value))))
+//                if (vols.size == 0) continue
+//                for (vol in vols.items) {
+//                    if (vol.userInfo.isPurchased) {
+//                        out.add(vol.id)
+//                    }
+//                }
+//            }
+//            if (HashSet(udata.ownedBooks) != out) {
+//                Tasks.await(fdb.collection("userdata")
+//                    .document(auth.currentUser!!.uid)
+//                    .update("ownedBooks", ArrayList(out)))
+//            }
+//        }
     }
-
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val account = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account!!)
-            } catch (e: ApiException) {
-                Log.e("MYAPP", "exception", e)
-                Snackbar.make(mainLayout, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    fun googleSignIn() {
-        val signInIntent = oauth.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
-
-    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    currentUser.value = auth.currentUser
-                } else {
-                    Snackbar.make(mainLayout, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
-                }
-            }
-    }
-
 
     override fun onBackPressed() {
         if (onBackPressedListener != null) {

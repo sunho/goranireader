@@ -32,8 +32,16 @@ export default functions
     const token = req.headers.authorization;
     const serverTime = ISODateString(new Date());
     const user = await admin.auth().verifyIdToken(token!);
+    const res2 = await admin.firestore().collection("users").where("fireId", "==", user.uid).get();
+    if (res2.size === 0) {
+      res.sendStatus(400);
+      return;
+    }
+    const user2 = res2.docs[0];
     const obj = {
-      userId: user.uid,
+      userId: user2.id,
+      fireId: user.uid,
+      classId: user2.data()!.classId,
       serverTime: serverTime,
       time: item.time,
       type: item.type,
@@ -41,7 +49,7 @@ export default functions
     };
     const storage = new Storage();
     const bucket = storage.bucket(EVENT_LOG_BUCKET);
-    const name = `${obj.userId}$${obj.type}$${obj.time}$${serverTime}$${uuidv4()}`;
+    const name = `${obj.classId}$${obj.userId}$${obj.type}$${obj.time}$${serverTime}$${uuidv4()}`;
     const file = bucket.file(name);
 
     const stream = file.createWriteStream({

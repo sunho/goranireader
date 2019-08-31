@@ -3,10 +3,10 @@ package kim.sunho.goranireader.services
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.*
+import io.realm.Realm
 import kim.sunho.goranireader.models.Book
+import kim.sunho.goranireader.models.StudentClass
 import kim.sunho.goranireader.models.Userdata
 import kotlinx.coroutines.awaitAll
 import java.lang.Exception
@@ -42,15 +42,24 @@ class DBService(private val db: FirebaseFirestore, private val auth: FirebaseAut
         return doc.toObject(Book::class.java)
     }
 
-    fun userdataDoc(): DocumentReference {
-        val user = authorize()
-        return db.collection("userdata").document(user.uid)
+    fun dataResult(): DocumentReference? {
+        val user = getUser() ?: return null
+        val raw = user["classId"] ?: return null
+        val classId = raw.toString()
+        return db.collection("dataResult").document(classId)
+            .collection("clientComputed").document(user.id)
+    }
+
+    fun userdataDoc(): DocumentReference? {
+        val user = getUser() ?: return null
+        return db.collection("userdata").document(user.id)
     }
 
     fun getUserdata(): Userdata? {
-        val doc = Tasks.await(userdataDoc().get())
+        val userDoc = userdataDoc() ?: return null
+        val doc = Tasks.await(userDoc.get())
         if (!doc.exists()) {
-            Tasks.await(userdataDoc().set(Userdata()))
+            Tasks.await(userDoc.set(Userdata()))
             return Userdata()
         }
         return doc.toObject(Userdata::class.java)
@@ -67,7 +76,24 @@ class DBService(private val db: FirebaseFirestore, private val auth: FirebaseAut
         return true
     }
 
-    fun login(word: String, word2: String, number: String): String? {
+    fun getUser(): DocumentSnapshot? {
+        val user = authorize()
+        val res = Tasks.await(db.collection("users").whereEqualTo("fireId", user.uid).get())
+        if (res.size() == 0) {
+            return null
+        }
+        return res.documents[0]
+    }
+
+    fun getClass(): StudentClass? {
+        val user = getUser() ?: return null
+        val raw = user["classId"] ?: return null
+        val classId = raw.toString()
+        val out = Tasks.await(db.collection("classes").document(classId).get())
+        return out.toObject(StudentClass::class.java)
+    }
+
+    fun login(word: String, word2: String, number: String): Pair<String, Boolean>? {
         val user = authorize()
         val docs = Tasks.await(db.collection("users")
             .whereEqualTo("secretCode", "$word-$word2-$number")
@@ -77,12 +103,11 @@ class DBService(private val db: FirebaseFirestore, private val auth: FirebaseAut
             return null
         }
         val doc = docs.documents[0]
-        if (doc["fireId"].toString() == user.uid) {
-            return doc["id"].toString()
-        } else if (doc["fireId"].toString() != "") {
-            return null
-        }
+        val new = doc["fireId"] == null || doc["fireId"].toString() == user.uid
+        val obj = HashMap<String, String>();
+        obj["userId"] = doc.id
+        Tasks.await(db.collection("fireUsers").document(user.uid).set(obj))
         Tasks.await(db.collection("users").document(doc.id).update("fireId", user.uid))
-        return doc["id"].toString()
+        return Pair(doc.id, new)
     }
 }
