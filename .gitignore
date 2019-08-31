@@ -10,7 +10,7 @@ Carthage
 /backend/apiserver/gorani
 /backend/apiserver/migrations/schema.sql
 /backend/apiserver/database.yml
-
+glove.6B.100d.txt
 /backend/dataserver/.venv
 /backend/dataserver/miner/libs
 key.json

@@ -1,17 +1,22 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // TODO may prevent only one fire user by fireId field of users
+    function userId() {
+      return get(/databases/$(database)/documents/fireUsers/$(request.auth.uid)).data.userId;
+    }
+
     function userData() {
-      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+      return get(/databases/$(database)/documents/users/$(userId())).data;
     }
 
     function isAdmin() {
       return userData().admin && userData().admin == true;
     }
     match /userdata/{userId} {
-      allow read, write: if request.auth.uid == userId;
+      allow read, write: if userId() == userId;
       match /{document=**} {
-        allow read, write: if request.auth.uid == userId;
+        allow read, write: if userId() == userId;
       }
     }
     match /users {
@@ -44,10 +49,18 @@ service cloud.firestore {
       }
     }
     match /dataResult/{classId}/clientComputed/{userId} {
-      allow read, write: if request.auth.uid == userId && userData().classId == classId;
+      allow read, write: if userId() == userId && userData().classId == classId;
 
       match /{document=**} {
-        allow read, write: if request.auth.uid == userId && userData().classId == classId;
+        allow read, write: if userId() == userId && userData().classId == classId;
+      }
+    }
+
+    match /fireUsers/{userId} {
+      allow read, write: if request.auth.uid == userId;
+
+      match /{document=**} {
+        allow read, write: if request.auth.uid == userId;
       }
     }
   }

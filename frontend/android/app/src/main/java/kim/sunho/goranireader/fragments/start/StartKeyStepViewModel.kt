@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.textfield.TextInputEditText
+import kim.sunho.goranireader.extensions.onUi
 import kim.sunho.goranireader.services.DBService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -105,6 +106,19 @@ class StartKeyStepViewModel: ViewModel() {
 
     val numberFocus: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
+    }
+
+    fun login(callback: (success: Boolean, new: Boolean) -> Unit) {
+        scope.launch {
+            val res = db.login(word.value ?: "", word2.value ?: "", number.value ?: "")
+            onUi {
+                if (res == null) {
+                    callback(false, false)
+                    return@onUi
+                }
+                callback(true, res.second)
+            }
+        }
     }
 
     companion object {

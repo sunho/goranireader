@@ -21,12 +21,9 @@ class StartGoogleStepFragment : Fragment(), Step {
     ): View? {
         val mainActivity = activity as MainActivity
         val view = inflater.inflate(R.layout.fragment_start_google_step, container, false)
-        view.sign_in_button.setOnClickListener {
-            mainActivity.googleSignIn()
-        }
-        mainActivity.currentUser.observe(this, Observer {
-
-        })
+//        mainActivity.currentUser.observe(this, Observer {
+//
+//        })
         return view
     }
 

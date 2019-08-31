@@ -25,11 +25,20 @@ class HomeBooksViewModel: ViewModel() {
     fun fetch() {
         val newList = ContentService.fetchContents()
         scope.launch {
-            val books = db.getOwnedBooks() ?: listOf()
+            val udata = db.getUserdata() ?: return@launch
+
+            val clas = db.getClass() ?: return@launch
+            if (clas.mission?.bookId != null) {
+                if (!udata.ownedBooks.contains(clas.mission.bookId)) {
+                    db.userdataDoc()!!.update("ownedBooks", udata.ownedBooks + clas.mission.bookId)
+                }
+            }
+
+            val books = db.getOwnedBooks() ?: return@launch
+
             launch(Dispatchers.Main.immediate) {
                 _contentList.value = newList + books.map { it.toContent() }
             }
         }
-
     }
 }

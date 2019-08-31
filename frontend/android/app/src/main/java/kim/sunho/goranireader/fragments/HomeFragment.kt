@@ -43,13 +43,12 @@ class HomeFragment: Fragment() {
 
     class HomeCollectionAddapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 
-        override fun getCount(): Int  = 3
+        override fun getCount(): Int  = 2
 
         override fun getItem(i: Int): Fragment {
             return when (i) {
                 0 -> HomeGuideTabFragment()
                 1 -> HomeBooksTabFragment()
-                2 -> HomeConfigTabFragment()
                 else -> throw IllegalArgumentException("wtf")
             }
         }
@@ -58,7 +57,6 @@ class HomeFragment: Fragment() {
             return when (position) {
                 0 -> "Guide"
                 1 -> "Books"
-                2 -> "Settings"
                 else -> throw IllegalArgumentException("wtf")
             }
         }
