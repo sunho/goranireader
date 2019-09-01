@@ -5,13 +5,9 @@
 import Foundation
 import UIKit
 import Result
-import ReactiveSwift
-import Moya
-import ReactiveMoya
 import RealmSwift
 import Kingfisher
 import Regex
-import FolioReaderKit
 
 // TODO split into several files
 
@@ -279,106 +275,6 @@ extension UIImageView {
 
 enum DateError: String, Error {
     case invalidDate
-}
-
-
-extension SignalProducerProtocol where Error == MoyaError {
-    public func handlePlain(ignoreError: Bool, _ handler: ((_ offline: Bool, _ value: Value?) -> Void)? = nil) {
-        self.producer.start { event in
-                DispatchQueue.main.async {
-                    switch event {
-                    case .value(let value):
-                        handler?(false, value)
-                    case .failed(let error):
-                        if error.isOffline {
-                            handler?(true, nil)
-                        } else if !ignoreError {
-                            AlertService.shared.alertError(error)
-                        }
-                    default:
-                        print(event)
-                    }
-                }
-            }
-    }
-}
-extension SignalProducerProtocol where Value == Response, Error == MoyaError {
-    public func mapPlain<D: Decodable>(_ type: D.Type) -> SignalProducer<D, Error> {
-        let decoder = JSONDecoder()
-        let formatter = DateFormatter()
-        formatter.calendar = Calendar(identifier: .iso8601)
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        
-        decoder.dateDecodingStrategy = .custom({ (decoder) -> Date in
-            let container = try decoder.singleValueContainer()
-            let dateStr = try container.decode(String.self)
-            
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
-            if let date = formatter.date(from: dateStr) {
-                return date
-            }
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssXXXXX"
-            if let date = formatter.date(from: dateStr) {
-                return date
-            }
-            throw DateError.invalidDate
-        })
-        return self.map(type, using: decoder, failsOnEmptyData: false)
-    }
-    
-    public func handle(ignoreError: Bool, _ handler: ((_ offline: Bool, _ value: Value?) -> Void)? = nil) {
-        self.filterSuccessfulStatusCodes().handlePlain(ignoreError: ignoreError, handler)
-    }
-    
-    public func handle<D: Decodable>(ignoreError: Bool, type: D.Type, _ handler: ((_ offline: Bool, _ value: D?) -> Void)? = nil) {
-        self.filterSuccessfulStatusCodes()
-            .mapPlain(type)
-            .start { event in
-                DispatchQueue.main.async {
-                    switch event {
-                    case .value(let value):
-                        handler?(false, value)
-                    case .failed(let error):
-                        if error.isOffline {
-                            handler?(true, nil)
-                        } else if !ignoreError {
-                            print(error.response?.description)
-                            AlertService.shared.alertError(error)
-                        }
-                    default:
-                        print(event)
-                    }
-                }
-        }
-    }
-
-}
-
-extension FRBook {
-    func numberOfWord(_ word: String) -> (Int, Int) {
-        var total = 0
-        var out = 0
-        let pat = try! Regex(pattern:"<p>(.|\n)*?</p>", groupNames: "text")
-        for (_, resource) in resources.resources {
-            if resource.mediaType == .xhtml {
-                if let html = try? String(contentsOfFile: resource.fullHref) {
-                    let matches = pat.findAll(in: html)
-                    for match in matches {
-                        let text = match.group(named: "text")!
-                        let words = SentenceUtil.getWords(text)
-                        for word2 in words {
-                            if word.lowercased() == word2.lowercased() || word2.baseCandidates[0].lowercased() == word.lowercased() {
-                                out += 1
-                            }
-                            total += 1
-                        }
-                    }
-                }
-            }
-        }
-        return (total, out)
-    }
 }
 
 extension Date {

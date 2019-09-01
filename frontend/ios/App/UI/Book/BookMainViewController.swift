@@ -3,8 +3,6 @@
 //
 
 import UIKit
-import FolioReaderKit
-import ReactiveSwift
 
 fileprivate let MinActulReadRate = 0.7
 
