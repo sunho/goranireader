@@ -4,8 +4,6 @@
 
 import UIKit
 import Result
-import ReactiveSwift
-import Moya
 
 struct GuideCardProvider {
     var name: String
@@ -23,23 +21,12 @@ class GuideMainViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = Color.white
         wordCount = RealmService.shared.getTodayUnknownWords().count
-        ReachabilityService.shared.reach.producer.start { [weak self] _ in
-            self?.reloadData()
-        }
         reloadData()
         
         NotificationCenter.default.addObserver(self, selector: #selector(unknownWordAdded), name: .unknownWordAdded, object: nil)
     }
     
     func reloadData() {
-        APIService.shared.request(.getMissions)
-            .handle(ignoreError: true, type: [Mission].self) { offline, missions in
-            if !offline {
-                for mission in missions! {
-                    print(mission)
-                }
-            }
-        }
         wordCount = RealmService.shared.getTodayUnknownWords().count
         layout()
     }
