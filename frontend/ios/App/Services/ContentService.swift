@@ -3,11 +3,8 @@
 //
 
 import Foundation
-import FolioReaderKit
-import ReactiveSwift
 import Result
 import Kingfisher
-import Moya
 import Regex
 import UIKit
 
@@ -22,7 +19,7 @@ class ContentService {
     init() {
     }
     
-    func downloadContent(_ content: DownloadableContent) -> SignalProducer<Float, GoraniError> {
+    func downloadContent(_ content: DownloadableContent) {
         let file: String = {
             if content.type == .epub {
                 return "\(content.id)-\(Int(Date().timeIntervalSince1970))-epub.epub"
@@ -32,59 +29,20 @@ class ContentService {
         }()
         
         let url = FileUtil.downloadDir.appendingPathComponent(file)
-        
-        return APIService.shared.requestWithProgress(.download(url: content.downloadUrl, file: file))
-            .map { (resp: ProgressResponse) -> Float in
-                return Float(resp.progress)
-            }
-            .mapError { (error: MoyaError) -> GoraniError in
-                return GoraniError.network(error: error)
-            }
-            .concat(
-                {
-                    return SignalProducer<Float, GoraniError> { (observer, _) -> Void in
-                        do {
-                            print(url.absoluteString)
-                            let _ = try FREpubParser().readEpub(epubPath: url.path, removeEpub: true, unzipPath: FileUtil.booksDir.path)
-                            observer.sendCompleted()
-                        } catch let error as FolioReaderError {
-                            observer.send(error: GoraniError.folio(error: error))
-                        } catch {
-                            observer.sendInterrupted()
-                        }
-                    }
-                }()
-            )
     }
     
-    func getContents() -> SignalProducer<[Content], NoError> {
-        return getDownloadedContents()
-            .observe(on: QueueScheduler(qos: .utility))
-            .flatMap(.latest) { (downloadedContents: [Content]) -> SignalProducer<[Content], NoError> in
-                return self.getDownloadableContents()
-                    .map { (downloadableContents: [Content]) -> [Content] in
-                        return downloadedContents.sorted(by: { $0.updatedAt > $1.updatedAt}) + downloadableContents.sorted(by: { $0.updatedAt > $1.updatedAt})
-                    }
-                    .flatMapError { _ -> SignalProducer<[Content], NoError> in
-                        return SignalProducer<[Content], NoError>(value: downloadedContents.sorted(by: { $0.updatedAt > $1.updatedAt}))
-                    }
-            }
+    func getContents() -> [Content] {
+        return []
     }
     
-    func getDownloadedContents() -> SignalProducer<[Content], NoError> {
-        return SignalProducer { (observer, _) in
-            let localContents = self.getLocalContents()
-            var out: [Content] = []
-            for (key, path) in localContents {
-                guard let epub = try? FREpubParser().readEpub(bookBasePath: path) else {
-                    continue
-                }
-                let progress = RealmService.shared.getEpubProgress(key.id)
-                out.append(DownloadedContent(epub: epub, id: key.id, updatedAt: progress.updatedAt, path: path, progress: progress.progress))
-            }
-            observer.send(value: out)
-            observer.sendCompleted()
+    func getDownloadedContents() -> [Content] {
+        let localContents = self.getLocalContents()
+        var out: [Content] = []
+        for (key, path) in localContents {
+            let progress = RealmService.shared.getEpubProgress(key.id)
+            out.append(DownloadedContent(epub: epub, id: key.id, updatedAt: progress.updatedAt, path: path, progress: progress.progress))
         }
+        return out
     }
     
     fileprivate func getLocalContents() -> Dictionary<ContentKey, String> {
@@ -120,22 +78,8 @@ class ContentService {
         return out
     }
     
-    func getDownloadableContents() -> SignalProducer<[Content], GoraniError> {
+    func getDownloadableContents() -> [Content] {
         let localContents = getLocalContents()
-        return APIService.shared.request(.listBooks)
-            .filterSuccessfulStatusCodes()
-            .map([Book].self)
-            .mapError { (error: MoyaError) -> GoraniError in
-                return .network(error: error)
-            }
-            .map { (books: [Book]) -> [Content] in
-                var out: [Content] = []
-                for book in books {
-                    if localContents[ContentKey(id: book.id, type: .epub)] == nil && book.epub != nil {
-                        out.append(DownloadableContent(book: book, type: .epub, downloadUrl: book.epub!))
-                    }
-                }
-                return out
-            }
+        return []
     }
 }

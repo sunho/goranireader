@@ -13,11 +13,7 @@ class MemoryBulletPage: FeedbackBulletPage {
     
     override init() {
         super.init(title: "암기문장 수정")
-        if ReachabilityService.shared.reach.value {
-            descriptionText =  "위에 떠다니는 라임이 맞는 단어와 다른 유저들의 암기문장을 참고해서 재치있는 암기문장을 만들어봅시다."
-        } else {
-            descriptionText =  "재치있는 암기문장을 만들어봅시다."
-        }
+        descriptionText =  "재치있는 암기문장을 만들어봅시다."
         
         actionButtonTitle = "완료"
         alternativeButtonTitle = "취소"

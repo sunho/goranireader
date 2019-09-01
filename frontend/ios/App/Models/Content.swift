@@ -4,7 +4,6 @@
 
 import Foundation
 import UIKit
-import FolioReaderKit
 import Kingfisher
 
 enum ContentType: Hashable {
