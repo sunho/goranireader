@@ -20,7 +20,18 @@ export interface AdminUser {
   classes: string[];
 }
 
+interface StringMap<V> {
+  [k: string]: V;
+}
+
 export interface UserInsight {
   username: string;
-  clientBookRead: Map<string, number>;
+  bookReads?: StringMap<number>;
+  chapterReads?: StringMap<StringMap<number>>;
+}
+
+export interface Report {
+  name: string;
+  link: string;
+  time: string;
 }

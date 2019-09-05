@@ -106,15 +106,19 @@ object EventLogService {
         }
         scope.launch {
             objs.forEach { obj ->
-                sendToServer(obj) {
-                    Realm.getDefaultInstance().use {
-                        it.executeTransaction { realm ->
-                            realm.where(EventLog::class.java)
-                                .equalTo("id", obj["id"]!!)
-                                .findAll()
-                                .deleteAllFromRealm()
+                try {
+                    sendToServer(obj) {
+                        Realm.getDefaultInstance().use {
+                            it.executeTransaction { realm ->
+                                realm.where(EventLog::class.java)
+                                    .equalTo("id", obj["id"]!!)
+                                    .findAll()
+                                    .deleteAllFromRealm()
+                            }
                         }
                     }
+                } catch (e: Exception) {
+                    Log.d("error", e.message)
                 }
             }
         }

@@ -77,6 +77,7 @@ class Firebase {
   books = () => this.db.collection("books");
   dataResult = (id: string) => this.db.collection("dataResult").doc(id);
   clientComputed = (id: string) => this.dataResult(id).collection("clientComputed");
+  reports = (id: string) => this.dataResult(id).collection("reports");
   serverComputed = (id: string) => this.dataResult(id).collection("serverComputed");
   clas = (id: string) => this.db.collection("classes").doc(id);
 }
