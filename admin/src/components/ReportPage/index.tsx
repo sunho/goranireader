@@ -21,14 +21,18 @@ const ReportPage: React.FC = () => {
   const [reports, setReports] = useState<Report[]>([]);
   useEffect(() => {
     (async () => {
-      const res = await firebase.reports(classInfo.currentId!).get();
-      setReports(res.docs.map(doc => doc.data() as any));
+      // const res = await firebase.reports(classInfo.currentId!).get();
+      setReports([{
+        name: "2019-09-06 Vocab ",
+        link: "https://storage.cloud.google.com/gorani-reader-reports/asdf.csv",
+        time: "asdf"
+      }]);
     })();
   }, [classInfo]);
   const commonStyles = useCommonStyle();
   return (
     <Container maxWidth="lg" className={commonStyles.container}>
-      <Typography variant="h5" component="h3">
+      <Typography variant="h5" className={commonStyles.header} component="h3">
         Report
       </Typography>
       <Paper className={commonStyles.paper}>

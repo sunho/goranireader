@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PaginateWordUnknown(
     val sentenceId: String = "",
+    val word: String = "",
     val wordIndex: Int = 0,
     val time: Int = 0
 )

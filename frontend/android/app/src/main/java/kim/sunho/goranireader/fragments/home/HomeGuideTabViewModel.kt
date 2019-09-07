@@ -43,7 +43,7 @@ class HomeGuideTabViewModel: ViewModel() {
                img.value = book.cover ?: ""
                title.value = book.title
                message.value = clas.mission.message
-               message2.value = clas.mission.message
+               message2.value = clas.mission.due.toDate().toString()
                isMission.value = View.VISIBLE
            }
        }

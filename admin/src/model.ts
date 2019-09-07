@@ -25,9 +25,15 @@ interface StringMap<V> {
 }
 
 export interface UserInsight {
+  quizSolved: any;
   username: string;
   bookReads?: StringMap<number>;
   chapterReads?: StringMap<StringMap<number>>;
+  bookReadTimes?: StringMap<number>;
+  chapterReadTimes?: StringMap<StringMap<number>>;
+  bookQuizScores?: StringMap<number>;
+  bookQuizSolved?: StringMap<number>;
+  chapterQuizSolved?: StringMap<StringMap<number>>;
 }
 
 export interface Report {

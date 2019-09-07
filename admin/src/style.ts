@@ -10,5 +10,8 @@ export const useCommonStyle = makeStyles(theme => ({
     display: "flex",
     overflow: "auto",
     flexDirection: "column"
+  },
+  header: {
+    marginBottom: theme.spacing(2)
   }
 }));
