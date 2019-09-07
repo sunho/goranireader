@@ -30,6 +30,7 @@ class ReaderViewModel: CoroutineViewModel() {
     var stopped: Boolean = false
     var elapsedTime: Int = 0 //ms
     var book: BookyBook? = null
+    var isQuiz: Boolean = false
     val timer: Timer = Timer()
     var inited: Boolean = false
     var loaded: Boolean = false
@@ -169,7 +170,7 @@ class ReaderViewModel: CoroutineViewModel() {
     }
 
     fun wordSelect(wordIndex: Int, sid: String) {
-        wordUnknowns.add(PaginateWordUnknown(sid, wordIndex, elapsedTime))
+        wordUnknowns.add(PaginateWordUnknown(sid, "", wordIndex, elapsedTime))
     }
 
     fun addUnknownSentence(sid: String) {
@@ -177,6 +178,7 @@ class ReaderViewModel: CoroutineViewModel() {
     }
 
     fun addUnknownWord(sid: String, wordIndex: Int, word: String, def: String) {
+        wordUnknowns.add(PaginateWordUnknown(sid, word, wordIndex, elapsedTime))
         EventLogService.unknownWord(book!!.meta.id, currentChapter()!!.id, sid, wordIndex, word, def)
     }
 

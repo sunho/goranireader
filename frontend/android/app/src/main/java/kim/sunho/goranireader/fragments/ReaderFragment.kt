@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import kim.sunho.goranireader.extensions.*
 import kim.sunho.goranireader.fragments.home.HomeBooksViewModel
@@ -88,6 +89,7 @@ class ReaderFragment: CoroutineFragment() {
             override fun onSwipeLeft() {
                 if (viewModel.isEnd.value == true && viewModel.inited && viewModel.loaded) {
                     viewModel.next()
+                    findNavController().navigate(R.id.action_readerFragment_to_quizFragment)
                 }
             }
 
