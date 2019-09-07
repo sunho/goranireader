@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   tools:context=".fragments.QuizFragment"
+                                                   android:background="@android:color/white">
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="258dp" android:id="@+id/textView10" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
+            android:textColor="@android:color/black"
+            android:text="@string/quiz_text" android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+    <RadioGroup
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/submit_button"
+            android:layout_marginEnd="16dp" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView11" app:layout_constraintVertical_bias="0.01999998"
+            android:id="@+id/radio_group">
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/radioButton2" android:layout_weight="1"
+                android:text="arrive at" android:checked="false"/>
+        <RadioButton
+                android:text="stretch out an arm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/radioButton" android:layout_weight="1"/>
+    </RadioGroup>
+    <Button
+            android:text="Submit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/submit_button" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/ms_white"/>
+    <TextView
+            android:text="Select the definition of the hightlighted word in the text."
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView11"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/textView10"
+            android:textColor="@color/ms_black" android:textSize="18sp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -43,5 +43,8 @@
                 android:name="bookId"
                 app:argType="string"
                 android:defaultValue=".."/>
+        <action android:id="@+id/action_readerFragment_to_quizFragment" app:destination="@id/quizFragment"/>
     </fragment>
+    <fragment android:id="@+id/quizFragment" android:name="kim.sunho.goranireader.fragments.QuizFragment"
+              android:label="fragment_quiz" tools:layout="@layout/fragment_quiz"/>
 </navigation>

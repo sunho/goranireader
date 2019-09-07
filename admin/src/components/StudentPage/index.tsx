@@ -106,7 +106,7 @@ const StudentPage: React.FC = () => {
   return (
     <MuiThemeProvider theme={theme}>
       <Container maxWidth="lg" className={commonStyles.container}>
-        <Typography variant="h5" component="h3">
+        <Typography variant="h5" className={commonStyles.header} component="h3">
           Students
         </Typography>
         <MaterialTable

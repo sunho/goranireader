@@ -22,6 +22,7 @@ import { FirebaseContext } from "../Firebase";
 import { Bar, ResponsiveBar, ResponsiveBarCanvas, BarCanvas } from "@nivo/bar";
 import { ClasssContext, ClassInfo } from "../Auth/withClass";
 import { UserInsight } from "../../model";
+import { TabToTabDef } from "./tabs";
 const useStyles = makeStyles({
   card: {
     minWidth: 275,
@@ -40,114 +41,12 @@ const useStyles = makeStyles({
   }
 });
 
-enum TabState {
-  Book = 0,
-  Chapter,
-  BookQuiz,
-  ChapterQuiz
-}
-
-interface TabDef {
-  minValue: number;
-  maxValue: number;
-  percent: boolean;
-  getLabels?(data: UserInsight[], cals: ClassInfo): { name: string; value: any }[];
-  getData(
-    data: UserInsight[],
-    clas: ClassInfo,
-    label?: any
-  ): { username: string; value: number }[];
-}
-const TabToTabDef: TabDef[] = [
-  {
-    minValue: 0,
-    maxValue: 1,
-    percent: true,
-    getData: (data, clas, label) => {
-      if (!clas.currentClass) {
-        return [];
-      }
-      if (!clas.currentClass.mission) {
-        return [];
-      }
-      if (!clas.currentClass.mission.bookId) {
-        return [];
-      }
-      return data.flatMap(user => {
-        if (!user.bookReads) {
-          return [];
-        }
-        const out = user.bookReads[clas.currentClass!.mission!.bookId!];
-        if (!out) {
-          return [];
-        }
-        return [{ username: user.username, value: out }];
-      });
-    }
-  },
-  {
-    minValue: 0,
-    maxValue: 1,
-    percent: true,
-    getLabels: (data, clas) => {
-      const out = new Set<string>();
-      if (!clas.currentClass) {
-        return [];
-      }
-      if (!clas.currentClass.mission) {
-        return [];
-      }
-      if (!clas.currentClass.mission.bookId) {
-        return [];
-      }
-      data.forEach(user => {
-        if (!user.chapterReads) {
-          return;
-        }
-        if (!user.chapterReads[clas.currentClass!.mission!.bookId!]) {
-          return;
-        }
-        Object.keys(user.chapterReads[clas.currentClass!.mission!.bookId!]).forEach(key =>{
-          out.add(key);
-        });
-      });
-      return Array.from(out).map(item => ({name: item, value: item}));
-    },
-    getData: (data, clas, label) => {
-      if (!label) {
-        return [];
-      }
-      if (!clas.currentClass) {
-        return [];
-      }
-      if (!clas.currentClass.mission) {
-        return [];
-      }
-      if (!clas.currentClass.mission.bookId) {
-        return [];
-      }
-      return data.flatMap(user => {
-        if (!user.chapterReads) {
-          return [];
-        }
-        if (!user.chapterReads[clas.currentClass!.mission!.bookId!]) {
-          return [];
-        }
-        const out = user.chapterReads[clas.currentClass!.mission!.bookId!][label];
-        if (!out) {
-          return [];
-        }
-        return [{ username: user.username, value: out }];
-      });
-    }
-  }
-];
 
 const ProgressPage: React.FC = () => {
   const firebase = useContext(FirebaseContext)!;
   const classInfo = useContext(ClasssContext)!;
   const commonStyles = useCommonStyle();
-  const [tab, setTab] = useState(TabState.Book);
+  const [tab, setTab] = useState(0);
   const [raw, setRaw] = useState<UserInsight[]>([]);
   const [label, setLabel] = useState<number>(0);
   const tabDef = TabToTabDef[tab];
@@ -168,7 +67,7 @@ const ProgressPage: React.FC = () => {
 
   return (
     <Container maxWidth="lg" className={commonStyles.container}>
-      <Typography variant="h5" component="h3">
+      <Typography variant="h5" component="h3" className={commonStyles.header}>
         Progress
       </Typography>
       <AppBar position="static" color="default">
@@ -177,28 +76,33 @@ const ProgressPage: React.FC = () => {
           onChange={(e, value) => {
             setTab(value);
           }}
+          variant="scrollable"
+          scrollButtons="auto"
           indicatorColor="primary"
           textColor="primary"
-          variant="fullWidth"
           aria-label="full width tabs example"
         >
-          <Tab label="Mission Book Read Progress"/>
-          <Tab label="Mission Chapter Read Progress"/>
+          <Tab label="Book Read Progress"/>
+          <Tab label="Chapter Read Progress"/>
+          <Tab label="Book Read Time"/>
+          <Tab label="Chapter Read Time"/>
+          <Tab label="Book Solved Quiz"/>
+          <Tab label="Book Quiz Score"/>
         </Tabs>
       </AppBar>
       <Card className={classes.card}>
         {labels && (
           <FormControl required>
-            <InputLabel htmlFor="age-required">Age</InputLabel>
+            <InputLabel htmlFor="age-required">Label</InputLabel>
             <Select
               value={label || 0}
-              onChange={(e) => {setLabel(e.target.value as any);}}
+              onChange={(e) => {setLabel(e.target.value as number);}}
               inputProps={{
                 id: "age-required"
               }}
             >
               {
-                labels.map((label, i) => (
+                labels.map((label: any, i: number) => (
                   <MenuItem value={i}>{label.name}</MenuItem>
                 ))
               }
