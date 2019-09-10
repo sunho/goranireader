@@ -13,7 +13,6 @@ protocol WordCardViewControllerDelegate {
 
 class WordCardViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     fileprivate var frame: CGRect!
-    var memoryForm: MemoryBulletPageManager!
     
     var word: UnknownWord!
     var delegate: WordCardViewControllerDelegate?
@@ -30,7 +29,6 @@ class WordCardViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func loadView() {
         view = WordCardView(frame: frame)
-        memoryForm = MemoryBulletPageManager()
     }
     
     override func viewDidLoad() {
@@ -40,16 +38,12 @@ class WordCardViewController: UIViewController, UITableViewDelegate, UITableView
         let tap2 = UITapGestureRecognizer(target: self, action: #selector(self.handleTapDetail(_:)))
         cardView.backView.detailButton.addGestureRecognizer(tap2)
         
-        cardView.backView.memoryButton.addTarget(self, action: #selector(self.handleTapMemory(_:)), for: .touchUpInside)
-        
         cardView.wordView.text = word.word
         cardView.backView.wordView.text = word.word
         cardView.backView.memoryButton.text = word.memory
         cardView.backView.tableView.delegate = self
         cardView.backView.tableView.dataSource = self
         cardView.backView.tableView.register(WordCardTableViewCell.self, forCellReuseIdentifier: "cell")
-        
-        memoryForm.callback = self.memoryFormCallback
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -79,12 +73,6 @@ class WordCardViewController: UIViewController, UITableViewDelegate, UITableView
             } else {
                 delegate?.wordCardViewDidHideDetail()
             }
-        }
-    }
-    
-    @objc func handleTapMemory(_ sender: UITapGestureRecognizer) {
-        if opened && cardView.isDetail {
-            memoryForm.show(word, above: self)
         }
     }
     
