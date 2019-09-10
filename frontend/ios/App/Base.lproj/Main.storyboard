@@ -140,24 +140,18 @@
                                 <color key="textColor" red="0.50980392159999999" green="0.50980392159999999" blue="0.51372549020000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s8g-4t-D1N" customClass="GIDSignInButton">
-                                <rect key="frame" x="40" y="602" width="295" height="35"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="35" id="j5n-TU-AsN"/>
-                                </constraints>
-                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CJc-X5-MGb">
+                                <rect key="frame" x="164" y="617" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="aAl-GY-IlG" firstAttribute="centerX" secondItem="Foi-MR-mq7" secondAttribute="centerX" id="6IR-HG-SLi"/>
                             <constraint firstItem="pIz-oU-QNn" firstAttribute="top" secondItem="aAl-GY-IlG" secondAttribute="bottom" constant="15" id="Aut-Nl-soz"/>
-                            <constraint firstItem="s8g-4t-D1N" firstAttribute="centerX" secondItem="Foi-MR-mq7" secondAttribute="centerX" id="DEW-43-oYm"/>
-                            <constraint firstItem="Foi-MR-mq7" firstAttribute="bottom" secondItem="s8g-4t-D1N" secondAttribute="bottom" constant="30" id="LTz-GZ-ee9"/>
-                            <constraint firstItem="Foi-MR-mq7" firstAttribute="trailing" secondItem="s8g-4t-D1N" secondAttribute="trailing" constant="40" id="OQL-iy-KR8"/>
                             <constraint firstItem="aAl-GY-IlG" firstAttribute="centerY" secondItem="Foi-MR-mq7" secondAttribute="centerY" constant="-60" id="fKb-lH-eaT"/>
                             <constraint firstItem="pIz-oU-QNn" firstAttribute="centerX" secondItem="aAl-GY-IlG" secondAttribute="centerX" id="i86-hs-iP3"/>
-                            <constraint firstItem="s8g-4t-D1N" firstAttribute="leading" secondItem="Foi-MR-mq7" secondAttribute="leading" constant="40" id="m2y-It-7Mq"/>
                             <constraint firstItem="aAl-GY-IlG" firstAttribute="width" secondItem="172-6x-sll" secondAttribute="width" multiplier="0.2" constant="1" id="tau-ve-iQE"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Foi-MR-mq7"/>

@@ -47,13 +47,13 @@ class DownloadedContent: Content {
         super.init(id: id, name: name, author: author, cover: cover, updatedAt: updatedAt, type: type)
     }
     
-    convenience init(epub: FRBook, id: Int, updatedAt: Date, path: String, progress: Float) {
-        let href = epub.coverImage?.fullHref
-        let turl = href != nil ? try? href!.asURL() : nil
-        let url = turl != nil ? URL(fileURLWithPath: turl!.path) : nil
-        let cover = url != nil ? Source.provider(LocalFileImageDataProvider(fileURL: url!)) : nil
-        self.init(id: id, name: epub.title ?? "", author: epub.authorName ?? "", cover: cover, updatedAt: updatedAt, type: .epub, path: path, progress: progress)
-    }
+//    convenience init(epub: FRBook, id: Int, updatedAt: Date, path: String, progress: Float) {
+//        let href = epub.coverImage?.fullHref
+//        let turl = href != nil ? try? href!.asURL() : nil
+//        let url = turl != nil ? URL(fileURLWithPath: turl!.path) : nil
+//        let cover = url != nil ? Source.provider(LocalFileImageDataProvider(fileURL: url!)) : nil
+//        self.init(id: id, name: epub.title ?? "", author: epub.authorName ?? "", cover: cover, updatedAt: updatedAt, type: .epub, path: path, progress: progress)
+//    }
     
     func delete() throws {
         try FileManager.default.removeItem(atPath: path)
