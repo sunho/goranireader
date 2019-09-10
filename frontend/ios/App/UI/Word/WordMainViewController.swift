@@ -10,7 +10,6 @@ class WordMainViewController: UIViewController, CardSliderDelegate, WordCardView
     @IBOutlet weak var leftIcon: UIView!
     @IBOutlet weak var rightIcon: UIView!
     
-    var memoryForm: MemoryBulletPageManager!
     var cardDetailOpen: Bool = false
     var cardOpen: Bool = false
     var cardSliderContainer: UIView!
@@ -25,7 +24,6 @@ class WordMainViewController: UIViewController, CardSliderDelegate, WordCardView
     }
     
     override func viewDidLoad() {
-        memoryForm = MemoryBulletPageManager()
         
         cardSliderContainer = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: cardHeight))
         cardSliderContainer.clipsToBounds = false
@@ -46,7 +44,6 @@ class WordMainViewController: UIViewController, CardSliderDelegate, WordCardView
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        memoryForm.prepare()
         words = RealmService.shared.getTodayUnknownWords().shuffled()
         updateRemainView()
         layout()
@@ -59,7 +56,6 @@ class WordMainViewController: UIViewController, CardSliderDelegate, WordCardView
         addChild(vc)
         vc.word = words[itemAt]
         vc.didMove(toParent: self)
-        vc.memoryForm = memoryForm
         return vc.cardView
     }
     

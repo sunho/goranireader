@@ -40,7 +40,7 @@ class ContentService {
         var out: [Content] = []
         for (key, path) in localContents {
             let progress = RealmService.shared.getEpubProgress(key.id)
-            out.append(DownloadedContent(epub: epub, id: key.id, updatedAt: progress.updatedAt, path: path, progress: progress.progress))
+//            out.append(DownloadedContent(id: key.id, updatedAt: progress.updatedAt, path: path, progress: progress.progress))
         }
         return out
     }

@@ -12,9 +12,7 @@ class BookMainViewController: UIViewController {
     // for epub
     // TODO: separate
     var currentBookId: Int?
-    var folioReader = FolioReader()
     var currentSentences: [FlipPageSentence]?
-    var currentSentence: SelectedSentence?
     var lastPage: Int = 0
     var lastChapter: Int = 0
     var lastTextUpdated: Date = Date()
@@ -34,9 +32,7 @@ class BookMainViewController: UIViewController {
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 160
         self.tableView.separatorStyle = .singleLine
-        
-        self.folioReader.delegate = self
-        
+    
         self.tableView.register(BookMainTableViewCell.self, forCellReuseIdentifier: "cell")
         self.reload()
         
@@ -47,37 +43,37 @@ class BookMainViewController: UIViewController {
     }
  
     func reload() {
-        ContentService.shared.getContents().start { event in
-            DispatchQueue.main.async{
-                switch event {
-                case .value(let contents):
-                    if !self.first {
-                        var new = 0
-                        for i in contents {
-                            var isNew = true
-                            for j in self.contents {
-                                if i.key == j.key {
-                                    isNew = false
-                                    break
-                                }
-                            }
-                            if isNew {
-                                new += 1
-                            }
-                        }
-                        if new != 0 {
-                            self.navigationController?.tabBarItem.badgeValue = "\(new)"
-                        }
-                    } else {
-                        self.first = false
-                    }
-                    self.contents = contents
-                    self.tableView.reloadData()
-                default:
-                    print(event)
-                }
-            }
-        }
+//        ContentService.shared.getContents().start { event in
+//            DispatchQueue.main.async{
+//                switch event {
+//                case .value(let contents):
+//                    if !self.first {
+//                        var new = 0
+//                        for i in contents {
+//                            var isNew = true
+//                            for j in self.contents {
+//                                if i.key == j.key {
+//                                    isNew = false
+//                                    break
+//                                }
+//                            }
+//                            if isNew {
+//                                new += 1
+//                            }
+//                        }
+//                        if new != 0 {
+//                            self.navigationController?.tabBarItem.badgeValue = "\(new)"
+//                        }
+//                    } else {
+//                        self.first = false
+//                    }
+//                    self.contents = contents
+//                    self.tableView.reloadData()
+//                default:
+//                    print(event)
+//                }
+//            }
+//        }
     }
     
     @objc func applicationWillEnterForeground(_ notification: NSNotification) {
@@ -98,45 +94,21 @@ class BookMainViewController: UIViewController {
     
     func downloadContent(_ content: DownloadableContent) {
         if downloadProgresses[content.key] == nil {
-            ContentService.shared.downloadContent(content)
-                .start { event -> Void in
-                    DispatchQueue.main.async{
-                        switch event {
-                        case .completed:
-                            self.downloadProgresses.removeValue(forKey: content.key)
-                            self.reload()
-                        case .value(let progress):
-                            self.updateDownloadProgress(content.key, progress)
-                        default:
-                            self.downloadProgresses.removeValue(forKey: content.key)
-                            print(event)
-                        }
-                    }
-            }
-        }
-    }
-    
-    func openContent(_ content: DownloadedContent) {
-        currentBookId = content.id
-        switch content.type {
-        case .epub:
-            guard let book = try? FREpubParser().readEpub(bookBasePath: content.path) else {
-                AlertService.shared.alertErrorMsg("epub 파싱 에러")
-                return
-            }
-            
-            let config = FolioReaderConfig()
-            config.tintColor = Color.tint
-            config.barTintColor = Color.white
-            config.barColor = Color.strongGray
-            config.canChangeScrollDirection = false
-            config.shouldHideNavigationOnTap = false
-            config.hideBars = false
-            config.enableTTS = false
-            config.scrollDirection = .horizontal
-
-            folioReader.presentReader(parentViewController: self, book: book, config: config)
-            folioReader.readerCenter!.delegate = self
+//            ContentService.shared.downloadContent(content)
+//                .start { event -> Void in
+//                    DispatchQueue.main.async{
+//                        switch event {
+//                        case .completed:
+//                            self.downloadProgresses.removeValue(forKey: content.key)
+//                            self.reload()
+//                        case .value(let progress):
+//                            self.updateDownloadProgress(content.key, progress)
+//                        default:
+//                            self.downloadProgresses.removeValue(forKey: content.key)
+//                            print(event)
+//                        }
+//                    }
+//            }
         }
     }
     
@@ -195,7 +167,7 @@ extension BookMainViewController: UITableViewDelegate, UITableViewDataSource, UI
         }
         
         if let item = item as? DownloadedContent {
-            openContent(item)
+//            openContent(item)
         }
     }
     
