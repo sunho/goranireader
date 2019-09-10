@@ -32,14 +32,31 @@ class FirebaseService {
                 return
             }
             let doc = docs!.documents[0]
-            let oldId = doc.data()["fireId"]
-            let replacing = oldId as? String != user.uid
-            doc.setValue(user.uid, forKey: "fireId")
-            Firestore.firestore().collection("fireUsers").document(user.uid).setData([
+            guard let data = doc.data() as? Dictionary<String, Any> else {
+                completion(false, false, error)
+                return
+            }
+            let replacing = data["fireId"] as? String != user.uid
+            doc.reference.updateData([
+                "fireId": user.uid
+            ]) { err in
+                if err == nil {
+                    return
+                }
+                fatalError(err!.localizedDescription)
+            }
+            Firestore.firestore()
+                .collection("fireUsers")
+                .document(user.uid)
+                .setData([
                 "userId": doc.documentID
-            ])
+                ]) { err in
+                if err == nil {
+                    return
+                }
+                fatalError(err!.localizedDescription)
+            }
             completion(true, replacing, nil)
         }
     }
-
 }
