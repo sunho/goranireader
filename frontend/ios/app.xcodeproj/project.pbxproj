@@ -45,6 +45,8 @@
 		B1B110112327942100FD252E /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1B1100F2327942000FD252E /* Crashlytics.framework */; };
 		B1B110122327942100FD252E /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1B110102327942100FD252E /* Fabric.framework */; };
 		B1B1101723279C9E00FD252E /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B1101623279C9E00FD252E /* FirebaseService.swift */; };
+		B1B110192327AE9900FD252E /* LoginBulletPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B110182327AE9900FD252E /* LoginBulletPage.swift */; };
+		B1B1101B2327B0CE00FD252E /* LoginBulletPageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B1101A2327B0CE00FD252E /* LoginBulletPageManager.swift */; };
 		C70F55BD224FCD4D006DBB0E /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55BC224FCD4D006DBB0E /* TabBarViewController.swift */; };
 		C70F55C5224FE508006DBB0E /* BubbleTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55C2224FE508006DBB0E /* BubbleTabBar.swift */; };
 		C70F55C6224FE508006DBB0E /* CBTabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55C3224FE508006DBB0E /* CBTabBarButton.swift */; };
@@ -186,6 +188,8 @@
 		B1B1100F2327942000FD252E /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Frameworks/Crashlytics.framework; sourceTree = "<group>"; };
 		B1B110102327942100FD252E /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = Frameworks/Fabric.framework; sourceTree = "<group>"; };
 		B1B1101623279C9E00FD252E /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
+		B1B110182327AE9900FD252E /* LoginBulletPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBulletPage.swift; sourceTree = "<group>"; };
+		B1B1101A2327B0CE00FD252E /* LoginBulletPageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBulletPageManager.swift; sourceTree = "<group>"; };
 		C70AD3032268F2CF00BAD495 /* OAuthSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuthSwift.framework; path = Carthage/Build/iOS/OAuthSwift.framework; sourceTree = "<group>"; };
 		C70F55BC224FCD4D006DBB0E /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		C70F55C2224FE508006DBB0E /* BubbleTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleTabBar.swift; sourceTree = "<group>"; };
@@ -490,6 +494,8 @@
 			isa = PBXGroup;
 			children = (
 				C77043C3223E530300B91831 /* LoginViewController.swift */,
+				B1B110182327AE9900FD252E /* LoginBulletPage.swift */,
+				B1B1101A2327B0CE00FD252E /* LoginBulletPageManager.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -817,11 +823,13 @@
 				C759AD7F221EEA9400166B2A /* GuideMainViewController.swift in Sources */,
 				C757D2CF2247C1140050E0A2 /* NavigationController.swift in Sources */,
 				C7C11780224544E70084C799 /* WordCardView.swift in Sources */,
+				B1B1101B2327B0CE00FD252E /* LoginBulletPageManager.swift in Sources */,
 				C74CEFE0208C899F002765D6 /* app.xcdatamodeld in Sources */,
 				C7CF0053224CF56300524D80 /* EventLog.swift in Sources */,
 				C7FA5428223476BD006F94C7 /* DictViewController.swift in Sources */,
 				C7C1177A224526AA0084C799 /* PaddingMarginView.swift in Sources */,
 				C7C117822245450E0084C799 /* WordCardBackView.swift in Sources */,
+				B1B110192327AE9900FD252E /* LoginBulletPage.swift in Sources */,
 				C783AAB822420C0200D0D7BB /* SelfSizedTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

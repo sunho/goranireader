@@ -140,19 +140,27 @@
                                 <color key="textColor" red="0.50980392159999999" green="0.50980392159999999" blue="0.51372549020000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CJc-X5-MGb">
-                                <rect key="frame" x="164" y="617" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CJc-X5-MGb" customClass="RoundButton" customModule="app" customModuleProvider="target">
+                                <rect key="frame" x="20" y="607" width="335" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="wfB-zF-s69"/>
+                                </constraints>
+                                <state key="normal" title="Get Started"/>
+                                <connections>
+                                    <action selector="getStarted:" destination="PM2-Qw-KUm" eventType="touchUpInside" id="z1o-b7-AZ9"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="aAl-GY-IlG" firstAttribute="centerX" secondItem="Foi-MR-mq7" secondAttribute="centerX" id="6IR-HG-SLi"/>
                             <constraint firstItem="pIz-oU-QNn" firstAttribute="top" secondItem="aAl-GY-IlG" secondAttribute="bottom" constant="15" id="Aut-Nl-soz"/>
+                            <constraint firstItem="Foi-MR-mq7" firstAttribute="bottom" secondItem="CJc-X5-MGb" secondAttribute="bottom" constant="20" id="K2R-tr-s7i"/>
                             <constraint firstItem="aAl-GY-IlG" firstAttribute="centerY" secondItem="Foi-MR-mq7" secondAttribute="centerY" constant="-60" id="fKb-lH-eaT"/>
+                            <constraint firstItem="CJc-X5-MGb" firstAttribute="leading" secondItem="Foi-MR-mq7" secondAttribute="leading" constant="20" id="hUG-8N-xFU"/>
                             <constraint firstItem="pIz-oU-QNn" firstAttribute="centerX" secondItem="aAl-GY-IlG" secondAttribute="centerX" id="i86-hs-iP3"/>
                             <constraint firstItem="aAl-GY-IlG" firstAttribute="width" secondItem="172-6x-sll" secondAttribute="width" multiplier="0.2" constant="1" id="tau-ve-iQE"/>
+                            <constraint firstItem="Foi-MR-mq7" firstAttribute="trailing" secondItem="CJc-X5-MGb" secondAttribute="trailing" constant="20" id="vBg-EC-dWg"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Foi-MR-mq7"/>
                     </view>
