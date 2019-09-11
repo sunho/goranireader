@@ -16,8 +16,8 @@ class SensProgress: Object {
     }
 }
 
-class EpubProgress: Object {
-    @objc dynamic var bookId: Int = 0
+class BookProgress: Object {
+    @objc dynamic var bookId: String = ""
     @objc dynamic var offsetX: Float = 0
     @objc dynamic var offsetY: Float = 0
     @objc dynamic var progress: Float = 0

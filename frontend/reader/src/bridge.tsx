@@ -11,7 +11,7 @@ export interface App {
   wordSelected(i: number, sid: string): void;
   sentenceSelected(sid: string): void;
   readingSentenceChange(sid: string): void;
-  dictSearch(word: string): string;
+  dictSearch(word: string): string | Promise<string>;
   addUnknownWord(sid: string, wordIndex: number, word: string, def: string): void;
   addUnknownSentence(sid: string): void;
 }
@@ -25,7 +25,9 @@ export class Webapp {
     window.app = new DevAppImpl();
   }
 
-  setIOS() {}
+  setIOS() {
+    window.app = new IOSAppImpl();
+  }
 
   start(sentences: Sentence[], sid: string) {
     this.onStart.trigger({
@@ -168,3 +170,68 @@ class DevAppImpl implements App {
     console.log(`addUnknownWord sid: ${sid} wordIndex: ${wordIndex} word: ${word} def: ${def}`);
   }
 }
+
+class IOSAppImpl implements App {
+  resolveDict?: (res: string) => void = undefined;
+  constructor() {}
+
+  initComplete() {
+    window.webkit.messageHandlers.bridge.postMessage({type: "initComplete"})
+  }
+
+  setLoading(load: boolean) {
+    window.webkit.messageHandlers.bridge.postMessage({type: "setLoading", load: load})
+  }
+
+  atStart() {
+    window.webkit.messageHandlers.bridge.postMessage({type: "atStart"})
+  }
+
+  atMiddle() {
+    window.webkit.messageHandlers.bridge.postMessage({type: "atMiddle"})
+  }
+
+  atEnd() {
+    window.webkit.messageHandlers.bridge.postMessage({type: "atEnd"})
+  }
+
+  wordSelected(i: number, sid: string) {
+    window.webkit.messageHandlers.bridge.postMessage({type: "wordSelected", i: i, sid: sid})
+  }
+
+  paginate(sids: string[]) {
+    window.webkit.messageHandlers.bridge.postMessage({type: "paginate", sids: sids})
+  }
+
+  sentenceSelected(sid: string) {
+    window.webkit.messageHandlers.bridge.postMessage({type: "sentenceSelected", sid: sid})
+  }
+
+
+  readingSentenceChange(sid: string) {
+    window.webkit.messageHandlers.bridge.postMessage({type: "readingSentenceChange", sid: sid})
+  }
+
+  dictSearch(word: string): Promise<string> {
+    window.webkit.messageHandlers.bridge.postMessage({type: "dictSearch", word: word})
+    return new Promise((res, rej) => {
+      this.resolveDict = res;
+    });
+  }
+
+  dictSearchResolve(res: string) {
+    if (this.resolveDict) {
+      this.resolveDict(res);
+    }
+  }
+
+  addUnknownSentence(sid: string) {
+    window.webkit.messageHandlers.bridge.postMessage({type: "addUnknownSentence", sid: sid})
+    console.log(`addUnknownSentence sid: ${sid}`);
+  }
+
+  addUnknownWord(sid: string, wordIndex: number, word: string, def: string) {
+    window.webkit.messageHandlers.bridge.postMessage({type: "addUnknownWord", sid: sid, wordIndex: wordIndex, word: word, def: def})
+  }
+}
+

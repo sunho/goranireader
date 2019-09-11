@@ -203,6 +203,40 @@
             </objects>
             <point key="canvasLocation" x="-5237" y="-716"/>
         </scene>
+        <!--Book Reader View Controller-->
+        <scene sceneID="mJp-WC-2Iv">
+            <objects>
+                <viewController storyboardIdentifier="BookReaderViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4El-EQ-jd4" customClass="BookReaderViewController" customModule="app" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="EW9-yY-g0y">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CDg-d8-JEX">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="g95-CF-RyG" firstAttribute="bottom" secondItem="CDg-d8-JEX" secondAttribute="bottom" id="PMf-a8-HhD"/>
+                            <constraint firstItem="g95-CF-RyG" firstAttribute="trailing" secondItem="CDg-d8-JEX" secondAttribute="trailing" id="d9o-om-jsU"/>
+                            <constraint firstItem="CDg-d8-JEX" firstAttribute="leading" secondItem="g95-CF-RyG" secondAttribute="leading" id="ojW-7v-d9R"/>
+                            <constraint firstItem="CDg-d8-JEX" firstAttribute="top" secondItem="g95-CF-RyG" secondAttribute="top" id="vPv-au-LqV"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="g95-CF-RyG"/>
+                    </view>
+                    <connections>
+                        <outlet property="webView" destination="CDg-d8-JEX" id="nje-xL-hLE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="g40-dy-TFa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4503" y="-716"/>
+        </scene>
         <!--Dict View Controller-->
         <scene sceneID="CrX-f2-IOc">
             <objects>
@@ -231,24 +265,12 @@
                                     <action selector="next:" destination="DZF-5K-nR1" eventType="touchUpInside" id="BRp-L1-B1F"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pyf-gN-faS">
-                                <rect key="frame" x="280" y="9" width="30" height="33"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="이전">
-                                    <color key="titleColor" red="0.60784313729999995" green="0.37254901959999998" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="prev:" destination="DZF-5K-nR1" eventType="touchUpInside" id="iXA-WQ-3TJ"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.90980392160000001" green="0.91372549020000005" blue="0.92156862750000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="otw-tJ-yfS" firstAttribute="trailing" secondItem="Nht-T0-YMD" secondAttribute="trailing" constant="20" id="6ga-7N-74A"/>
-                            <constraint firstItem="Nht-T0-YMD" firstAttribute="leading" secondItem="Pyf-gN-faS" secondAttribute="trailing" constant="15" id="DZD-L9-ryC"/>
                             <constraint firstItem="v6h-oM-TDe" firstAttribute="leading" secondItem="otw-tJ-yfS" secondAttribute="leading" constant="12" id="EBC-8m-koI"/>
                             <constraint firstItem="DWH-iB-eMW" firstAttribute="trailing" secondItem="otw-tJ-yfS" secondAttribute="trailing" id="ETz-RG-ZGh"/>
-                            <constraint firstItem="Pyf-gN-faS" firstAttribute="centerY" secondItem="v6h-oM-TDe" secondAttribute="centerY" id="Gy8-OQ-0li"/>
                             <constraint firstItem="DWH-iB-eMW" firstAttribute="top" secondItem="v6h-oM-TDe" secondAttribute="bottom" constant="12" id="N8f-70-MV4"/>
                             <constraint firstItem="v6h-oM-TDe" firstAttribute="top" secondItem="otw-tJ-yfS" secondAttribute="top" constant="12" id="QXS-b6-KY7"/>
                             <constraint firstItem="DWH-iB-eMW" firstAttribute="bottom" secondItem="otw-tJ-yfS" secondAttribute="bottom" id="apQ-Be-puL"/>
@@ -269,8 +291,19 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rj6-jg-jxa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Pyf-gN-faS">
+                    <rect key="frame" x="0.0" y="0.0" width="30" height="33"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <state key="normal" title="이전">
+                        <color key="titleColor" red="0.60784313729999995" green="0.37254901959999998" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="prev:" destination="DZF-5K-nR1" eventType="touchUpInside" id="iXA-WQ-3TJ"/>
+                    </connections>
+                </button>
             </objects>
-            <point key="canvasLocation" x="-3665" y="-881"/>
+            <point key="canvasLocation" x="-2670" y="-608"/>
         </scene>
         <!--Bubble Tab Bar Controller-->
         <scene sceneID="RsO-uD-laI">
