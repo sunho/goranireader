@@ -20,7 +20,7 @@ class BookMainViewController: UIViewController {
     
     
     var dictVC: DictViewController!
-    var downloadProgresses: Dictionary<ContentKey, Float> = [:]
+    var downloadProgresses: Dictionary<String, Float> = [:]
     var contents: [Content] = []
     var first: Bool = true
     
@@ -43,37 +43,35 @@ class BookMainViewController: UIViewController {
     }
  
     func reload() {
-//        ContentService.shared.getContents().start { event in
-//            DispatchQueue.main.async{
-//                switch event {
-//                case .value(let contents):
-//                    if !self.first {
-//                        var new = 0
-//                        for i in contents {
-//                            var isNew = true
-//                            for j in self.contents {
-//                                if i.key == j.key {
-//                                    isNew = false
-//                                    break
-//                                }
-//                            }
-//                            if isNew {
-//                                new += 1
-//                            }
-//                        }
-//                        if new != 0 {
-//                            self.navigationController?.tabBarItem.badgeValue = "\(new)"
-//                        }
-//                    } else {
-//                        self.first = false
-//                    }
-//                    self.contents = contents
-//                    self.tableView.reloadData()
-//                default:
-//                    print(event)
-//                }
-//            }
-//        }
+        ContentService.shared.getContents().then { contents in
+            print(contents)
+            DispatchQueue.main.async{
+                if !self.first {
+                    var new = 0
+                    for i in contents {
+                        var isNew = true
+                        for j in self.contents {
+                            if i.id == j.id {
+                                isNew = false
+                                break
+                            }
+                        }
+                        if isNew {
+                            new += 1
+                        }
+                    }
+                    if new != 0 {
+                        self.navigationController?.tabBarItem.badgeValue = "\(new)"
+                    }
+                } else {
+                    self.first = false
+                }
+                self.contents = contents
+                self.tableView.reloadData()
+            }
+        }.catch { error in
+            fatalError(error.localizedDescription)
+        }
     }
     
     @objc func applicationWillEnterForeground(_ notification: NSNotification) {
@@ -93,28 +91,20 @@ class BookMainViewController: UIViewController {
     }
     
     func downloadContent(_ content: DownloadableContent) {
-        if downloadProgresses[content.key] == nil {
-//            ContentService.shared.downloadContent(content)
-//                .start { event -> Void in
-//                    DispatchQueue.main.async{
-//                        switch event {
-//                        case .completed:
-//                            self.downloadProgresses.removeValue(forKey: content.key)
-//                            self.reload()
-//                        case .value(let progress):
-//                            self.updateDownloadProgress(content.key, progress)
-//                        default:
-//                            self.downloadProgresses.removeValue(forKey: content.key)
-//                            print(event)
-//                        }
-//                    }
-//            }
+        if downloadProgresses[content.id] == nil {
+            downloadProgresses[content.id] = 0
+            ContentService.shared.downloadContent(content).then { _ in
+                self.reload()
+                self.downloadProgresses.removeValue(forKey: content.id)
+            }.catch { _ in
+                self.downloadProgresses.removeValue(forKey: content.id)
+            }
         }
     }
     
-    func updateDownloadProgress(_ key: ContentKey, _ progress: Float) {
+    func updateDownloadProgress(_ key: String, _ progress: Float) {
         downloadProgresses[key] = progress
-        guard let row = contents.index(where: { c in c.key == key }) else {
+        guard let row = contents.index(where: { c in c.id == key }) else {
             return
         }
         guard let cell = tableView.cellForRow(at: IndexPath(row: row, section: 0)) as? BookMainTableViewCell else {
@@ -138,7 +128,7 @@ extension BookMainViewController: UITableViewDelegate, UITableViewDataSource, UI
         cell.clipsToBounds = false
         cell.name = item.name
         cell.author = item.author
-        cell.types[0] = item.type
+        cell.types = [.epub]
         cell.setCover(with: item.cover)
         
         switch item {
@@ -167,8 +157,14 @@ extension BookMainViewController: UITableViewDelegate, UITableViewDataSource, UI
         }
         
         if let item = item as? DownloadedContent {
-//            openContent(item)
+            openContent(item)
         }
+    }
+    
+    func openContent(_ content: DownloadedContent) {
+        let vc = storyboard!.instantiateViewController(withIdentifier: "BookReaderViewController") as! BookReaderViewController
+        vc.book = try! BookyBook.fromPath(path: content.path)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

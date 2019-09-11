@@ -19,6 +19,11 @@ class LoginViewController: UIViewController  {
     }
     
     func checkAuth() {
-        
+        FirebaseService.shared.checkAuth().then { authed in
+            if authed {
+                let vc = self.storyboard!.createTabViewController()
+                self.present(vc, animated: true, completion: nil)
+            }
+        }
     }
 }

@@ -58,9 +58,10 @@ class BookListTableViewCell: UITableViewCell {
         container.addSubview(coverView)
         coverView.snp.makeConstraints { (make) -> Void in
             make.left.equalToSuperview()
-            make.height.equalTo(coverView.snp.width).multipliedBy(1.5)
+            make.height.equalTo(bounds.width * 0.2 * 1.5)
             make.width.equalTo(bounds.width * 0.2)
-            make.bottom.top.equalToSuperview()
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview().priority(999)
         }
         
         nameView = MultilineLabel()

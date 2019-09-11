@@ -9,3 +9,4 @@ github "alexaubry/BulletinBoard"
 github "hackiftekhar/IQKeyboardManager" == 6.0.4
 github "Cuberto/bubble-icon-tabbar"
 github "alickbass/CodableFirebase"
+github "google/promises"

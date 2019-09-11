@@ -26,6 +26,9 @@ window.webapp = new Webapp();
 if (process.env.NODE_ENV === "development") {
   window.webapp.setDev();
 }
+if (navigator.userAgent == "ios") {
+  window.webapp.setIOS();
+}
 
 ReactDOM.render(
   <div>

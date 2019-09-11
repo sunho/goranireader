@@ -2,8 +2,7 @@
 // Copyright © 2019 Sunho Kim. All rights reserved.
 //
 
-import UIKit
-import Result
+import UIKit    
 
 struct GuideCardProvider {
     var name: String

@@ -4,9 +4,11 @@
 
 import Foundation
 import UIKit
-import Result
 import RealmSwift
 import Kingfisher
+import FirebaseFirestore
+import CodableFirebase
+import Promises
 import Regex
 
 // TODO split into several files
@@ -298,5 +300,58 @@ extension TimeInterval{
         
         return String(format: "%0.2d시간 %0.2d분",hours,minutes)
         
+    }
+}
+
+extension DocumentReference: DocumentReferenceType {}
+extension GeoPoint: GeoPointType {}
+extension FieldValue: FieldValueType {}
+extension Timestamp: TimestampType {}
+
+extension DocumentReference {
+    func setDataPromise(_ documentData: [String: Any]) -> Promise<Void> {
+        return Promise<Void> { fulfill, reject in
+            self.setData(documentData) { error in
+                if error != nil {
+                    reject(error!)
+                    return
+                }
+                fulfill(Void())
+            }
+        }
+    }
+    
+    func getDocumentPromise() -> Promise<DocumentSnapshot> {
+        return Promise<DocumentSnapshot> { fulfill, reject in
+            self.getDocument { res, error in
+                if error != nil {
+                    reject(error!)
+                    return
+                }
+                if res == nil {
+                    reject(GoraniError.nilResult)
+                    return
+                }
+                fulfill(res!)
+            }
+        }
+    }
+}
+
+extension Query {
+    func getDocumentsPromise() -> Promise<QuerySnapshot> {
+        return Promise<QuerySnapshot> { fulfill, reject in
+            self.getDocuments { res, error in
+                if error != nil {
+                    reject(error!)
+                    return
+                }
+                if res == nil {
+                    reject(GoraniError.nilResult)
+                    return
+                }
+                fulfill(res!)
+            }
+        }
     }
 }
