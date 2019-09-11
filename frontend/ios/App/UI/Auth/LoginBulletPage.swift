@@ -32,14 +32,13 @@ class LoginBulletPage: FeedbackBulletPage {
         word2Input = LineInputField(frame: CGRect(), delegate: delegate)
         word2Input.textField.returnKeyType = .next
         word2Input.placeholder = "Second Word"
-        word2Input.textField.isSecureTextEntry = true
         numberInput = LineInputField(frame: CGRect(), delegate: delegate)
         numberInput.placeholder = "Number"
         numberInput.textField.keyboardType = .numberPad
     }
     
     override func makeViewsUnderDescription(with interfaceBuilder: BLTNInterfaceBuilder) -> [UIView]? {
-        container = InputFormView(views: [word1Input, numberInput, word2Input])
+        container = InputFormView(views: [word1Input, word2Input, numberInput])
         return [container]
     }
     
