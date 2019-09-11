@@ -59,11 +59,11 @@ class LoginBulletPageManager: NSObject, UITextFieldDelegate {
             textField.resignFirstResponder()
             page.word2Input.becomeFirstResponder()
             return true
-        } else if textField == page.numberInput.textField {
-            textField.resignFirstResponder()
-            page.word2Input.becomeFirstResponder()
-            return true
         } else if textField == page.word2Input.textField {
+            textField.resignFirstResponder()
+            page.numberInput.becomeFirstResponder()
+            return true
+        } else if textField == page.numberInput.textField {
             textField.resignFirstResponder()
             return true
         } else {

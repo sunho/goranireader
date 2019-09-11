@@ -47,6 +47,8 @@
 		B1B1101723279C9E00FD252E /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B1101623279C9E00FD252E /* FirebaseService.swift */; };
 		B1B110192327AE9900FD252E /* LoginBulletPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B110182327AE9900FD252E /* LoginBulletPage.swift */; };
 		B1B1101B2327B0CE00FD252E /* LoginBulletPageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B1101A2327B0CE00FD252E /* LoginBulletPageManager.swift */; };
+		B1D5412E2328F19A00F6FBAD /* DictionaryDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5412D2328F19A00F6FBAD /* DictionaryDecoder.swift */; };
+		B1D541302328F1A700F6FBAD /* DictionaryEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5412F2328F1A700F6FBAD /* DictionaryEncoder.swift */; };
 		C70F55BD224FCD4D006DBB0E /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55BC224FCD4D006DBB0E /* TabBarViewController.swift */; };
 		C70F55C5224FE508006DBB0E /* BubbleTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55C2224FE508006DBB0E /* BubbleTabBar.swift */; };
 		C70F55C6224FE508006DBB0E /* CBTabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55C3224FE508006DBB0E /* CBTabBarButton.swift */; };
@@ -190,6 +192,8 @@
 		B1B1101623279C9E00FD252E /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		B1B110182327AE9900FD252E /* LoginBulletPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBulletPage.swift; sourceTree = "<group>"; };
 		B1B1101A2327B0CE00FD252E /* LoginBulletPageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBulletPageManager.swift; sourceTree = "<group>"; };
+		B1D5412D2328F19A00F6FBAD /* DictionaryDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryDecoder.swift; sourceTree = "<group>"; };
+		B1D5412F2328F1A700F6FBAD /* DictionaryEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryEncoder.swift; sourceTree = "<group>"; };
 		C70AD3032268F2CF00BAD495 /* OAuthSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuthSwift.framework; path = Carthage/Build/iOS/OAuthSwift.framework; sourceTree = "<group>"; };
 		C70F55BC224FCD4D006DBB0E /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		C70F55C2224FE508006DBB0E /* BubbleTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleTabBar.swift; sourceTree = "<group>"; };
@@ -400,6 +404,8 @@
 				B143AF9420A4704F003341A3 /* Helper.swift */,
 				B143AF9520A4704F003341A3 /* IPA.swift */,
 				C7C1177722450C310084C799 /* SentenceUtil.swift */,
+				B1D5412D2328F19A00F6FBAD /* DictionaryDecoder.swift */,
+				B1D5412F2328F1A700F6FBAD /* DictionaryEncoder.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -795,6 +801,7 @@
 				C7742BB122437B4900925081 /* WordCardViewController.swift in Sources */,
 				C70F55BD224FCD4D006DBB0E /* TabBarViewController.swift in Sources */,
 				C7742BB52243953D00925081 /* WordCardTableViewCell.swift in Sources */,
+				B1D541302328F1A700F6FBAD /* DictionaryEncoder.swift in Sources */,
 				C7AD908A2296D5DF00B25509 /* HeartButton.swift in Sources */,
 				C7C117742244D8930084C799 /* InputFormView.swift in Sources */,
 				C7403AEB209176D800099119 /* WordMainViewController.swift in Sources */,
@@ -826,6 +833,7 @@
 				B1B1101B2327B0CE00FD252E /* LoginBulletPageManager.swift in Sources */,
 				C74CEFE0208C899F002765D6 /* app.xcdatamodeld in Sources */,
 				C7CF0053224CF56300524D80 /* EventLog.swift in Sources */,
+				B1D5412E2328F19A00F6FBAD /* DictionaryDecoder.swift in Sources */,
 				C7FA5428223476BD006F94C7 /* DictViewController.swift in Sources */,
 				C7C1177A224526AA0084C799 /* PaddingMarginView.swift in Sources */,
 				C7C117822245450E0084C799 /* WordCardBackView.swift in Sources */,

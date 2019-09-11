@@ -16,6 +16,8 @@ class FirebaseService {
     init() {
     }
     
+    
+    
     fileprivate func authorize() -> FirebaseAuth.User {
         return Auth.auth().currentUser!
     }
