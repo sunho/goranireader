@@ -8,4 +8,7 @@ enum GoraniError: Error {
     case ns(error: NSError)
     case offline
     case system
+    case notFound
+    case nilResult
+    case internalError
 }

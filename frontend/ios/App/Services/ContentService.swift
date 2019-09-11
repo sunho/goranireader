@@ -3,15 +3,14 @@
 //
 
 import Foundation
-import Result
 import Kingfisher
 import Regex
 import UIKit
+import Promises
 
 // TODO move this to book controller
 
-fileprivate let epubPattern = try! Regex(pattern:"([0-9]+)-([0-9]+)\\-epub", groupNames: "id", "timestamp")
-fileprivate let sensPattern = try! Regex(pattern:"([0-9]+)-([0-9]+)\\.sens", groupNames: "id", "timestamp")
+fileprivate let epubPattern = try! Regex(pattern:"([^-]+)\\-([0-9]+)\\-book", groupNames: "id", "timestamp")
 
 class ContentService {
     static let shared = ContentService()
@@ -19,67 +18,89 @@ class ContentService {
     init() {
     }
     
-    func downloadContent(_ content: DownloadableContent) {
+    func downloadContent(_ content: DownloadableContent) -> Promise<Void> {
         let file: String = {
-            if content.type == .epub {
-                return "\(content.id)-\(Int(Date().timeIntervalSince1970))-epub.epub"
-            } else {
-                return "\(content.id)-\(Int(Date().timeIntervalSince1970)).sens"
-            }
+            return "\(content.id)-\(Int(Date().timeIntervalSince1970))-book.book"
         }()
         
-        let url = FileUtil.downloadDir.appendingPathComponent(file)
+        let dest = FileUtil.downloadDir.appendingPathComponent(file)
+        let src = URL(string: content.downloadUrl)!
+        return Promise { fulfill, reject in
+            URLSession.shared.downloadTask(with: src, completionHandler: { (location, response, error) in
+                guard
+                    let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                    let location = location, error == nil
+                    else {
+                        reject(GoraniError.internalError)
+                        return
+                }
+                do {
+                    try FileManager.default.moveItem(at: location, to: dest)
+                    fulfill(Void())
+                } catch {
+                    reject(error)
+                }
+            }).resume()
+        }
     }
     
-    func getContents() -> [Content] {
-        return []
+    func getContents() -> Promise<[Content]> {
+        return getDownloadableContents().then { out in
+            return Promise(out + self.getDownloadedContents())
+        }
     }
     
     func getDownloadedContents() -> [Content] {
         let localContents = self.getLocalContents()
         var out: [Content] = []
-        for (key, path) in localContents {
-            let progress = RealmService.shared.getEpubProgress(key.id)
-//            out.append(DownloadedContent(id: key.id, updatedAt: progress.updatedAt, path: path, progress: progress.progress))
+        for (id, path) in localContents {
+            let progress = RealmService.shared.getBookProgress(id)
+            let book = try! BookyBook.fromPath(path: path)
+            out.append(DownloadedContent(book: book, path: path, progress: progress.progress))
         }
         return out
     }
     
-    fileprivate func getLocalContents() -> Dictionary<ContentKey, String> {
-        guard let paths = FileUtil.contentsOfDirectory(path: FileUtil.booksDir.path) else {
+    fileprivate func getLocalContents() -> Dictionary<String, String> {
+        guard let paths = FileUtil.contentsOfDirectory(path: FileUtil.downloadDir.path) else {
             assert(true)
             return [:]
         }
 
-        var visit: Dictionary<ContentKey, Int> = [:]
-        var out: Dictionary<ContentKey, String> = [:]
+        var visit: Dictionary<String, Int> = [:]
+        var out: Dictionary<String, String> = [:]
         for path in paths {
             let filename = (path as NSString).lastPathComponent
+            print(filename)
             let epubMatch = epubPattern.findFirst(in: filename)
-            let sensMatch = sensPattern.findFirst(in: filename)
-            if let match = epubMatch ?? sensMatch {
-                guard let id = Int(match.group(named: "id") ?? "die") else {
+            if let match = epubMatch {
+                guard let id = match.group(named: "id") else {
                     continue
                 }
                 guard let timestamp = Int(match.group(named: "timestamp") ?? "die") else {
                     continue
                 }
-                let type: ContentType = .epub
-                let key = ContentKey(id: id, type: type)
-                if let current = visit[key] {
+                print(id)
+                print(path)
+                if let current = visit[id] {
                     if timestamp < current {
                         continue
                     }
                 }
-                out[key] = path
-                visit[key] = timestamp
+                out[id] = path
+                visit[id] = timestamp
             }
         }
         return out
     }
     
-    func getDownloadableContents() -> [Content] {
+    func getDownloadableContents() -> Promise<[Content]> {
         let localContents = getLocalContents()
-        return []
+        return FirebaseService.shared.getOwnedBooks().then { books in
+            return Promise(books.map { DownloadableContent(book: $0) })
+            }.then { books in
+                print("books:", books)
+                return Promise(books.filter { !localContents.keys.contains($0.id) })
+            }
     }
 }

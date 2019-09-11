@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { SelectedWord, DictSearchResult, DictWord } from "../../model";
 import styled, { css } from "styled-components";
 import { useOutsideClickObserver } from "../../utills/hooks";
+import { instanceOf } from "prop-types";
 
 const DictContainer = styled.div<{ up: boolean; hide: boolean }>`
   position: fixed;
@@ -86,8 +87,16 @@ const Dict: React.FC<Props> = props => {
   const { word, wordIndex, up, sentenceId } = props.selectedWord;
 
   useEffect(() => {
-    const out: DictSearchResult = JSON.parse(window.app.dictSearch(word));
-    setRes(out);
+    const res = window.app.dictSearch(word);
+    if (typeof res === 'string') {
+      const out: DictSearchResult = JSON.parse(res);
+      setRes(out);
+    } else {
+      res.then((str) => {
+        const out: DictSearchResult = JSON.parse(str);
+        setRes(out);
+      })
+    }
   }, [props]);
 
   useOutsideClickObserver(dictRef, () => {

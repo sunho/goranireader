@@ -49,6 +49,15 @@
 		B1B1101B2327B0CE00FD252E /* LoginBulletPageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B1101A2327B0CE00FD252E /* LoginBulletPageManager.swift */; };
 		B1D5412E2328F19A00F6FBAD /* DictionaryDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5412D2328F19A00F6FBAD /* DictionaryDecoder.swift */; };
 		B1D541302328F1A700F6FBAD /* DictionaryEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5412F2328F1A700F6FBAD /* DictionaryEncoder.swift */; };
+		B1D541322328FE9700F6FBAD /* CodableFirebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1D541312328FE9700F6FBAD /* CodableFirebase.framework */; };
+		B1D541342329047900F6FBAD /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D541332329047900F6FBAD /* UserData.swift */; };
+		B1D541362329138E00F6FBAD /* Promises.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1D541352329138E00F6FBAD /* Promises.framework */; };
+		B1D541382329201400F6FBAD /* FBLPromises.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1D541372329201400F6FBAD /* FBLPromises.framework */; };
+		B1D5413A2329214900F6FBAD /* BookyBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D541392329214900F6FBAD /* BookyBook.swift */; };
+		B1D5413E232943D100F6FBAD /* BookReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5413D232943D100F6FBAD /* BookReaderViewController.swift */; };
+		B1D54140232945AC00F6FBAD /* reader in Resources */ = {isa = PBXBuildFile; fileRef = B1D5413F232945AC00F6FBAD /* reader */; };
+		B1D541422329482700F6FBAD /* ReaderBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D541412329482700F6FBAD /* ReaderBridge.swift */; };
+		B1D54144232963D200F6FBAD /* Reader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D54143232963D200F6FBAD /* Reader.swift */; };
 		C70F55BD224FCD4D006DBB0E /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55BC224FCD4D006DBB0E /* TabBarViewController.swift */; };
 		C70F55C5224FE508006DBB0E /* BubbleTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55C2224FE508006DBB0E /* BubbleTabBar.swift */; };
 		C70F55C6224FE508006DBB0E /* CBTabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55C3224FE508006DBB0E /* CBTabBarButton.swift */; };
@@ -113,10 +122,8 @@
 		C7E243502247559C000892D0 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7E2434F2247559C000892D0 /* SQLite.framework */; };
 		C7E243522247559D000892D0 /* SwiftEntryKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7E243512247559D000892D0 /* SwiftEntryKit.framework */; };
 		C7E243A422477EEF000892D0 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7E243A322477EEF000892D0 /* Realm.framework */; };
-		C7F1DA38224921E900E1AF84 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA37224921E900E1AF84 /* Alamofire.framework */; };
 		C7F1DA3A224921F000E1AF84 /* BLTNBoard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA39224921F000E1AF84 /* BLTNBoard.framework */; };
 		C7F1DA482249222900E1AF84 /* Regex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA472249222900E1AF84 /* Regex.framework */; };
-		C7F1DA4A2249222E00E1AF84 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA492249222E00E1AF84 /* Result.framework */; };
 		C7F1DA4C2249223500E1AF84 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA4B2249223500E1AF84 /* SnapKit.framework */; };
 		C7F1DA4F22492A4600E1AF84 /* IQKeyboardManagerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F1DA4D22492A4600E1AF84 /* IQKeyboardManagerSwift.framework */; };
 		C7FA5428223476BD006F94C7 /* DictViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FA5427223476BD006F94C7 /* DictViewController.swift */; };
@@ -194,7 +201,15 @@
 		B1B1101A2327B0CE00FD252E /* LoginBulletPageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBulletPageManager.swift; sourceTree = "<group>"; };
 		B1D5412D2328F19A00F6FBAD /* DictionaryDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryDecoder.swift; sourceTree = "<group>"; };
 		B1D5412F2328F1A700F6FBAD /* DictionaryEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryEncoder.swift; sourceTree = "<group>"; };
-		C70AD3032268F2CF00BAD495 /* OAuthSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuthSwift.framework; path = Carthage/Build/iOS/OAuthSwift.framework; sourceTree = "<group>"; };
+		B1D541312328FE9700F6FBAD /* CodableFirebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CodableFirebase.framework; path = Carthage/Build/iOS/CodableFirebase.framework; sourceTree = "<group>"; };
+		B1D541332329047900F6FBAD /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		B1D541352329138E00F6FBAD /* Promises.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Promises.framework; path = Carthage/Build/iOS/Promises.framework; sourceTree = "<group>"; };
+		B1D541372329201400F6FBAD /* FBLPromises.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBLPromises.framework; path = Carthage/Build/iOS/FBLPromises.framework; sourceTree = "<group>"; };
+		B1D541392329214900F6FBAD /* BookyBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookyBook.swift; sourceTree = "<group>"; };
+		B1D5413D232943D100F6FBAD /* BookReaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookReaderViewController.swift; sourceTree = "<group>"; };
+		B1D5413F232945AC00F6FBAD /* reader */ = {isa = PBXFileReference; lastKnownFileType = folder; path = reader; sourceTree = "<group>"; };
+		B1D541412329482700F6FBAD /* ReaderBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderBridge.swift; sourceTree = "<group>"; };
+		B1D54143232963D200F6FBAD /* Reader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reader.swift; sourceTree = "<group>"; };
 		C70F55BC224FCD4D006DBB0E /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		C70F55C2224FE508006DBB0E /* BubbleTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleTabBar.swift; sourceTree = "<group>"; };
 		C70F55C3224FE508006DBB0E /* CBTabBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CBTabBarButton.swift; sourceTree = "<group>"; };
@@ -262,12 +277,9 @@
 		C7E2434F2247559C000892D0 /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = Carthage/Build/iOS/SQLite.framework; sourceTree = "<group>"; };
 		C7E243512247559D000892D0 /* SwiftEntryKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftEntryKit.framework; path = Carthage/Build/iOS/SwiftEntryKit.framework; sourceTree = "<group>"; };
 		C7E243A322477EEF000892D0 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
-		C7E243AB2247880E000892D0 /* Cosmos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cosmos.framework; path = Carthage/Build/iOS/Cosmos.framework; sourceTree = "<group>"; };
-		C7F1DA37224921E900E1AF84 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		C7F1DA39224921F000E1AF84 /* BLTNBoard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BLTNBoard.framework; path = Carthage/Build/iOS/BLTNBoard.framework; sourceTree = "<group>"; };
 		C7F1DA3D224921FF00E1AF84 /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
 		C7F1DA472249222900E1AF84 /* Regex.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Regex.framework; path = Carthage/Build/iOS/Regex.framework; sourceTree = "<group>"; };
-		C7F1DA492249222E00E1AF84 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		C7F1DA4B2249223500E1AF84 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
 		C7F1DA4D22492A4600E1AF84 /* IQKeyboardManagerSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IQKeyboardManagerSwift.framework; path = Carthage/Build/iOS/IQKeyboardManagerSwift.framework; sourceTree = "<group>"; };
 		C7F1DA4E22492A4600E1AF84 /* IQKeyboardManager.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IQKeyboardManager.framework; path = Carthage/Build/iOS/IQKeyboardManager.framework; sourceTree = "<group>"; };
@@ -293,6 +305,7 @@
 				B1B10FED232788E100FD252E /* FirebaseCoreDiagnostics.framework in Frameworks */,
 				C71C5377226A0A9D009197F6 /* SystemConfiguration.framework in Frameworks */,
 				B1B10FFA232788F200FD252E /* gRPC-Core.framework in Frameworks */,
+				B1D541322328FE9700F6FBAD /* CodableFirebase.framework in Frameworks */,
 				B1B11002232788F700FD252E /* FirebaseAuth.framework in Frameworks */,
 				B1B10FEE232788E100FD252E /* FIRAnalyticsConnector.framework in Frameworks */,
 				B1B110112327942100FD252E /* Crashlytics.framework in Frameworks */,
@@ -302,16 +315,16 @@
 				B1B10FEC232788E100FD252E /* nanopb.framework in Frameworks */,
 				C7E243A422477EEF000892D0 /* Realm.framework in Frameworks */,
 				C7E2434E22475593000892D0 /* Reachability.framework in Frameworks */,
+				B1D541362329138E00F6FBAD /* Promises.framework in Frameworks */,
 				C7E243522247559D000892D0 /* SwiftEntryKit.framework in Frameworks */,
 				C7F1DA4C2249223500E1AF84 /* SnapKit.framework in Frameworks */,
 				B1B10FEF232788E100FD252E /* FirebaseCore.framework in Frameworks */,
-				C7F1DA38224921E900E1AF84 /* Alamofire.framework in Frameworks */,
 				B1B10FFB232788F200FD252E /* FirebaseFirestore.framework in Frameworks */,
 				B1B10FF0232788E100FD252E /* GoogleDataTransport.framework in Frameworks */,
 				C7F1DA482249222900E1AF84 /* Regex.framework in Frameworks */,
 				B1B10FF1232788E100FD252E /* FirebaseAnalytics.framework in Frameworks */,
-				C7F1DA4A2249222E00E1AF84 /* Result.framework in Frameworks */,
 				B1B10FF3232788E100FD252E /* GoogleAppMeasurement.framework in Frameworks */,
+				B1D541382329201400F6FBAD /* FBLPromises.framework in Frameworks */,
 				B1B10FFF232788F200FD252E /* gRPC-C++.framework in Frameworks */,
 				C7E243502247559C000892D0 /* SQLite.framework in Frameworks */,
 				C7E2434C22475591000892D0 /* QuickLayout.framework in Frameworks */,
@@ -331,10 +344,13 @@
 		702F24C22323D91C0487792D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B1D541372329201400F6FBAD /* FBLPromises.framework */,
+				B1D541352329138E00F6FBAD /* Promises.framework */,
 				B1B1100F2327942000FD252E /* Crashlytics.framework */,
 				B1B110102327942100FD252E /* Fabric.framework */,
 				B1B1100923278C4000FD252E /* StoreKit.framework */,
 				B1B1100723278BEC00FD252E /* libc++.tbd */,
+				B1D541312328FE9700F6FBAD /* CodableFirebase.framework */,
 				B1B11000232788F700FD252E /* FirebaseAuth.framework */,
 				B1B11001232788F700FD252E /* GTMSessionFetcher.framework */,
 				B1B10FF8232788F200FD252E /* BoringSSL-GRPC.framework */,
@@ -357,16 +373,12 @@
 				C71C5376226A0A9C009197F6 /* SystemConfiguration.framework */,
 				C71C5374226A0A93009197F6 /* SafariServices.framework */,
 				C71C5372226A0A89009197F6 /* LocalAuthentication.framework */,
-				C70AD3032268F2CF00BAD495 /* OAuthSwift.framework */,
 				C7F1DA4E22492A4600E1AF84 /* IQKeyboardManager.framework */,
 				C7F1DA4D22492A4600E1AF84 /* IQKeyboardManagerSwift.framework */,
 				C7F1DA4B2249223500E1AF84 /* SnapKit.framework */,
-				C7F1DA492249222E00E1AF84 /* Result.framework */,
 				C7F1DA472249222900E1AF84 /* Regex.framework */,
 				C7F1DA3D224921FF00E1AF84 /* Kingfisher.framework */,
 				C7F1DA39224921F000E1AF84 /* BLTNBoard.framework */,
-				C7F1DA37224921E900E1AF84 /* Alamofire.framework */,
-				C7E243AB2247880E000892D0 /* Cosmos.framework */,
 				C7E243A322477EEF000892D0 /* Realm.framework */,
 				C7E243512247559D000892D0 /* SwiftEntryKit.framework */,
 				C7E2434F2247559C000892D0 /* SQLite.framework */,
@@ -380,6 +392,7 @@
 			isa = PBXGroup;
 			children = (
 				C7FC18BC223A457F007172ED /* Dict */,
+				B1D54143232963D200F6FBAD /* Reader.swift */,
 				B143AF9720A4704F003341A3 /* Verb.swift */,
 				C7FC188E2239D748007172ED /* Book.swift */,
 				C7FC18A62239F1F7007172ED /* Memory.swift */,
@@ -392,6 +405,8 @@
 				C7CF0052224CF56200524D80 /* EventLog.swift */,
 				C72415EE22956C52003E932E /* User.swift */,
 				C71B19B3229A698D00858540 /* Mission.swift */,
+				B1D541332329047900F6FBAD /* UserData.swift */,
+				B1D541392329214900F6FBAD /* BookyBook.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -519,6 +534,7 @@
 		C78217BB209BC1CF00C19E2F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B1D5413F232945AC00F6FBAD /* reader */,
 				B1B110042327895500FD252E /* gRPCCertificates-Cpp.bundle */,
 				C7420F1F22805CDD0077CC0B /* dict.db */,
 			);
@@ -582,6 +598,8 @@
 		C7C1E2FF2098016D00C909D7 /* Book */ = {
 			isa = PBXGroup;
 			children = (
+				B1D541412329482700F6FBAD /* ReaderBridge.swift */,
+				B1D5413D232943D100F6FBAD /* BookReaderViewController.swift */,
 				C757D2C12247A1D80050E0A2 /* BookMainTableViewCell.swift */,
 				C7C63E91209905900093CC02 /* BookMainViewController.swift */,
 				C7BF8C58224545A80037FD68 /* Dict */,
@@ -680,6 +698,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1D54140232945AC00F6FBAD /* reader in Resources */,
 				C7420F2022805E130077CC0B /* dict.db in Resources */,
 				B124047520A8CD90005EAE4F /* Cartfile in Resources */,
 				C74CEFE5208C89A1002765D6 /* LaunchScreen.storyboard in Resources */,
@@ -726,15 +745,15 @@
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftEntryKit.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SQLite.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Realm.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Cosmos.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/IQKeyboardManagerSwift.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Kingfisher.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Regex.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SnapKit.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/BLTNBoard.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/RealmSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/CodableFirebase.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Promises.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/FBLPromises.framework",
 			);
 			outputFileListPaths = (
 			);
@@ -744,15 +763,15 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftEntryKit.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SQLite.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Realm.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Cosmos.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/IQKeyboardManagerSwift.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Kingfisher.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Regex.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Result.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SnapKit.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Alamofire.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/BLTNBoard.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RealmSwift.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/CodableFirebase.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Promises.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/FBLPromises.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -768,6 +787,7 @@
 				C7C1177822450C310084C799 /* SentenceUtil.swift in Sources */,
 				C7C11765224494CB0084C799 /* RoundButton.swift in Sources */,
 				C77043B5223E219E00B91831 /* Content.swift in Sources */,
+				B1D541342329047900F6FBAD /* UserData.swift in Sources */,
 				C77043AF223E0E4A00B91831 /* CircleBarView.swift in Sources */,
 				C7D5F509224CC98F00E7A40A /* RoundOptionCell.swift in Sources */,
 				B143B05B20A47617003341A3 /* UIUtil.swift in Sources */,
@@ -800,9 +820,11 @@
 				C7FC18BB223A3C45007172ED /* GoraniError.swift in Sources */,
 				C7742BB122437B4900925081 /* WordCardViewController.swift in Sources */,
 				C70F55BD224FCD4D006DBB0E /* TabBarViewController.swift in Sources */,
+				B1D54144232963D200F6FBAD /* Reader.swift in Sources */,
 				C7742BB52243953D00925081 /* WordCardTableViewCell.swift in Sources */,
 				B1D541302328F1A700F6FBAD /* DictionaryEncoder.swift in Sources */,
 				C7AD908A2296D5DF00B25509 /* HeartButton.swift in Sources */,
+				B1D541422329482700F6FBAD /* ReaderBridge.swift in Sources */,
 				C7C117742244D8930084C799 /* InputFormView.swift in Sources */,
 				C7403AEB209176D800099119 /* WordMainViewController.swift in Sources */,
 				B143B05720A47617003341A3 /* Helper.swift in Sources */,
@@ -817,6 +839,7 @@
 				B143B05320A47613003341A3 /* DictEntry.swift in Sources */,
 				C757D2D32247D7690050E0A2 /* Notification.swift in Sources */,
 				C7C11763224489F90084C799 /* LineTextField.swift in Sources */,
+				B1D5413A2329214900F6FBAD /* BookyBook.swift in Sources */,
 				C70F55CD225008D0006DBB0E /* GuideProgressView.swift in Sources */,
 				C70F55CF2250094A006DBB0E /* GuideWordCardView.swift in Sources */,
 				C7BF8C5E2245D8BC0037FD68 /* MultilineLabel.swift in Sources */,
@@ -825,6 +848,7 @@
 				B143B05620A47617003341A3 /* FileUtil.swift in Sources */,
 				C7742BB72243967A00925081 /* WordCardExampleTableViewCell.swift in Sources */,
 				C77043B3223E214700B91831 /* ContentService.swift in Sources */,
+				B1D5413E232943D100F6FBAD /* BookReaderViewController.swift in Sources */,
 				C7FC18A72239F1F7007172ED /* Memory.swift in Sources */,
 				C7BF8C5B224546D60037FD68 /* UIConsts.swift in Sources */,
 				C759AD7F221EEA9400166B2A /* GuideMainViewController.swift in Sources */,

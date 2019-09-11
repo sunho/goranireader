@@ -181,11 +181,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "App/UI/Guide/GuideMainViewController.swift"
-            timestampString = "586235440.292334"
+            timestampString = "589912453.7846659"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "20"
-            endingLineNumber = "20"
+            startingLineNumber = "19"
+            endingLineNumber = "19"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -197,11 +197,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "App/Services/FirebaseService.swift"
-            timestampString = "589883188.4876291"
+            timestampString = "589912453.784752"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "34"
-            endingLineNumber = "34"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
             landmarkName = "login(word:word2:number:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -213,11 +213,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "App/Services/FirebaseService.swift"
-            timestampString = "589883188.4941109"
+            timestampString = "589912453.784833"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "40"
-            endingLineNumber = "40"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
             landmarkName = "login(word:word2:number:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -229,11 +229,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "App/Services/FirebaseService.swift"
-            timestampString = "589883188.494545"
+            timestampString = "589912453.784905"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
+            startingLineNumber = "112"
+            endingLineNumber = "112"
             landmarkName = "login(word:word2:number:completion:)"
             landmarkType = "7">
          </BreakpointContent>

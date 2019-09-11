@@ -71,11 +71,11 @@ class RealmService {
         return realm.objects(UnknownWord.self).filter("nextReview <= %@", Date())
     }
     
-    func getEpubProgress(_ bookId: Int) -> EpubProgress {
-        if let res = realm.object(ofType: EpubProgress.self, forPrimaryKey: bookId) {
+    func getBookProgress(_ bookId: String) -> BookProgress {
+        if let res = realm.object(ofType: BookProgress.self, forPrimaryKey: bookId) {
             return res
         }
-        let res = EpubProgress()
+        let res = BookProgress()
         write {
             res.bookId = bookId
             realm.add(res, update: true)

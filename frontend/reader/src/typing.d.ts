@@ -1,9 +1,10 @@
 import { Webapp, App } from "./bridge";
 
 declare global {
-    interface Window { 
+    interface Window {
         app: App
         webapp: Webapp
+        webkit: any
     }
 }
 
