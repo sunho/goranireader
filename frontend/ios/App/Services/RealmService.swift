@@ -98,7 +98,7 @@ class RealmService {
         log.payload = String(data: try! JSONEncoder().encode(payload), encoding: .utf8)!
         print(log.payload)
         log.time = Date()
-        log.kind = payload.kind()
+        log.type = T.type()
         write {
             realm.add(log)
         }

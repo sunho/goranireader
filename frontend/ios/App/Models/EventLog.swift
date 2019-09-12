@@ -12,13 +12,21 @@ class EventLog: Object, Codable {
     @objc dynamic var payload: String = ""
 }
 
-struct ELPaginatePayload: Codable {
+protocol EventLogPayload: Codable {
+    static func type() -> String
+}
+
+struct ELPaginatePayload: EventLogPayload {
     let bookId: String
     let chapterId: String
     let time: Int
     let sids: [String]
     let wordUnknowns: [PaginateWordUnknown]
     let sentenceUnknowns: [PaginateSentenceUnknown]
+    
+    static func type() -> String {
+        return "paginate"
+    }
 }
 
 struct PaginateWordUnknown: Codable {
