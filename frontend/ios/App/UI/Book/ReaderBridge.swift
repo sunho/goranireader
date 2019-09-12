@@ -46,24 +46,36 @@ extension BookReaderViewController: WKScriptMessageHandler {
     }
     
     func initComplete() {
-        print("initComple")
-        start(book.chapters[0].items, nil)
+        inited = true
+        guard let chapter = currentChapter else {
+            return
+        }
+        start(chapter.items, readingSentence)
     }
     
     func setLoading(_ load: Bool) {
-        print("setLoading")
+        if inited {
+            loaded = !load
+            if !load {
+                initForPage()
+            }
+        }
     }
     
     func atStart() {
-        print("atStart")
+        initForPage()
+        isStart = true
     }
     
     func atMiddle() {
-        print("atMiddle")
+        initForPage()
+        isStart = false
+        isEnd = false
     }
     
     func atEnd() {
-        print("atEnd")
+        initForPage()
+        isEnd = true
     }
     
     func paginate(_ sids: [String]) {
@@ -79,7 +91,7 @@ extension BookReaderViewController: WKScriptMessageHandler {
     }
     
     func readingSentenceChange(_ sid: String) {
-        print("readingSentenceChange")
+        readingSentence = sid
     }
     
     func dictSearch(_ word: String) -> String {
