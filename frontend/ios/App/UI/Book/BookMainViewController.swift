@@ -8,15 +8,6 @@ fileprivate let MinActulReadRate = 0.7
 
 class BookMainViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
-
-    // for epub
-    // TODO: separate
-    var currentBookId: Int?
-    var currentSentences: [FlipPageSentence]?
-    var lastPage: Int = 0
-    var lastChapter: Int = 0
-    var lastTextUpdated: Date = Date()
-    var lastUnknown: Date = Date()
     
     
     var dictVC: DictViewController!
