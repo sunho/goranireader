@@ -361,3 +361,9 @@ extension Array {
         return 0 <= index && index < count ? self[index] : nil
     }
 }
+
+extension Dictionary {
+    subscript (safe index: Key) -> Value? {
+        return self.keys.contains(index) ? self[index] : nil
+    }
+}

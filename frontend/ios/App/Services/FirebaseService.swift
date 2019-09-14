@@ -84,6 +84,25 @@ class FirebaseService {
             }
     }
     
+    func getClass() -> Promise<Class> {
+        return getUserDoc().then { udoc -> Promise<DocumentSnapshot> in
+            guard let classId = udoc.data()?[safe: "classId"] as? String else {
+                throw GoraniError.internalError
+            }
+            return self.db()
+                .collection("classes")
+                .document(classId)
+                .getDocumentPromise()
+        }.then { doc -> Class in
+            guard let data = doc.data(),
+                  let out = try? FirestoreDecoder()
+                    .decode(Class.self, from: data) else {
+                throw GoraniError.internalError
+            }
+            return out
+        }
+    }
+    
     fileprivate func db() -> Firestore {
         return Firestore.firestore()
     }

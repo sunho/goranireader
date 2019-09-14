@@ -63,5 +63,13 @@ service cloud.firestore {
         allow read, write: if request.auth.uid == userId;
       }
     }
+
+    match /secretCodes {
+      allow read, write: if isAdmin();
+
+      match /{document=**} {
+        allow read, write: if isAdmin();
+      }
+    }
   }
 }

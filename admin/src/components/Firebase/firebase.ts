@@ -2,6 +2,7 @@ import app from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
 import "firebase/firestore";
+import { makeCode } from "../../secret";
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -80,6 +81,19 @@ class Firebase {
   reports = (id: string) => this.dataResult(id).collection("reports");
   serverComputed = (id: string) => this.dataResult(id).collection("serverComputed");
   clas = (id: string) => this.db.collection("classes").doc(id);
+
+  generateSecretCode = async () => {
+    let code = ""
+    while(true) {
+      code = makeCode();
+      const doc = await this.db.collection("secretCodes").doc(code).get();
+      if (!doc.exists) {
+        break;
+      }
+    }
+    await this.db.collection("secretCodes").doc(code).set({});
+    return code;
+  };
 }
 
 export default Firebase;
