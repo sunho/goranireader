@@ -12,7 +12,7 @@ fileprivate let pronField = Expression<String?>("pron")
 typealias DefSortPolicy = (_ word: String, _ entries: [DictDefinition], _ pos: POS?) -> [DictDefinition]
 
 // TODO separate
-class DictEntry {
+struct DictEntry: Codable {
     var word: String
     var pron: String
     var defs: [DictDefinition] = []
@@ -22,14 +22,15 @@ class DictEntry {
         self.pron = pron.unstressed
     }
     
-    class func get(connection: Connection, word wordstr: String, firstDefPos: POS?, policy: DefSortPolicy?) -> DictEntry? {
+    static func get(connection: Connection, word wordstr: String, firstDefPos: POS?, policy: DefSortPolicy?) -> DictEntry? {
         let query = wordsTable.where(wordField.collate(.nocase) == wordstr)
         
         do {
             if let entry = try connection.pluck(query) {
-                let entry = DictEntry(word: try entry.get(wordField), pron: try entry.get(pronField) ?? "")
+                var entry = DictEntry(word: try entry.get(wordField), pron: try entry.get(pronField) ?? "")
                 
-                DictDefinition.fetch(connection: connection, entry: entry, firstPos: firstDefPos, policy: policy)
+                let defs = DictDefinition.fetch(connection: connection, entry: entry, firstPos: firstDefPos, policy: policy)
+                entry.defs = defs ?? []
                 return entry
             }
         } catch let error {
@@ -40,7 +41,7 @@ class DictEntry {
     }
     
     
-    class func search(connection: Connection, word: String, firstDefPos: POS?, policy: DefSortPolicy?) -> [DictEntry] {
+    static func search(connection: Connection, word: String, firstDefPos: POS?, policy: DefSortPolicy?) -> [DictEntry] {
         if word == "" {
             return []
         }

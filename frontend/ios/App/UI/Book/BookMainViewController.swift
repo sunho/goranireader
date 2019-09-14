@@ -155,7 +155,7 @@ extension BookMainViewController: UITableViewDelegate, UITableViewDataSource, UI
     func openContent(_ content: DownloadedContent) {
         let vc = storyboard!.instantiateViewController(withIdentifier: "BookReaderViewController") as! BookReaderViewController
         vc.book = try! BookyBook.fromPath(path: content.path)
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController?.present(vc, animated: true)
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

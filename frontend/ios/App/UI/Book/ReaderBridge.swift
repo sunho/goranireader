@@ -33,7 +33,8 @@ extension BookReaderViewController: WKScriptMessageHandler {
                 case "readingSentenceChange":
                     readingSentenceChange(body["sid"] as! String)
                 case "dictSearch":
-                    dictSearch(body["word"] as! String)
+                    let out = dictSearch(body["word"] as! String)
+                    resolveDict(out)
                 case "addUnknownSentence":
                     addUnknownSentence(body["sid"] as! String)
                 case "addUnknownWord":
@@ -57,24 +58,27 @@ extension BookReaderViewController: WKScriptMessageHandler {
         if inited {
             loaded = !load
             if !load {
-                initForPage()
+                initForChapter()
             }
         }
     }
     
     func atStart() {
-        initForPage()
         isStart = true
     }
     
     func atMiddle() {
-        initForPage()
+        guard let chapter = currentChapter else {
+            return
+        }
+        if chapter.items.count == 0 {
+            return
+        }
         isStart = false
         isEnd = false
     }
     
     func atEnd() {
-        initForPage()
         isEnd = true
     }
     
@@ -91,12 +95,17 @@ extension BookReaderViewController: WKScriptMessageHandler {
     }
     
     func readingSentenceChange(_ sid: String) {
+        initForPage()
         readingSentence = sid
     }
     
     func dictSearch(_ word: String) -> String {
-        print("dictSearch")
-        return ""
+        let words = DictService.shared.search(word: word)
+        let out = DictResult(words: words, addable: false)
+        guard let data = try? JSONEncoder().encode(out) else {
+            return ""
+        }
+        return String(data: data, encoding: .utf8) ?? ""
     }
     
     func addUnknownWord(sid: String, wordIndex: Int, word: String, def: String) {

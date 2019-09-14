@@ -2,7 +2,8 @@
 // Copyright © 2019 Sunho Kim. All rights reserved.
 //
 
-import UIKit    
+import UIKit
+import Promises
 
 struct GuideCardProvider {
     var name: String
@@ -11,10 +12,12 @@ struct GuideCardProvider {
 }
 
 class GuideMainViewController: UIViewController {
-    @IBOutlet weak var progressView: GuideProgressView!
     @IBOutlet weak var wordCardView: GuideWordCardView!
+    @IBOutlet weak var missionBookView: GuideMissionBookView!
     
     var wordCount: Int = 0
+    var mission: Mission?
+    var missionBook: Book?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +30,23 @@ class GuideMainViewController: UIViewController {
     
     func reloadData() {
         wordCount = RealmService.shared.getTodayUnknownWords().count
-        layout()
+        FirebaseService.shared.getClass().then { clas -> Promise<Book?> in
+            guard let mission = clas.mission else {
+                self.mission = nil
+                self.missionBook = nil
+                self.layout()
+                return Promise<Book?> { () -> Book? in
+                    return nil
+                }
+            }
+            self.mission = mission
+            return FirebaseService.shared.getBook(mission.bookId ?? "").then { book -> Book? in
+                return book
+            }
+        }.then { book in
+            self.missionBook = book
+            self.layout()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,6 +70,21 @@ class GuideMainViewController: UIViewController {
         } else {
             wordCardView.button.isEnabled = true
             wordCardView.textView.text = "총 \(wordCount)개의 단어를 복습해야 합니다"
+        }
+        if let book = missionBook, let mission = mission {
+            missionBookView.nameView.text = book.title
+            missionBookView.authorView.text = book.author
+            missionBookView.dueView.text = mission.due.dateValue().description
+            missionBookView.msgView.text = mission.message
+            if let cover = missionBook!.cover {
+            missionBookView.coverView.kf.setImage(with: cover.source, placeholder: UIImage(named: "book_placeholder"))
+            }
+        } else {
+            missionBookView.nameView.text = "No mission :)"
+            missionBookView.authorView.text = ""
+            missionBookView.dueView.text = ""
+            missionBookView.coverView.image = UIImage(named: "book_placeholder")!
+            missionBookView.msgView.text = ""
         }
     }
 }

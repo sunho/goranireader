@@ -16,12 +16,14 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import React, { useContext } from "react";
+import {printPDF} from '../../print';
 import {
   Container,
   Paper,
   Typography,
   createMuiTheme,
-  MuiThemeProvider
+  MuiThemeProvider,
+  Button
 } from "@material-ui/core";
 import { useCommonStyle } from "../../style";
 import MaterialTable, { Column } from "material-table";
@@ -80,6 +82,7 @@ const StudentPage: React.FC = () => {
   const classInfo = useContext(ClasssContext)!;
   const firebase = useContext(FirebaseContext)!;
   const tableRef = useRef<any | null>(null);
+  const dataRef = useRef<any | null>(null);
   useEffect(() => {
     tableRef.current && tableRef.current.onQueryChange();
     console.log("asdfsadf");
@@ -96,10 +99,21 @@ const StudentPage: React.FC = () => {
       hidden: true
     },
     {
-      title: "Registered",
+      title: "FireId",
       field: "fireId",
       editable: "never",
-      render: (rowData: any) => (rowData && rowData.fireId ? <>Yes</> : <>No</>)
+      hidden: true
+    },
+    {
+      title: "Registerd",
+      editable: "never",
+      render: (rowData: any) => {
+        if (rowData) {
+          console.log(rowData);
+          return rowData.fireId ? <>Yes</> : <>No</>;
+        }
+        return <>No</>
+      }
     },
     { title: "Secret Code", field: "secretCode", editable: "never" }
   ];
@@ -109,6 +123,7 @@ const StudentPage: React.FC = () => {
         <Typography variant="h5" className={commonStyles.header} component="h3">
           Students
         </Typography>
+        <Button style={{marginBottom: "20px"}} color="primary" variant="contained" onClick={()=>{printPDF(classInfo.currentClass!.name, dataRef.current)}}>DOWNLOAD SECRET CODE PDF</Button>
         <MaterialTable
           tableRef={(node: any) => {
             tableRef.current = node;
@@ -124,11 +139,13 @@ const StudentPage: React.FC = () => {
               .get()
               .then(res => res.docs)
               .then(docs => docs.map(doc => ({ ...doc.data(), id: doc.id })));
+             dataRef.current = data;
             return { data: data, page: 0, totalCount: 1 } as any;
           }}
           editable={{
             onRowAdd: async (newData: any) => {
               newData.classId = classInfo.currentId!;
+              newData.secretCode = await firebase.generateSecretCode();
               newData.deleted = false;
               await firebase.users().add(newData);
             },
