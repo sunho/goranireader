@@ -11,7 +11,7 @@ fileprivate let wordField = Expression<String>("word")
 fileprivate let posField = Expression<String?>("pos")
 fileprivate let defField = Expression<String>("def")
 
-class DictDefinition {
+struct DictDefinition: Codable {
     var id: Int64
     var pos: POS?
     var def: String
@@ -22,11 +22,11 @@ class DictDefinition {
         self.def = def
     }
     
-    class func fetch(connection: Connection, entry: DictEntry, firstPos pos2: POS?, policy: DefSortPolicy?) {
+    static func fetch(connection: Connection, entry: DictEntry, firstPos pos2: POS?, policy: DefSortPolicy?) -> [DictDefinition]? {
         let query = defsTable.where(wordField == entry.word)
             .order(posField, idField)
         guard let results = try? connection.prepare(query) else {
-            return
+            return nil
         }
         
         var defs: [DictDefinition] = []
@@ -50,6 +50,6 @@ class DictDefinition {
             defs = policy(entry.word, defs, pos2)
         }
         
-        entry.defs = defs
+        return defs
     }
 }

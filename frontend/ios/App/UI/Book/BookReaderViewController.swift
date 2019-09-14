@@ -12,6 +12,7 @@ import WebKit
 
 class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDelegate, UIGestureRecognizerDelegate {
     @IBOutlet weak var webView: WKWebView!
+    @IBOutlet weak var navItem: UINavigationItem!
     var book: BookyBook!
     var timer: Timer!
     var isStart: Bool = false
@@ -41,7 +42,9 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
     override func viewDidLoad() {
         super.viewDidLoad()
         loadProgress()
+        
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.tick), userInfo: nil, repeats: true)
+        
         let url = Bundle.main.url(forResource: "index", withExtension: "html", subdirectory: "reader")!
         webView.configuration.userContentController.add(self, name: "bridge")
         webView.customUserAgent = "ios"
@@ -50,6 +53,7 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
         webView.load(request)
         webView.uiDelegate = self
         webView.navigationDelegate = self
+        webView.scrollView.isScrollEnabled = false
         
         let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleGesture))
         swipeLeft.direction = .left
@@ -60,6 +64,8 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
         swipeRight.direction = .right
         swipeRight.delegate = self
         self.webView.addGestureRecognizer(swipeRight)
+        
+        navItem.title = book.meta.title
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -84,7 +90,7 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
             return
         }
         let i = book.chapters.firstIndex(where: { $0.id == chapter.id })!
-        if i > 0 {
+        if i - 1 > 0 {
             let chap = book.chapters[i - 1]
             readingSentence = book.chapters[i - 1].items[safe: chap.items.count - 1]?.id ?? ""
             readingChapter = book.chapters[i - 1].id
@@ -96,16 +102,20 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
             return
         }
         let i = book.chapters.firstIndex(where: { $0.id == chapter.id })!
-        if i < book.chapters.count {
+        if i + 1 < book.chapters.count {
             readingSentence = book.chapters[i + 1].items[safe: 0]?.id ?? ""
             readingChapter = book.chapters[i + 1].id
         }
     }
     
-    func initForPage() {
-        elapsedTime = 0
+    func initForChapter() {
+        initForPage()
         isStart = false
         isEnd = false
+    }
+    
+    func initForPage() {
+        elapsedTime = 0
         wordUnknowns = []
         sentenceUnknowns = []
     }
@@ -151,4 +161,16 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
             }
         }
     }
+    
+    func resolveDict(_ res: String) {   webView.evaluateJavaScript("window.app.dictSearchResolve('\(res)');") { _, error in
+            if error != nil {
+                print(error)
+                AlertService.shared.alertErrorMsg(error!.localizedDescription)
+            }
+        }
+    }
+    @IBAction func close(_ sender: Any) {
+        dismiss(animated: true)
+    }
+    
 }

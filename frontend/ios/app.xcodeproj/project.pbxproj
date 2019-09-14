@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B10C76CC232C342E000CAD31 /* DictResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10C76CB232C342E000CAD31 /* DictResult.swift */; };
+		B10C76CE232C3A22000CAD31 /* GuideMissionBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10C76CD232C3A22000CAD31 /* GuideMissionBookView.swift */; };
 		B11016D0231BC3ED00C0327A /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B11016CF231BC3ED00C0327A /* RealmSwift.framework */; };
 		B124047520A8CD90005EAE4F /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = B124047220A8CD90005EAE4F /* Cartfile */; };
 		B13393B320A8F78D00F34525 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = B13393B220A8F78D00F34525 /* .gitignore */; };
@@ -158,6 +160,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B10C76CB232C342E000CAD31 /* DictResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictResult.swift; sourceTree = "<group>"; };
+		B10C76CD232C3A22000CAD31 /* GuideMissionBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideMissionBookView.swift; sourceTree = "<group>"; };
 		B11016CF231BC3ED00C0327A /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
 		B124047220A8CD90005EAE4F /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		B13393B220A8F78D00F34525 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = .gitignore; path = ../../.gitignore; sourceTree = "<group>"; };
@@ -567,6 +571,7 @@
 				C70F55CE2250094A006DBB0E /* GuideWordCardView.swift */,
 				C70F55D022500959006DBB0E /* GuideRecommendedBookView.swift */,
 				C70F55D222501596006DBB0E /* GuideRecommendedBookCell.swift */,
+				B10C76CD232C3A22000CAD31 /* GuideMissionBookView.swift */,
 			);
 			path = Cards;
 			sourceTree = "<group>";
@@ -623,6 +628,7 @@
 				B143AF9120A4704F003341A3 /* DictDefinition.swift */,
 				B143AF8F20A4704F003341A3 /* DictEntry.swift */,
 				B143AF8E20A4704F003341A3 /* POS.swift */,
+				B10C76CB232C342E000CAD31 /* DictResult.swift */,
 			);
 			path = Dict;
 			sourceTree = "<group>";
@@ -825,6 +831,7 @@
 				C7403AEB209176D800099119 /* WordMainViewController.swift in Sources */,
 				B143B05720A47617003341A3 /* Helper.swift in Sources */,
 				C7FC18B9223A364E007172ED /* RealmService.swift in Sources */,
+				B10C76CC232C342E000CAD31 /* DictResult.swift in Sources */,
 				C74CEFD8208C899F002765D6 /* AppDelegate.swift in Sources */,
 				C7CF005C224D293800524D80 /* EventLogService.swift in Sources */,
 				C7FC188F2239D748007172ED /* Book.swift in Sources */,
@@ -839,6 +846,7 @@
 				C70F55CD225008D0006DBB0E /* GuideProgressView.swift in Sources */,
 				C70F55CF2250094A006DBB0E /* GuideWordCardView.swift in Sources */,
 				C7BF8C5E2245D8BC0037FD68 /* MultilineLabel.swift in Sources */,
+				B10C76CE232C3A22000CAD31 /* GuideMissionBookView.swift in Sources */,
 				C757D2D12247D5A10050E0A2 /* ContentTypeIconView.swift in Sources */,
 				B143B05A20A47617003341A3 /* Verb.swift in Sources */,
 				B143B05620A47617003341A3 /* FileUtil.swift in Sources */,

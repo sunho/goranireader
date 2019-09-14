@@ -4,7 +4,7 @@
 
 import Foundation
 
-enum POS: String {
+enum POS: String, Codable {
     case verb = "동사"
     case aux = "조동사"
     case tverb = "자동사"
