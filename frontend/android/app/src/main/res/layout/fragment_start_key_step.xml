@@ -26,7 +26,7 @@
                     android:layout_marginEnd="24dp" android:layout_marginStart="24dp" android:textSize="30sp"
                     android:gravity="center" android:textColor="@color/ms_black"/>
             <TextView
-                    android:text="Inside a black rectangle in your paper, there are two english words and one number. Enter them."
+                    android:text="Inside a brown rectangle in your paper, there are two english words and one number. Enter them."
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView4"

@@ -21,12 +21,13 @@ const ReportPage: React.FC = () => {
   const [reports, setReports] = useState<Report[]>([]);
   useEffect(() => {
     (async () => {
-      // const res = await firebase.reports(classInfo.currentId!).get();
-      setReports([{
-        name: "2019-09-06 Vocab ",
-        link: "https://storage.cloud.google.com/gorani-reader-reports/asdf.csv",
-        time: "asdf"
-      }]);
+      const res = await firebase.reports(classInfo.currentId!).get();
+      setReports(res.docs as any);
+      // setReports([{
+      //   name: "2019-09-06 Vocab ",
+      //   link: "https://storage.cloud.google.com/gorani-reader-reports/asdf.csv",
+      //   time: "asdf"
+      // }]);
     })();
   }, [classInfo]);
   const commonStyles = useCommonStyle();
@@ -47,6 +48,9 @@ const ReportPage: React.FC = () => {
               <ListItemText primary={report.name} secondary={report.time} />
             </ListItem>
           ))}
+          {
+            reports.length === 0 && <div>couldn't find one :(</div>
+          }
         </List>
       </Paper>
     </Container>

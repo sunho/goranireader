@@ -16,7 +16,7 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import React, { useContext } from "react";
-import {printPDF} from '../../print';
+import { printPDF } from "../../print";
 import {
   Container,
   Paper,
@@ -30,16 +30,6 @@ import MaterialTable, { Column } from "material-table";
 import { FirebaseContext } from "../Firebase";
 import { ClasssContext } from "../Auth/withClass";
 import "firebase/firestore";
-
-const theme = createMuiTheme({
-  overrides: {
-    MuiTableCell: {
-      paddingCheckbox: {
-        padding: "14px 40px 14px 16px"
-      }
-    }
-  }
-});
 
 const tableIcons = {
   Add: forwardRef<any>((props, ref) => <AddBox {...props} ref={ref} />),
@@ -112,64 +102,71 @@ const StudentPage: React.FC = () => {
           console.log(rowData);
           return rowData.fireId ? <>Yes</> : <>No</>;
         }
-        return <>No</>
+        return <>No</>;
       }
     },
     { title: "Secret Code", field: "secretCode", editable: "never" }
   ];
   return (
-    <MuiThemeProvider theme={theme}>
-      <Container maxWidth="lg" className={commonStyles.container}>
-        <Typography variant="h5" className={commonStyles.header} component="h3">
-          Students
-        </Typography>
-        <Button style={{marginBottom: "20px"}} color="primary" variant="contained" onClick={()=>{printPDF(classInfo.currentClass!.name, dataRef.current)}}>DOWNLOAD SECRET CODE PDF</Button>
-        <MaterialTable
-          tableRef={(node: any) => {
-            tableRef.current = node;
-          }}
-          icons={tableIcons}
-          title=""
-          columns={columns}
-          data={async query => {
-            const data = await firebase
-              .users()
-              .where("classId", "==", classInfo.currentId!)
-              .where("deleted", "==", false)
-              .get()
-              .then(res => res.docs)
-              .then(docs => docs.map(doc => ({ ...doc.data(), id: doc.id })));
-             dataRef.current = data;
-            return { data: data, page: 0, totalCount: 1 } as any;
-          }}
-          editable={{
-            onRowAdd: async (newData: any) => {
-              newData.classId = classInfo.currentId!;
-              newData.secretCode = await firebase.generateSecretCode();
-              newData.deleted = false;
-              await firebase.users().add(newData);
-            },
-            onRowUpdate: async (newData, oldData) => {
-              delete newData.id;
-              await firebase.user(oldData.id).set(newData);
-            },
-            onRowDelete: async oldData => {
-              const newData = Object.assign({}, oldData);
-              delete newData.tableData;
-              const id = newData.id;
-              delete newData.id;
-              oldData.deleted = true;
-              await firebase.user(id).set(oldData);
-            }
-          }}
-          options={{
-            selection: false,
-            paging: false,
-            search: false,
-          }}
-        />
-      </Container>
-    </MuiThemeProvider>
+    <Container maxWidth="lg" className={commonStyles.container}>
+      <Typography variant="h5" className={commonStyles.header} component="h3">
+        Students
+      </Typography>
+      <Button
+        style={{ marginBottom: "20px" }}
+        color="primary"
+        variant="contained"
+        onClick={() => {
+          printPDF(classInfo.currentClass!.name, dataRef.current);
+        }}
+      >
+        DOWNLOAD SECRET CODE PDF
+      </Button>
+      <MaterialTable
+        tableRef={(node: any) => {
+          tableRef.current = node;
+        }}
+        icons={tableIcons}
+        title=""
+        columns={columns}
+        data={async query => {
+          const data = await firebase
+            .users()
+            .where("classId", "==", classInfo.currentId!)
+            .where("deleted", "==", false)
+            .get()
+            .then(res => res.docs)
+            .then(docs => docs.map(doc => ({ ...doc.data(), id: doc.id })));
+          dataRef.current = data;
+          return { data: data, page: 0, totalCount: 1 } as any;
+        }}
+        editable={{
+          onRowAdd: async (newData: any) => {
+            newData.classId = classInfo.currentId!;
+            newData.secretCode = await firebase.generateSecretCode();
+            newData.deleted = false;
+            await firebase.users().add(newData);
+          },
+          onRowUpdate: async (newData, oldData) => {
+            delete newData.id;
+            await firebase.user(oldData.id).set(newData);
+          },
+          onRowDelete: async oldData => {
+            const newData = Object.assign({}, oldData);
+            delete newData.tableData;
+            const id = newData.id;
+            delete newData.id;
+            oldData.deleted = true;
+            await firebase.user(id).set(oldData);
+          }
+        }}
+        options={{
+          selection: false,
+          paging: false,
+          search: false
+        }}
+      />
+    </Container>
   );
 };
 
