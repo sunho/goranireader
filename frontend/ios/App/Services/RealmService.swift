@@ -87,6 +87,18 @@ class RealmService {
         return realm.objects(EventLog.self)
     }
     
+    func getEventLog(_ id: String) -> EventLog? {
+        return realm.object(ofType: EventLog.self, forPrimaryKey: id)
+    }
+    
+    func deleteEventLog(_ id: String) {
+        if let ev = getEventLog(id) {
+            write {
+                realm.delete(ev)
+            }
+        }
+    }
+    
     func clearEventLogs() {
         write {
             realm.delete(getEventLogs())
@@ -95,6 +107,7 @@ class RealmService {
     
     func addEventLog<T: EventLogPayload>(_ payload: T)  {
         let log = EventLog()
+        log.id = UUID().uuidString
         log.payload = String(data: try! JSONEncoder().encode(payload), encoding: .utf8)!
         print(log.payload)
         log.time = Date()

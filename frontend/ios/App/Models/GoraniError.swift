@@ -11,4 +11,5 @@ enum GoraniError: Error {
     case notFound
     case nilResult
     case internalError
+    case noauth
 }

@@ -10,7 +10,7 @@
 import UIKit
 
 open class BubbleTabBarController: UITabBarController {
-
+    var timer: Timer!
     fileprivate var shouldSelectOnTabBar = true
 
     open override var selectedViewController: UIViewController? {
@@ -44,12 +44,10 @@ open class BubbleTabBarController: UITabBarController {
         super.viewDidLoad()
         let tabBar = BubbleTabBar()
         self.setValue(tabBar, forKey: "tabBar")
+        
+        timer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(self.sendEventLogs), userInfo: nil, repeats: true)
     }
-
-    open override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-
+    
     private var _barHeight: CGFloat = 52
     open var barHeight: CGFloat {
         get {
@@ -95,5 +93,18 @@ open class BubbleTabBarController: UITabBarController {
             delegate?.tabBarController?(self, didSelect: controller)
         }
     }
-
+    
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        EventLogService.shared.send()
+        FirebaseService.shared.checkAuth().then { authed in
+            if !authed {
+                throw GoraniError.noauth
+            }
+        }
+    }
+    
+    @objc func sendEventLogs() {
+        EventLogService.shared.send()
+    }
 }

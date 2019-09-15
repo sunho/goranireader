@@ -6,6 +6,7 @@ import Foundation
 import UIKit
 
 class TabBarViewController: UITabBarController {
+    
     override func viewDidLoad() {
         let tabGradientView = UIView(frame: tabBar.bounds)
         tabGradientView.backgroundColor = UIColor.white
@@ -23,5 +24,7 @@ class TabBarViewController: UITabBarController {
         tabBar.clipsToBounds = false
         tabBar.backgroundImage = UIImage()
         tabBar.shadowImage = UIImage()
+ 
     }
+
 }

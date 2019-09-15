@@ -74,14 +74,22 @@ class FirebaseService {
     }
     
     func getUserDoc() -> Promise<DocumentSnapshot> {
-        let user = authorize()
-        return db().collection("users")
-            .whereField("fireId", isEqualTo: user.uid).getDocumentsPromise().then { res in
+        return Promise<FirebaseAuth.User> { fulfill, reject in
+            guard let user = self.authorize() else {
+                reject(GoraniError.internalError)
+                return
+            }
+            fulfill(user)
+        }.then{ user in
+            return self.db().collection("users")
+                .whereField("fireId", isEqualTo: user.uid).getDocumentsPromise().then { res in
                 if res.count == 0 {
                     throw GoraniError.nilResult
                 }
                 return Promise(res.documents[0])
             }
+        }
+        
     }
     
     func getClass() -> Promise<Class> {
@@ -107,14 +115,18 @@ class FirebaseService {
         return Firestore.firestore()
     }
     
-    fileprivate func authorize() -> FirebaseAuth.User {
-        return Auth.auth().currentUser!
+    fileprivate func authorize() -> FirebaseAuth.User? {
+        return Auth.auth().currentUser
     }
     
     // TODO convert to promise
     func login(word: String, word2: String, number: String, completion: @escaping (_ exists: Bool, _ replacing: Bool, _ error: Error?) -> Void) {
-        let user = authorize()
         Firestore.firestore().collection("users").whereField("secretCode", isEqualTo: "\(word)-\(word2)-\(number)").getDocuments { docs, error  in
+            guard let user = self.authorize() else {
+                completion(false, false, GoraniError.internalError)
+                return
+            }
+            
             if error != nil {
                 completion(false, false, error)
                 return

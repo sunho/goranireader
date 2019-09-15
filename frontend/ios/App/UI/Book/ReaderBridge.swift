@@ -25,7 +25,7 @@ extension BookReaderViewController: WKScriptMessageHandler {
                 case "atMiddle":
                     atMiddle()
                 case "wordSelected":
-                    wordSelected(body["i"] as! Int, body["sid"] as! String)
+                    wordSelected(body["word"] as! String, body["i"] as! Int, body["sid"] as! String)
                 case "paginate":
                     paginate(body["sids"] as! [String])
                 case "sentenceSelected":
@@ -51,7 +51,7 @@ extension BookReaderViewController: WKScriptMessageHandler {
         guard let chapter = currentChapter else {
             return
         }
-        start(chapter.items, readingSentence)
+        startReader(chapter.items, readingSentence)
     }
     
     func setLoading(_ load: Bool) {
@@ -83,15 +83,15 @@ extension BookReaderViewController: WKScriptMessageHandler {
     }
     
     func paginate(_ sids: [String]) {
-        print("paginate")
+        RealmService.shared.addEventLog(ELPaginatePayload(bookId: book.meta.id, chapterId: currentChapter!.id, time: elapsedTime, sids: sids, wordUnknowns: wordUnknowns, sentenceUnknowns: sentenceUnknowns))
     }
     
-    func wordSelected(_ i: Int, _ sid: String) {
-        print("wordSelected")
+    func wordSelected(_ word: String, _ i: Int, _ sid: String) {
+        wordUnknowns.append(PaginateWordUnknown(sentenceId: sid, word: word, wordIndex: i, time: elapsedTime))
     }
     
     func sentenceSelected(_ sid: String) {
-        print("sentenceSelected")
+        
     }
     
     func readingSentenceChange(_ sid: String) {
@@ -113,6 +113,8 @@ extension BookReaderViewController: WKScriptMessageHandler {
     }
     
     func addUnknownSentence(_ sid: String) {
-        print("addUnknownSentence")
+        sentenceUnknowns.append(PaginateSentenceUnknown(sentenceId: sid, time: elapsedTime))
+        RealmService.shared.addEventLog(ELUnknownSentencePayload(bookId: book.meta.id, chapterId: currentChapter!.id, sentenceId: sid))
+        AlertService.shared.alertSuccessMsg("Sentence was marked as unknown")
     }
 }

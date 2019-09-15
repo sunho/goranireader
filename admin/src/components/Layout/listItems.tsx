@@ -9,6 +9,7 @@ import BarChartIcon from "@material-ui/icons/BarChart";
 import { Link } from "react-router-dom";
 import { ClasssContext } from "../Auth/withClass";
 import { Divider, makeStyles } from "@material-ui/core";
+import { FirebaseContext } from "../Firebase";
 
 const useStyles = makeStyles(theme => ({
   appBarSpacer: {
@@ -19,6 +20,7 @@ const useStyles = makeStyles(theme => ({
 
 const MainListItems: React.FC = props => {
   const classes = useStyles();
+  const firebase = useContext(FirebaseContext)!;
   const classInfo = useContext(ClasssContext)!;
   return (
     <div>
@@ -83,6 +85,20 @@ const MainListItems: React.FC = props => {
           <BarChartIcon />
         </ListItemIcon>
         <ListItemText primary="Report" />
+      </ListItem>
+
+      <div className={classes.appBarSpacer} />
+      <Divider />
+
+      <ListItem
+        button
+        onClick={() => {
+          firebase.auth.signOut().then(() => {
+            window.location.href="/login";
+          });
+        }}
+      >
+        <ListItemText primary="Logout" />
       </ListItem>
     </div>
   );
