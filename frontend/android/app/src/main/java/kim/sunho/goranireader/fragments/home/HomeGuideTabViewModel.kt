@@ -12,6 +12,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import java.util.*
+
+
 
 class HomeGuideTabViewModel: ViewModel() {
     private val job = SupervisorJob()
@@ -19,8 +22,10 @@ class HomeGuideTabViewModel: ViewModel() {
 
     val message: MutableLiveData<String> = MutableLiveData()
     val message2: MutableLiveData<String> = MutableLiveData()
+    val message3: MutableLiveData<String> = MutableLiveData()
     val img: MutableLiveData<String> = MutableLiveData()
     val title: MutableLiveData<String> = MutableLiveData()
+    val username: MutableLiveData<String> = MutableLiveData()
     var isMission: MutableLiveData<Int> = MutableLiveData()
     lateinit var db: DBService
     fun fetch() {
@@ -38,13 +43,22 @@ class HomeGuideTabViewModel: ViewModel() {
                }
                return@launch
            }
+           val user = db.getUser() ?: return@launch
            val book = db.getBook(clas.mission.bookId) ?: return@launch
+           var diff =  clas.mission.due.toDate().getTime() - Date().getTime();
+           val days = diff / (24*60*60*1000)
+           diff %= 24 * 60 * 60 * 1000
+           val hours = diff / (60*60*1000)
+           diff %= 60*60*1000
+           val minutes = diff / (60*1000)
+
            onUi {
                img.value = book.cover ?: ""
                title.value = book.title
                message.value = clas.mission.message
-               message2.value = clas.mission.due.toDate().toString()
-               isMission.value = View.VISIBLE
+               message2.value = "$days days $hours hours $minutes minutes"
+               username.value = user["username"].toString()
+               isMission.value = if (clas.mission.due.toDate().after(Date())) View.VISIBLE else View.GONE
            }
        }
     }

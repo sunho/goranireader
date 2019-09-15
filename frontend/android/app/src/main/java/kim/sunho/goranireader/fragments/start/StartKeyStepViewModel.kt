@@ -23,7 +23,7 @@ class StartKeyStepViewModel: ViewModel() {
     private val scope = CoroutineScope(Dispatchers.Default + job)
     lateinit var db: DBService
 
-    val keylength = 10
+    val keylength = 5
 
     val valid: MutableLiveData<Boolean> = MutableLiveData()
 

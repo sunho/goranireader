@@ -17,7 +17,7 @@
                 android:layout_marginEnd="24dp" android:layout_marginStart="24dp" android:textSize="30sp"
                 android:gravity="center" android:textColor="@color/ms_black"/>
         <TextView
-                android:text="Your homeroom teacher should've given you some paper with a title &quot;Gorani Reader Secret&quot; You will need that paper in the following step."
+                android:text="Your teacher should've given you some paper with a title &quot;Gorani Reader&quot; You will need that paper in the following step."
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView4"
