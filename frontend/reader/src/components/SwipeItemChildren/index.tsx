@@ -41,6 +41,8 @@ const WordComponent = styled.span<{ selected: boolean; first: boolean }>`
     `}
 `;
 
+export const pat = /([^a-zA-Z-']+)/;
+
 interface Props {
   sentences: Sentence[];
 }
@@ -50,7 +52,6 @@ const SwipeItem: React.FC<Props> = (props: Props) => {
   const [selectedSentence, setSelectedSentence] = useState<SelectedSentence | undefined>(
     undefined
   );
-  const pat = /([^a-zA-Z-']+)/;
   const touch: MutableRefObject<
     { id: string; n: number; timer: number; x: number; y: number } | undefined
   > = useRef(undefined);

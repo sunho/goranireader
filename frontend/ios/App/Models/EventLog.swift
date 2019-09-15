@@ -48,6 +48,19 @@ struct ELUnknownSentencePayload: EventLogPayload {
     }
 }
 
+struct ELSubmitQuestionPayload: EventLogPayload {
+    let bookId: String
+    let chapterId: String
+    let questionId: String
+    let option: String
+    let right: Bool
+    let time: Int
+    
+    static func type() -> String {
+        return "submit_question"
+    }
+}
+
 struct PaginateWordUnknown: Codable {
     let sentenceId: String
     let word: String

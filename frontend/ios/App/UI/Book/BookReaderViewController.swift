@@ -23,33 +23,16 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
     var elapsedTime = 0
     var inited: Bool = false
     var loaded: Bool = false
-    var readingChapter: String = ""  {
-        didSet {
-            if inited {
-                loaded = false
-                guard let chapter = currentChapter else {
-                    return
-                }
-                startReader(chapter.items, readingSentence)
-            }
-        }
-    }
+    var readingChapter: String = ""
     var quiz: Bool = false
     var solvedChapters: [String] = []
-    var readingQuestion: String = "" {
-        didSet {
-            saveProgress()
-        }
-    }
-    var readingSentence: String = "" {
-        didSet {
-            saveProgress()
-        }
-    }
+    var readingQuestion: String = ""
+    var readingSentence: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         loadProgress()
+        print("quiz:", quiz)
         
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.tick), userInfo: nil, repeats: true)
         
@@ -76,6 +59,23 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
         navItem.title = book.meta.title
     }
     
+    func start() {
+        loaded = false
+        guard let chapter = currentChapter else {
+            fatalError("no chapter to start")
+        }
+        if !quiz {
+            startReader(chapter.items, readingSentence)
+            return
+        }
+        guard let questions = chapter.questions else {
+            quiz = false
+            saveProgress()
+            fatalError("no questions")
+        }
+        startQuiz(questions, readingQuestion)
+    }
+    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
@@ -100,8 +100,10 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
         let i = book.chapters.firstIndex(where: { $0.id == chapter.id })!
         if i > 0 {
             let chap = book.chapters[i - 1]
+            quiz = false
             readingSentence = book.chapters[i - 1].items[safe: chap.items.count - 1]?.id ?? ""
             readingChapter = book.chapters[i - 1].id
+            start()
         }
     }
     
@@ -109,10 +111,32 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
         guard let chapter = currentChapter else {
             return
         }
-        let i = book.chapters.firstIndex(where: { $0.id == chapter.id })!
-        if i + 1 < book.chapters.count {
-            readingSentence = book.chapters[i + 1].items[safe: 0]?.id ?? ""
-            readingChapter = book.chapters[i + 1].id
+        
+        if let questions = chapter.questions
+            ,questions.count != 0
+            ,!solvedChapters.contains(chapter.id) {
+            quiz = true
+            readingSentence = ""
+            readingQuestion = questions[0].id
+            saveProgress()
+            start()
+        } else {
+            let i = book.chapters.firstIndex(where: { $0.id == chapter.id })!
+            if quiz && i == book.chapters.count - 1 {
+                quiz = false
+                readingSentence = book.chapters[i].items[safe: book.chapters[i].items.count - 1]?.id ?? ""
+                readingQuestion = ""
+                readingChapter = book.chapters[i].id
+                saveProgress()
+                start()
+            } else if i + 1 < book.chapters.count {
+                quiz = false
+                readingSentence = book.chapters[i + 1].items[safe: 0]?.id ?? ""
+                readingQuestion = ""
+                readingChapter = book.chapters[i + 1].id
+                saveProgress()
+                start()
+            }
         }
     }
     
@@ -150,10 +174,13 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
     }
     
     func saveProgress() {
+        print(quiz)
         RealmService.shared.write {
             let progress = RealmService.shared.getBookProgress(book.meta.id)
             progress.readingChapter = readingChapter
             progress.readingSentence = readingSentence
+            progress.readingQuestion = readingQuestion
+            progress.quiz = quiz
             progress.solvedChapers.removeAll()
             progress.solvedChapers.append(objectsIn: solvedChapters)
         }
@@ -163,25 +190,6 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
                           didFinish navigation: WKNavigation!) {
     }
     
-    
-    func startReader(_ sentences: [Sentence], _ readingSentenceId: String?) {
-        let input1 = String(data: try! JSONEncoder().encode(sentences), encoding: .utf8)!
-        let input2 = "'" + (readingSentenceId ?? "") + "'"
-        webView.evaluateJavaScript("window.webapp.startReader(\(input1),\(input2));") { _, error in
-            if error != nil {
-                print(error)
-                AlertService.shared.alertErrorMsg(error!.localizedDescription)
-            }
-        }
-    }
-    
-    func resolveDict(_ res: String) {   webView.evaluateJavaScript("window.app.dictSearchResolve('\(res.replacingOccurrences(of: "'", with: "\\'"))');") { _, error in
-            if error != nil {
-                print(error)
-                AlertService.shared.alertErrorMsg(error!.localizedDescription)
-            }
-        }
-    }
     @IBAction func close(_ sender: Any) {
         dismiss(animated: true)
     }
