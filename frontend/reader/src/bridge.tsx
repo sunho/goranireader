@@ -1,4 +1,4 @@
-import { Sentence, DictSearchResult } from "./model";
+import { Sentence, DictSearchResult, Question } from "./model";
 import { LiteEvent } from "./utills/event";
 
 export interface App {
@@ -8,7 +8,7 @@ export interface App {
   atMiddle(): void;
   atEnd(): void;
   paginate(sids: string[]): void;
-  wordSelected(i: number, sid: string): void;
+  wordSelected(word: string, i: number, sid: string): void;
   sentenceSelected(sid: string): void;
   readingSentenceChange(sid: string): void;
   dictSearch(word: string): string | Promise<string>;
@@ -19,7 +19,8 @@ export interface App {
 export class Webapp {
   readonly onFlushPaginate = new LiteEvent<void>();
   readonly onCancelSelect = new LiteEvent<void>();
-  readonly onStart = new LiteEvent<{sentences: Sentence[], sid: string}>();
+  readonly onStartReader = new LiteEvent<{sentences: Sentence[], sid: string}>();
+  readonly onStartQuiz = new LiteEvent<{questions: Question[]; qid: string}>();
 
   setDev() {
     window.app = new DevAppImpl();
@@ -29,11 +30,15 @@ export class Webapp {
     window.app = new IOSAppImpl();
   }
 
-  start(sentences: Sentence[], sid: string) {
-    this.onStart.trigger({
+  startReader(sentences: Sentence[], sid: string) {
+    this.onStartReader.trigger({
       sentences: sentences,
       sid: sid
     });
+  }
+
+  startQuiz(questions: Question[], qid: string) {
+    this.onStartQuiz.trigger({questions:questions, qid: qid});
   }
 
   flushPaginate() {
@@ -68,7 +73,7 @@ class DevAppImpl implements App {
     console.log("[app] at end");
   }
 
-  wordSelected(i: number, sid: string) {
+  wordSelected(word: string, i: number, sid: string) {
     console.log("[app] at end i: " + i + " sid:" + sid);
   }
 
@@ -195,8 +200,8 @@ class IOSAppImpl implements App {
     window.webkit.messageHandlers.bridge.postMessage({type: "atEnd"})
   }
 
-  wordSelected(i: number, sid: string) {
-    window.webkit.messageHandlers.bridge.postMessage({type: "wordSelected", i: i, sid: sid})
+  wordSelected(word: string, i: number, sid: string) {
+    window.webkit.messageHandlers.bridge.postMessage({type: "wordSelected", i: i, sid: sid, word: word})
   }
 
   paginate(sids: string[]) {

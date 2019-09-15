@@ -23,11 +23,11 @@ class Color {
     }
     
     class var strongTint: UIColor {
-        return UIColor(rgba: "#0B4F6C")
+        return UIColor(rgba: "#AB7756")
     }
     
     class var tint: UIColor {
-        return UIColor(rgba: "#8338EC")
+        return UIColor(rgba: "#AB7756")
     }
     
     class var gray: UIColor {

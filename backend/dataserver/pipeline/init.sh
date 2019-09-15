@@ -1,0 +1,1 @@
+/opt/conda/bin/pip install firebase-admin

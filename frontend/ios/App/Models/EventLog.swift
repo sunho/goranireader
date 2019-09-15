@@ -10,6 +10,15 @@ class EventLog: Object, Codable {
     @objc dynamic var type: String = ""
     @objc dynamic var time: Date = Date()
     @objc dynamic var payload: String = ""
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+}
+
+struct EventLogMap: Codable {
+    let type: String
+    let time: Date
+    let payload: String
 }
 
 protocol EventLogPayload: Codable {
@@ -26,6 +35,16 @@ struct ELPaginatePayload: EventLogPayload {
     
     static func type() -> String {
         return "paginate"
+    }
+}
+
+struct ELUnknownSentencePayload: EventLogPayload {
+    let bookId: String
+    let chapterId: String
+    let sentenceId: String
+    
+    static func type() -> String {
+        return "unknown_sentence"
     }
 }
 

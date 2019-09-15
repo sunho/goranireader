@@ -3,6 +3,7 @@ BUCKET = Variable.get('gcs_bucket')
 PYSPARK_GORANI_MODULE = 'gs://' + BUCKET + '/gorani.zip'
 PROJECT = Variable.get('gcs_project')
 CREDS = 'gs://' + BUCKET + '/key.json'
+INIT = 'gs://' + BUCKET + '/init.sh'
 CLUSTER = Variable.get('gcs_cluster')
 
 def SPARK_JOB(name):

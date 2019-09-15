@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import WebKit
+import RealmSwift
 
 class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDelegate, UIGestureRecognizerDelegate {
     @IBOutlet weak var webView: WKWebView!
@@ -29,8 +30,15 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
                 guard let chapter = currentChapter else {
                     return
                 }
-                start(chapter.items, readingSentence)
+                startReader(chapter.items, readingSentence)
             }
+        }
+    }
+    var quiz: Bool = false
+    var solvedChapters: [String] = []
+    var readingQuestion: String = "" {
+        didSet {
+            saveProgress()
         }
     }
     var readingSentence: String = "" {
@@ -90,7 +98,7 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
             return
         }
         let i = book.chapters.firstIndex(where: { $0.id == chapter.id })!
-        if i - 1 > 0 {
+        if i > 0 {
             let chap = book.chapters[i - 1]
             readingSentence = book.chapters[i - 1].items[safe: chap.items.count - 1]?.id ?? ""
             readingChapter = book.chapters[i - 1].id
@@ -136,6 +144,9 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
         let progress = RealmService.shared.getBookProgress(book.meta.id)
         readingChapter = progress.readingChapter
         readingSentence = progress.readingSentence
+        readingQuestion = progress.readingQuestion
+        quiz = progress.quiz
+        solvedChapters = Array(progress.solvedChapers)
     }
     
     func saveProgress() {
@@ -143,6 +154,8 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
             let progress = RealmService.shared.getBookProgress(book.meta.id)
             progress.readingChapter = readingChapter
             progress.readingSentence = readingSentence
+            progress.solvedChapers.removeAll()
+            progress.solvedChapers.append(objectsIn: solvedChapters)
         }
     }
     
@@ -151,10 +164,10 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
     }
     
     
-    func start(_ sentences: [Sentence], _ readingSentenceId: String?) {
+    func startReader(_ sentences: [Sentence], _ readingSentenceId: String?) {
         let input1 = String(data: try! JSONEncoder().encode(sentences), encoding: .utf8)!
         let input2 = "'" + (readingSentenceId ?? "") + "'"
-        webView.evaluateJavaScript("window.webapp.start(\(input1),\(input2));") { _, error in
+        webView.evaluateJavaScript("window.webapp.startReader(\(input1),\(input2));") { _, error in
             if error != nil {
                 print(error)
                 AlertService.shared.alertErrorMsg(error!.localizedDescription)
@@ -162,7 +175,7 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
         }
     }
     
-    func resolveDict(_ res: String) {   webView.evaluateJavaScript("window.app.dictSearchResolve('\(res)');") { _, error in
+    func resolveDict(_ res: String) {   webView.evaluateJavaScript("window.app.dictSearchResolve('\(res.replacingOccurrences(of: "'", with: "\\'"))');") { _, error in
             if error != nil {
                 print(error)
                 AlertService.shared.alertErrorMsg(error!.localizedDescription)

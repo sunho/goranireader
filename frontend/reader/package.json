@@ -16,6 +16,9 @@
     "react-scripts": "3.1.1",
     "react-swipe": "^6.0.4",
     "styled-components": "^4.3.2",
+    "typeface-lato": "0.0.75",
+    "typeface-lora": "0.0.72",
+    "typeface-noto-sans-kr": "0.0.63",
     "typescript": "3.5.3"
   },
   "scripts": {

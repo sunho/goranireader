@@ -14,7 +14,9 @@ struct GuideCardProvider {
 class GuideMainViewController: UIViewController {
     @IBOutlet weak var wordCardView: GuideWordCardView!
     @IBOutlet weak var missionBookView: GuideMissionBookView!
+    @IBOutlet weak var usernameView: UILabel!
     
+    var username: String = ""
     var wordCount: Int = 0
     var mission: Mission?
     var missionBook: Book?
@@ -47,6 +49,11 @@ class GuideMainViewController: UIViewController {
             self.missionBook = book
             self.layout()
         }
+        FirebaseService.shared.getUserDoc().then { doc in
+            let username = doc.data()?[safe: "username"] as? String ?? ""
+            self.username = username
+            self.layout()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,10 +78,11 @@ class GuideMainViewController: UIViewController {
             wordCardView.button.isEnabled = true
             wordCardView.textView.text = "총 \(wordCount)개의 단어를 복습해야 합니다"
         }
-        if let book = missionBook, let mission = mission {
+        usernameView.text = username
+        if let book = missionBook, let mission = mission, Date() < mission.due.dateValue() {
             missionBookView.nameView.text = book.title
             missionBookView.authorView.text = book.author
-            missionBookView.dueView.text = mission.due.dateValue().description
+            missionBookView.dueView.text = (mission.due.dateValue() - Date()).readableString()
             missionBookView.msgView.text = mission.message
             if let cover = missionBook!.cover {
             missionBookView.coverView.kf.setImage(with: cover.source, placeholder: UIImage(named: "book_placeholder"))

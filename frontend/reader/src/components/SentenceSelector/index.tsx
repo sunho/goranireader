@@ -9,17 +9,21 @@ const SentenceSelectorContainer = styled.div<{  bottom: number; top: number; up:
   ${props => {
     if (props.up) {
       return css`
-        top: ${props.top - 36}px;
+        top: ${props.top - 60}px;
       `;
     } else {
       return css`
-        top: ${props.bottom}px;
+        top: ${props.bottom + 8}px;
       `;
     }
   }}
 
   & > div {
-    background: gray;
+    background: #AB7756;
+    padding: 8px;
+    margin-left: 6px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
     color: white;
   }
   z-index: 999;

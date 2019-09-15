@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		B10C76CC232C342E000CAD31 /* DictResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10C76CB232C342E000CAD31 /* DictResult.swift */; };
 		B10C76CE232C3A22000CAD31 /* GuideMissionBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10C76CD232C3A22000CAD31 /* GuideMissionBookView.swift */; };
+		B10C76D0232D658B000CAD31 /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10C76CF232D658B000CAD31 /* ReachabilityService.swift */; };
+		B10C76D2232DCC56000CAD31 /* new_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = B10C76D1232DCC55000CAD31 /* new_logo.png */; };
+		B10C76D4232DD1CB000CAD31 /* QuizProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10C76D3232DD1CB000CAD31 /* QuizProgress.swift */; };
+		B10C76D6232DDAC7000CAD31 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B10C76D5232DDAC6000CAD31 /* icon.png */; };
 		B11016D0231BC3ED00C0327A /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B11016CF231BC3ED00C0327A /* RealmSwift.framework */; };
 		B124047520A8CD90005EAE4F /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = B124047220A8CD90005EAE4F /* Cartfile */; };
 		B13393B320A8F78D00F34525 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = B13393B220A8F78D00F34525 /* .gitignore */; };
@@ -162,6 +166,10 @@
 /* Begin PBXFileReference section */
 		B10C76CB232C342E000CAD31 /* DictResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictResult.swift; sourceTree = "<group>"; };
 		B10C76CD232C3A22000CAD31 /* GuideMissionBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideMissionBookView.swift; sourceTree = "<group>"; };
+		B10C76CF232D658B000CAD31 /* ReachabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityService.swift; sourceTree = "<group>"; };
+		B10C76D1232DCC55000CAD31 /* new_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = new_logo.png; sourceTree = "<group>"; };
+		B10C76D3232DD1CB000CAD31 /* QuizProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizProgress.swift; sourceTree = "<group>"; };
+		B10C76D5232DDAC6000CAD31 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../../resources/result/icon.png; sourceTree = "<group>"; };
 		B11016CF231BC3ED00C0327A /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
 		B124047220A8CD90005EAE4F /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		B13393B220A8F78D00F34525 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = .gitignore; path = ../../.gitignore; sourceTree = "<group>"; };
@@ -408,6 +416,7 @@
 				C71B19B3229A698D00858540 /* Mission.swift */,
 				B1D541332329047900F6FBAD /* UserData.swift */,
 				B1D541392329214900F6FBAD /* BookyBook.swift */,
+				B10C76D3232DD1CB000CAD31 /* QuizProgress.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -477,6 +486,8 @@
 				B1B10FDE2327864C00FD252E /* GoogleService-Info.plist */,
 				C7BF8C5A224546D60037FD68 /* UIConsts.swift */,
 				C74CEFD7208C899F002765D6 /* AppDelegate.swift */,
+				B10C76D5232DDAC6000CAD31 /* icon.png */,
+				B10C76D1232DCC55000CAD31 /* new_logo.png */,
 				B1B11006232789EC00FD252E /* Firebase.h */,
 				C74CEFE1208C89A1002765D6 /* Assets.xcassets */,
 				C74CEFDB208C899F002765D6 /* Main.storyboard */,
@@ -618,6 +629,7 @@
 				C7C117662244A4920084C799 /* AlertService.swift */,
 				C7CF005B224D293800524D80 /* EventLogService.swift */,
 				B1B1101623279C9E00FD252E /* FirebaseService.swift */,
+				B10C76CF232D658B000CAD31 /* ReachabilityService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -704,8 +716,10 @@
 				B1D54140232945AC00F6FBAD /* reader in Resources */,
 				C7420F2022805E130077CC0B /* dict.db in Resources */,
 				B124047520A8CD90005EAE4F /* Cartfile in Resources */,
+				B10C76D2232DCC56000CAD31 /* new_logo.png in Resources */,
 				C74CEFE5208C89A1002765D6 /* LaunchScreen.storyboard in Resources */,
 				C74CEFE2208C89A1002765D6 /* Assets.xcassets in Resources */,
+				B10C76D6232DDAC7000CAD31 /* icon.png in Resources */,
 				B13393B320A8F78D00F34525 /* .gitignore in Resources */,
 				B1B110052327895500FD252E /* gRPCCertificates-Cpp.bundle in Resources */,
 				C74CEFDD208C899F002765D6 /* Main.storyboard in Resources */,
@@ -837,6 +851,7 @@
 				C7FC188F2239D748007172ED /* Book.swift in Sources */,
 				B143B05220A47613003341A3 /* POS.swift in Sources */,
 				C70F55C7224FE508006DBB0E /* BubbleTabBarController.swift in Sources */,
+				B10C76D0232D658B000CAD31 /* ReachabilityService.swift in Sources */,
 				B1B1101723279C9E00FD252E /* FirebaseService.swift in Sources */,
 				C70F55D122500959006DBB0E /* GuideRecommendedBookView.swift in Sources */,
 				B143B05320A47613003341A3 /* DictEntry.swift in Sources */,
@@ -867,6 +882,7 @@
 				C7C117822245450E0084C799 /* WordCardBackView.swift in Sources */,
 				B1B110192327AE9900FD252E /* LoginBulletPage.swift in Sources */,
 				C783AAB822420C0200D0D7BB /* SelfSizedTableView.swift in Sources */,
+				B10C76D4232DD1CB000CAD31 /* QuizProgress.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1014,6 +1030,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_CODE_COVERAGE = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = App/app.entitlements;
@@ -1055,6 +1072,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_CODE_COVERAGE = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = App/app.entitlements;

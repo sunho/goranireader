@@ -121,7 +121,7 @@ def updateChapterReadTimes():
 
 
 def updateBookReadTimes():
-    interDf = booksDf.join(readDf, ['bookId', 'chapterId'], 'inner')
+    interDf = booksDf.join(readDf, ['bookId', 'chapterId', 'sid'], 'inner')
     bookTimeDf = interDf.groupBy('userId', 'bookId').agg(
         F.sum('eltime').alias('eltime'))
     bookRes = bookTimeDf.collect()
@@ -150,7 +150,7 @@ def updateBookReadTimes():
 
 
 def updateBookReads():
-    interDf = booksDf.join(readDf, ['bookId'], 'inner')
+    interDf = booksDf.join(readDf, ['bookId', 'chapterId', 'sid'], 'inner')
     countDf = interDf.groupBy('userId', 'bookId').agg(
         count('*').alias('count')).cache()
     totalCountDf = booksDf.groupBy('bookId').agg(

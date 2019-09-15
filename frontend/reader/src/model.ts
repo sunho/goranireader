@@ -36,3 +36,21 @@ export interface DictDefinition {
   def: string;
   pos?: string;
 }
+
+export interface WordQuestion {
+  type: 'word';
+  id: string;
+  sentence: string;
+  wordIndex: number;
+  options: string[];
+  answer: number;
+}
+
+export interface SummaryQuestion {
+  type: 'summary';
+  id: string;
+  options: string[];
+  answer: number;
+}
+
+export type Question = WordQuestion | SummaryQuestion;

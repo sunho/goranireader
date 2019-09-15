@@ -1,7 +1,8 @@
 from datetime import datetime
 from airflow import DAG
-from operators import PySparkOperator
+from operators import CreateClusterOperator, PySparkOperator, DeleteClusterOperator
 from consts import PROJECT
+import uuid
 args = {
     'start_date': datetime(2019, 9, 7),
     'depends_on_past': False,
@@ -9,4 +10,7 @@ args = {
     'project_id': PROJECT
 }
 with DAG('update_progress', default_args=args) as dag:
+    create_cluster = CreateClusterOperator()
     job = PySparkOperator('update_progress')
+    delete_cluster = DeleteClusterOperator()
+    create_cluster >> job >> delete_cluster
