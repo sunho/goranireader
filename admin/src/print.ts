@@ -39,7 +39,7 @@ function createPage(grade: string, student: any) {
     <div style="display: flex; flex-direction: column; height: 100%; padding: 20px">
       <div style="flex: 0 0; display: flex; justify-content: space-between; align-items: center">
         <div style="display: flex; align-items: center">
-          <img style="max-width: 30px; margin-right: 8px" src="${logo}"/> Gorani Reader
+          <img style="max-width: 50px; " src="${logo}"/> Gorani Reader
         </div>
         <div>
           <div style="display: inline-block; padding: 4px;">${grade}</div>
@@ -53,7 +53,7 @@ function createPage(grade: string, student: any) {
           <div style="text-align: center; margin-bottom: 10px">
             Your secret code is
           </div>
-          <div style="background: black; padding: 10px">
+          <div style="background: #AB7756; padding: 10px">
             <div style="padding-top: 20px; padding-bottom: 20px; background: white; text-align: center">
               <div style="${tagStyle}">
               ${codes[0] || ""}

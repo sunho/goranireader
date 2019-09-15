@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   TextField,
   Button,
@@ -8,6 +8,8 @@ import {
   Typography,
   Paper
 } from "@material-ui/core";
+
+import {FirebaseContext} from '../Firebase';
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -48,14 +50,27 @@ const WaitPage: React.FC = props => {
     if (!email || !password) return;
   };
 
+  const firebase = useContext(FirebaseContext)!;
   const [values, setValues] = useState({ email: "", password: "" });
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Paper className={classes.paper}>
         <Typography component="h1" variant="h6" color="inherit">
-            Your account is not verified yet. Please contact to ksunhokim123@naver.com 
+            Your account is not verified yet. Please contact to ksunhokim123@naver.com
         </Typography>
+        <Button
+          variant="contained"
+          style={{marginTop: "20px"}}
+          color="primary"
+          onClick={() => {
+            firebase.auth.signOut().then(() => {
+              window.location.href="/login";
+            });
+          }}
+        >
+          LOGOUT
+        </Button>
       </Paper>
     </Container>
   );

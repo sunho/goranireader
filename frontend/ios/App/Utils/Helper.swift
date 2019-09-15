@@ -289,16 +289,16 @@ extension Date {
 
 extension TimeInterval{
     
-    func stringFromTimeInterval() -> String {
+    func readableString() -> String {
         
-        let time = NSInteger(self)
+        var time = NSInteger(self)
+        let days = time / (3600*24)
+        time = time % (3600*24)
+        let hours = time / 3600
+        time = time % 3600
+        let minutes = time / 60
         
-        let ms = Int((self.truncatingRemainder(dividingBy: 1)) * 1000)
-        let seconds = time % 60
-        let minutes = (time / 60) % 60
-        let hours = (time / 3600)
-        
-        return String(format: "%0.2d시간 %0.2d분",hours,minutes)
+        return "\(days) days \(hours) hours \(minutes) minutes"
         
     }
 }
@@ -367,3 +367,4 @@ extension Dictionary {
         return self.keys.contains(index) ? self[index] : nil
     }
 }
+

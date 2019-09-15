@@ -36,11 +36,11 @@ class AlertService {
     }
     
     func alertSuccessMsg(_ msg: String) {
-        alert(attributes: bottomSuccessAttr, title: "성공", description: msg)
+        alert(attributes: bottomSuccessAttr, title: "Success", description: msg)
     }
     
     func alertErrorMsg(_ msg: String) {
-        alert(attributes: bottomErrorAttr, title: "에러", description: msg)
+        alert(attributes: bottomErrorAttr, title: "Error", description: msg)
     }
     
     func alertError(_ error: GoraniError) {

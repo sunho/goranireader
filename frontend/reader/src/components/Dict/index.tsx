@@ -6,6 +6,8 @@ import { instanceOf } from "prop-types";
 
 const DictContainer = styled.div<{ up: boolean; hide: boolean }>`
   position: fixed;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
   ${props =>
     props.up
       ? css`
@@ -31,17 +33,18 @@ const DictContainer = styled.div<{ up: boolean; hide: boolean }>`
 
 const DictWordComponent = styled.div`
   flex-shrink: 0;
-  margin-bottom: 15px;
-  padding-top: 15px;
+  margin-bottom: 10px;
+  padding-top: 10px;
   padding-left: 10px;
   padding-right: 10px;
   font-weight: 500;
-  font-size: 15pt;
+  font-size: 21px;
 `;
 
 const DictDefsComponent = styled.div`
   margin-top: 5px;
   overflow-y: auto;
+  font-weight: 400;
   & > div {
     background: lightgray;
     padding: 10px;
@@ -66,7 +69,8 @@ const DictButtons = styled.div`
 
 const DictButton = styled.div<{ enabled: boolean }>`
   padding: 7px;
-  background: gray;
+  background: #AB7756;
+  font-weight: 700;
   color: white;
   ${props =>
     !props.enabled &&
@@ -100,6 +104,7 @@ const Dict: React.FC<Props> = props => {
   }, [props]);
 
   useOutsideClickObserver(dictRef, () => {
+    console.log("asdf");
     window.webapp.cancelSelect();
   });
 
