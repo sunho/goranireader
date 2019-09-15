@@ -63,7 +63,7 @@ class ReaderBridgeApp(private val fragment: ReaderFragment) {
     }
 
     @JavascriptInterface
-    fun wordSelected(i: Int, sid: String) {
+    fun wordSelected(word: String, i: Int, sid: String) {
         runOnUiThread {
             fragment.viewModel.wordSelect(i, sid)
         }
