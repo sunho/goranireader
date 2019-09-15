@@ -12,12 +12,13 @@ struct GuideCardProvider {
 }
 
 class GuideMainViewController: UIViewController {
-    @IBOutlet weak var wordCardView: GuideWordCardView!
     @IBOutlet weak var missionBookView: GuideMissionBookView!
     @IBOutlet weak var usernameView: UILabel!
+    @IBOutlet weak var progressView: UILabel!
     
     var username: String = ""
     var wordCount: Int = 0
+    var evCount: Int = 0
     var mission: Mission?
     var missionBook: Book?
     
@@ -32,6 +33,7 @@ class GuideMainViewController: UIViewController {
     
     func reloadData() {
         wordCount = RealmService.shared.getTodayUnknownWords().count
+        evCount = RealmService.shared.getEventLogs().count
         FirebaseService.shared.getClass().then { clas -> Promise<Book?> in
             guard let mission = clas.mission else {
                 self.mission = nil
@@ -65,18 +67,11 @@ class GuideMainViewController: UIViewController {
         reloadData()
     }
     
-    @IBAction func wordCardOpen(_ sender: Any) {
-        let vc = storyboard!.instantiateViewController(withIdentifier: "WordMainViewController")
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
     func layout() {
-        if wordCount == 0 {
-            wordCardView.button.isEnabled = false
-            wordCardView.textView.text = "복습해야 할 단어가 없습니다"
+        if evCount == 0 {
+            progressView.text = "Your progress has been sent to your teacher."
         } else {
-            wordCardView.button.isEnabled = true
-            wordCardView.textView.text = "총 \(wordCount)개의 단어를 복습해야 합니다"
+            progressView.text = "There are some progress (\(evCount)) that were not sent to your teacher. Please connect to the internet and reopen this app to send your progress."
         }
         usernameView.text = username
         if let book = missionBook, let mission = mission, Date() < mission.due.dateValue() {

@@ -11,7 +11,6 @@
 		B10C76CE232C3A22000CAD31 /* GuideMissionBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10C76CD232C3A22000CAD31 /* GuideMissionBookView.swift */; };
 		B10C76D0232D658B000CAD31 /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10C76CF232D658B000CAD31 /* ReachabilityService.swift */; };
 		B10C76D2232DCC56000CAD31 /* new_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = B10C76D1232DCC55000CAD31 /* new_logo.png */; };
-		B10C76D4232DD1CB000CAD31 /* QuizProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10C76D3232DD1CB000CAD31 /* QuizProgress.swift */; };
 		B10C76D6232DDAC7000CAD31 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B10C76D5232DDAC6000CAD31 /* icon.png */; };
 		B11016D0231BC3ED00C0327A /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B11016CF231BC3ED00C0327A /* RealmSwift.framework */; };
 		B124047520A8CD90005EAE4F /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = B124047220A8CD90005EAE4F /* Cartfile */; };
@@ -168,7 +167,6 @@
 		B10C76CD232C3A22000CAD31 /* GuideMissionBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideMissionBookView.swift; sourceTree = "<group>"; };
 		B10C76CF232D658B000CAD31 /* ReachabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityService.swift; sourceTree = "<group>"; };
 		B10C76D1232DCC55000CAD31 /* new_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = new_logo.png; sourceTree = "<group>"; };
-		B10C76D3232DD1CB000CAD31 /* QuizProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizProgress.swift; sourceTree = "<group>"; };
 		B10C76D5232DDAC6000CAD31 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../../resources/result/icon.png; sourceTree = "<group>"; };
 		B11016CF231BC3ED00C0327A /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
 		B124047220A8CD90005EAE4F /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
@@ -416,7 +414,6 @@
 				C71B19B3229A698D00858540 /* Mission.swift */,
 				B1D541332329047900F6FBAD /* UserData.swift */,
 				B1D541392329214900F6FBAD /* BookyBook.swift */,
-				B10C76D3232DD1CB000CAD31 /* QuizProgress.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -882,7 +879,6 @@
 				C7C117822245450E0084C799 /* WordCardBackView.swift in Sources */,
 				B1B110192327AE9900FD252E /* LoginBulletPage.swift in Sources */,
 				C783AAB822420C0200D0D7BB /* SelfSizedTableView.swift in Sources */,
-				B10C76D4232DD1CB000CAD31 /* QuizProgress.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

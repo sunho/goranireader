@@ -29,7 +29,7 @@ class LineInputField: UIView {
             make.top.equalTo(nameView.snp.bottom)
             make.left.right.bottom.equalToSuperview()
         }
-        textField.placeholder = "입력"
+        textField.placeholder = "Type in"
         textField.autocapitalizationType = .none
     }
     

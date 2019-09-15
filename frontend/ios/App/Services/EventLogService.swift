@@ -13,21 +13,19 @@ class EventLogService {
     }
 
     func send() {
-        if RechabilityService.shared.reach {
-            let currentUser = Auth.auth().currentUser
-            currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
-                if let error = error {
-                    return
-                }
-                guard let idToken = idToken else {
-                    return
-                }
-                for ev in RealmService.shared.getEventLogs() {
-                    let id = ev.id
-                    let obj = EventLogMap(type: ev.type, time: ev.time, payload: ev.payload)
-                    DispatchQueue.global(qos: .userInitiated).async {
-                        self.sendOne(obj, id: id, token: idToken)
-                    }
+        let currentUser = Auth.auth().currentUser
+        currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+            if let error = error {
+                return
+            }
+            guard let idToken = idToken else {
+                return
+            }
+            for ev in RealmService.shared.getEventLogs() {
+                let id = ev.id
+                let obj = EventLogMap(type: ev.type, time: ev.time, payload: ev.payload)
+                DispatchQueue.global(qos: .userInitiated).async {
+                    self.sendOne(obj, id: id, token: idToken)
                 }
             }
         }
@@ -59,6 +57,7 @@ class EventLogService {
             }
             DispatchQueue.main.async {
                 RealmService.shared.deleteEventLog(id)
+                NotificationCenter.default.post(name: .unknownWordAdded, object: nil)
             }
         }
         task.resume()

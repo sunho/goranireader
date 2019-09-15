@@ -38,7 +38,14 @@ extension BookReaderViewController: WKScriptMessageHandler {
                 case "addUnknownSentence":
                     addUnknownSentence(body["sid"] as! String)
                 case "addUnknownWord":
-                    addUnknownWord(sid: body["sid"] as! String, wordIndex: body["wordIndex"] as! Int, word: body["word"] as! String, def: body["def"] as! String)
+                    print("helllo")
+//                    addUnknownWord(sid: body["sid"] as! String, wordIndex: body["wordIndex"] as! Int, word: body["word"] as! String, def: body["def"] as! String)
+                case "submitQuestion":
+                    submitQuestion(body["qid"] as! String, body["option"] as! String, body["right"] as! Bool)
+                case "setReadingQuestion":
+                    setReadingQuestion(body["qid"] as! String)
+                case "endQuiz":
+                    endQuiz()
                 default:
                     fatalError("Unknown type for bridgeHandler")
                 }
@@ -48,10 +55,7 @@ extension BookReaderViewController: WKScriptMessageHandler {
     
     func initComplete() {
         inited = true
-        guard let chapter = currentChapter else {
-            return
-        }
-        startReader(chapter.items, readingSentence)
+        start()
     }
     
     func setLoading(_ load: Bool) {
@@ -97,6 +101,7 @@ extension BookReaderViewController: WKScriptMessageHandler {
     func readingSentenceChange(_ sid: String) {
         initForPage()
         readingSentence = sid
+        saveProgress()
     }
     
     func dictSearch(_ word: String) -> String {
@@ -116,5 +121,59 @@ extension BookReaderViewController: WKScriptMessageHandler {
         sentenceUnknowns.append(PaginateSentenceUnknown(sentenceId: sid, time: elapsedTime))
         RealmService.shared.addEventLog(ELUnknownSentencePayload(bookId: book.meta.id, chapterId: currentChapter!.id, sentenceId: sid))
         AlertService.shared.alertSuccessMsg("Sentence was marked as unknown")
+    }
+    
+    func submitQuestion(_ qid: String, _ option: String, _ right: Bool) {
+        RealmService.shared.addEventLog(
+            ELSubmitQuestionPayload(bookId: book.meta.id,
+                chapterId: currentChapter!.id,
+                questionId: qid,
+                option: option,
+                right: right,
+                time: elapsedTime)
+        )
+    }
+    
+    func setReadingQuestion(_ qid: String) {
+        initForPage()
+        print(qid)
+        readingQuestion = qid
+        saveProgress()
+    }
+    
+    func endQuiz() {
+        solvedChapters.append(currentChapter!.id)
+        saveProgress()
+        next()
+    }
+    
+    func startReader(_ sentences: [Sentence], _ readingSentenceId: String?) {
+        let input1 = String(data: try! JSONEncoder().encode(sentences), encoding: .utf8)!
+        let input2 = "'" + (readingSentenceId ?? "") + "'"
+        webView.evaluateJavaScript("window.webapp.startReader(\(input1),\(input2));") { _, error in
+            if error != nil {
+                print(error)
+                AlertService.shared.alertErrorMsg(error!.localizedDescription)
+            }
+        }
+    }
+    
+    func startQuiz(_ questions: [Question], _ readingQuestionId: String?) {
+        let input1 = String(data: try! JSONEncoder().encode(questions), encoding: .utf8)!
+        let input2 = "'" + (readingQuestionId ?? "") + "'"
+        webView.evaluateJavaScript("window.webapp.startQuiz(\(input1),\(input2));") { _, error in
+            if error != nil {
+                print(error)
+                AlertService.shared.alertErrorMsg(error!.localizedDescription)
+            }
+        }
+    }
+    
+    func resolveDict(_ res: String) {   webView.evaluateJavaScript("window.app.dictSearchResolve('\(res.replacingOccurrences(of: "'", with: "\\'"))');") { _, error in
+        if error != nil {
+            print(error)
+            AlertService.shared.alertErrorMsg(error!.localizedDescription)
+            }
+        }
     }
 }
