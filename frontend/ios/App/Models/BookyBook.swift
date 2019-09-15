@@ -27,6 +27,16 @@ struct Chapter: Codable {
     let items: [Sentence]
     let title: String
     let fileName: String
+    let questions: [Question]?
+}
+
+struct Question: Codable {
+    let type: String
+    let id: String
+    let sentence: String?
+    let wordIndex: Int?
+    let options: [String]
+    let answer: Int
 }
 
 struct Sentence: Codable {

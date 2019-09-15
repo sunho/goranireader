@@ -20,7 +20,7 @@ const SentenceSelectorContainer = styled.div<{  bottom: number; top: number; up:
 
   & > div {
     background: #AB7756;
-    padding: 8px;
+    padding: 4px;
     margin-left: 6px;
     font-family: 'Noto Sans KR', sans-serif;
     font-weight: 700;

@@ -33,6 +33,18 @@ const Wrapper: React.SFC = () => {
     },
     []
   );
+  useLiteEventObserver(
+    window.webapp.onStartQuiz,
+    (event: any) => {
+      setState(null);
+      setState({
+        type: 'quiz',
+        questions: event.questions,
+        qid: event.qid
+      });
+    },
+    []
+  );
   useEffect(() => {
     window.app.initComplete();
     if (process.env.NODE_ENV === "development") {
@@ -53,6 +65,13 @@ const Wrapper: React.SFC = () => {
         options: ['hihi', 'hoho'],
         answer: 0,
         id: '1'
+      },{
+        type: 'word',
+        sentence: 'hello world',
+        wordIndex: 1,
+        options: ['hihi', 'hoho'],
+        answer: 0,
+        id: '2'
       }], '')
     }
   }, []);

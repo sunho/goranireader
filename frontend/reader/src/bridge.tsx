@@ -14,6 +14,10 @@ export interface App {
   dictSearch(word: string): string | Promise<string>;
   addUnknownWord(sid: string, wordIndex: number, word: string, def: string): void;
   addUnknownSentence(sid: string): void;
+
+  submitQuestion(qid: string, option: string, right: boolean): void;
+  setReadingQuestion(qid: string): void;  //TODO change name
+  endQuiz(): void;
 }
 
 export class Webapp {
@@ -174,6 +178,18 @@ class DevAppImpl implements App {
   addUnknownWord(sid: string, wordIndex: number, word: string, def: string) {
     console.log(`addUnknownWord sid: ${sid} wordIndex: ${wordIndex} word: ${word} def: ${def}`);
   }
+
+  submitQuestion(qid: string, option: string, answer: boolean) {
+
+  }
+
+  setReadingQuestion(qid: string) {
+
+  }
+
+  endQuiz() {
+
+  }
 }
 
 class IOSAppImpl implements App {
@@ -237,6 +253,18 @@ class IOSAppImpl implements App {
 
   addUnknownWord(sid: string, wordIndex: number, word: string, def: string) {
     window.webkit.messageHandlers.bridge.postMessage({type: "addUnknownWord", sid: sid, wordIndex: wordIndex, word: word, def: def})
+  }
+
+  submitQuestion(qid: string, option: string, right: boolean) {
+    window.webkit.messageHandlers.bridge.postMessage({type: "submitQuestion", qid: qid, option: option, right: right})
+  }
+
+  setReadingQuestion(qid: string) {
+    window.webkit.messageHandlers.bridge.postMessage({type: "setReadingQuestion", qid: qid})
+  }
+
+  endQuiz() {
+    window.webkit.messageHandlers.bridge.postMessage({type: "endQuiz"})
   }
 }
 
