@@ -11,6 +11,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import kim.sunho.goranireader.R
 import kim.sunho.goranireader.databinding.HomeBooksItemBinding
 import kim.sunho.goranireader.fragments.HomeFragmentDirections
@@ -20,14 +21,29 @@ import kim.sunho.goranireader.ui.BindBaseAdapter
 import kim.sunho.goranireader.ui.BindViewHolder
 import kim.sunho.goranireader.ui.ErrorToaster
 import kim.sunho.goranireader.ui.SingleLayoutAdapter
-
+import android.graphics.BitmapFactory
+import android.graphics.Bitmap
+import android.util.Base64
+import android.widget.ImageView
 
 
 class HomeBooksViewHolder(binding: HomeBooksItemBinding, private val viewModel: HomeBooksViewModel, private val context: Context): BindViewHolder<HomeBooksItemBinding, Content>(binding) {
     override fun bind(m: Content) {
         binding.model = m
         binding.root.tag = m
-        if (m is Content.Downloading) {
+        val view = binding.root
+        val model = view.tag as Content
+        if (m is Content.Online) {
+            if (model.img != null) {
+                Glide.with(view).load(model.img).into(view.findViewById(R.id.imageView))
+            }
+        } else if (m is Content.Offline) {
+            if (model.img != null) {
+                val decodedString = Base64.decode(model.img, Base64.DEFAULT)
+                val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                (view.findViewById(R.id.imageView) as ImageView).setImageBitmap(decodedByte)
+            }
+        } else if (m is Content.Downloading) {
             m.complete.observe(this, Observer {
                 if (m.currentError != null) {
                     ErrorToaster.toast(context, m.currentError)

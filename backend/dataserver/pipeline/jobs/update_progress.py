@@ -11,7 +11,7 @@ from pyspark.sql.types import *
 from gorani import firebase
 from gorani.schema import Book, PaginatePayload
 
-db = firebase.init()
+firebase.init() 
 db = firebase.db()
 spark = SparkSession.builder.appName('Update Progress').getOrCreate()
 docs = db.collection("books").stream()

@@ -26,7 +26,6 @@ class HomeBooksViewModel: ViewModel() {
         val newList = ContentService.fetchContents()
         scope.launch {
             val udata = db.getUserdata() ?: return@launch
-
             val clas = db.getClass() ?: return@launch
             if (clas.mission?.bookId != null) {
                 if (!udata.ownedBooks.contains(clas.mission.bookId)) {
@@ -34,10 +33,11 @@ class HomeBooksViewModel: ViewModel() {
                 }
             }
 
-            val books = db.getOwnedBooks() ?: return@launch
+
+            val books = db.getBooks()
 
             launch(Dispatchers.Main.immediate) {
-                _contentList.value = newList + books.map { it.toContent() }
+                _contentList.value = newList + books.filter { !newList.map { it.bookId }.contains(it.id) }.map { it.toContent() }
             }
         }
     }

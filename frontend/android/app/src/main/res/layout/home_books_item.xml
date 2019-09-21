@@ -24,7 +24,6 @@
                     android:id="@+id/imageView"
                     android:layout_width="100dp"
                     android:layout_height="120dp"
-                    app:imageUrl="@{model.img}"
                     android:padding="4dp" />
 
             <TextView

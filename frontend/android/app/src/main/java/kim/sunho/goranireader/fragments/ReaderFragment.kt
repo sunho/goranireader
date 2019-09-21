@@ -18,8 +18,10 @@ import kim.sunho.goranireader.extensions.*
 import kim.sunho.goranireader.fragments.home.HomeBooksViewModel
 import kim.sunho.goranireader.fragments.reader.ReaderBridgeApp
 import kim.sunho.goranireader.fragments.reader.ReaderViewModel
+import kim.sunho.goranireader.models.Question
 import kim.sunho.goranireader.services.ContentService
 import kotlinx.coroutines.launch
+import java.lang.IllegalStateException
 import java.util.*
 
 
@@ -48,6 +50,7 @@ class ReaderFragment: CoroutineFragment() {
         webView = view.findViewById(R.id.webView)
         bridge = Bridge(webView)
         bridgeApp = ReaderBridgeApp(this)
+        WebView.setWebContentsDebuggingEnabled(true)
         webView.addJavascriptInterface(bridgeApp, "app")
         timer = Timer()
         timer.scheduleAtFixedRate(
@@ -58,6 +61,26 @@ class ReaderFragment: CoroutineFragment() {
             },
             0, 100
         )
+    }
+
+
+    fun start() {
+        viewModel.loaded = false
+        val chapter = viewModel.currentChapter() ?: throw IllegalStateException("no chapter")
+        if (!viewModel.quiz) {
+            bridge.startReader(chapter.items, viewModel.readingSentence)
+            return
+        }
+//        chapter.questions = ArrayList(listOf(
+//            Question("word", "1", "hello world", 0, ArrayList(listOf("hoi", "He")), 0),
+//            Question("summary", "2", null, null, ArrayList(listOf("hoi", "He")), 0)
+//        ))
+        if (chapter.questions == null) {
+            viewModel.quiz = false
+            viewModel.updateProgress()
+            throw IllegalStateException("no chapter")
+        }
+        bridge.startQuiz(chapter.questions!!, viewModel.readingQuestion)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,7 +112,6 @@ class ReaderFragment: CoroutineFragment() {
             override fun onSwipeLeft() {
                 if (viewModel.isEnd.value == true && viewModel.inited && viewModel.loaded) {
                     viewModel.next()
-                    findNavController().navigate(R.id.action_readerFragment_to_quizFragment)
                 }
             }
 
@@ -99,10 +121,8 @@ class ReaderFragment: CoroutineFragment() {
                 }
             }
         }))
-        viewModel.readingChapter.observe(this, Observer {
-            viewModel.initForChapter()
-            bridge.start(viewModel.currentChapter()!!.items, viewModel.readingSentence)
-            viewModel.loaded = false
+        viewModel.needStart.observe(this, Observer {
+            this.start()
         })
         webView.loadUrl("file:///android_asset/reader/index.html")
     }

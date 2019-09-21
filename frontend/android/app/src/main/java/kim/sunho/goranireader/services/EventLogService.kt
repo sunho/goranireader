@@ -2,6 +2,7 @@ package kim.sunho.goranireader.services
 
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.extensions.jsonBody
 import com.google.android.gms.tasks.OnCompleteListener
@@ -31,6 +32,7 @@ object EventLogService {
     lateinit var auth: FirebaseAuth
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Default + job)
+    val onNeedFetch: MutableLiveData<Unit> = MutableLiveData()
     fun init(auth: FirebaseAuth) {
         this.auth = auth
     }
@@ -47,6 +49,11 @@ object EventLogService {
     fun unknownWord(bookId: String, chapterId: String, sentenceId: String, wordIndex: Int, word: String, def: String) {
         val payload = ELUnknownWord(bookId, chapterId, sentenceId, wordIndex, word, def)
         postEventLog("unknown_word", JsonDefault().stringify(ELUnknownWord.serializer(), payload))
+    }
+
+    fun submitQuestion(bookId: String, chapterId: String, questionId: String, option: String, right: Boolean, time: Int) {
+        val payload = ELSubmitQuestionPayload(bookId, chapterId, questionId, option, right, time)
+        postEventLog("submit_question", JsonDefault().stringify(ELSubmitQuestionPayload.serializer(), payload))
     }
 
     fun unknownSentence(bookId: String, chapterId: String, sentenceId: String) {
@@ -116,6 +123,7 @@ object EventLogService {
                                     .deleteAllFromRealm()
                             }
                         }
+                        onNeedFetch.value = Unit
                     }
                 } catch (e: Exception) {
                     Log.d("error", e.message)

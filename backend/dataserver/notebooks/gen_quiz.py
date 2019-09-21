@@ -57,6 +57,7 @@ for line in f:
     coefs = np.asarray(values[1:], dtype='float32')
     word_embeddings[word] = coefs
 f.close()
+bookname = 'book1'
 from nltk.corpus import stopwords
 stop_words = stopwords.words('english')
 def remove_stopwords(sen):
@@ -97,7 +98,7 @@ from nltk.probability import FreqDist
 from nltk.tokenize import word_tokenize
 import simplejson
 book = None
-with open('out.book', 'rb') as f:
+with open(bookname+'.book', 'rb') as f:
   book = simplejson.load(f)
 fdist = FreqDist()
 for chap in book['chapters']:
