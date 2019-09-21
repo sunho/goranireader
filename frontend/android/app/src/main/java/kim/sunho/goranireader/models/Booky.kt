@@ -13,7 +13,8 @@ data class Chapter(
     val id: String = "",
     val items: List<Sentence> = ArrayList(),
     val title: String = "",
-    val fileName: String = ""
+    val fileName: String = "",
+    var questions: List<Question>? = null //TODO
 )
 
 @Serializable
@@ -30,4 +31,14 @@ data class Metadata(
     val coverType: String = "",
     val author: String = "",
     val id: String = ""
+)
+
+@Serializable
+data class Question(
+    val type: String = "",
+    val id: String = "",
+    val sentence: String? = null,
+    val wordIndex: Int? = null,
+    val options: List<String> = ArrayList(),
+    val answer: Int = 0
 )

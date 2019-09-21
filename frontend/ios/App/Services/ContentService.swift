@@ -96,7 +96,7 @@ class ContentService {
     
     func getDownloadableContents() -> Promise<[Content]> {
         let localContents = getLocalContents()
-        return FirebaseService.shared.getOwnedBooks().then { books in
+        return FirebaseService.shared.getBooks().then { books in
             return Promise(books.map { DownloadableContent(book: $0) })
             }.then { books in
                 print("books:", books)

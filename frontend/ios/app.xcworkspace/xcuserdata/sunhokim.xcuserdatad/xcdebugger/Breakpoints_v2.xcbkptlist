@@ -181,7 +181,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "App/UI/Guide/GuideMainViewController.swift"
-            timestampString = "590270717.658982"
+            timestampString = "590307912.3934211"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "25"
@@ -197,11 +197,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "App/Services/FirebaseService.swift"
-            timestampString = "590270627.035647"
+            timestampString = "590579728.921613"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
+            startingLineNumber = "147"
+            endingLineNumber = "147"
             landmarkName = "login(word:word2:number:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -213,11 +213,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "App/Services/FirebaseService.swift"
-            timestampString = "590270627.035718"
+            timestampString = "590579728.9268301"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
+            startingLineNumber = "153"
+            endingLineNumber = "153"
             landmarkName = "login(word:word2:number:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -229,11 +229,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "App/Services/FirebaseService.swift"
-            timestampString = "590270627.035813"
+            timestampString = "590579728.927152"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "143"
-            endingLineNumber = "143"
+            startingLineNumber = "152"
+            endingLineNumber = "152"
             landmarkName = "login(word:word2:number:completion:)"
             landmarkType = "7">
          </BreakpointContent>

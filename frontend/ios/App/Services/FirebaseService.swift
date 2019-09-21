@@ -35,6 +35,15 @@ class FirebaseService {
         }
     }
     
+    func getBooks() -> Promise<[Book]> {
+        return db().collection("books").getDocumentsPromise().then { res -> [Book] in
+            return res.documents.flatMap { doc in
+                let out = try? FirestoreDecoder().decode(Book.self, from: doc.data())
+                return out
+            }
+        }
+    }
+    
     func getBook(_ id: String) -> Promise<Book> {
         return db().collection("books").document(id).getDocumentPromise().then { doc in
             if !doc.exists {
@@ -145,6 +154,7 @@ class FirebaseService {
                 "fireId": user.uid
             ]) { err in
                 if err == nil {
+                    completion(true, replacing, nil)
                     return
                 }
                 fatalError(err!.localizedDescription)
@@ -160,7 +170,7 @@ class FirebaseService {
                 }
                 fatalError(err!.localizedDescription)
             }
-            completion(true, replacing, nil)
+            
         }
     }
     

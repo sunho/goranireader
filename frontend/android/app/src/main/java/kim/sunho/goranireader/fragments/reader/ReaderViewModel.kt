@@ -30,20 +30,16 @@ class ReaderViewModel: CoroutineViewModel() {
     var stopped: Boolean = false
     var elapsedTime: Int = 0 //ms
     var book: BookyBook? = null
-    var isQuiz: Boolean = false
     val timer: Timer = Timer()
     var inited: Boolean = false
     var loaded: Boolean = false
     var tt: TimerTask? = null
+    var quiz: Boolean = false
     var readingSentence: String = ""
-        set(value) {
-            if (value == "") {
-                return
-            }
-            field = value
-            updateProgress()
-        }
+    var readingQuestion: String = ""
+    var solvedChapters: MutableList<String> = ArrayList()
     val readingChapter: MutableLiveData<Int> = MutableLiveData()
+    val needStart: MutableLiveData<Unit> = MutableLiveData()
 
     private val readingChapterMediator = MediatorLiveData<Unit>().apply {
         addSource(readingChapter) { value ->
@@ -64,6 +60,10 @@ class ReaderViewModel: CoroutineViewModel() {
                         val i = book!!.chapters.indexOfFirst { it.id == progress.chapterId }
                         val sen = progress.sentenceId
                         readingChapter.value = if (i != -1) i else 0
+                        readingQuestion = progress.questionId
+                        readingSentence = progress.sentenceId
+                        quiz = progress.quiz
+                        solvedChapters = progress.solvedChapters.toMutableList()
                         readingSentence = sen
                     } else {
                         realm.executeTransaction {
@@ -89,14 +89,14 @@ class ReaderViewModel: CoroutineViewModel() {
     }
 
     fun initForChapter() {
-        loaded = false
+        initForPage()
+        isStart.value = false
+        isEnd.value = false
     }
 
     fun initForPage() {
-        elapsedTime = 0
         startTimer()
-        isStart.value = false
-        isEnd.value = false
+        elapsedTime = 0
         wordUnknowns.clear()
         sentenceUnknown.clear()
     }
@@ -112,35 +112,12 @@ class ReaderViewModel: CoroutineViewModel() {
     }
 
     fun paginate(sids: List<String>) {
-        Realm.getDefaultInstance().use { realm ->
-            val progress = getProgress(realm)!!
-            var chapRead = progress.chapterReads.where()
-                .equalTo("id", currentChapter()!!.id)
-                .findFirst()
-            if (chapRead == null) {
-                realm.executeTransaction {
-                    val new = it.createObject(ChapterRead::class.java)
-                    new.id = currentChapter()!!.id
-                    new.nSen = currentChapter()!!.items.size
-                    progress.chapterReads.add(new)
-                    chapRead = new
-                }
-            }
-            realm.executeTransaction {
-                chapRead!!.sentences.removeAll(sids)
-                chapRead!!.sentences.addAll(sids)
-                chapRead!!.percent = chapRead!!.sentences.size / ( chapRead!!.nSen.toDouble())
-                val totalSen = progress.chapterReads.map {
-                    it.percent * it.nSen
-                }.sum()
-                progress.percent = totalSen / book!!.chapters.map { it.items.size }.sum()
-                Log.d("percent",  progress.percent.toString())
-                progress.updatedAt = Date()
-            }
-        }
-        EventLogService.paginate(book!!.meta.id, currentChapter()!!.id, elapsedTime, sids, wordUnknowns, sentenceUnknown)
+       EventLogService.paginate(book!!.meta.id, currentChapter()!!.id, elapsedTime, sids, wordUnknowns, sentenceUnknown)
     }
 
+    fun submitQuestion(qid: String, option: String, right: Boolean) {
+        EventLogService.submitQuestion(book!!.meta.id, currentChapter()!!.id, qid, option, right, elapsedTime)
+    }
 
     fun stopTimer() {
         stopped = true
@@ -149,9 +126,36 @@ class ReaderViewModel: CoroutineViewModel() {
     fun next() {
         val book = this.book!!
         val i = this.readingChapter.value!!
-        if (i < book.chapters.size) {
-            readingSentence = book.chapters[i + 1].items[0].id
-            this.readingChapter.value = i + 1
+        val chap = currentChapter()!!
+//        chap.questions = ArrayList(listOf(
+//            Question("word", "1", "hello world", 0, ArrayList(listOf("hoi", "He")), 0),
+//            Question("summary", "2", null, null, ArrayList(listOf("hoi", "He")), 0)
+//        ))
+
+        if (chap.questions != null &&
+            chap.questions!!.isNotEmpty() &&
+            !solvedChapters.contains(chap.id)) {
+            quiz = true
+            readingSentence = ""
+            readingQuestion = chap.questions!![0].id
+            updateProgress()
+            needStart.value = Unit
+        } else {
+            if (quiz && i == book.chapters.size - 1) {
+                quiz = false
+                readingSentence = book.chapters[i].items.getOrNull(chap.items.size - 1)?.id ?: ""
+                readingQuestion = ""
+                readingChapter.value = i + 1
+                updateProgress()
+                needStart.value = Unit
+            } else if (i < book.chapters.size - 1) {
+                quiz = false
+                readingSentence = book.chapters[i + 1].items[0].id
+                readingQuestion = ""
+                readingChapter.value = i + 1
+                updateProgress()
+                needStart.value = Unit
+            }
         }
     }
 
@@ -160,34 +164,33 @@ class ReaderViewModel: CoroutineViewModel() {
         val i = this.readingChapter.value!!
         val chap = book.chapters[i - 1]
         if (i > 0) {
-            readingSentence = book.chapters[i - 1].items[chap.items.size - 1].id
-            this.readingChapter.value = i - 1
+            quiz = false
+            readingSentence = book.chapters[i - 1].items.getOrNull(chap.items.size - 1)?.id ?: ""
+            readingChapter.value = i - 1
+            needStart.value = Unit
         }
     }
 
-    fun sentenceSelect(sid: String) {
-        sentenceUnknown.add(PaginateSentenceUnknown(sid, elapsedTime))
-    }
 
-    fun wordSelect(wordIndex: Int, sid: String) {
-        wordUnknowns.add(PaginateWordUnknown(sid, "", wordIndex, elapsedTime))
+    fun wordSelect(word: String, wordIndex: Int, sid: String) {
+        wordUnknowns.add(PaginateWordUnknown(sid, word, wordIndex, elapsedTime))
     }
 
     fun addUnknownSentence(sid: String) {
+        sentenceUnknown.add(PaginateSentenceUnknown(sid, elapsedTime))
         EventLogService.unknownSentence(book!!.meta.id, currentChapter()!!.id, sid)
     }
 
-    fun addUnknownWord(sid: String, wordIndex: Int, word: String, def: String) {
-        wordUnknowns.add(PaginateWordUnknown(sid, word, wordIndex, elapsedTime))
-        EventLogService.unknownWord(book!!.meta.id, currentChapter()!!.id, sid, wordIndex, word, def)
-    }
-
-    private fun updateProgress() {
+    fun updateProgress() {
         Realm.getDefaultInstance().use { realm ->
             realm.executeTransactionAsync {
                 val progress = getProgress(it)!!
                 progress.chapterId = book!!.chapters[readingChapter.value ?: 0].id
                 progress.sentenceId = readingSentence
+                progress.questionId = readingQuestion
+                progress.quiz = quiz
+                progress.solvedChapters.clear()
+                progress.solvedChapters.addAll(solvedChapters)
             }
         }
     }

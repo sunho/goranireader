@@ -12,6 +12,7 @@ nltk.download('punkt')
 
 MIN_SEN_LEN = 30
 
+bookname = 'book3'
 def get_contents(book):
   out = map(lambda item: {'content': get_text(item.get_content().decode('utf-8')), 'name': item.file_name},
     filter(lambda item: isinstance(item, epub.EpubHtml), book.items)
@@ -93,9 +94,9 @@ def convert_book(book):
   out.chapters = book_to_chapters(book)
   return out
 
-book = epub.read_epub('test.epub')
+book = epub.read_epub(bookname+'.epub')
 from xml.dom import minidom
 cbook = convert_book(book)
 buf = minidom.parseString(cbook.toXML().decode('utf-8')).toprettyxml(indent="   ")
-with open("out.xml", "w") as f:
+with open(bookname+".xml", "w") as f:
   f.write(buf)

@@ -100,13 +100,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }, 0, 5000)
-
-        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable ->
-            Log.e(
-                "Error" + Thread.currentThread().stackTrace[2],
-                paramThrowable.localizedMessage!!
-            )
-        }
     }
 
     fun loggedIn(): Boolean {

@@ -30,9 +30,11 @@ object ContentService {
                 downloadingMap.remove(k)
             }
         }
-        return (fetchLocalContents().map {
-            Content.Offline(it, "asdfadfs", "asdf,", "asdf", it + ".book")
-        } + downloadingMap.map {
+        val locals = fetchLocalContents()
+        return (locals.map {
+            val meta = readBook(it + ".book").meta
+            Content.Offline(it, meta.cover, meta.title, meta.author, it + ".book")
+        } + downloadingMap.filter{ !locals.contains(it.key) }.map {
             it.value
         })
     }

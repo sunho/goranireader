@@ -26,6 +26,16 @@ data class ELPaginatePayload (
 )
 
 @Serializable
+data class ELSubmitQuestionPayload (
+    val bookId: String = "",
+    val chapterId: String = "",
+    val questionId: String = "",
+    val option: String = "",
+    val right: Boolean = false,
+    val time: Int = 0
+)
+
+@Serializable
 data class ELUnknownWord (
     val bookId: String = "",
     val chapterId: String = "",
