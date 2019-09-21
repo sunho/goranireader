@@ -30,6 +30,13 @@ class DBService(private val db: FirebaseFirestore, private val auth: FirebaseAut
         }
     }
 
+    fun getBooks(): List<Book> {
+        val res = Tasks.await(db.collection("books").get())
+        return res.documents.map {
+            it.toObject(Book::class.java)!!
+        }
+    }
+
     fun bookDoc(id: String): DocumentReference {
         return db.collection("books").document(id)
     }

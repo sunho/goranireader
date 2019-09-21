@@ -12,5 +12,8 @@ open class BookRead (
     var updatedAt: Date = Date(),
     var chapterId: String = "",
     var sentenceId: String = "",
+    var questionId: String = "",
+    var quiz: Boolean = false,
+    var solvedChapters: RealmList<String> = RealmList(),
     var chapterReads: RealmList<ChapterRead> = RealmList()
 ) : RealmObject()

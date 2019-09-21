@@ -1,7 +1,9 @@
 package kim.sunho.goranireader.fragments.reader
 
+import android.util.EventLog
 import android.util.Log
 import android.webkit.JavascriptInterface
+import io.realm.Realm
 import kim.sunho.goranireader.extensions.JsonDefault
 import kim.sunho.goranireader.extensions.main
 import kim.sunho.goranireader.extensions.onUi
@@ -19,19 +21,20 @@ class ReaderBridgeApp(private val fragment: ReaderFragment) {
     @JavascriptInterface
     fun initComplete() {
         runOnUiThread {
+            Log.d("adsf", "initComplete")
             fragment.viewModel.inited = true
-            val chapter = fragment.viewModel.currentChapter() ?: return@runOnUiThread
-            fragment.bridge.start(chapter.items, fragment.viewModel.readingSentence)
+            fragment.start()
         }
     }
 
     @JavascriptInterface
     fun setLoading(load: Boolean) {
         runOnUiThread {
+            Log.d("adsf", "setLoading $load")
             if (fragment.viewModel.inited) {
                 fragment.viewModel.loaded = !load
                 if (!load) {
-                    fragment.viewModel.initForPage()
+                    fragment.viewModel.initForChapter()
                 }
             }
         }
@@ -40,7 +43,6 @@ class ReaderBridgeApp(private val fragment: ReaderFragment) {
     @JavascriptInterface
     fun atStart() {
         runOnUiThread {
-            initViewModel()
             fragment.viewModel.isStart.value = true
         }
     }
@@ -48,7 +50,6 @@ class ReaderBridgeApp(private val fragment: ReaderFragment) {
     @JavascriptInterface
     fun atMiddle() {
         runOnUiThread {
-            initViewModel()
             fragment.viewModel.isStart.value = false
             fragment.viewModel.isEnd.value = false
         }
@@ -57,7 +58,6 @@ class ReaderBridgeApp(private val fragment: ReaderFragment) {
     @JavascriptInterface
     fun atEnd() {
         runOnUiThread {
-            initViewModel()
             fragment.viewModel.isEnd.value = true
         }
     }
@@ -65,7 +65,7 @@ class ReaderBridgeApp(private val fragment: ReaderFragment) {
     @JavascriptInterface
     fun wordSelected(word: String, i: Int, sid: String) {
         runOnUiThread {
-            fragment.viewModel.wordSelect(i, sid)
+            fragment.viewModel.wordSelect(word, i, sid)
         }
     }
 
@@ -78,15 +78,15 @@ class ReaderBridgeApp(private val fragment: ReaderFragment) {
 
     @JavascriptInterface
     fun sentenceSelected(sid: String) {
-        runOnUiThread {
-            fragment.viewModel.sentenceSelect(sid)
-        }
     }
 
     @JavascriptInterface
     fun readingSentenceChange(sid: String) {
         runOnUiThread {
+            Log.d("adsf", "setReadingQuestion $sid")
+            fragment.viewModel.initForPage()
             fragment.viewModel.readingSentence = sid
+            fragment.viewModel.updateProgress()
         }
     }
 
@@ -104,17 +104,37 @@ class ReaderBridgeApp(private val fragment: ReaderFragment) {
 
     @JavascriptInterface
     fun addUnknownWord(sid: String, wordIndex: Int, word: String, def: String) {
+    }
+
+    @JavascriptInterface
+    fun submitQuestion(qid: String, option: String, right: Boolean) {
         runOnUiThread {
-            fragment.viewModel.addUnknownWord(sid, wordIndex, word, def)
+            fragment.viewModel.submitQuestion(qid, option, right)
         }
+    }
+
+    @JavascriptInterface
+    fun setReadingQuestion(qid: String) {
+        runOnUiThread {
+            Log.d("adsf", "setReadingQuestion $qid")
+            fragment.viewModel.initForPage()
+            fragment.viewModel.readingQuestion = qid
+            fragment.viewModel.updateProgress()
+        }
+    }
+
+    @JavascriptInterface
+    fun endQuiz() {
+        runOnUiThread {
+            fragment.viewModel.solvedChapters.add(fragment.viewModel.currentChapter()!!.id)
+            fragment.viewModel.updateProgress()
+            fragment.viewModel.next()
+        }
+
     }
 
     private fun runOnUiThread(action: () -> Unit) {
         fragment.activity.main().runOnUiThread(action)
-    }
-
-    private fun initViewModel() {
-        fragment.viewModel.initForPage()
     }
 }
 

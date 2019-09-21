@@ -52,6 +52,7 @@ const ProgressPage: React.FC = () => {
   const tabDef = TabToTabDef[tab];
   const labels = tabDef.getLabels && tabDef.getLabels(raw, classInfo);
   const data = tabDef.getData(raw, classInfo, labels ? (labels[label] ? labels[label].value : undefined) : undefined);
+  console.log(data);
   const classes = useStyles();
   useEffect(() => {
     (async () => {

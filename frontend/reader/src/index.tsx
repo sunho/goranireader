@@ -13,6 +13,10 @@ import Wrapper from "./components/Wrapper";
 import styled, { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
+  * {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -moz-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
   body {
     margin: 0;
     font-family: 'Lora', serif;

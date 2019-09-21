@@ -17,6 +17,7 @@ const SentenceComponent = styled.p<{ inline: boolean; selected: boolean }>`
   ${props =>
     props.selected &&
     css`
+      display: block;
       background: gray;
       padding: 4px;
       font-weight: 700;
@@ -29,9 +30,9 @@ const WordComponent = styled.span<{ selected: boolean; first: boolean }>`
   ${props =>
     props.selected &&
     css`
+      display: inline;
       background: gray;
       font-weight: 700;
-      padding: 4px;
       color: white;
     `}
   ${props =>
