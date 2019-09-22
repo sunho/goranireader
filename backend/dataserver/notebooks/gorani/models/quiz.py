@@ -16,13 +16,11 @@ class Quiz:
   @staticmethod
   def fromXML(buf):
     root = xml.fromstring(buf)
-    itemstag = root.find('items')
-    meta = Metadata.fromXML(metatag)
     chapstag = root.find('chapters')
     chapters = list()
     for chap in chapstag:
       chapters.append(Chapter.fromXML(chap))
-    out = Book(meta)
+    out = Quiz()
     out.chapters = chapters
     return out
 
@@ -38,11 +36,9 @@ class Chapter(typing.NamedTuple):
   def fromXML(tag):
     items = list()
     for item in tag:
-      items.append(Sentence.fromXML(item))
-    title = tag.get('title')
+      items.append(WordItem.fromXML(item))
     id = tag.get('id')
-    file_name = tag.get('fileName')
-    return Chapter(id, title, file_name, items)
+    return Chapter(id, items)
 
 class WordItem(typing.NamedTuple):
   id: str
@@ -56,3 +52,24 @@ class WordItem(typing.NamedTuple):
     for item in self.options:
         out.append(xml.Element('option', content=item))
     return out
+  def toDict(self):
+    return {
+        'id': self.id,
+        'sentence': self.sentence,
+        'wordIndex': self.wordIndex,
+        'options': self.options,
+        'answer': self.answer,
+        'type': 'word'
+    }
+
+  @staticmethod
+  def fromXML(tag):
+    id = tag.get('id')
+    sentence = tag.get('sentence')
+    wordIndex = int(tag.get('wordIndex'))
+    answer = int(tag.get('answer'))
+    word = tag.get('word')
+    items = list()
+    for item in tag:
+      items.append(item.get('content'))
+    return WordItem(id, sentence, wordIndex, items, answer, word)
