@@ -20,6 +20,8 @@ const SentenceComponent = styled.div`
   background: lightgray;
   padding: 10px;
   font-family: 'Lora', serif;
+  -webkit-overflow-scrolling: touch;
+  overflow: scroll;
 `;
 
 
