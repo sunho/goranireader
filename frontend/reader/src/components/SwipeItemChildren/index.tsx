@@ -9,7 +9,7 @@ const SentenceComponent = styled.p<{ inline: boolean; selected: boolean }>`
   margin: 10px 0;
 
   ${props =>
-    !props.inline &&
+    props.inline &&
     css`
       display: inline;
       margin: 0;
@@ -151,7 +151,7 @@ const SwipeItem: React.FC<Props> = (props: Props) => {
       {sentences.map((sentence, j) => (
         <SentenceComponent
           selected={selectedSentence ? selectedSentence.id === j.toString() : false}
-          inline={!sentence.start}
+          inline={!sentence.start || sentence.content.trim() === '.'}
           key={j}
         >
           {sentence.content.split(pat).filter(s => s.length !== 0).map((word: string, k: number) => (

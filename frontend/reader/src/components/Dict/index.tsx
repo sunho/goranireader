@@ -44,6 +44,7 @@ const DictWordComponent = styled.div`
 const DictDefsComponent = styled.div`
   margin-top: 5px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   font-weight: 400;
   & > div {
     background: lightgray;
