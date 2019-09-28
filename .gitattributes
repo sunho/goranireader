@@ -6,5 +6,6 @@
 *.js linguist-vendored=false
 *.kt linguist-vendored=false
 *.go linguist-vendored=false
+*.ipynb linguist-vendored=false
 
 frontend/ios/Frameworks/* linguist-vendored
