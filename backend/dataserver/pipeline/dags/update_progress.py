@@ -9,8 +9,8 @@ args = {
     'owner': 'airflow',
     'project_id': PROJECT
 }
-with DAG('update_progress', default_args=args,  schedule_interval='0 8,16 * * *') as dag:
+with DAG('update_progress', default_args=args,  schedule_interval='0 7,17 * * *') as dag:
     create_cluster = CreateClusterOperator()
     job = PySparkOperator('update_progress')
     delete_cluster = DeleteClusterOperator()
-    create_cluster >> job
+    create_cluster >> job >> delete_cluster

@@ -18,12 +18,13 @@ def start(self):
             body=cluster_data,
             requestId=str(uuid.uuid4()),
         ).execute())
+
 DataprocClusterCreateOperator.start = start
-        # cluster_name="cluster-{{ execution_date.strftime('%y%m%d%S%f') }}",
+
 def CreateClusterOperator():
     out = DataprocClusterCreateOperator(
         task_id='start_cluster',
-        cluster_name="cluster",
+        cluster_name="cluster-{{ execution_date.strftime('%y%m%d%S%f') }}",
         project_id=PROJECT,
         num_masters=1,
         num_workers=2,
@@ -50,7 +51,7 @@ def PySparkOperator(name, arguments=[], files=[]):
     return DataProcPySparkOperator(
         main=SPARK_JOB(name),
         task_id='run_'+name,
-        cluster_name="cluster",
+        cluster_name="cluster-{{ execution_date.strftime('%y%m%d%S%f') }}",
         arguments=arguments,
         pyfiles=[PYSPARK_GORANI_MODULE],
         files=[CREDS] + files

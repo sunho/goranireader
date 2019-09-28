@@ -4,14 +4,15 @@ from operators import CreateClusterOperator, PySparkOperator, DeleteClusterOpera
 from consts import PROJECT
 import uuid
 args = {
-    'start_date': datetime(2019, 9, 27),
+    'start_date': datetime(2019, 9, 28),
     'depends_on_past': False,
     'owner': 'airflow',
     'project_id': PROJECT
 }
 
 
-with DAG('create_mission_report', default_args=args) as dag:
-    # create_cluster = CreateClusterOperator()
+with DAG('create_mission_report', default_args=args, schedule_interval='0 8,18 * * *') as dag:
+    create_cluster = CreateClusterOperator()
     job = PySparkOperator('create_mission_report')
-    job 
+    delete_cluster = DeleteClusterOperator()
+    create_cluster >> job >> delete_cluster
