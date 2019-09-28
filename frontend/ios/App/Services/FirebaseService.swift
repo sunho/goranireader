@@ -90,12 +90,11 @@ class FirebaseService {
             }
             fulfill(user)
         }.then{ user in
-            return self.db().collection("users")
-                .whereField("fireId", isEqualTo: user.uid).getDocumentsPromise().then { res in
-                if res.count == 0 {
-                    throw GoraniError.nilResult
+            return self.db().collection("fireUsers").document(user.uid).getDocumentPromise().then { res -> Promise<DocumentSnapshot> in
+                if let userId = res.data()?[safe: "userId"] as? String {
+                    return self.db().collection("users").document(userId).getDocumentPromise()
                 }
-                return Promise(res.documents[0])
+                throw GoraniError.noauth
             }
         }
         
@@ -150,15 +149,7 @@ class FirebaseService {
                 return
             }
             let replacing = data["fireId"] as? String != user.uid
-            doc.reference.updateData([
-                "fireId": user.uid
-            ]) { err in
-                if err == nil {
-                    completion(true, replacing, nil)
-                    return
-                }
-                fatalError(err!.localizedDescription)
-            }
+            
             Firestore.firestore()
                 .collection("fireUsers")
                 .document(user.uid)
@@ -166,6 +157,15 @@ class FirebaseService {
                 "userId": doc.documentID
                 ]) { err in
                 if err == nil {
+                    doc.reference.updateData([
+                        "fireId": user.uid
+                    ]) { err in
+                        if err == nil {
+                            completion(true, replacing, nil)
+                            return
+                        }
+                        fatalError(err!.localizedDescription)
+                    }
                     return
                 }
                 fatalError(err!.localizedDescription)

@@ -38,10 +38,17 @@ export default functions.region('asia-northeast1').storage.object().onFinalize(a
     }
     
     const bookRef = db.collection('books').doc(book.meta.id);
+    const chapters: any = {};
+    book.chapters.forEach((chap:any) => {
+        if (chap.title) {
+            chapters[chap.title as string] = chap.id;
+        }
+    });
     await bookRef.set({
         title: book.meta.title,
         id: book.meta.id,
         author: book.meta.author,
+        chapters: chapters,
         coverType: book.meta.coverType,
         downloadLink: getPublicUrl(bucket.name, filePath),
         cover: url

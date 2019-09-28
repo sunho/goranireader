@@ -12,7 +12,8 @@ import {
   MenuItem,
   Button,
   Grid,
-  TextField
+  TextField,
+  Chip
 } from "@material-ui/core";
 import MaterialTable from "material-table";
 import DateFnsUtils from "@date-io/date-fns";
@@ -23,8 +24,12 @@ import {
 import { ClasssContext } from "../Auth/withClass";
 import { FirebaseContext } from "../Firebase";
 import { firestore } from "firebase";
-import { Mission } from "../../model";
+import { Mission, collator } from "../../model";
 const uuidv4 = require("uuid/v4");
+
+function getKeyByValue(object: any, value: any) {
+  return Object.keys(object).find(key => object[key] === value);
+}
 
 const MissionPage: React.FC = () => {
   const firebase = React.useContext(FirebaseContext)!;
@@ -33,7 +38,8 @@ const MissionPage: React.FC = () => {
   const [value, setValue] = React.useState<Mission>({
     message: "",
     due: firestore.Timestamp.now(),
-    id: ""
+    id: "",
+    chapters: []
   });
   const [edit, setEdit] = React.useState(false);
   const [books, setBooks] = React.useState<any[]>([]);
@@ -61,8 +67,22 @@ const MissionPage: React.FC = () => {
   const handleInputChange = (e: any) => {
     const { name } = e.target;
     const newValue = e.target.value;
-    setValue({ ...value, [name]: newValue });
+    if (name === "bookId") {
+      setValue({ ...value, chapters: [], [name]: newValue });
+    } else {
+      setValue({ ...value, [name]: newValue });
+    }
   };
+
+  const handleChaptersChange = (e: any) => {
+    const newValue = e.target.value;
+    setValue({
+      ...value,
+      chapters: newValue
+    });
+  };
+  const chapters =
+    (books.find(x => x.id === value.bookId) || {}).chapters || {};
 
   const MissionComponent = (
     <form
@@ -90,24 +110,50 @@ const MissionPage: React.FC = () => {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth >
+          <FormControl fullWidth>
             <InputLabel htmlFor="bookId">Book</InputLabel>
             <Select
               value={value.bookId || ""}
               onChange={handleInputChange}
-              input={
-                <Input
-                  disabled={!edit}
-                  name="bookId"
-                  id="bookId"
-                />
-              }
+              input={<Input disabled={!edit} name="bookId" id="bookId" />}
             >
               {books.map(book => (
                 <MenuItem key={book.id} value={book.id}>
                   <em>{book.title}</em>
                 </MenuItem>
               ))}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl fullWidth>
+            <InputLabel htmlFor="select-multiple-chip">Chapters</InputLabel>
+            <Select
+              multiple
+              value={value.chapters}
+              onChange={handleChaptersChange}
+              input={<Input disabled={!edit} id="chapters" />}
+              renderValue={selected => (
+                <div className={commonStyles.chips}>
+                  {(selected as string[])
+                    .map(id => {
+                      return getKeyByValue(chapters, id) as string;
+                    })
+                    .sort(collator.compare)
+                    .map((title) => (
+                      <Chip key={title} label={title} />
+                    ))}
+                </div>
+              )}
+              // MenuProps={MenuProps}
+            >
+              {Object.keys(chapters)
+                .sort(collator.compare)
+                .map(name => (
+                  <MenuItem key={name} value={chapters[name]}>
+                    {name}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
         </Grid>
@@ -134,7 +180,7 @@ const MissionPage: React.FC = () => {
           </Button>
         ) : (
           <Button
-            onClick={(e) => {
+            onClick={e => {
               e.preventDefault();
               setEdit(true);
             }}
@@ -171,7 +217,8 @@ const MissionPage: React.FC = () => {
                     due: firestore.Timestamp.fromDate(
                       new Date(new Date().getTime() + 100 * 24 * 60 * 60 * 1000)
                     ),
-                    message: ""
+                    message: "",
+                    chapters: []
                   };
                   await firebase.clas(classInfo.currentId!).set(currentClass);
                   classInfo.setLastUpdated(new Date());
