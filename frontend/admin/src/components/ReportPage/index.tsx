@@ -22,7 +22,7 @@ const ReportPage: React.FC = () => {
   useEffect(() => {
     (async () => {
       const res = await firebase.reports(classInfo.currentId!).get();
-      setReports(res.docs as any);
+      setReports(res.docs.map(doc => doc.data()) as any);
       // setReports([{
       //   name: "2019-09-06 Vocab ",
       //   link: "https://storage.cloud.google.com/gorani-reader-reports/asdf.csv",

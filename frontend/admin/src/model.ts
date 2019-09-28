@@ -11,6 +11,7 @@ export interface Mission {
   bookId?: string;
   message: string;
   due: firestore.Timestamp;
+  chapters: string[];
 }
 
 export interface AdminUser {
@@ -41,3 +42,6 @@ export interface Report {
   link: string;
   time: string;
 }
+
+
+export const collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});

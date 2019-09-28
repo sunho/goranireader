@@ -11,7 +11,7 @@ export enum TabState {
 interface TabDef {
   minValue?: number;
   maxValue?: number;
-  percent: boolean;
+  type: string;
   getLabels?(
     data: UserInsight[],
     cals: ClassInfo
@@ -23,11 +23,21 @@ interface TabDef {
   ): { username: string; value: number }[];
 }
 
+export const msToString = (t: number) => {
+  let time = t;
+  let hours = Math.floor(time / (3600*1000));
+  time = time % (3600*1000)
+  let minutes = Math.floor(time / (60*1000));
+  time = time % (60*1000)
+  let seconds = Math.floor(time / (1000));
+  return `${hours} h ${minutes} m ${seconds} s`
+}
+
 export const TabToTabDef: TabDef[] = [
   {
     minValue: 0,
     maxValue: 1,
-    percent: true,
+    type: 'percent',
     getData: (data, clas, label) => {
       if (!clas.currentClass) {
         return [];
@@ -53,7 +63,7 @@ export const TabToTabDef: TabDef[] = [
   {
     minValue: 0,
     maxValue: 1,
-    percent: true,
+    type: 'percent',
     getLabels: (data, clas) => {
       const out = new Set<string>();
       if (!clas.currentClass) {
@@ -111,7 +121,7 @@ export const TabToTabDef: TabDef[] = [
   },
   {
     minValue: 0,
-    percent: false,
+    type: 'days',
     getData: (data, clas, label) => {
       if (!clas.currentClass) {
         return [];
@@ -130,13 +140,13 @@ export const TabToTabDef: TabDef[] = [
         if (!out) {
           return [];
         }
-        return [{ username: user.username, value: out / (60*1000) }];
+        return [{ username: user.username, value: out}];
       });
     }
   },
   {
     minValue: 0,
-    percent: false,
+    type: 'days',
     getLabels: (data, clas) => {
       const out = new Set<string>();
       if (!clas.currentClass) {
@@ -188,14 +198,14 @@ export const TabToTabDef: TabDef[] = [
         if (!out) {
           return [];
         }
-        return [{ username: user.username, value: out / (60*1000) }];
+        return [{ username: user.username, value: out }];
       });
     }
   },
   {
     minValue: 0,
     maxValue: 1,
-    percent: true,
+    type: 'percent',
     getData: (data, clas, label) => {
       if (!clas.currentClass) {
         return [];
@@ -220,7 +230,7 @@ export const TabToTabDef: TabDef[] = [
   },
   {
     minValue: 0,
-    percent: false,
+    type: 'number',
     getData: (data, clas, label) => {
       if (!clas.currentClass) {
         return [];

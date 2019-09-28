@@ -12,6 +12,7 @@ struct Book: Codable {
     let downloadLink: String
     let cover: String?
     let coverType: String?
+    let chapters: [String: String]?
 }
 
 struct Rate: Codable {

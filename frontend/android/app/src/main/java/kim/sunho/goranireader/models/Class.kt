@@ -13,5 +13,6 @@ data class Mission(
     val bookId: String? = "",
     val id: String = "",
     val message: String = "",
-    val due: Timestamp = Timestamp.now()
+    val due: Timestamp = Timestamp.now(),
+    val chapters: List<String> = ArrayList()
 )

@@ -15,4 +15,5 @@ struct Mission: Codable {
     let id: String
     let message: String
     let due: Timestamp
+    let chapters: [String]?
 }

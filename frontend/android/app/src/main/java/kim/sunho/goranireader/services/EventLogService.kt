@@ -76,6 +76,7 @@ object EventLogService {
                 ev.time = obj["time"]!!
                 ev.type = obj["type"]!!
                 ev.payload = obj["payload"]!!
+                Log.d("EventLog", "time: ${ev.time} type: ${ev.type} payload: ${ev.payload}")
             }
         }
     }

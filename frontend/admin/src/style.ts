@@ -13,5 +13,9 @@ export const useCommonStyle = makeStyles(theme => ({
   },
   header: {
     marginBottom: theme.spacing(2)
-  }
+  },
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
 }));
