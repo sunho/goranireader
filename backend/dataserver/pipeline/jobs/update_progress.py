@@ -11,7 +11,7 @@ from pyspark.sql.types import *
 from gorani import firebase
 from gorani.schema import Book, PaginatePayload
 
-firebase.init() 
+firebase.init('spark') 
 db = firebase.db()
 spark = SparkSession.builder.appName('Update Progress').getOrCreate()
 docs = db.collection("books").stream()
@@ -41,15 +41,21 @@ df2 = df.filter(df['type'] == 'paginate')\
     .withColumn('bookId', col('payload.bookId'))\
     .withColumn('wordUnknowns', col('payload.wordUnknowns'))\
     .withColumn('sentenceUnknowns', col('payload.sentenceUnknowns'))\
+    .dropDuplicates(['time', 'bookId', 'userId', 'chapterId', 'eltime'])\
     .drop('payload').drop('serverTime').drop('fireId').drop('type')
 
-minTime = 1000*5
-readDf = df2.dropDuplicates(['time', 'userId', 'chapterId', 'eltime'])\
-    .filter(df2['eltime'] >= minTime)\
+
+minTime = 1000
+readDf = df2\
     .withColumn('sid', explode(df2['sids'])).drop('sids')\
+    .filter(df2['eltime'] >= minTime)\
     .dropDuplicates(['userId', 'bookId', 'chapterId', 'sid'])\
     .drop('time').drop("wordUnknowns").drop("sentenceUnknowns")
 
+booksTimeDf = booksDf.dropDuplicates(['bookId', 'chapterId'])
+
+readTimeDf = df2\
+    .filter(df2['eltime'] >= minTime)
 
 def updateChapterReads():
     interDf = booksDf.join(readDf, ['bookId', 'chapterId', 'sid'], 'inner')
@@ -67,8 +73,8 @@ def updateChapterReads():
     for res in chapRes:
         if res.userId not in out:
             out[res.userId] = dict()
-            if res.bookId not in out[res.userId]:
-                out[res.userId][res.bookId] = dict()
+        if res.bookId not in out[res.userId]:
+            out[res.userId][res.bookId] = dict()
         out[res.userId][res.bookId][chapIdToName[res.chapterId]] = res.readPercent
 
     userIdToClass = dict()
@@ -90,7 +96,7 @@ def updateChapterReads():
 
 
 def updateChapterReadTimes():
-    interDf = booksDf.join(readDf, ['bookId', 'chapterId', 'sid'], 'inner')
+    interDf = booksTimeDf.join(readTimeDf, ['bookId', 'chapterId'], 'inner')
     chapTimeDf = interDf.groupBy('userId', 'bookId', 'chapterId').agg(
         F.sum('eltime').alias('eltime'))
     chapRes = chapTimeDf.collect()
@@ -99,8 +105,8 @@ def updateChapterReadTimes():
     for res in chapRes:
         if res.userId not in out:
             out[res.userId] = dict()
-            if res.bookId not in out[res.userId]:
-                out[res.userId][res.bookId] = dict()
+        if res.bookId not in out[res.userId]:
+            out[res.userId][res.bookId] = dict()
         out[res.userId][res.bookId][chapIdToName[res.chapterId]] = res.eltime
 
     userIdToClass = dict()
@@ -121,7 +127,7 @@ def updateChapterReadTimes():
 
 
 def updateBookReadTimes():
-    interDf = booksDf.join(readDf, ['bookId', 'chapterId', 'sid'], 'inner')
+    interDf = booksTimeDf.join(readTimeDf, ['bookId', 'chapterId'], 'inner')
     bookTimeDf = interDf.groupBy('userId', 'bookId').agg(
         F.sum('eltime').alias('eltime'))
     bookRes = bookTimeDf.collect()

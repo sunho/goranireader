@@ -19,10 +19,10 @@ import {
   FormHelperText
 } from "@material-ui/core";
 import { FirebaseContext } from "../Firebase";
-import { Bar, ResponsiveBar, ResponsiveBarCanvas, BarCanvas } from "@nivo/bar";
+import { Bar, ResponsiveBar, ResponsiveBarCanvas, BarCanvas, BarItemProps, BarExtendedDatum } from "@nivo/bar";
 import { ClasssContext, ClassInfo } from "../Auth/withClass";
 import { UserInsight } from "../../model";
-import { TabToTabDef } from "./tabs";
+import { TabToTabDef, msToString } from "./tabs";
 const useStyles = makeStyles({
   card: {
     minWidth: 275,
@@ -41,7 +41,6 @@ const useStyles = makeStyles({
   }
 });
 
-
 const ProgressPage: React.FC = () => {
   const firebase = useContext(FirebaseContext)!;
   const classInfo = useContext(ClasssContext)!;
@@ -51,20 +50,48 @@ const ProgressPage: React.FC = () => {
   const [label, setLabel] = useState<number>(0);
   const tabDef = TabToTabDef[tab];
   const labels = tabDef.getLabels && tabDef.getLabels(raw, classInfo);
-  const data = tabDef.getData(raw, classInfo, labels ? (labels[label] ? labels[label].value : undefined) : undefined);
+  const data = tabDef.getData(
+    raw,
+    classInfo,
+    labels ? (labels[label] ? labels[label].value : undefined) : undefined
+  );
   console.log(data);
   const classes = useStyles();
   useEffect(() => {
     (async () => {
       const res = await firebase.serverComputed(classInfo.currentId!).get();
-      const out = await Promise.all(res.docs.map(async doc => {
-        const useri = await firebase.user(doc.id).get();
-        return { ...doc.data(), username: useri.data()!.username };
-      }));
+      const out = await Promise.all(
+        res.docs.map(async doc => {
+          const useri = await firebase.user(doc.id).get();
+          return { ...doc.data(), username: useri.data()!.username };
+        })
+      );
       console.log(out);
       setRaw(out as any);
     })();
   }, [classInfo]);
+
+  const defFunc: React.FC<BarExtendedDatum> = (() => {
+    if (tabDef.type === "percent") {
+      return (props: BarExtendedDatum) => (
+        <strong>
+          {props.id}: {Math.round(props.value * 10000) / 100}%
+        </strong>
+      );
+    } else if (tabDef.type === "days") {
+      return (props: BarExtendedDatum) => (
+        <strong>
+          {props.id}: {msToString(props.value)}
+        </strong>
+      );
+    } else {
+      return (props: BarExtendedDatum) => (
+        <strong>
+          {props.data.id}: {props.data.value}
+        </strong>
+      );
+    }
+  })();
 
   return (
     <Container maxWidth="lg" className={commonStyles.container}>
@@ -83,12 +110,12 @@ const ProgressPage: React.FC = () => {
           textColor="primary"
           aria-label="full width tabs example"
         >
-          <Tab label="Book Read Progress"/>
-          <Tab label="Chapter Read Progress"/>
-          <Tab label="Book Read Time"/>
-          <Tab label="Chapter Read Time"/>
-          <Tab label="Book Solved Quiz"/>
-          <Tab label="Book Quiz Score"/>
+          <Tab label="Book Read Progress" />
+          <Tab label="Chapter Read Progress" />
+          <Tab label="Book Read Time" />
+          <Tab label="Chapter Read Time" />
+          <Tab label="Book Solved Quiz" />
+          <Tab label="Book Quiz Score" />
         </Tabs>
       </AppBar>
       <Card className={classes.card}>
@@ -97,35 +124,30 @@ const ProgressPage: React.FC = () => {
             <InputLabel htmlFor="age-required">Label</InputLabel>
             <Select
               value={label || 0}
-              onChange={(e) => {setLabel(e.target.value as number);}}
+              onChange={e => {
+                setLabel(e.target.value as number);
+              }}
               inputProps={{
                 id: "age-required"
               }}
             >
-              {
-                labels.map((label: any, i: number) => (
-                  <MenuItem value={i}>{label.name}</MenuItem>
-                ))
-              }
+              {labels.map((label: any, i: number) => (
+                <MenuItem value={i}>{label.name}</MenuItem>
+              ))}
             </Select>
             <FormHelperText>Required</FormHelperText>
           </FormControl>
         )}
-        <div style={{ height: data.length * 50 + 100}}>
+        <div style={{ height: data.length * 50 + 100 }}>
           <ResponsiveBarCanvas
-            padding={0.15}
-            margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
+            margin={{ top: 50, right: 0, bottom: 50, left: 150}}
             minValue={tabDef.minValue}
             maxValue={tabDef.maxValue}
-            tooltip={tabDef.percent ? ({ id, value, color }) => (
-              <strong>
-                {id}: {Math.round(value*10000)/100}%
-              </strong>
-          ) : undefined}
+            tooltip={defFunc}
             data={data}
             axisLeft={{
               tickSize: 5,
-              tickPadding: 5,
+              tickPadding: 25,
               tickRotation: 0,
               legend: "",
               legendOffset: 36
