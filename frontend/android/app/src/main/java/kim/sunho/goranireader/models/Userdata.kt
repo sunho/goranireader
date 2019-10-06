@@ -5,5 +5,6 @@ import com.google.firebase.Timestamp
 data class Userdata(
     val userId: String = "",
     val ownedBooks: MutableList<String> = ArrayList(),
-    val bookCheck: Timestamp = Timestamp.now()
+    val bookCheck: Timestamp = Timestamp.now(),
+    val solvedChapters: MutableList<String> = ArrayList()
 )

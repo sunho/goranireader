@@ -23,6 +23,11 @@ import kim.sunho.goranireader.services.ContentService
 import kotlinx.coroutines.launch
 import java.lang.IllegalStateException
 import java.util.*
+import android.content.DialogInterface
+import androidx.appcompat.app.AlertDialog
+import kim.sunho.goranireader.models.Chapter
+import kotlinx.android.synthetic.main.fragment_reader.view.*
+
 
 
 class ReaderFragment: CoroutineFragment() {
@@ -48,6 +53,7 @@ class ReaderFragment: CoroutineFragment() {
             }
         }
         webView = view.findViewById(R.id.webView)
+        webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         bridge = Bridge(webView)
         bridgeApp = ReaderBridgeApp(this)
         WebView.setWebContentsDebuggingEnabled(true)
@@ -61,6 +67,33 @@ class ReaderFragment: CoroutineFragment() {
             },
             0, 100
         )
+        view.movebutton.setOnClickListener { view ->
+            if (viewModel.inited && viewModel.loaded && !viewModel.quiz) {
+                openDialog()
+            }
+        }
+
+    }
+
+    fun openDialog() {
+        val chapters = viewModel.book!!.chapters
+        val builder = AlertDialog.Builder(this.context!!)
+        builder.setTitle("Pick a chapter")
+        val ci = chapters.indexOfFirst { it.id == viewModel.currentChapter()?.id }
+        builder.setSingleChoiceItems(chapters.map { it.title }.toTypedArray(), ci,
+            DialogInterface.OnClickListener { dialog, which ->
+                val i = viewModel.book!!.chapters.indexOfFirst { it.id ==  chapters[which].id }
+                viewModel.readingSentence = ""
+                viewModel.quiz = false
+                this.viewModel.readingChapter.value = if (i != -1) i else 0
+                viewModel.updateProgress()
+                start()
+                dialog.dismiss()
+            }).setNegativeButton("Cancel",
+            DialogInterface.OnClickListener { dialog, whichButton ->
+                dialog.dismiss()
+            }).setCancelable(true);
+        builder.show()
     }
 
 
