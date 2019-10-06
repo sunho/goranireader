@@ -21,5 +21,14 @@ PaginatePayload = StructType([
     StructField("sentenceUnknowns", ArrayType(UnknownSentence))
 ])
 
+SubmitQuestionPayload = StructType([
+    StructField("bookId", StringType()),
+    StructField("chapterId", StringType()),
+    StructField("questionId", StringType()),
+    StructField("option", StringType()),
+    StructField("right", BooleanType()),
+    StructField("time", IntegerType())
+])
+
 Book = StructType([StructField('bookId', StringType()), StructField(
     'chapterId', StringType()), StructField('sid', StringType())])
