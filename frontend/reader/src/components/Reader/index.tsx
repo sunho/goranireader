@@ -9,7 +9,7 @@ import { Sentence } from "../../model";
 import styled, { css } from "styled-components";
 
 const Main = styled.div`
-  height: calc(100vh - 20px);
+  height: calc(100% - 20px);
   padding: 10px 5px;
   overflow: hidden;
   width: calc(100% - 10px);

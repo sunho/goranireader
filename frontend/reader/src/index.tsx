@@ -22,12 +22,22 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Lora', serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    height: 100vh;
+    @supports (-webkit-appearance:none) {
+      .os-android & {
+        height: calc(100vh - 56px);
+      }
+    }
     font-size: 21px;
     user-select: none;
     -moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;
     -o-user-select: none;
+  }
+
+  #root {
+    height: 100%;
   }
 `;
 
@@ -40,7 +50,7 @@ if (navigator.userAgent === "ios") {
 }
 
 ReactDOM.render(
-  <div>
+  <div style={{height: "100%"}}>
     <GlobalStyle/>
     <Wrapper/>
   </div>,
