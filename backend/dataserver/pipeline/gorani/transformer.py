@@ -1,5 +1,5 @@
 from pyspark import Row
-from pyspark.sql.functions import udf
+from pyspark.sql.functions import udf, pandas_udf
 import pyspark.sql.functions as F
 from pyspark.sql.functions import from_json, explode, col
 from pyspark.sql.types import *
@@ -59,14 +59,15 @@ class Transformer:
 
         self._udf_impl = _UdfImpl(gorani)
         self.stem = udf(self._udf_impl.stem, StringType())
-        self.get_sentence = udf(self._udf_impl.get_sentence, StringType())
-        self.get_content= udf(self._udf_impl.get_content, StringType())
-        self.get_username = udf(self._udf_impl.get_username, StringType())
+        self.get_sentence = pandas_udf(self._udf_impl.get_sentence, StringType())
+        self.get_content= pandas_udf(self._udf_impl.get_content, StringType())
+        self.get_username = pandas_udf(self._udf_impl.get_username, StringType())
+        self.get_questions_len = pandas_udf(self._udf_impl.get_questions_len, IntegerType())
         self.init_book()
 
     def init_book(self):
         book_rows = list()
-        for id, book in self.gorani.books.iteritems():
+        for id, book in self.gorani.books.items():
             for chap in book['chapters']:
                 for item in chap['items']:
                     book_rows.append(Row(bookId=id, chapterId=chap['id'], sid=item['id']))
