@@ -140,8 +140,10 @@ def calculate_progress(df, mission):
 
 
 missions = get_current_missions(after_due=True)
+print("missions:", len(missions))
 report_data = list()
 for mission in missions:
+    print("generating: ", mission['classId'])
     total = len(list(mydb.collection('users').where(
         u'classId', u'==', mission['classId']).stream()))
     classDf = paginateDf.n(transformer.filter_by_mission(mission)).cache()
@@ -199,6 +201,7 @@ def upload(ext, path):
 
 
 for report in report_data:
+    print("uploading: ", report['class_id'])
     r = reportng.ReportWriter(report_name='Mission Report',
                               brand='Gorani Reader')
     out = r.report_header(theme='pulse')

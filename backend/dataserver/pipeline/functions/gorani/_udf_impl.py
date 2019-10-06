@@ -1,3 +1,4 @@
+
 class _UdfImpl:
     def __init__(self, gorani):
        self.gorani = gorani
@@ -16,10 +17,21 @@ class _UdfImpl:
         return stemmer.stem(s)
 
     def get_sentence(self, book, chap, s):
-        return self.gorani.get_sentence(book, chap, s) or ""
+        import pandas as pd
+        import six
+        return pd.Series([self.gorani.get_sentence(book, chap, s) or "" for book, chap, s in six.moves.zip(book, chap, s)])
 
     def get_content(self, book, chap, s):
-        return self.gorani.get_content(book, chap, s) or ""
+        import pandas as pd
+        import six
+        return pd.Series([self.gorani.get_content(book, chap, s) or "" for book, chap, s in six.moves.zip(book, chap, s)])
 
     def get_username(self, user_id):
-        return self.gorani.get_username(user_id) or ""
+        import pandas as pd
+        import six
+        return pd.Series([self.gorani.get_username(user_id) or "" for user_id in user_id])
+
+    def get_questions_len(self, book, chap):
+        import pandas as pd
+        import six
+        return pd.Series([len(self.gorani.get_questions(book, chap)) or 0 for book, chap in six.moves.zip(book, chap)])

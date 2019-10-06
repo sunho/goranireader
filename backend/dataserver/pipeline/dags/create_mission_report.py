@@ -11,7 +11,7 @@ args = {
 }
 
 
-with DAG('create_mission_report', default_args=args, schedule_interval='0 8,18 * * *') as dag:
+with DAG('create_mission_report', default_args=args, schedule_interval='0 9,23 * * *') as dag:
     create_cluster = CreateClusterOperator()
     job = PySparkOperator('create_mission_report')
     delete_cluster = DeleteClusterOperator()
