@@ -11,9 +11,8 @@ import UIKit
 import WebKit
 import RealmSwift
 
-class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDelegate, UIGestureRecognizerDelegate {
+class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDelegate, UIGestureRecognizerDelegate, BookGotoDelegate {
     @IBOutlet weak var webView: WKWebView!
-    @IBOutlet weak var navItem: UINavigationItem!
     var book: BookyBook!
     var timer: Timer!
     var isStart: Bool = false
@@ -56,7 +55,7 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
         swipeRight.delegate = self
         self.webView.addGestureRecognizer(swipeRight)
         
-        navItem.title = book.meta.title
+        navigationItem.title = book.meta.title
     }
     
     func start() {
@@ -190,8 +189,22 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
                           didFinish navigation: WKNavigation!) {
     }
     
-    @IBAction func close(_ sender: Any) {
-        dismiss(animated: true)
+    func gotoResolve(_ chapter: Chapter) {
+        readingChapter = chapter.id
+        readingSentence = ""
+        readingQuestion = ""
+        quiz = false
+        saveProgress()
+        start()
     }
     
+    @IBAction func goto(_ sender: Any) {
+        if inited && loaded && !quiz {
+            let vc = storyboard!.instantiateViewController(withIdentifier: "BookGotoTableViewController") as! BookGotoTableViewController
+            vc.delegate = self
+            vc.chapters = book.chapters
+            vc.currentChapter = readingChapter
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
 }

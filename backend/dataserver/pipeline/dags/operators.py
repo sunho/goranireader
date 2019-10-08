@@ -29,7 +29,7 @@ def CreateClusterOperator():
         num_masters=1,
         num_workers=2,
         num_preemptible_workers=2,
-        metadata={'PIP_PACKAGES': 'firebase-admin seaborn nltk iso8601 reportng gcloud'},
+        metadata={'PIP_PACKAGES': 'firebase-admin seaborn nltk iso8601 reportng gcloud pyarrow==0.13.0'},
         init_actions_uris=['gs://dataproc-initialization-actions/python/pip-install.sh'],
         worker_machine_type="n1-standard-2",
         master_machine_type="n1-standard-2",

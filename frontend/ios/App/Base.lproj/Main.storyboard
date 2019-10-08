@@ -197,38 +197,21 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="DYb-Aa-S6Y" id="6Y8-OA-3C8"/>
+                        <segue destination="4El-EQ-jd4" kind="show" id="i4D-mW-OnS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LB5-RH-zx4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-5237" y="-716"/>
         </scene>
-        <!--Book Reader View Controller-->
+        <!--Title-->
         <scene sceneID="mJp-WC-2Iv">
             <objects>
-                <viewController storyboardIdentifier="BookReaderViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4El-EQ-jd4" customClass="BookReaderViewController" customModule="app" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BookReaderViewController" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4El-EQ-jd4" customClass="BookReaderViewController" customModule="app" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="EW9-yY-g0y">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5YI-FR-86J">
-                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                                <color key="barTintColor" red="0.57629173994064331" green="0.57676255702972412" blue="0.58019357919692993" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <textAttributes key="titleTextAttributes">
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </textAttributes>
-                                <items>
-                                    <navigationItem title="Title" id="y56-Al-yNm">
-                                        <barButtonItem key="rightBarButtonItem" title="Item" image="close_icon" id="tPw-Nx-wPA">
-                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <connections>
-                                                <action selector="close:" destination="4El-EQ-jd4" id="kNm-s6-CIO"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CDg-d8-JEX">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -240,24 +223,59 @@
                         </subviews>
                         <color key="backgroundColor" red="0.57629173990000004" green="0.57676255700000001" blue="0.58019357920000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="5YI-FR-86J" firstAttribute="leading" secondItem="g95-CF-RyG" secondAttribute="leading" id="5xK-2Z-rJQ"/>
-                            <constraint firstItem="5YI-FR-86J" firstAttribute="top" secondItem="g95-CF-RyG" secondAttribute="top" id="FJx-HN-Mea"/>
                             <constraint firstItem="g95-CF-RyG" firstAttribute="bottom" secondItem="CDg-d8-JEX" secondAttribute="bottom" id="PMf-a8-HhD"/>
                             <constraint firstItem="g95-CF-RyG" firstAttribute="trailing" secondItem="CDg-d8-JEX" secondAttribute="trailing" id="d9o-om-jsU"/>
-                            <constraint firstItem="5YI-FR-86J" firstAttribute="trailing" secondItem="g95-CF-RyG" secondAttribute="trailing" id="jM8-5g-vn9"/>
+                            <constraint firstItem="CDg-d8-JEX" firstAttribute="top" secondItem="g95-CF-RyG" secondAttribute="top" id="m4I-Ec-wZL"/>
                             <constraint firstItem="CDg-d8-JEX" firstAttribute="leading" secondItem="g95-CF-RyG" secondAttribute="leading" id="ojW-7v-d9R"/>
-                            <constraint firstItem="CDg-d8-JEX" firstAttribute="top" secondItem="5YI-FR-86J" secondAttribute="bottom" id="wgK-hW-3wV"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="g95-CF-RyG"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Title" largeTitleDisplayMode="never" id="drf-a8-PA7">
+                        <barButtonItem key="rightBarButtonItem" title="Go to" id="esu-wp-C5U">
+                            <connections>
+                                <action selector="goto:" destination="4El-EQ-jd4" id="HFs-yI-mWv"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
-                        <outlet property="navItem" destination="y56-Al-yNm" id="b6R-eQ-7bT"/>
                         <outlet property="webView" destination="CDg-d8-JEX" id="YeA-sd-pdX"/>
+                        <segue destination="Zkz-5w-aL7" kind="show" id="t7F-Xo-yei"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g40-dy-TFa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-4503.1999999999998" y="-716.49175412293857"/>
+        </scene>
+        <!--Choose a chapter-->
+        <scene sceneID="sGP-8s-Dzn">
+            <objects>
+                <tableViewController storyboardIdentifier="BookGotoTableViewController" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Zkz-5w-aL7" customClass="BookGotoTableViewController" customModule="app" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="T5i-C2-EWE">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="5Qf-le-fGc">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5Qf-le-fGc" id="61t-uU-How">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Zkz-5w-aL7" id="9sY-Rh-JXm"/>
+                            <outlet property="delegate" destination="Zkz-5w-aL7" id="M9R-jr-ztd"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Choose a chapter" id="J3T-Mh-bzk">
+                        <barButtonItem key="backBarButtonItem" title="Cancel" id="1Rm-sy-Sda"/>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="T6M-iq-XYY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3660" y="-721"/>
         </scene>
         <!--Dict View Controller-->
         <scene sceneID="CrX-f2-IOc">
@@ -705,7 +723,6 @@
     <resources>
         <image name="book_placeholder" width="70" height="105"/>
         <image name="book_tab_icon" width="25" height="25"/>
-        <image name="close_icon" width="16" height="16"/>
         <image name="left_icon" width="25" height="25"/>
         <image name="recommend_tab_icon" width="25" height="25"/>
         <image name="right_icon" width="25" height="25"/>

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B10401B4234AD3E700B9BA71 /* BookGotoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10401B3234AD3E700B9BA71 /* BookGotoTableViewController.swift */; };
 		B10C76CC232C342E000CAD31 /* DictResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10C76CB232C342E000CAD31 /* DictResult.swift */; };
 		B10C76CE232C3A22000CAD31 /* GuideMissionBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10C76CD232C3A22000CAD31 /* GuideMissionBookView.swift */; };
 		B10C76D0232D658B000CAD31 /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10C76CF232D658B000CAD31 /* ReachabilityService.swift */; };
@@ -163,6 +164,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B10401B3234AD3E700B9BA71 /* BookGotoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookGotoTableViewController.swift; sourceTree = "<group>"; };
 		B10C76CB232C342E000CAD31 /* DictResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictResult.swift; sourceTree = "<group>"; };
 		B10C76CD232C3A22000CAD31 /* GuideMissionBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideMissionBookView.swift; sourceTree = "<group>"; };
 		B10C76CF232D658B000CAD31 /* ReachabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityService.swift; sourceTree = "<group>"; };
@@ -613,6 +615,7 @@
 				C757D2C12247A1D80050E0A2 /* BookMainTableViewCell.swift */,
 				C7C63E91209905900093CC02 /* BookMainViewController.swift */,
 				C7BF8C58224545A80037FD68 /* Dict */,
+				B10401B3234AD3E700B9BA71 /* BookGotoTableViewController.swift */,
 			);
 			path = Book;
 			sourceTree = "<group>";
@@ -799,6 +802,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7C1177822450C310084C799 /* SentenceUtil.swift in Sources */,
+				B10401B4234AD3E700B9BA71 /* BookGotoTableViewController.swift in Sources */,
 				C7C11765224494CB0084C799 /* RoundButton.swift in Sources */,
 				C77043B5223E219E00B91831 /* Content.swift in Sources */,
 				B1D541342329047900F6FBAD /* UserData.swift in Sources */,
