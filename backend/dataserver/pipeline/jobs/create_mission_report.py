@@ -85,7 +85,7 @@ def calculate_vocab(df):
         .withColumn('content', transformer.get_sentence(col('bookId'), col('chapterId'), col('sid')))
     topDf = uwordDf.groupBy('stem').agg(F.count('*').alias('count'))\
         .orderBy('count', ascending=False)\
-        .filter(col('count') != 1).limit(15)
+        .filter(col('count') != 0).limit(15)
     vocabDf = topDf.join(uwordDf.dropDuplicates(['stem']), ['stem'], 'inner')\
         .orderBy('count', ascending=False)\
         .select('count', 'word', 'content')
