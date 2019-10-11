@@ -43,6 +43,15 @@ export interface UserInsight {
   unknownSentences?: any[];
 }
 
+export interface RecommendBook {
+  title: string;
+  cover: string;
+  puperc: number;
+  ptime: number;
+  suitable: boolean;
+  struggles: string[];
+}
+
 export interface Report {
   name: string;
   link: string;
