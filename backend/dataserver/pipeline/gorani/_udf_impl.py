@@ -4,17 +4,14 @@ class _UdfImpl:
        self.gorani = gorani
 
     def stem(self, s):
+        import pandas as pd
         import nltk
         nltk.download('wordnet', download_dir='/tmp/nltk_data')
         nltk.download('stopwords', download_dir='/tmp/nltk_data')
         nltk.data.path.append("/tmp/nltk_data")
-        from nltk.corpus import stopwords
-        stop_words = stopwords.words('english')
-        if s in stop_words:
-            return 'STOPSTOP'
         from nltk.stem import PorterStemmer
         stemmer = PorterStemmer()
-        return stemmer.stem(s)
+        return pd.Series([stemmer.stem(s) for s in s])
 
     def get_sentence(self, book, chap, s):
         import pandas as pd
