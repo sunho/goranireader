@@ -31,7 +31,7 @@ import { FirebaseContext } from "../Firebase";
 import { ClasssContext } from "../Auth/withClass";
 import "firebase/firestore";
 
-const tableIcons = {
+export const tableIcons = {
   Add: forwardRef<any>((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef<any>((props, ref) => <Check {...props} ref={ref} />),
   Clear: forwardRef<any>((props, ref) => <Clear {...props} ref={ref} />),

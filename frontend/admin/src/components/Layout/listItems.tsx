@@ -6,6 +6,8 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import PeopleIcon from "@material-ui/icons/People";
 import ProgressIcon from "@material-ui/icons/Timeline";
 import BarChartIcon from "@material-ui/icons/BarChart";
+import ExploreIcon from '@material-ui/icons/Explore';
+import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
 import { Link } from "react-router-dom";
 import { ClasssContext } from "../Auth/withClass";
 import { Divider, makeStyles } from "@material-ui/core";
@@ -85,6 +87,28 @@ const MainListItems: React.FC = props => {
           <BarChartIcon />
         </ListItemIcon>
         <ListItemText primary="Report" />
+      </ListItem>
+      <ListItem
+        button
+        {...{ to: `/dashboard/performance${window.location.search}` }}
+        component={Link}
+        selected={window.location.pathname === "/dashboard/performance"}
+      >
+        <ListItemIcon>
+          <DirectionsRunIcon />
+        </ListItemIcon>
+        <ListItemText primary="Performance" />
+      </ListItem>
+      <ListItem
+        button
+        {...{ to: `/dashboard/findBook${window.location.search}` }}
+        component={Link}
+        selected={window.location.pathname === "/dashboard/findBook"}
+      >
+        <ListItemIcon>
+          <ExploreIcon />
+        </ListItemIcon>
+        <ListItemText primary="Find Book" />
       </ListItem>
 
       <div className={classes.appBarSpacer} />
