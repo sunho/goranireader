@@ -13,6 +13,9 @@ import Layout from "../Layout";
 import withAuthorization from "../Auth/withAuthorization";
 import NotFound from "../NotFound";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core";
+import PerformancePage from "../PerformancePage";
+import FindBookPage from "../FindBookPage";
+import PerformanceDetailPage from "../PerformanceDetailPage";
 
 const Dashboard: React.FC<any> = ({ match }) => (
   <Layout>
@@ -20,7 +23,10 @@ const Dashboard: React.FC<any> = ({ match }) => (
       <Route exact path={`${match.url}/`} component={StudentPage} />
       <Route path={`${match.url}/mission`} component={MissionPage} />
       <Route path={`${match.url}/progress`} component={ProgressPage} />
+      <Route path={`${match.url}/performance`} component={PerformancePage} />
+      <Route path={`${match.url}/performanceDetail/:userId`} component={PerformanceDetailPage} />
       <Route path={`${match.url}/report`} component={ReportPage} />
+      <Route path={`${match.url}/findBook`} component={FindBookPage} />
       <Route component={NotFound} />
     </Switch>
   </Layout>

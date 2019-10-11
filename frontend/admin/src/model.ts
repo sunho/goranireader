@@ -26,6 +26,7 @@ interface StringMap<V> {
 }
 
 export interface UserInsight {
+  id?: string;
   quizSolved: any;
   username: string;
   bookReads?: StringMap<number>;
@@ -35,12 +36,38 @@ export interface UserInsight {
   bookQuizScores?: StringMap<number>;
   bookQuizSolved?: StringMap<number>;
   chapterQuizSolved?: StringMap<StringMap<number>>;
+  bookPerformance?: StringMap<Performance>;
+  ymwPerformance?: YmwPerformance;
+  activity?: any[];
+  unknownWords?: any[];
+  unknownSentences?: any[];
 }
 
 export interface Report {
   name: string;
   link: string;
   time: string;
+}
+
+export interface Performance {
+  rc: number;
+  vc: number;
+  score: number;
+  wpm: number;
+  uperc: number;
+}
+
+export interface Point {
+  x: string;
+  y: number;
+}
+
+export interface YmwPerformance {
+  rc: Point[];
+  vc: Point[];
+  score: Point[];
+  wpm: Point[];
+  uperc: Point[];
 }
 
 
