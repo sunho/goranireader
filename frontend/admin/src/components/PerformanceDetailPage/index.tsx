@@ -61,6 +61,10 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12
   },
+  legend: {
+    marginLeft: 24,
+    paddingTop: 24
+  },
   subHeader: {
     marginTop: 24,
     marginBottom: 12
@@ -106,69 +110,48 @@ const PerformanceDetailPage: React.FC<
     { title: "Count", field: "count", type: "numeric" }
   ];
 
-  const graph = (y: string, data: any) => (
-    <div style={{ height: 300 }}>
-      <ResponsiveLine
-        data={[{ id: y, data: data }]}
-        margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-        xScale={{ type: "point" }}
-        yScale={{ type: "linear", stacked: true, min: "auto", max: "auto" }}
-        axisTop={null}
-        axisRight={null}
-        axisBottom={{
-          orient: "bottom",
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: "date",
-          legendOffset: 36,
-          legendPosition: "middle"
-        }}
-        axisLeft={{
-          orient: "left",
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: y,
-          legendOffset: -40,
-          legendPosition: "middle"
-        }}
-        colors={{ scheme: "set2" }}
-        pointSize={10}
-        pointColor={{ theme: "background" }}
-        pointBorderWidth={2}
-        pointBorderColor={{ from: "serieColor" }}
-        pointLabel="y"
-        pointLabelYOffset={-12}
-        useMesh={true}
-        legends={[
-          {
-            anchor: "bottom-right",
-            direction: "column",
-            justify: false,
-            translateX: 100,
-            translateY: 0,
-            itemsSpacing: 0,
-            itemDirection: "left-to-right",
-            itemWidth: 80,
-            itemHeight: 20,
-            itemOpacity: 0.75,
-            symbolSize: 12,
-            symbolShape: "circle",
-            symbolBorderColor: "rgba(0, 0, 0, .5)",
-            effects: [
-              {
-                on: "hover",
-                style: {
-                  itemBackground: "rgba(0, 0, 0, .03)",
-                  itemOpacity: 1
-                }
-              }
-            ]
-          }
-        ]}
-      />
-    </div>
+  const graph = (y: string, data: any, hide: boolean = false) => (
+    <>
+      {!hide &&
+      <Typography variant="body1" component="p" className={styles.legend}>
+        {y}
+      </Typography>
+      }
+      <div style={{ height: 300 }}>
+        <ResponsiveLine
+          data={[{ id: y, data: data }]}
+          margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
+          xScale={{ type: "point" }}
+          yScale={{ type: "linear", stacked: true, min: "auto", max: "auto" }}
+          axisTop={null}
+          axisRight={null}
+          axisLeft={{
+            orient: "left",
+            tickSize: 5,
+            tickPadding: 5,
+            tickRotation: 0,
+            legendPosition: "middle"
+          }}
+          axisBottom={{
+            orient: "bottom",
+            tickSize: 5,
+            tickPadding: 5,
+            tickRotation: 0,
+            legend: "date",
+            legendOffset: 36,
+            legendPosition: "middle"
+          }}
+          colors={{ scheme: "set2" }}
+          pointSize={10}
+          pointColor={{ theme: "background" }}
+          pointBorderWidth={2}
+          pointBorderColor={{ from: "serieColor" }}
+          pointLabel="y"
+          pointLabelYOffset={-12}
+          useMesh={true}
+        />
+      </div>
+    </>
   );
 
   return (
@@ -182,15 +165,11 @@ const PerformanceDetailPage: React.FC<
           >
             {data.username}
           </Typography>
-          <Typography variant="h6" component="h6"
-            className={styles.subHeader}>
-              Reading score
+          <Typography variant="h6" component="h6" className={styles.subHeader}>
+            Reading score
           </Typography>
-          <Paper>
-          {graph("Reading Score", data.ymwPerformance!.rc)}
-          </Paper>
-          <Typography variant="h6" component="h6"
-            className={styles.subHeader}>
+          <Paper>{graph("Reading Score", data.ymwPerformance!.rc, true)}</Paper>
+          <Typography variant="h6" component="h6" className={styles.subHeader}>
             Read pages
           </Typography>
           <Paper>
@@ -221,65 +200,76 @@ const PerformanceDetailPage: React.FC<
               />
             </div>
           </Paper>
-          <Typography variant="h6" component="h6"
-            className={styles.subHeader}>
+          <Typography variant="h6" component="h6" className={styles.subHeader}>
             Matrics
           </Typography>
-          <Paper>
-            <Grid container>
-              <Grid item xs={6}>
-                {graph("wpm", data.ymwPerformance!.wpm)}
-              </Grid>
-              <Grid item xs={6}>
+          <Grid container spacing={4}>
+            <Grid item xs={6}>
+              <Paper>{graph("wpm", data.ymwPerformance!.wpm)}</Paper>
+            </Grid>
+            <Grid item xs={6}>
+              <Paper>
                 {graph(
                   "Unfamiliar Word Percentage",
                   data.ymwPerformance!.uperc.map(x => ({ ...x, y: x.y * 100 }))
                 )}
-              </Grid>
-              <Grid item xs={6}>
+              </Paper>
+            </Grid>
+            <Grid item xs={6}>
+              <Paper>
                 {graph(
                   "Quiz Score Percentile",
                   data.ymwPerformance!.score.map(x => ({ ...x, y: x.y * 100 }))
                 )}
-              </Grid>
+              </Paper>
             </Grid>
-          </Paper>
-          {data.unknownSentences && (
-            <>
-          <Typography variant="h6" component="h6" className={styles.subHeader}>
-            Unknown sentences
-          </Typography>
-            <MaterialTable
-              icons={tableIcons}
-              title=""
-              columns={columns1}
-              data={data.unknownSentences}
-              options={{
-                selection: false,
-                paging: false,
-                search: false
-              }}
-            />
-            </>
-          )}
-          {data.unknownWords && (
-            <>
-          <Typography variant="h6" component="h6" className={styles.subHeader}>
-            Unknown words
-          </Typography>
-            <MaterialTable
-              icons={tableIcons}
-              title=""
-              columns={columns2}
-              data={data.unknownWords}
-              options={{
-                selection: false,
-                paging: false,
-                search: false
-              }}
-            />
-            </>
-          )}
+          </Grid>
+          <Grid container spacing={4}>
+            {data.unknownSentences && (
+              <Grid item xs={6}>
+                <Typography
+                  variant="h6"
+                  component="h6"
+                  className={styles.subHeader}
+                >
+                  Unknown sentences
+                </Typography>
+                <MaterialTable
+                  icons={tableIcons}
+                  title=""
+                  columns={columns1}
+                  data={data.unknownSentences}
+                  options={{
+                    selection: false,
+                    paging: false,
+                    search: false
+                  }}
+                />
+              </Grid>
+            )}
+            {data.unknownWords && (
+              <Grid item xs={6}>
+                <Typography
+                  variant="h6"
+                  component="h6"
+                  className={styles.subHeader}
+                >
+                  Unknown words
+                </Typography>
+                <MaterialTable
+                  icons={tableIcons}
+                  title=""
+                  columns={columns2}
+                  data={data.unknownWords}
+                  options={{
+                    selection: false,
+                    paging: false,
+                    search: false
+                  }}
+                />
+              </Grid>
+            )}
+          </Grid>
         </>
       )}
     </Container>
