@@ -80,6 +80,7 @@ class Firebase {
   clientComputed = (id: string) => this.dataResult(id).collection("clientComputed");
   reports = (id: string) => this.dataResult(id).collection("reports");
   serverComputed = (id: string) => this.dataResult(id).collection("serverComputed");
+  recommendedBooks = (id: string) => this.dataResult(id).collection("recommendedBooks");
   clas = (id: string) => this.db.collection("classes").doc(id);
 
   generateSecretCode = async () => {

@@ -114,8 +114,6 @@ const ProgressPage: React.FC = () => {
           <Tab label="Chapter Read Progress" />
           <Tab label="Book Read Time" />
           <Tab label="Chapter Read Time" />
-          <Tab label="Book Solved Quiz" />
-          <Tab label="Book Quiz Score" />
         </Tabs>
       </AppBar>
       <Card className={classes.card}>
