@@ -58,7 +58,7 @@ class Transformer:
         self.sc = sc
 
         self._udf_impl = _UdfImpl(gorani)
-        self.stem = udf(self._udf_impl.stem, StringType())
+        self.stem = pandas_udf(self._udf_impl.stem, StringType())
         self.get_sentence = pandas_udf(self._udf_impl.get_sentence, StringType())
         self.get_content= pandas_udf(self._udf_impl.get_content, StringType())
         self.get_username = pandas_udf(self._udf_impl.get_username, StringType())
