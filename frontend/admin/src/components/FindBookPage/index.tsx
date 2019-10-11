@@ -54,23 +54,64 @@ const FindBookPage: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await firebase.recommendedBooks(classInfo.currentId!).get();
-      const out = await Promise.all(
-        res.docs.map(async doc => {
-          const bookd = await firebase
-            .books()
-            .doc(doc.data()!.bookId)
-            .get();
-          return {
-            ...doc.data(),
-            title: bookd.data()!.title,
-            cover: bookd.data()!.cover
-          };
-        })
-      );
-      setData(out as any);
+      const raw = await firebase.dataResult(classInfo.currentId!).get();
+      const res = raw.data();
+      if (res && res.recommendedBooks) {
+        const out = await Promise.all(
+          res.recommendedBooks.map(async (doc: any) => {
+            const bookd = await firebase
+              .books()
+              .doc(doc.bookId)
+              .get();
+            return {
+              ...doc,
+              title: bookd.data()!.title,
+              cover: bookd.data()!.cover
+            };
+          })
+        );
+        setData(out as any);
+      } else {
+        setData([]);
+      }
     })();
   }, [classInfo]);
+
+  const suit = (book: RecommendBook) => {
+    if (book.eperc > 0.5) {
+      return(
+      <Typography
+        variant="h6"
+        component="p"
+          color="textPrimary"
+        className={classes.text}
+      >
+        Need more data to decide
+      </Typography>);
+    }
+    if (book.uperc > 0.1) {
+      return (
+        <Typography
+          variant="h6"
+        color="error"
+          component="p"
+          className={classes.text}
+        >
+          Difficult
+        </Typography>
+      );
+    }
+    return (
+      <Typography
+        variant="h6"
+        color="primary"
+        component="p"
+        className={classes.text}
+      >
+        Suitable
+      </Typography>
+    );
+  };
 
   return (
     <Container maxWidth="lg" className={commonStyles.container}>
@@ -78,7 +119,7 @@ const FindBookPage: React.FC = () => {
         Find Book
       </Typography>
       <Grid container spacing={2}>
-        {data.map(book => (
+        {data.sort((a,b ) => (a.eperc - b.eperc)).map(book => (
           <Grid item xs={12} sm={6} md={3}>
             <Card>
               <CardMedia
@@ -90,32 +131,15 @@ const FindBookPage: React.FC = () => {
                 <Typography gutterBottom variant="h5" component="h2">
                   {book.title}
                 </Typography>
-                {book.suitable ? (
-                  <Typography
-                    variant="h6"
-                    color="primary"
-                    component="p"
-                    className={classes.text}
-                  >
-                    Suitable
-                  </Typography>
-                ) : (
-                  <Typography
-                    variant="h6"
-                    color="error"
-                    component="p"
-                    className={classes.text}
-                  >
-                    Difficult
-                  </Typography>
-                )}
+                {suit(book)}
                 <Typography
                   variant="body2"
                   color="textSecondary"
                   component="p"
                   className={classes.text}
                 >
-                  Predicted average unfamiliar word percenatage: <b>{book.puperc * 100}%</b>
+                  Unfamiliar word percenatage:{" "}
+                  <b>{(book.uperc * 100).toFixed(3)}%</b>
                 </Typography>
                 <Typography
                   variant="body2"
@@ -123,7 +147,8 @@ const FindBookPage: React.FC = () => {
                   component="p"
                   className={classes.text}
                 >
-                  Predicted average finish time: <b>{ msToString(book.ptime) }</b>
+                  Familiar word percenatage:{" "}
+                  <b>{(book.nperc * 100).toFixed(3)}%</b>
                 </Typography>
                 <Typography
                   variant="body2"
@@ -131,7 +156,8 @@ const FindBookPage: React.FC = () => {
                   component="p"
                   className={classes.text}
                 >
-                  These students might struggle: <b>{book.struggles.join(", ")}</b>
+                  These students might struggle:{" "}
+                  <b>{book.struggles.join(", ")}</b>
                 </Typography>
               </CardContent>
             </Card>

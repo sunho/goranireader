@@ -46,9 +46,9 @@ export interface UserInsight {
 export interface RecommendBook {
   title: string;
   cover: string;
-  puperc: number;
-  ptime: number;
-  suitable: boolean;
+  eperc: number;
+  nperc: number;
+  uperc: number;
   struggles: string[];
 }
 

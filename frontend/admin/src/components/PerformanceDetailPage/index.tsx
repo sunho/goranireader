@@ -205,13 +205,13 @@ const PerformanceDetailPage: React.FC<
           </Typography>
           <Grid container spacing={4}>
             <Grid item xs={6}>
-              <Paper>{graph("wpm", data.ymwPerformance!.wpm)}</Paper>
+              <Paper>{graph("wpm", data.ymwPerformance!.wpm.map(x => ({ ...x, y: x.y.toFixed() })))}</Paper>
             </Grid>
             <Grid item xs={6}>
               <Paper>
                 {graph(
                   "Unfamiliar Word Percentage",
-                  data.ymwPerformance!.uperc.map(x => ({ ...x, y: x.y * 100 }))
+                  data.ymwPerformance!.uperc.map(x => ({ ...x, y: (x.y * 100).toFixed(2) }))
                 )}
               </Paper>
             </Grid>
@@ -219,7 +219,7 @@ const PerformanceDetailPage: React.FC<
               <Paper>
                 {graph(
                   "Quiz Score Percentile",
-                  data.ymwPerformance!.score.map(x => ({ ...x, y: x.y * 100 }))
+                  data.ymwPerformance!.score.map(x => ({ ...x, y: (x.y * 100).toFixed(2)}))
                 )}
               </Paper>
             </Grid>
