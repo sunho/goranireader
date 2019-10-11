@@ -201,56 +201,5 @@ export const TabToTabDef: TabDef[] = [
         return [{ username: user.username, value: out }];
       });
     }
-  },
-  {
-    minValue: 0,
-    maxValue: 1,
-    type: 'percent',
-    getData: (data, clas, label) => {
-      if (!clas.currentClass) {
-        return [];
-      }
-      if (!clas.currentClass.mission) {
-        return [];
-      }
-      if (!clas.currentClass.mission.bookId) {
-        return [];
-      }
-      return data.flatMap(user => {
-        if (!user.bookQuizSolved) {
-          return [];
-        }
-        const out = user.bookQuizSolved[clas.currentClass!.mission!.bookId!];
-        if (!out) {
-          return [];
-        }
-        return [{ username: user.username, value: out }];
-      });
-    }
-  },
-  {
-    minValue: 0,
-    type: 'number',
-    getData: (data, clas, label) => {
-      if (!clas.currentClass) {
-        return [];
-      }
-      if (!clas.currentClass.mission) {
-        return [];
-      }
-      if (!clas.currentClass.mission.bookId) {
-        return [];
-      }
-      return data.flatMap(user => {
-        if (!user.bookQuizScores) {
-          return [];
-        }
-        const out = user.bookQuizScores[clas.currentClass!.mission!.bookId!];
-        if (!out) {
-          return [];
-        }
-        return [{ username: user.username, value: out }];
-      });
-    }
   }
 ];
