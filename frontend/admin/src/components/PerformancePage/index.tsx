@@ -129,6 +129,7 @@ const PerformancePage: React.FC<RouteComponentProps> = ({history}) => {
       { title: "Score Percentile", field: "score", type: "numeric" },
       { title: "Wpm", field: "wpm", type: "numeric" },
       { title: "Unfamiliar Word Percentage", field: "uperc", type: "numeric" },
+      { title: "Read pages", field: "count", type: "numeric" },
     ];
 
   return (
