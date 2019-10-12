@@ -6,6 +6,8 @@
 *.bak
 ._*
 Carthage
+google-services.json
+GoogleService-Info.plist
 
 /backend/config
 /backend/apiserver/gorani
