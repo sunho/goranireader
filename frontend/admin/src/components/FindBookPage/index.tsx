@@ -132,33 +132,6 @@ const FindBookPage: React.FC = () => {
                   {book.title}
                 </Typography>
                 {suit(book)}
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  component="p"
-                  className={classes.text}
-                >
-                  Unfamiliar word percenatage:{" "}
-                  <b>{(book.uperc * 100).toFixed(3)}%</b>
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  component="p"
-                  className={classes.text}
-                >
-                  Familiar word percenatage:{" "}
-                  <b>{(book.nperc * 100).toFixed(3)}%</b>
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  component="p"
-                  className={classes.text}
-                >
-                  These students might struggle:{" "}
-                  <b>{book.struggles.join(", ")}</b>
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
