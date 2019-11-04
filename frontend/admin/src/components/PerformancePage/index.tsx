@@ -126,9 +126,6 @@ const PerformancePage: React.FC<RouteComponentProps> = ({history}) => {
     const columns: any[] = [
       { title: "Username", field: "username" },
       { title: "Reading Score", field: "rc", type: "numeric" },
-      { title: "Score Percentile", field: "score", type: "numeric" },
-      { title: "Wpm", field: "wpm", type: "numeric" },
-      { title: "Unfamiliar Word Percentage", field: "uperc", type: "numeric" },
       { title: "Read pages", field: "count", type: "numeric" },
     ];
 
