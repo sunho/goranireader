@@ -13,6 +13,7 @@ import RealmSwift
 
 class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDelegate, UIGestureRecognizerDelegate, BookGotoDelegate {
     @IBOutlet weak var webView: WKWebView!
+    let sessionHandler = SessionHandler()
     var book: BookyBook!
     var timer: Timer!
     var isStart: Bool = false
@@ -206,5 +207,10 @@ class BookReaderViewController: UIViewController, WKUIDelegate, WKNavigationDele
             vc.currentChapter = readingChapter
             navigationController?.pushViewController(vc, animated: true)
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        sessionHandler.openSession()
+        view.layoutIfNeeded()
     }
 }
