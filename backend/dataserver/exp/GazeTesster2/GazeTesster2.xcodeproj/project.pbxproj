@@ -23,6 +23,7 @@
 		B11B80E7239EF8CF00F24DA5 /* libdlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B11B80E6239EF8CF00F24DA5 /* libdlib.a */; };
 		B11B80E9239EF9A700F24DA5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B11B80E8239EF9A700F24DA5 /* Accelerate.framework */; };
 		B11B80EB239F280600F24DA5 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B11B80EA239F280500F24DA5 /* opencv2.framework */; };
+		B1EE9D2E23A23F0D00A811DA /* DlibWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = B1EE9D2D23A23F0D00A811DA /* DlibWrapper.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,11 +64,14 @@
 		B11B80DB239EEEA800F24DA5 /* GazeTesster2-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GazeTesster2-Bridging-Header.h"; sourceTree = "<group>"; };
 		B11B80DC239EEFB500F24DA5 /* SessionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHandler.swift; sourceTree = "<group>"; };
 		B11B80DF239EF20200F24DA5 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		B11B80E2239EF74500F24DA5 /* shape_predictor_68_face_landmarks.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = shape_predictor_68_face_landmarks.dat; path = GazeTesster2/shape_predictor_68_face_landmarks.dat; sourceTree = "<group>"; };
+		B11B80E2239EF74500F24DA5 /* shape_predictor_68_face_landmarks.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = shape_predictor_68_face_landmarks.dat; path = ../../../../frontend/ios/shape_predictor_68_face_landmarks.dat; sourceTree = "<group>"; };
 		B11B80E6239EF8CF00F24DA5 /* libdlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libdlib.a; sourceTree = "<group>"; };
 		B11B80E8239EF9A700F24DA5 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		B11B80EA239F280500F24DA5 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		B120583F23A220560024D746 /* base64.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = base64.hpp; sourceTree = "<group>"; };
+		B1EE9D2B23A23F0D00A811DA /* DlibWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DlibWrapper.h; path = ../../../../../frontend/ios/App/GazeTracker/DlibWrapper.h; sourceTree = "<group>"; };
+		B1EE9D2C23A23F0D00A811DA /* base64.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = base64.hpp; path = ../../../../../frontend/ios/App/GazeTracker/base64.hpp; sourceTree = "<group>"; };
+		B1EE9D2D23A23F0D00A811DA /* DlibWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DlibWrapper.mm; path = ../../../../../frontend/ios/App/GazeTracker/DlibWrapper.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +129,9 @@
 		B11B809B239EED6900F24DA5 /* GazeTesster2 */ = {
 			isa = PBXGroup;
 			children = (
+				B1EE9D2C23A23F0D00A811DA /* base64.hpp */,
+				B1EE9D2B23A23F0D00A811DA /* DlibWrapper.h */,
+				B1EE9D2D23A23F0D00A811DA /* DlibWrapper.mm */,
 				B11B809C239EED6900F24DA5 /* AppDelegate.swift */,
 				B11B80D9239EEE8000F24DA5 /* DlibWrapper.h */,
 				B11B80DB239EEEA800F24DA5 /* GazeTesster2-Bridging-Header.h */,
@@ -312,6 +319,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1EE9D2E23A23F0D00A811DA /* DlibWrapper.mm in Sources */,
 				B11B80DA239EEE8100F24DA5 /* DlibWrapper.mm in Sources */,
 				B11B80A1239EED6900F24DA5 /* ViewController.swift in Sources */,
 				B11B809D239EED6900F24DA5 /* AppDelegate.swift in Sources */,
@@ -505,7 +513,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
-					"DLIB_USE_LAPACK\n",
+					DLIB_USE_LAPACK,
 					DLIB_USE_BLAS,
 					NDEBUG,
 					DLIB_JPEG_SUPPORT,

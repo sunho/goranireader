@@ -18,7 +18,7 @@ class RealmService {
             return config
         }
         write {
-            realm.add(Config(), update: true)
+            realm.add(Config(), update: .all)
         }
         return Config()
     }
@@ -30,7 +30,7 @@ class RealmService {
         let res = UnknownWord()
         write {
             res.word = word
-            realm.add(res, update: true)
+            realm.add(res, update: .all)
         }
         return res
     }
@@ -78,7 +78,7 @@ class RealmService {
         let res = BookProgress()
         write {
             res.bookId = bookId
-            realm.add(res, update: true)
+            realm.add(res, update: .all)
         }
         return res
     }

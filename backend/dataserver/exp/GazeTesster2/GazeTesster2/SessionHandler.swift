@@ -40,7 +40,7 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
         metaOutput.setMetadataObjectsDelegate(self, queue: faceQueue)
     
         session.beginConfiguration()
-        
+        session.sessionPreset = .vga640x480
         if session.canAddInput(input) {
             session.addInput(input)
         }
@@ -68,7 +68,7 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
     // MARK: AVCaptureVideoDataOutputSampleBufferDelegate
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         connection.videoOrientation = .portrait
-        
+        let ms = Date().millisecondsSince1970
         if !currentMetadata.isEmpty {
             let boundsArray = currentMetadata
                 .flatMap { $0 as? AVMetadataFaceObject }
@@ -82,30 +82,33 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
             let image2 = imageFromSampleBuffer(sampleBuffer: sampleBuffer)
             let image = resizeImage(image: image2, targetSize: CGSize(width: 50, height: 100))
             let imageData:Data = image.pngData()!
-                 
-            serialQueue.async {
-                let url = URL(string: "http://172.30.1.47:5050/")!
-                var request = URLRequest(url: url)
-                request.httpMethod = "POST"
-                let json: [String: Any] = ["leftGaze": abc?.leftGaze, "image": abc?.leftImg as? String]
-                request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-                let jsonData = try? JSONSerialization.data(withJSONObject: json)
-                request.httpBody = jsonData
-                let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-                    if let error = error {
-                        print("error: \(error)")
-                    } else {
-                        if let response = response as? HTTPURLResponse {
-                            print("statusCode: \(response.statusCode)")
-                        }
-                        if let data = data, let dataString = String(data: data, encoding: .utf8) {
-                            print("data: \(dataString)")
-                        }
+             
+            send("",  ["leftGaze": abc?.leftGaze, "rightGaze": abc?.rightGaze, "leftBlink": abc?.leftBlink, "rightBlink": abc?.rightBlink, "leftImg": abc?.leftImg as? String, "rightImg": abc?.rightImg as? String, "image": imageData.base64EncodedString(), "ms": ms])
+        
+        }
+    }
+    
+    func send(_ path: String, _ obj:[String:Any]) {
+        serialQueue.async {
+        let url = URL(string: "http://172.20.10.6:5050/" + path)!
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+            let jsonData = try? JSONSerialization.data(withJSONObject: obj)
+            request.httpBody = jsonData
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                    print("error: \(error)")
+                } else {
+                    if let response = response as? HTTPURLResponse {
+                        print("statusCode: \(response.statusCode)")
+                    }
+                    if let data = data, let dataString = String(data: data, encoding: .utf8) {
+                        print("data: \(dataString)")
                     }
                 }
-                task.resume()
             }
-        
+            task.resume()
         }
     }
 
@@ -133,6 +136,10 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
         UIGraphicsEndImageContext()
 
         return newImage!
+    }
+    
+    func turnPage(wordCount: Int, time: Int, finds: [PaginateWordUnknown]) {
+        send("page", ["wordCount": wordCount, "time": time, "finds": finds])
     }
     
     func imageFromSampleBuffer(sampleBuffer: CMSampleBuffer) -> UIImage {

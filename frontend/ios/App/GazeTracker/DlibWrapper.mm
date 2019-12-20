@@ -136,13 +136,14 @@ void rotate(cv::Mat& src, double angle, cv::Mat& dst){
         }
         {
             std::vector<uchar> tmp;
-            rightGaze = [(id) self gazeRatio:true:gray:shape:tmp];
+            rightGaze = [(id) self gazeRatio:false:gray:shape:tmp];
             std::string tmp2(tmp.begin(), tmp.end());
             rightImg = macaron::Base64::Encode(tmp2);
         }
         
-        //leftBlink = [(id) self blinkRatio:true:gray:shape];
-        //rightBlink= [(id) self blinkRatio:true:gray:shape];
+        
+        leftBlink = [(id) self blinkRatio:true:gray:shape];
+//        rightBlink= [(id) self blinkRatio:false:gray:shape];
         // and draw them into the image (samplebuffer)
         for (unsigned long k = 0; k < shape.num_parts(); k++) {
             dlib::point p = shape.part(k);
@@ -227,7 +228,7 @@ void rotate(cv::Mat& src, double angle, cv::Mat& dst){
     auto max_y = std::max_element(contour.begin(), contour.end(), [](cv::Point p, cv::Point p2){return p.y < p2.y;})->y;
     auto gray_eye = eye(cv::Rect(cv::Point(min_x, min_y), cv::Point(max_x, max_y)));
     auto threshold_eye = cv::Mat(gray_eye.rows, gray_eye.cols, CV_8UC1);
-    cv::threshold(gray_eye, threshold_eye, 70, 255, cv::THRESH_BINARY);
+    cv::threshold(gray_eye, threshold_eye, 50, 255, cv::THRESH_BINARY);
     cv::Mat final_eye;
     rotate(threshold_eye, angle, final_eye);
     auto width = final_eye.cols;

@@ -87,7 +87,9 @@ extension BookReaderViewController: WKScriptMessageHandler {
     }
     
     func paginate(_ sids: [String]) {
+        let wordCount = (currentChapter!.items.filter { sids.contains($0.id) }.map { SentenceUtil.getWords($0.content).count }).reduce(0, +)
         RealmService.shared.addEventLog(ELPaginatePayload(bookId: book.meta.id, chapterId: currentChapter!.id, time: elapsedTime, sids: sids, wordUnknowns: wordUnknowns, sentenceUnknowns: sentenceUnknowns))
+        sessionHandler.turnPage(wordCount: wordCount, time: elapsedTime, finds: wordUnknowns)
     }
     
     func wordSelected(_ word: String, _ i: Int, _ sid: String) {

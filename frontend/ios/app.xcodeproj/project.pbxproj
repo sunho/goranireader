@@ -63,6 +63,12 @@
 		B1D5413E232943D100F6FBAD /* BookReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D5413D232943D100F6FBAD /* BookReaderViewController.swift */; };
 		B1D54140232945AC00F6FBAD /* reader in Resources */ = {isa = PBXBuildFile; fileRef = B1D5413F232945AC00F6FBAD /* reader */; };
 		B1D541422329482700F6FBAD /* ReaderBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D541412329482700F6FBAD /* ReaderBridge.swift */; };
+		B1EE9D2923A23EEB00A811DA /* DlibWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = B1EE9D2823A23EEA00A811DA /* DlibWrapper.mm */; };
+		B1EE9D3023A23F2B00A811DA /* SessionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EE9D2F23A23F2B00A811DA /* SessionHandler.swift */; };
+		B1EE9D3A23A24FD300A811DA /* dlib in Resources */ = {isa = PBXBuildFile; fileRef = B1EE9D3723A24FD200A811DA /* dlib */; };
+		B1EE9D3B23A24FD300A811DA /* libdlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1EE9D3823A24FD200A811DA /* libdlib.a */; };
+		B1EE9D3C23A24FD300A811DA /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1EE9D3923A24FD300A811DA /* opencv2.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		B1EE9D3D23A2504E00A811DA /* shape_predictor_68_face_landmarks.dat in Resources */ = {isa = PBXBuildFile; fileRef = B1EE9D2423A23EBC00A811DA /* shape_predictor_68_face_landmarks.dat */; };
 		C70F55BD224FCD4D006DBB0E /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55BC224FCD4D006DBB0E /* TabBarViewController.swift */; };
 		C70F55C5224FE508006DBB0E /* BubbleTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55C2224FE508006DBB0E /* BubbleTabBar.swift */; };
 		C70F55C6224FE508006DBB0E /* CBTabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70F55C3224FE508006DBB0E /* CBTabBarButton.swift */; };
@@ -220,6 +226,15 @@
 		B1D5413D232943D100F6FBAD /* BookReaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookReaderViewController.swift; sourceTree = "<group>"; };
 		B1D5413F232945AC00F6FBAD /* reader */ = {isa = PBXFileReference; lastKnownFileType = folder; path = reader; sourceTree = "<group>"; };
 		B1D541412329482700F6FBAD /* ReaderBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderBridge.swift; sourceTree = "<group>"; };
+		B1EE9D2423A23EBC00A811DA /* shape_predictor_68_face_landmarks.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = shape_predictor_68_face_landmarks.dat; sourceTree = "<group>"; };
+		B1EE9D2523A23EE900A811DA /* app-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "app-Bridging-Header.h"; sourceTree = "<group>"; };
+		B1EE9D2623A23EEA00A811DA /* base64.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = base64.hpp; sourceTree = "<group>"; };
+		B1EE9D2723A23EEA00A811DA /* DlibWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DlibWrapper.h; sourceTree = "<group>"; };
+		B1EE9D2823A23EEA00A811DA /* DlibWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DlibWrapper.mm; sourceTree = "<group>"; };
+		B1EE9D2F23A23F2B00A811DA /* SessionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SessionHandler.swift; path = ../../../../backend/dataserver/exp/GazeTesster2/GazeTesster2/SessionHandler.swift; sourceTree = "<group>"; };
+		B1EE9D3723A24FD200A811DA /* dlib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = dlib; sourceTree = "<group>"; };
+		B1EE9D3823A24FD200A811DA /* libdlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libdlib.a; sourceTree = "<group>"; };
+		B1EE9D3923A24FD300A811DA /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		C70F55BC224FCD4D006DBB0E /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		C70F55C2224FE508006DBB0E /* BubbleTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleTabBar.swift; sourceTree = "<group>"; };
 		C70F55C3224FE508006DBB0E /* CBTabBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CBTabBarButton.swift; sourceTree = "<group>"; };
@@ -309,6 +324,7 @@
 			files = (
 				B1B1100A23278C4000FD252E /* StoreKit.framework in Frameworks */,
 				B1B1100823278BEC00FD252E /* libc++.tbd in Frameworks */,
+				B1EE9D3B23A24FD300A811DA /* libdlib.a in Frameworks */,
 				B11016D0231BC3ED00C0327A /* RealmSwift.framework in Frameworks */,
 				B1B11003232788F700FD252E /* GTMSessionFetcher.framework in Frameworks */,
 				B1B10FFD232788F200FD252E /* Protobuf.framework in Frameworks */,
@@ -324,6 +340,7 @@
 				C71C5373226A0A89009197F6 /* LocalAuthentication.framework in Frameworks */,
 				B1B10FEC232788E100FD252E /* nanopb.framework in Frameworks */,
 				C7E243A422477EEF000892D0 /* Realm.framework in Frameworks */,
+				B1EE9D3C23A24FD300A811DA /* opencv2.framework in Frameworks */,
 				C7E2434E22475593000892D0 /* Reachability.framework in Frameworks */,
 				B1D541362329138E00F6FBAD /* Promises.framework in Frameworks */,
 				C7E243522247559D000892D0 /* SwiftEntryKit.framework in Frameworks */,
@@ -434,6 +451,27 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		B1EE9D1D23A23E5A00A811DA /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				B1EE9D3723A24FD200A811DA /* dlib */,
+				B1EE9D3823A24FD200A811DA /* libdlib.a */,
+				B1EE9D3923A24FD300A811DA /* opencv2.framework */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		B1EE9D2A23A23EEE00A811DA /* GazeTracker */ = {
+			isa = PBXGroup;
+			children = (
+				B1EE9D2F23A23F2B00A811DA /* SessionHandler.swift */,
+				B1EE9D2623A23EEA00A811DA /* base64.hpp */,
+				B1EE9D2723A23EEA00A811DA /* DlibWrapper.h */,
+				B1EE9D2823A23EEA00A811DA /* DlibWrapper.mm */,
+			);
+			path = GazeTracker;
+			sourceTree = "<group>";
+		};
 		C70F55C1224FE4F0006DBB0E /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -457,6 +495,8 @@
 		C74CEFCB208C899F002765D6 = {
 			isa = PBXGroup;
 			children = (
+				B1EE9D2423A23EBC00A811DA /* shape_predictor_68_face_landmarks.dat */,
+				B1EE9D1D23A23E5A00A811DA /* lib */,
 				B13393B220A8F78D00F34525 /* .gitignore */,
 				B124047220A8CD90005EAE4F /* Cartfile */,
 				C74CEFD6208C899F002765D6 /* App */,
@@ -476,6 +516,7 @@
 		C74CEFD6208C899F002765D6 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				B1EE9D2A23A23EEE00A811DA /* GazeTracker */,
 				C7FC18912239E178007172ED /* Services */,
 				C759AD7A221EDB1E00166B2A /* UI */,
 				B143AF8720A4704F003341A3 /* Models */,
@@ -493,6 +534,7 @@
 				C74CEFE3208C89A1002765D6 /* LaunchScreen.storyboard */,
 				C74CEFE6208C89A1002765D6 /* Info.plist */,
 				C74CEFDE208C899F002765D6 /* app.xcdatamodeld */,
+				B1EE9D2523A23EE900A811DA /* app-Bridging-Header.h */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -681,7 +723,7 @@
 				TargetAttributes = {
 					C74CEFD3208C899F002765D6 = {
 						CreatedOnToolsVersion = 9.3;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1110;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -713,6 +755,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1EE9D3D23A2504E00A811DA /* shape_predictor_68_face_landmarks.dat in Resources */,
 				B1D54140232945AC00F6FBAD /* reader in Resources */,
 				C7420F2022805E130077CC0B /* dict.db in Resources */,
 				B124047520A8CD90005EAE4F /* Cartfile in Resources */,
@@ -724,6 +767,7 @@
 				B1B110052327895500FD252E /* gRPCCertificates-Cpp.bundle in Resources */,
 				C74CEFDD208C899F002765D6 /* Main.storyboard in Resources */,
 				B1B10FDF2327864C00FD252E /* GoogleService-Info.plist in Resources */,
+				B1EE9D3A23A24FD300A811DA /* dlib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -838,6 +882,7 @@
 				C7FC18BB223A3C45007172ED /* GoraniError.swift in Sources */,
 				C7742BB122437B4900925081 /* WordCardViewController.swift in Sources */,
 				C70F55BD224FCD4D006DBB0E /* TabBarViewController.swift in Sources */,
+				B1EE9D3023A23F2B00A811DA /* SessionHandler.swift in Sources */,
 				C7742BB52243953D00925081 /* WordCardTableViewCell.swift in Sources */,
 				B1D541302328F1A700F6FBAD /* DictionaryEncoder.swift in Sources */,
 				C7AD908A2296D5DF00B25509 /* HeartButton.swift in Sources */,
@@ -878,6 +923,7 @@
 				C74CEFE0208C899F002765D6 /* app.xcdatamodeld in Sources */,
 				C7CF0053224CF56300524D80 /* EventLog.swift in Sources */,
 				B1D5412E2328F19A00F6FBAD /* DictionaryDecoder.swift in Sources */,
+				B1EE9D2923A23EEB00A811DA /* DlibWrapper.mm in Sources */,
 				C7FA5428223476BD006F94C7 /* DictViewController.swift in Sources */,
 				C7C1177A224526AA0084C799 /* PaddingMarginView.swift in Sources */,
 				C7C117822245450E0084C799 /* WordCardBackView.swift in Sources */,
@@ -960,7 +1006,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/lib";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/lib";
 				MACH_O_TYPE = mh_execute;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1016,7 +1064,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/lib";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/lib";
 				MACH_O_TYPE = mh_execute;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
@@ -1048,13 +1098,26 @@
 					"$(PROJECT_DIR)/Frameworks/Analytics",
 					"$(PROJECT_DIR)/Frameworks/Firestore",
 					"$(PROJECT_DIR)/Frameworks/Auth",
+					"$(PROJECT_DIR)/lib",
 				);
+				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					DLIB_USE_BLAS,
+					DLIB_USE_LAPACK,
+					NDEBUG,
+					DLIB_JPEG_SUPPORT,
+					DLIB_NO_GUI_SUPPORT,
+				);
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/lib";
 				INFOPLIST_FILE = app/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/lib";
 				OTHER_LDFLAGS = (
 					"-fprofile-instr-generate",
 					"-ObjC",
@@ -1062,8 +1125,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = kim.sunho.goraniReader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "App/app-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1090,13 +1154,17 @@
 					"$(PROJECT_DIR)/Frameworks/Analytics",
 					"$(PROJECT_DIR)/Frameworks/Firestore",
 					"$(PROJECT_DIR)/Frameworks/Auth",
+					"$(PROJECT_DIR)/lib",
 				);
+				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/lib";
 				INFOPLIST_FILE = app/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/lib";
 				OTHER_LDFLAGS = (
 					"-fprofile-instr-generate",
 					"-ObjC",
@@ -1104,7 +1172,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = kim.sunho.goraniReader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_OBJC_BRIDGING_HEADER = "App/app-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
