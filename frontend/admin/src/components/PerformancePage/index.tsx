@@ -60,8 +60,6 @@ const PerformancePage: React.FC<RouteComponentProps> = ({history}) => {
   const classInfo = useContext(ClasssContext)!;
   const commonStyles = useCommonStyle();
   const [raw, setRaw] = useState<UserInsight[]>([]);
-  const [labels, setLabels] = useState<any[]>([]);
-  const [label, setLabel] = useState<number>(0);
 
   const classes = useStyles();
   useEffect(() => {
@@ -87,34 +85,15 @@ const PerformancePage: React.FC<RouteComponentProps> = ({history}) => {
     }
   });
 
-  useEffect(() => {
-    Promise.all(
-      Array.from(ids.values()).map(async id => {
-        if (id === "all") {
-          return {
-            title: "(all)",
-            id: "all"
-          };
-        }
-        const doc = await firebase
-          .books()
-          .doc(id)
-          .get();
-        return { ...doc.data(), id: doc.id };
-      })
-    ).then((books: any) => {
-      setLabels(books.sort((x: any, y: any) => x.title < y.title));
-    });
-  }, [raw]);
 
   const data = raw
     .filter(
-      x => (labels[label] || { id: ".." }).id in (x.bookPerformance || {})
+      x => 'all' in (x.bookPerformance || {})
     )
     .map(row => ({
       id: row.id,
       username: row.username,
-      ...row.bookPerformance![labels[label].id]
+      ...row.bookPerformance!['all']
     }))
     .map(row => ({
       ...row,
@@ -134,23 +113,6 @@ const PerformancePage: React.FC<RouteComponentProps> = ({history}) => {
       <Typography variant="h5" component="h3" className={commonStyles.header}>
         Performance
       </Typography>
-          <FormControl className={classes.pos} required>
-            <InputLabel htmlFor="age-required">Book</InputLabel>
-            <Select
-              value={label || 0}
-              onChange={e => {
-                setLabel(e.target.value as number);
-              }}
-              inputProps={{
-                id: "age-required"
-              }}
-            >
-              {labels.map((x: any, i) => (
-                <MenuItem value={i}>{x.title}</MenuItem>
-              ))}
-            </Select>
-            <FormHelperText>Required</FormHelperText>
-          </FormControl>
           <MaterialTable
             icons={tableIcons}
             title=""

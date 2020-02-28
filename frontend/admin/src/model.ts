@@ -37,7 +37,7 @@ export interface UserInsight {
   bookQuizSolved?: StringMap<number>;
   chapterQuizSolved?: StringMap<StringMap<number>>;
   bookPerformance?: StringMap<Performance>;
-  ymwPerformance?: YmwPerformance;
+  ymwPerformance?: StringMap<YmwPerformance>;
   activity?: any[];
   unknownWords?: any[];
   unknownSentences?: any[];

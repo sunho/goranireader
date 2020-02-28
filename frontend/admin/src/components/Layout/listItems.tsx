@@ -99,17 +99,6 @@ const MainListItems: React.FC = props => {
         </ListItemIcon>
         <ListItemText primary="Performance" />
       </ListItem>
-      <ListItem
-        button
-        {...{ to: `/dashboard/findBook${window.location.search}` }}
-        component={Link}
-        selected={window.location.pathname === "/dashboard/findBook"}
-      >
-        <ListItemIcon>
-          <ExploreIcon />
-        </ListItemIcon>
-        <ListItemText primary="Find Book" />
-      </ListItem>
 
       <div className={classes.appBarSpacer} />
       <Divider />

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { useCommonStyle } from "../../style";
 import {
   Container,
@@ -73,13 +73,14 @@ const useStyles = makeStyles({
 
 const PerformanceDetailPage: React.FC<
   RouteComponentProps<{ userId: string }>
-> = ({ match }) => {
+> = ({ match, history }) => {
   const firebase = useContext(FirebaseContext)!;
   const classInfo = useContext(ClasssContext)!;
   const commonStyles = useCommonStyle();
   const styles = useStyles();
   const [raw, setRaw] = useState<UserInsight[]>([]);
-
+  const [labels, setLabels] = useState<any[]>([]);
+  const [label, setLabel] = useState<number>(0);
   useEffect(() => {
     (async () => {
       const res = await firebase.serverComputed(classInfo.currentId!).get();
@@ -98,6 +99,35 @@ const PerformanceDetailPage: React.FC<
       setRaw(out as any);
     })();
   }, [classInfo]);
+
+  const ids: Set<string> = new Set<string>();
+  raw.forEach(user => {
+    if (user.bookPerformance) {
+      Object.keys(user.bookPerformance).forEach(id => {
+        ids.add(id);
+      });
+    }
+  });
+
+  useEffect(() => {
+    Promise.all(
+      Array.from(ids.values()).map(async id => {
+        if (id === "all") {
+          return {
+            title: "(all)",
+            id: "all"
+          };
+        }
+        const doc = await firebase
+          .books()
+          .doc(id)
+          .get();
+        return { ...doc.data(), id: doc.id };
+      })
+    ).then((books: any) => {
+      setLabels(books.sort((x: any, y: any) => x.title < y.title));
+    });
+  }, [raw]);
 
   const data = raw.find(x => x.id === match.params.userId);
   const columns1: any[] = [
@@ -156,8 +186,9 @@ const PerformanceDetailPage: React.FC<
 
   return (
     <Container maxWidth="lg" className={commonStyles.container}>
-      {data && (
+      {data && labels[label] && (
         <>
+          
           <Typography
             variant="h5"
             component="h5"
@@ -165,17 +196,34 @@ const PerformanceDetailPage: React.FC<
           >
             {data.username}
           </Typography>
+          <FormControl className={styles.pos} required>
+            <InputLabel htmlFor="age-required">Book</InputLabel>
+            <Select
+              value={label || 0}
+              onChange={e => {
+                setLabel(e.target.value as number);
+              }}
+              inputProps={{
+                id: "age-required"
+              }}
+            >
+              {labels.map((x: any, i) => (
+                <MenuItem value={i}>{x.title}</MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>Required</FormHelperText>
+          </FormControl>
           <Typography variant="h6" component="h6" className={styles.subHeader}>
             Reading score
           </Typography>
-          <Paper>{graph("Reading Score", data.ymwPerformance!.rc, true)}</Paper>
+          <Paper>{graph("Reading Score", data.ymwPerformance![labels[label].id].rc, true)}</Paper>
           <Typography variant="h6" component="h6" className={styles.subHeader}>
             Read pages
           </Typography>
           <Paper>
             <div style={{ height: 300 }}>
               <ResponsiveCalendar
-                data={data.activity!}
+                data={data.activity![labels[label].id]}
                 from="2019-01-01"
                 to={new Date()}
                 emptyColor="#eeeeee"
@@ -205,13 +253,13 @@ const PerformanceDetailPage: React.FC<
           </Typography>
           <Grid container spacing={4}>
             <Grid item xs={6}>
-              <Paper>{graph("wpm", data.ymwPerformance!.wpm.map(x => ({ ...x, y: x.y.toFixed() })))}</Paper>
+              <Paper>{graph("wpm", data.ymwPerformance![labels[label].id].wpm.map(x => ({ ...x, y: x.y.toFixed() })))}</Paper>
             </Grid>
             <Grid item xs={6}>
               <Paper>
                 {graph(
                   "Unfamiliar Word Percentage",
-                  data.ymwPerformance!.uperc.map(x => ({ ...x, y: (x.y * 100).toFixed(2) }))
+                  data.ymwPerformance![labels[label].id].uperc.map(x => ({ ...x, y: (x.y * 100).toFixed(2) }))
                 )}
               </Paper>
             </Grid>
@@ -219,7 +267,7 @@ const PerformanceDetailPage: React.FC<
               <Paper>
                 {graph(
                   "Quiz Score Percentile",
-                  data.ymwPerformance!.score.map(x => ({ ...x, y: (x.y * 100).toFixed(2)}))
+                  data.ymwPerformance![labels[label].id].score.map(x => ({ ...x, y: (x.y * 100).toFixed(2)}))
                 )}
               </Paper>
             </Grid>
@@ -238,11 +286,14 @@ const PerformanceDetailPage: React.FC<
                   icons={tableIcons}
                   title=""
                   columns={columns1}
-                  data={data.unknownSentences}
+                  data={data.unknownSentences[labels[label].id]}
                   options={{
                     selection: false,
                     paging: false,
                     search: false
+                  }}
+                  onRowClick={(e, row:any) => {
+                    history.push(`/dashboard/reader/?bookid=${row['bookId']}&sid=${row['sid']}&uwords=${row['uwords'].join(',')}`);
                   }}
                 />
               </Grid>
@@ -260,7 +311,7 @@ const PerformanceDetailPage: React.FC<
                   icons={tableIcons}
                   title=""
                   columns={columns2}
-                  data={data.unknownWords}
+                  data={data.unknownWords[labels[label].id]}
                   options={{
                     selection: false,
                     paging: false,
