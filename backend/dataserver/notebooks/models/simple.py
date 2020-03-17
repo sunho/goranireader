@@ -16,8 +16,5 @@ class SimpleModel:
                 self.prob[word] = self.prob[word]*self.ps / (self.prob[word]*self.ps+(1-self.prob[word])*(1-self.pg))
     def predict(self, word):
         if word not in self.prob:
-            return 0
-        elif self.prob[word] > self.th:
-            return 1
-        else:
-            return 0
+            return self.pi
+        return self.prob[word]
