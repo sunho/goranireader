@@ -1,0 +1,9 @@
+{
+  "name": "app",
+  "integrations": {
+    "capacitor": {
+      "bundledWebRuntime": true
+    }
+  },
+  "type": "react"
+}
