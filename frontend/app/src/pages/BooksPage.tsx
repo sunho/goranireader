@@ -5,13 +5,13 @@ import { storeContext } from '../stores/Context';
 import { useObserver } from 'mobx-react-lite';
 import { Book } from '../models';
 
-const BooksPage = () => {
+const BooksPage = ({history}) => {
   const { bookStore } = useContext(storeContext);
   const click = (book: Book) => {
     if (!bookStore.downloaded.has(book.id)) {
       bookStore.download(book).then(() => {bookStore.refresh().catch(() => {})});
     } else {
-      
+      history.push('/reader/'+book.id);
     }
   };
   return useObserver(() => (

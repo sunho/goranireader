@@ -24,18 +24,7 @@ const SentenceComponent = styled.div`
   overflow: scroll;
 `;
 
-
-const WordComponent = styled.div<{selected: boolean}>`
-  display: inline;
-
-  ${props => (
-    props.selected && css`
-      background: gray;
-      padding: 4px;
-      font-weight: 700;
-      color: white;
-  `)}
-`;
+y`;
 
 const OptionComponent = styled.div<{selected: boolean}>`
   margin-top: 10px;

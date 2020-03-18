@@ -7,7 +7,7 @@ import reportng
 import seaborn
 
 from pyspark.sql import SparkSession
-spark = SparkSession.builder.appName('Create Mission Report').getOrCreate()
+spark = SparkSession.builder.appName('Clean Logs').getOrCreate()
 sc = spark.sparkContext
 df = spark.read.json("gs://gorani-reader-249509-gorani-reader-event-log")
 

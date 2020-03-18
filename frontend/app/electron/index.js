@@ -59,13 +59,13 @@ async function createWindow () {
     // If we are developers we might as well open the devtools by default.
     mainWindow.webContents.openDevTools();
   }
-nodeIntegration
+
   if(useSplashScreen) {
     splashScreen = new CapacitorSplashScreen(mainWindow);
     splashScreen.init(false);
   } else {
     if (isDevMode) {
-      mainWindow.loadURL(`http://localhost:8101/index.html`);
+      mainWindow.loadURL(`http://localhost:8100/index.html`);
     } else {
       mainWindow.loadURL(`file://${__dirname}/app/index.html`);
     }

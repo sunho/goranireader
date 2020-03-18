@@ -10,7 +10,9 @@ class Gorani:
         self.book_rows = list()
         self.questions = dict()
         self.books = dict()
+        print('Gorani inited')
         self.init_books(db)
+        print('Gorani books inited')
 
     def init_books(self, db):
         docs = db.collection("books").stream()
@@ -48,7 +50,7 @@ class Gorani:
         for doc in docs:
             user = doc.to_dict()
             self.usernames[doc.id] = user.get('username', '')
-
+        
     def get_username(self, user_id):
         return self.usernames.get(user_id, None)
 

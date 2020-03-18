@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, MutableRefObject } from "react";
 import styled, { css } from "styled-components";
-import { Question } from "../../model";
-import { pat } from "../SwipeItemChildren";
+import { Question } from "../../models";
+import { pat } from "./SwipeItemChildren";
 
 const Main = styled.div`
   height: calc(100vh - 20px);
@@ -94,17 +94,17 @@ const Quiz: React.FC<Props> = (props: Props) => {
   const i = _i === -1 ? 0 : _i;
   const question = questions[i];
   useEffect(() => {
-    window.app.setLoading(false);
+    // window.app.setLoading(false);
   }, []);
 
   const submit = () => {
     if (answer == null) return;
-    window.app.submitQuestion(readingQuestion, question.options[answer], answer === question.answer);
+    // window.app.submitQuestion(readingQuestion, question.options[answer], answer === question.answer);
     if (i === questions.length - 1) {
-      window.app.endQuiz();
+      // window.app.endQuiz();
     } else {
       const newReadingQuestion = questions[i+1].id;
-      window.app.setReadingQuestion(newReadingQuestion)
+      // window.app.setReadingQuestion(newReadingQuestion)
       setReadingQuestion(newReadingQuestion);
       setAnswer(null);
     }

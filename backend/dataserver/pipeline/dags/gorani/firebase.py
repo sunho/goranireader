@@ -14,7 +14,7 @@ def init(env):
     firebase_admin.initialize_app(cred, {
         'projectId': "gorani-reader-249509",
     })
-
+    print('Firebase inited')
 
 def db():
     return firebase_admin.firestore.client()
