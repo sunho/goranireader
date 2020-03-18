@@ -1,6 +1,6 @@
 import { observable, action, observe, autorun } from "mobx";
 import RootStore from './RootStore';
-import { User, Book } from "../models";
+import { User, Book, BookyBook } from "../models";
 import FirebaseService from "./FirebaseService";
 import { autobind } from "core-decorators";
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
@@ -42,10 +42,12 @@ class BookStore {
     this.downloaded.clear();
     if (isPlatform('electron')) {
       const fs = window.require('fs');
+      const path = window.require('path');
       fs.mkdirSync(this.booksDir(), { recursive: true });
       fs.readdir(this.booksDir(), (err: any, files: any) => {
         files.forEach((file: any) => {
-          this.downloaded.set(file.replace(/\.book$/, ""), file.fullPath);
+          console.log(file.replace(/\.book$/, ""));
+          this.downloaded.set(file.replace(/\.book$/, ""), path.join(this.booksDir(), file));
         });
       });
     } else {
@@ -100,8 +102,22 @@ class BookStore {
     }
   }
 
-  async open() {
-
+  async open(file: string): Promise<BookyBook> {
+    console.log(file);
+    if (isPlatform('electron')) {
+      const fs = window.require('fs');
+      return new Promise((resolve, reject) => {
+        fs.readFile(file,  "utf8", (err: any, buf:any) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+          resolve(JSON.parse(buf.toString()) as BookyBook);
+        });
+      });
+    } else {
+      throw new Error("not implemented");
+    }
   }
 }
 

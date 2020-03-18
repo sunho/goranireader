@@ -1,5 +1,10 @@
 export interface BookyBook {
+  chapters: Chapter[];
+}
 
+export interface Chapter {
+  id: string;
+  items: Sentence[];
 }
 
 export interface Sentence {

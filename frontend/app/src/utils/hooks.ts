@@ -1,3 +1,6 @@
+
+import React, { useLayoutEffect, useState } from 'react';
+
 import { MutableRefObject, useEffect } from "react";
 import { LiteEvent } from "./event";
 
@@ -34,4 +37,17 @@ export function useLiteEventObserver<T>(
       event.off(handleEvent);
     }
   }, deps);
+}
+
+export function useWindowSize(event: () => void) {
+  const [size, setSize] = useState([0, 0]);
+  useLayoutEffect(() => {
+    function updateSize() {
+      event();
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+  return size;
 }

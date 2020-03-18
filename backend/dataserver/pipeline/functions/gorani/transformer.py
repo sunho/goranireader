@@ -64,6 +64,7 @@ class Transformer:
         self.get_username = pandas_udf(self._udf_impl.get_username, StringType())
         self.get_questions_len = pandas_udf(self._udf_impl.get_questions_len, IntegerType())
         self.init_book()
+        print("Transformet Inited")
 
     def init_book(self):
         book_rows = list()

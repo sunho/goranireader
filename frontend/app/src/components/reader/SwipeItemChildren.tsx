@@ -1,12 +1,19 @@
-import React, { MutableRefObject, useRef, useState, useEffect } from "react";
-import { Sentence, SelectedWord, SelectedSentence } from "../../model";
+import React, { MutableRefObject, useRef, useState, useEffect, useContext } from "react";
+import { Sentence, SelectedWord, SelectedSentence } from "../../models";
 import styled, { css } from "styled-components";
-import Dict from "../Dict";
-import SentenceSelector from "../SentenceSelector";
-
+import Dict from "./Dict";
+import SentenceSelector from "./SetenceSelector";
+import { readerContext } from "./Reader";
+import { useOutsideClickObserver } from "../../utils/hooks";
 const SentenceComponent = styled.p<{ inline: boolean; selected: boolean }>`
   padding: 0;
   margin: 10px 0;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Safari */
+  -khtml-user-select: none;    /* Konqueror HTML */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;
 
   ${props =>
     props.inline &&
@@ -49,12 +56,13 @@ interface Props {
 }
 
 const SwipeItem: React.FC<Props> = (props: Props) => {
+  const readerStore = useContext(readerContext);
   const [selectedWord, setSelectedWord] = useState<SelectedWord | undefined>(undefined);
   const [selectedSentence, setSelectedSentence] = useState<SelectedSentence | undefined>(
     undefined
   );
   const touch: MutableRefObject<
-    { id: string; n: number; timer: number; x: number; y: number } | undefined
+    { id: string; n: number; timer: number; x: number; y: number, el: HTMLElement } | undefined
   > = useRef(undefined);
   const figureSentenceUp = (word: HTMLElement) => {
     const parentRect = word.parentElement!.parentElement!.getBoundingClientRect();
@@ -84,7 +92,7 @@ const SwipeItem: React.FC<Props> = (props: Props) => {
           wordIndex: k/2,
           up: figureWordUp(node)
         });
-        window.app.wordSelected(word, Math.floor(k / 2), sentences[j].id);
+        // window.app.wordSelected(word, Math.floor(k / 2), sentences[j].id);
         setSelectedSentence(undefined);
         touch.current.n = 2;
         touch.current.timer = setTimeout(() => {
@@ -110,7 +118,8 @@ const SwipeItem: React.FC<Props> = (props: Props) => {
       timer: timer,
       id: id,
       x: x,
-      y: y
+      y: y,
+      el: node,
     };
   };
 
@@ -127,14 +136,48 @@ const SwipeItem: React.FC<Props> = (props: Props) => {
     }
 
     if (handler) {
-      window.webapp.onCancelSelect.on(handler);
+      readerStore.onCancel.on(handler);
     }
     return () => {
       if (handler) {
-        window.webapp.onCancelSelect.off(handler);
+        readerStore.onCancel.off(handler);
       }
     };
   }, [selectedSentence, selectedWord]);
+
+  useEffect(() => {
+    const handler = (e) => {
+      const x = e.clientX;
+      const y = e.clientY;
+      if (touch.current && Math.sqrt((x-touch.current.x)**2 + (y-touch.current.y) ** 2) > 30) {
+        clearTimeout(touch.current.timer);
+      }
+    };
+    const handler2 = (e) => {
+      console.log("Asdfasf");
+      if (touch.current) {
+        clearTimeout(touch.current.timer);
+      }
+    };
+    let handler3 = undefined;
+    if (touch.current) {
+      handler3 = (event: any) => {
+        if (touch.current.el && !event.target.contains(touch.current.el)) {
+          readerStore.onCancel.trigger();
+        }
+      }
+      document.addEventListener("mousedown", handler3);
+    }
+    document.addEventListener('mouseup', handler2);
+    document.addEventListener('mousemove', handler);
+    return () => {
+      document.removeEventListener('mouseup', handler2);
+      document.removeEventListener('mousemove', handler);
+      if (handler3) {
+        document.removeEventListener("mousedown", handler3);
+      }
+    };
+  })
 
   const { sentences } = props;
 
@@ -174,11 +217,13 @@ const SwipeItem: React.FC<Props> = (props: Props) => {
                   clearTimeout(touch.current.timer);
                 }
               }}
+
               onTouchCancel={(e) => {
                 if (touch.current) {
                   clearTimeout(touch.current.timer);
                 }
               }}
+
               onTouchStart={
                 !word.match(pat)
                   ? (e) => {
@@ -189,6 +234,18 @@ const SwipeItem: React.FC<Props> = (props: Props) => {
                         return;
                       }
                       onTouchWord(e.target as HTMLElement, j, k, word, e.touches[0].clientX, e.touches[0].clientY);
+                    }
+                  : undefined
+              }
+
+              onMouseDown={
+                !word.match(pat)
+                  ? (e) => {
+                      if (touch.current) {
+                        clearTimeout(touch.current.timer);
+                        touch.current = undefined;
+                      }
+                      onTouchWord(e.target as HTMLElement, j, k, word, e.clientX, e.clientY);
                     }
                   : undefined
               }
