@@ -32,3 +32,13 @@ SubmitQuestionPayload = StructType([
 
 Book = StructType([StructField('bookId', StringType()), StructField(
     'chapterId', StringType()), StructField('sid', StringType())])
+
+EventLog = StructType([
+    StructField("userId", StringType()),
+    StructField("fireId", StringType()),
+    StructField("classId", StringType()),
+    StructField("serverTime", StringType()),
+    StructField("time", StringType()),
+    StructField("type", StringType()),
+    StructField("payload", StringType())
+])
