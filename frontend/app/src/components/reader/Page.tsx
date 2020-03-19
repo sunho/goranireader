@@ -7,7 +7,7 @@ import SentenceSelector from "./SetenceSelector";
 import { useOutsideClickObserver } from "../../utils/hooks";
 import { isPlatform } from "@ionic/react";
 import { ReaderContext } from "../../pages/ReaderPage";
-const SentenceComponent = styled.p<{ inline: boolean; selected: boolean; font: number }>`
+const SentenceComponent = styled.p<{ inline: boolean; selected: boolean}>`
   padding: 0;
   margin: 10px 0;
   -webkit-touch-callout: none; /* iOS Safari */
