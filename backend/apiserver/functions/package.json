@@ -21,7 +21,7 @@
     "firebase-admin": "^8.0.0",
     "firebase-functions": "^3.1.0",
     "mkdirp-promise": "^5.0.1",
-    "msgpack": "^1.0.2",
+    "msgpack": "^1.0.3",
     "nodejs-base64": "^1.0.3",
     "uuid": "^3.3.3"
   },

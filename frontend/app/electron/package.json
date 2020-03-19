@@ -4,7 +4,9 @@
   "description": "An Amazing Capacitor App",
   "main": "index.js",
   "scripts": {
-    "electron:start": "electron ./"
+    "electron:start": "electron ./",
+    "build-windows": "electron-packager . GoraniReader --platform=win32 --arch=x64",
+    "build-mac": "electron-packager . GoraniReader --platform=darwin --arch=x64"
   },
   "dependencies": {
     "@capacitor/electron": "^1.5.1",
@@ -13,7 +15,8 @@
     "sqlite3": "^4.1.1"
   },
   "devDependencies": {
-    "electron": "^7.0.0"
+    "electron": "^7.0.0",
+    "electron-packager": "^14.2.1"
   },
   "keywords": [
     "capacitor",

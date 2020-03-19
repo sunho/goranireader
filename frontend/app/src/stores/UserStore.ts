@@ -3,7 +3,7 @@ import RootStore from './RootStore';
 import { User } from "../models";
 import FirebaseService from "./FirebaseService";
 import { autobind } from "core-decorators";
-
+import {Location} from './ReaderStore';
 @autobind
 class UserStore {
   rootStore: RootStore;
@@ -30,6 +30,7 @@ class UserStore {
       }
       const user2 = await this.firebaseService.userDoc(this.userId!).get();
       this.user = user2.data()! as User;
+      await this.firebaseService.userDoc(this.userId!).update({fireId: this.fireId()!});
     } catch (e) {
       this.userId = null;
       this.user = null;
@@ -48,6 +49,32 @@ class UserStore {
     await this.firebaseService.fuserDoc().set({userId: user.id});
     await this.loadUser();
     await this.firebaseService.userDoc(this.userId!).update({fireId: this.fireId()!});
+    return Promise.resolve();
+  }
+
+  getLocation(bookId: string): Location {
+    if (!this.user?.locations) {
+      return  {
+        chapterId: '',
+        sentenceId: ''
+      };
+    }
+    if (!(bookId in this.user!.locations)) {
+      return  {
+        chapterId: '',
+        sentenceId: ''
+      };
+    }
+    return this.user!.locations[bookId];
+  }
+
+  @action async saveLocation(bookId: string, location: Location) {
+    if (!this.user!.locations) {
+      this.user!.locations = {};
+    }
+    this.user!.locations[bookId] = location;
+    await this.firebaseService.userDoc(this.userId!).update({locations: this.user!.locations});
+    await this.loadUser();
     return Promise.resolve();
   }
 }

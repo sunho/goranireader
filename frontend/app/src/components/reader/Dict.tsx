@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { SelectedWord, DictSearchResult, DictWord } from "../../models";
 import styled, { css } from "styled-components";
 import { useOutsideClickObserver } from "../../utils/hooks";
 import { instanceOf } from "prop-types";
+import { ReaderContext } from "../../pages/ReaderPage";
 
 const DictContainer2 = styled.div`
   position: fixed;
@@ -14,7 +15,7 @@ const DictContainer2 = styled.div`
 
 const DictContainer = styled.div<{ up: boolean; hide: boolean }>`
   font-family: 'Noto Sans KR', sans-serif;
-  font-size: 14px;
+  font-size: .8em;
   position: absolute;
   ${props =>
     props.up
@@ -42,26 +43,26 @@ const DictContainer = styled.div<{ up: boolean; hide: boolean }>`
 
 const DictWordComponent = styled.div`
   flex-shrink: 0;
-  margin-bottom: 10px;
-  padding-top: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin-bottom: .5em;
+  padding-top: .5em;
+  padding-left: .5em;
+  padding-right: .5em;
   font-weight: 500;
-  font-size: 21px;
+  font-size: 1.5em;
 `;
 
 const DictDefsComponent = styled.div`
-  margin-top: 5px;
+  margin-top: .25em;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   font-weight: 400;
   & > div {
     background: lightgray;
-    padding: 10px;
-    margin-bottom: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
-    border-radius: 10px;
+    padding: .5em;
+    margin-bottom: .5em;
+    margin-left: .5em;
+    margin-right: .5em;
+    border-radius: .5em;
     &:active {
       background: gray;
     }
@@ -71,14 +72,14 @@ const DictDefsComponent = styled.div`
 const DictButtons = styled.div`
   display: flex;
   flex-shrink: 0;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 10px;
+  padding-left: .5em;
+  padding-right: .5em;
+  padding-top: .5em;
   justify-content: space-between;
 `;
 
 const DictButton = styled.div<{ enabled: boolean }>`
-  padding: 7px;
+  padding: .25em;
   background: #AB7756;
   font-weight: 700;
   color: white;
@@ -95,33 +96,26 @@ interface Props {
 }
 
 const Dict: React.FC<Props> = props => {
-  const [res, setRes] = useState<DictSearchResult | undefined>(undefined);
+  const readerRootStore = useContext(ReaderContext);
+  const { readerUIStore, rootStore } = readerRootStore;
+  const { dictService } = rootStore;
+  const [res, setRes] = useState<any[]>([]);
   const [pos, setPos] = useState(0);
   const dictRef = useRef<HTMLElement | null | undefined>(undefined);
   const { word, wordIndex, up, sentenceId } = props.selectedWord;
 
   useEffect(() => {
-    // const res = window.app.dictSearch(word);
-    // if (typeof res === 'string') {
-    //   const out: DictSearchResult = JSON.parse(res);
-    //   setRes(out);
-    // } else {
-    //   res.then((str) => {
-    //     const out: DictSearchResult = JSON.parse(str);
-    //     setRes(out);
-    //   })
-    // }
+    setRes(dictService.find(word));
   }, [props]);
 
   useOutsideClickObserver(dictRef, () => {
-    console.log("asdf");
-    // window.webapp.cancelSelect();
+    readerUIStore.cancelSelection();
   });
 
   const result = (resWord: DictWord) => {
     return (
       <>
-        {res!.words.length !== 1 && (
+        {res.length !== 1 && (
           <DictButtons>
             <DictButton
               onClick={() => {
@@ -135,7 +129,7 @@ const Dict: React.FC<Props> = props => {
               onClick={() => {
                 setPos(pos + 1);
               }}
-              enabled={pos !== res!.words.length - 1}
+              enabled={pos !== res.length - 1}
             >
               next
             </DictButton>
@@ -157,7 +151,7 @@ const Dict: React.FC<Props> = props => {
   return (
     <DictContainer2>
     <DictContainer hide={!res} ref={node => (dictRef.current = node)} up={up}>
-      {res && res.words[pos] ? result(res.words[pos]) : notFound}
+      {res.length !== 0 && res[pos] ? result(res[pos]) : notFound}
     </DictContainer>
     </DictContainer2>
   );

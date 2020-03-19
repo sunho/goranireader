@@ -6,7 +6,8 @@ import { useObserver } from 'mobx-react-lite';
 import { Book } from '../models';
 
 const BooksPage = ({history}) => {
-  const { bookStore } = useContext(storeContext);
+  const { bookStore, dictService } = useContext(storeContext);
+  dictService.getWord('hello');
   const click = (book: Book) => {
     if (!bookStore.downloaded.has(book.id)) {
       bookStore.download(book).then(() => {bookStore.refresh().catch(() => {})});
@@ -30,7 +31,7 @@ const BooksPage = ({history}) => {
         <IonList>
         {
           bookStore.books.map(x => (
-          <IonItem onClick={() => {click(x)}}>
+          <IonItem button onClick={() => {click(x)}}>
             {x.title}
           </IonItem>))
         }
