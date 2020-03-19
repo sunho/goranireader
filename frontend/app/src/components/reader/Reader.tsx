@@ -1,253 +1,156 @@
-import React, { useState, useEffect, useRef, MutableRefObject } from "react";
-import ReactSwipe from "react-swipe";
-import {
-  useOutsideClickObserver,
-  useLiteEventObserver,
-  useWindowSize
-} from "../../utils/hooks";
-import SwipeItemChildren from "./SwipeItemChildren";
-import { Sentence } from "../../models";
+import React, { useState, useEffect, useRef, MutableRefObject, useContext } from "react";
 import styled, { css } from "styled-components";
-import ReaderStore from "../../stores/ReaderStore";
 import "./Reader.css";
-import { isPlatform } from "@ionic/react";
+import { isPlatform, IonProgressBar, IonContent, IonSpinner } from "@ionic/react";
+import { ReaderContext } from "../../pages/ReaderPage";
+import { reaction, untracked } from "mobx";
+import Page from "./Page";
+import { useObserver, observer } from "mobx-react-lite";
+import Swiper from 'react-id-swiper';
+import 'swiper/css/swiper.css';
+import { useWindowSize } from "../../utils/hooks";
 
-const Main = styled.div`
-  padding: 10px 5px;
-  height: calc(100% - 20px);
-  overflow: hidden;
-  width: calc(100vw - 10px);
+const Main = styled.div<{ font: number }>`
+  height: 100%;
+  font-size: ${props => props.font}px;
+`;
+const Cover = styled.div<{ enabled: Boolean; }>`
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  position: fixed;
+  background: white;
+  cursor: pointer;
+  display: block;
+  ${props => ((props.enabled) && css`
+    display: none;
+  `)}
 `;
 
-
-const Swipe = styled(ReactSwipe)`
-  overflow: hidden;
-  height: 100%;
-  width: calc(100vw - 10px) !important;
-
-  & > div {
-    display: block !important;
-    height: 100%;
-  }
-
-  & > * > div {
-    height: 100%;
-    width: calc(100vw - 10px) !important;
-  }`;
-
-const SwipeItem = styled.div`
-  max-height: 100%;
-  height: 100%;
-  width: 100vw;
-  overflow: hidden;
-`;
-
-
-interface Props {
-  sentences: Sentence[];
-  readerStore: ReaderStore
-}
-
-export const readerContext = React.createContext<ReaderStore | null>(null);
-
-// thanks to  https://github.com/yoo2001818
-const Reader: React.FC<Props> = (props: Props) => {
-  const sentences = props.sentences;
-  const [loaded, setLoaded]: [boolean, any] = useState(false);
-  const rendered = useRef(false);
-  const [cutted, setCutted] = useState(false);
-
-  console.log(cutted,loaded);
-  const [dividePositions, setDividePositions]: [any, any] = useState<number[]>([]);
-  const swipeItemRefs: any = useRef([]);
-
-  const swipeRef: MutableRefObject<ReactSwipe | null> = useRef(null);
-  const idToPage = useRef(new Map());
-  const readingSentence: MutableRefObject<string> = useRef(
-    props.readerStore.location.sentenceId
-  );
-
-  const getPageSentences = (page: number) => {
-    if (page === dividePositions.length) {
-      return sentences.slice(dividePositions[page - 1] || 0);
-    }
-    return sentences.slice(
-      dividePositions[page - 1] || 0,
-      dividePositions[page]
-    );
-  };
-
-  const atHandle = () => {
-    const readingPage = idToPage.current.get(readingSentence.current) || 0;
-    // if (readingPage === 0) {
-    //   window.app.atStart();
-    // }
-    // if (readingPage === dividePositions.length) {
-    //   window.app.atEnd();
-    // }
-    // if (readingPage !== 0 && readingPage !== dividePositions.length) {
-    //   window.app.atMiddle();
-    // }
-    if (cutted) {
-      props.readerStore.location.sentenceId =  readingSentence.current;
-    }
-  };
-
-
-  useWindowSize(() => {
-    console.log('window');
-    setCutted(false);
-    setDividePositions([]);
-  });
-
-  // useEffect(() => {
-  //   if (cutted.current) {
-  //     // window.app.setLoading(false);
-  //     atHandle();
-  //   }
-  // });
+const Reader = observer(() => {
+  const readerRootStore = useContext(ReaderContext);
+  const { readerStore, readerUIStore } = readerRootStore;
+  const { dividePositions, cutted, loaded } = readerUIStore;
+  const pageRefs: any = useRef([]);
+  const swipeRef: MutableRefObject<any | null> = useRef(null);
+  const readingSentence = untracked(()=>(readerStore.location.sentenceId));
 
   useEffect(() => {
-    window.requestAnimationFrame(() => {
-      setLoaded(true);
-    });
-  }, []);
-
-  useEffect(() => {
-    // 마지막 페이지의 자를 노드 위치 계산
-    // debugger;
+    if (swipeRef.current?.$el) {
+      swipeRef.current.update();
+    }
     if (!loaded) return;
     if (cutted) return;
-    const lastItem = swipeItemRefs.current[0];
-    const parentBounds = lastItem.getBoundingClientRect();
+    const lastItem = pageRefs.current[0];
+    const parentBounds = swipeRef.current.$el[0].getBoundingClientRect();
     const parentTop = parentBounds.top;
     const parentHeight = parentBounds.height;
     let pageTop = parentTop;
     let currentPage = 0;
     let cutPos: any = [];
-    // HTMLElement.children은 놀랍게도 배열이 아니라서 findIndex같은걸 못써요 ㅠㅠ
     for (let i = 0; i < lastItem.children.length; i += 1) {
       const childNode = lastItem.children[i]!;
       const childBounds = childNode.getBoundingClientRect()!;
       const offset = childBounds.bottom - pageTop + 20;
       if (offset >= parentHeight) {
         pageTop = (lastItem.children[i - 1] || lastItem.children[i]).getBoundingClientRect().bottom;
-        // 노드 위치는 dividePositions의 마지막 값만큼 뒤로 가있기 때문에 앞으로 다시
-        // 밀어주는 작업이 필요함
         cutPos[currentPage] = i;
         currentPage += 1;
       }
     }
-    const getPageSentencesByCutPos = (page: number) => {
-      if (page === cutPos.length) {
-        return sentences.slice(cutPos[page - 1] || 0);
+    readerUIStore.dividePositions = cutPos;
+    readerUIStore.cutted = true;
+  });
+
+  const rerender = () => {
+    setTimeout(() => {
+      if (!swipeRef.current?.$el) {
+        rerender();
+        return;
       }
-      return sentences.slice(
-        cutPos[page - 1] || 0,
-        cutPos[page]
-      );
-    };
-    readingSentence.current = props.readerStore.location.sentenceId;
-    idToPage.current = Array(cutPos.length + 1)
-        .fill(1)
-        .flatMap((_: any, i: number) =>
-          getPageSentencesByCutPos(i).map(sen => [sen.id, i])
-        )
-        .reduce((map: Map<string, number>, tuple: any) => {
-          map.set(tuple[0], tuple[1]);
-          return map;
-        }, new Map());
-
-      setDividePositions(cutPos);
-      setCutted(true);
-  }, [cutted, loaded]);
-
-
-  // useLiteEventObserver(
-  //   window.webapp.onFlushPaginate,
-  //   () => {
-  //     const current = idToPage.current.get(readingSentence.current) || 0;
-  //     window.app.paginate(getPageSentences(current).map(s => s.id));
-  //   },
-  //   []
-  // );
-  console.log(readingSentence.current, dividePositions.length, idToPage.current);
-  const swipeOptions = {
-    startSlide: idToPage.current.get(readingSentence.current) || 0,
-    continuous: false,
-    callback: () => {
-      if (swipeRef.current) {
-        console.log("swipe")
-        const sens = getPageSentences(swipeRef.current.getPos());
-        const old = idToPage.current.get(readingSentence.current) || 0;
-        const neww = idToPage.current.get(sens[0].id) || 0;
-        if (cutted) {
-          readingSentence.current = sens[0].id;
-        }
-        if (neww > old) {
-          // window.app.paginate(getPageSentences(old).map(s => s.id));
-        }
-        // window.webapp.cancelSelect();
-        // atHandle();
+      if (swipeRef.current.$el[0].getBoundingClientRect().height === 0) {
+        rerender();
+        return;
       }
-    }
+      if (pageRefs.current.length === 0) {
+        rerender();
+        return;
+      }
+      readerUIStore.loaded = true;
+    }, 50);
   };
 
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      console.log(e.code, loaded, cutted);
-      if (loaded && cutted) {
-        if (e.code === 'ArrowRight') {
-          console.log(dividePositions.length);
-          console.log("next");
-          if (swipeRef.current.getPos() === dividePositions.length) {
-            props.readerStore.nextChapter();
-          } else {
-            swipeRef.current.next();
-          }
+    rerender();
+  }, []);
 
-        } else if (e.code === 'ArrowLeft') {
-          if (swipeRef.current.getPos() === 0) {
-            props.readerStore.prevChapter();
-          } else {
-            swipeRef.current.prev();
-          }
-        } else if (e.code === 'Escape') {
-
+  useEffect(() => {
+    const handler = () => {
+      const page = swipeRef.current.activeIndex;
+      if (page === 0) {
+        if (readerStore.currentChapterIndex !== 0) {
+          setTimeout(readerUIStore.prevChapter, 0.1);
         }
+      } else if (page === dividePositions.length + 2) {
+        if (readerStore.currentChapterIndex !== readerStore.book.chapters.length -1) {
+          setTimeout(readerUIStore.nextChapter, 0.1);
+        }
+      } else {
+        untracked(()=>{readerUIStore.changePage(swipeRef.current.activeIndex - 1)});
       }
     };
-    document.addEventListener('keydown', handler);
-    return () => {
-      document.removeEventListener('keydown', handler);
-    };
-  }, [loaded, cutted]);
+
+    if (swipeRef.current?.$el) {
+      swipeRef.current.slideTo(readerUIStore.getPageBySentenceId(readingSentence) + 1, 0);
+      swipeRef.current.on("slideChange", handler);
+      return () => {
+        swipeRef.current.off("slideChange", handler);
+      }
+    }
+  });
+
+  useWindowSize(() => {
+    readerUIStore.clearDivision();
+    rerender();
+  });
+
+  reaction(() => readerUIStore.fontSize, () =>{
+    readerUIStore.clearDivision();
+    rerender();
+  });
+
+  const params = {
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    allowTouchMove: !isPlatform('electron'),
+    preventInteractionOnTransition: true,
+    spaceBetween: 30,
+  }
+
+  const pages = Array(dividePositions.length + 1)
+    .fill(1)
+    .map((_: any, i: number) => (
+      <Page
+        key={i}
+        ref={node => {
+          pageRefs.current[i] = node;
+        }}
+        sentences={readerUIStore.getPageSentences(i)}
+      />
+    ));
 
   return (
-    <readerContext.Provider value={props.readerStore}>
-      <Main>
-        <Swipe
-          swipeOptions={swipeOptions}
-          ref={r => (swipeRef.current = r)}
-          childCount={dividePositions.length + 1}
-        >
-          {loaded && Array(dividePositions.length + 1)
-            .fill(1)
-            .map((_: any, i: number) => (
-              <SwipeItem
-                style={{cursor: !isPlatform('electron') ? 'pointer':undefined}}
-                key={i}
-                ref={node => {
-                  swipeItemRefs.current[i] = node;
-                }}
-              >
-                <SwipeItemChildren sentences={getPageSentences(i)} />
-              </SwipeItem>
-            ))}
-        </Swipe>
-      </Main>
-    </readerContext.Provider>
+    <Main font={readerUIStore.fontSize}>
+      <Cover enabled={(loaded && cutted)}>
+        <IonSpinner name="crescent"/>
+      </Cover>
+      <Swiper key={dividePositions.length} {...params} getSwiper={(node) => {swipeRef.current = node}}>
+        {([<div key="start"></div>].concat(pages).concat([<div key="end"></div>]))}
+      </Swiper>
+    </Main>
   );
-};
+});
 
 export default Reader;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, MutableRefObject } from "react";
 import styled, { css } from "styled-components";
 import { Question } from "../../models";
-import { pat } from "./SwipeItemChildren";
+import { pat } from "./Page";
 
 const Main = styled.div`
   height: calc(100vh - 20px);

@@ -28,6 +28,12 @@ const EVENT_LOG_BUCKET = "gorani-reader-249509-gorani-reader-event-log";
 export default functions
   .region("asia-northeast1")
   .https.onRequest(async (req, res) => {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+    if (req.method === 'OPTIONS') {
+      res.sendStatus(200);
+      return;
+    }
     const item: any = req.body;
     const token = req.headers.authorization;
     const serverTime = ISODateString(new Date());
