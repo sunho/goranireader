@@ -3,7 +3,8 @@
 *.swift linguist-vendored=false
 *.ts linguist-vendored=false
 *.tsx linguist-vendored=false
-*.js linguist-vendored=true
+*.js linguist-vendored
+*/*.js linguist-vendored
 *.kt linguist-vendored=false
 *.go linguist-vendored=false
 *.ipynb linguist-vendored=false
