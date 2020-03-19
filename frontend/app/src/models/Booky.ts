@@ -1,9 +1,17 @@
 export interface BookyBook {
   chapters: Chapter[];
+  meta: Meta;
+}
+
+export interface Meta {
+  id: string;
+  title: string;
+  author: string;
 }
 
 export interface Chapter {
   id: string;
+  title: string;
   items: Sentence[];
 }
 

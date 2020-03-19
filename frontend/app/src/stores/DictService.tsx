@@ -1,10 +1,13 @@
 import { SqlJs } from "sql.js/module";
 import { autobind } from "core-decorators";
+import { EnglishWords } from "../nlp/words";
 
 @autobind
 class DictService {
   db: SqlJs.Database | undefined = undefined;
+  words: EnglishWords;
   constructor() {
+    this.words = new EnglishWords();
     initSqlJs({
       locateFile: (file: any) => `./assets/${file}`
     }).then((sql: any) => {
@@ -24,7 +27,28 @@ class DictService {
   }
 
   find(word: string) {
+    return this.words.normalizedForms(word).map(this.getWord).filter(x => x !== undefined);
+  }
 
+  getWord(word: string) {
+    const stmt = this.db!.prepare("SELECT * FROM words WHERE word = $word");
+    stmt.bind({$word: word});
+    if(stmt.step()) {
+      const row: any = stmt.getAsObject();
+      row.defs = this.getDefinitions(word);
+      return row;
+    }
+    return undefined;
+  }
+
+  getDefinitions(word: string) {
+    const stmt = this.db!.prepare("SELECT * FROM defs WHERE word = $word");
+    stmt.bind({$word: word});
+    const out = [];
+    while(stmt.step()) {
+      out.push(stmt.getAsObject());
+    }
+    return out;
   }
 };
 

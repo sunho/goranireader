@@ -32,7 +32,7 @@ const App: React.FC = () => {
   const Loading = () => (
     <IonApp>
       <IonContent>
-        <IonSpinner style={{margin: 'auto'}}/>
+        <IonSpinner name="crescent"/>
       </IonContent>
     </IonApp>
   );

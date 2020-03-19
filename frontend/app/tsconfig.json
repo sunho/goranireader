@@ -6,7 +6,7 @@
     "experimentalDecorators": true,
     "lib": [
       "dom",
-      "es2015"
+      "es2019"
     ],
     "module": "esnext",
     "moduleResolution": "node",
@@ -23,7 +23,7 @@
     "jsx": "react"
   },
   "include": [
-    "src/**/*.ts", "src/stores/DictService.tsx", "src/stores/BookStore.tsx"
+    "src/**/*.ts", "src/stores/DictService.tsx", "src/stores/BookStore.tsx", "src/utils/hooks.tsx"
   ],
   "exclude": [
     "node_modules"

@@ -8,7 +8,7 @@ export const StoreProvider: React.FC = ({ children }) => {
 	const [store, _] = useState(createStore());
   return (
     <storeContext.Provider value={store}>
-        {children}
+      {children}
     </storeContext.Provider>
   );
 };
