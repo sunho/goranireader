@@ -1,1 +1,0 @@
-This is the implementation of ebook reader inside the app. 
