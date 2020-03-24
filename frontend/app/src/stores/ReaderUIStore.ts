@@ -24,7 +24,7 @@ class ReaderUIStore {
   @observable loaded: Boolean = false;
   @observable dividePositions: number[] = [];
   @observable fontSize: number = 20;
-  timer: ReturnType<typeof setInterval> = 0;
+  timer: ReturnType<typeof setInterval> = -1;
 
   onCancelSelection: LiteEvent<void> = new LiteEvent();
   readerStore: ReaderStore;
@@ -36,6 +36,7 @@ class ReaderUIStore {
     this.readerRootStore = readerRootStore;
     this.rootStore = readerRootStore.rootStore;
     this.readerStore = readerRootStore.readerStore;
+    this.startTimer();
     window.addEventListener('focus', this.startTimer);
     window.addEventListener('blur', this.stopTimer);
     reaction(() => this.cutted, cutted => {
@@ -46,15 +47,21 @@ class ReaderUIStore {
   }
 
   timerHandler() {
-    this.currentTime+=10;
+    this.currentTime+=100;
   }
 
   startTimer() {
-    this.timer = window.setInterval(this.timerHandler, 10);
+    console.log("start");
+    if (this.timer !== -1) {
+      this.stopTimer();
+    }
+    this.timer = window.setInterval(this.timerHandler, 100);
    }
 
   stopTimer() {
+    console.log("stop");
     window.clearInterval(this.timer);
+    this.timer = -1;
    }
 
   getPageBySentenceId(id: string) {
@@ -83,6 +90,7 @@ class ReaderUIStore {
   paginate(sens: string[]) {
     this.readerStore.paginate(sens, this.currentTime, this.unknownWords);
     this.unknownWords = [];
+    console.log(this.currentTime);
     this.currentTime = 0;
   }
 
@@ -96,14 +104,14 @@ class ReaderUIStore {
     const neww = this.getPageBySentenceId(sens[0]) || 0;
     if (this.cutted) {
       this.readerStore.location.sentenceId = sens[0];
+      if (neww > old) {
+        const sens = this.getPageSentences(old).map(x => x.id);
+        this.paginate(sens);
+      } else if(neww < old) {
+        const sens = this.getPageSentences(old).map(x => x.id);
+        this.paginate(sens);
+      }
     }
-    if (neww > old) {
-      const sens = this.getPageSentences(old).map(x => x.id);
-      this.paginate(sens);
-    } else if(neww < old) {
-      this.currentTime = 0;
-    }
-    this.currentTime = 0;
   }
 
   @computed get currentPageSentences() {

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "gorani-reader-249509",
+  "private_key_id": "2513e100f490f6e2ffe577896af1e807571e2d92",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC3boI+l4Qvgocv\n4kZhQOUu1gmQYD2lMN6eQLShqiRI6ODtD1LYnW88JEPZsNpadrAdYcZ8brQUvOZG\nKL3pR2+wMrnu5nrwbfreDh4OaGHlw4n1Xxu/8BTFOxSHG5cX36CTMVIcJvmF0PlC\nPPhx90uxid1LGca0oaoF9/YmgJgDmxbSNds9RNjO2nR6DlZnDSR3EmCViF7MBvok\nbfaO6n5eg0C2HjIMWRIFz+hHu5OesgJ70aKtuNC1lc8NzzB4uInHGU9+9uSvM4+Z\nnPAMxSEl+dOjCflG92AACFHv9V89D7e37DGVUI5HXtoXV7NqrvVx/Js5ZelHFp1b\nhu0d7C/HAgMBAAECggEAA6Lgrm321FxG4seeXozYnjo8UUzfG/hhNAuTU8XELLUq\ndE3tS1b/nqvCCT2Mw+X+GBmumMaMXQGLomYUsbGqq02uID1twCNl/uM9FvWxxHTB\nC4iu9k9DkiSu2P4j23jMPZlo3R8BVkpDZAaXuZFN7P850E8lVcJYqlVKig6FikNk\nXnMgWqUeYB+PpnZEX1oEnXtucx1tUZKvPUrbstnZ1SAwqBBBxcih1gUNYRQ1/5cc\nkFl2gjpugN2fms7EDkg5VbjHtwWPPl9iL0hdNOABlhBWl3U8PVySN7apXXOv/eZm\nT+x8xHa4JWsxIYvVZAmFkGX6i0KkUFG9rWt6SiGMBQKBgQDZ4xQG++BMlTx1d2KG\nVIsYoBthn9HM6iIV7eutouLg3A3qJlLgQmvgWrwmAEImxI8cMifg0mcxzLabVOqz\nA2k2RlrsD/5I/JGF8EKbj6RQ4zUgsPwyHwOeaJTnZ+hgtQ4ZIsQO9S1KWbIHwLIF\nNVuOPZ+QNpcwiErZqwaAI/HuywKBgQDXhIeDLowNV+ByR58zjxCVzp0npDEdZLOR\nSuJhi3c9jRg1oyerX1/aaUB550N77sWhybUEWyZjcM+breqG6Dup890TLMYtTD2h\nObb6bEV469oD8Kz83aLaEXK+a1Y99sT8JnRbDpYoBMtrkCjlHK3UMEhdO2PGYdfz\nA+voX6eHdQKBgBzVqVPXR3K7GTouZ3KBg7rpjVYZEWm93m7qgpMDCGVbmdfP5I3b\nHG2fdGDPDfIVdx7zIEXnclKr1cqurTStkeHl46hz4WIFUrjX9+igVM2DlAdUhLuZ\nUSBIlNQe8yjBLTF0YV/dYHYDcsUF4klAK3KigxhRsSZyEv3FXWHd3+mLAoGAFN5m\naNN3CEu8FhTNW6a8ymTJXu9NOjVoFeeUaDGjCDjDYV49FyETHQkYDzXPmQ6T4Iix\nmIxi+ToRQFfk389ZB6nvfE3XmsdJKHV4PGODjqP35m3Fsm6buFX8MGggX7unc2sd\n1TtiWtmsAOxiqVzPkD5ko3J+xNTwnj2A+G1awYkCgYAig+G/e68z6+8onHI4kPhu\nzAh+nLCpn01stbTpOBPEGMznUv1IZdEQDHvdlGK6+u0m3+U4lksNvzl2fY/lowTi\nwojVC60LySDgb/FzfRKfH6Ipz4idppAViCSogtpgFT8aD5B/ZaoJnRpLEHK4bL6M\nb/QPaGmDL9Wjugh9d2gPxg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "bigquery@gorani-reader-249509.iam.gserviceaccount.com",
+  "client_id": "118114888579715498494",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/bigquery%40gorani-reader-249509.iam.gserviceaccount.com"
+}

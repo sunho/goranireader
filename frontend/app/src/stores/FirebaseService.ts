@@ -24,7 +24,6 @@ class FirebaseService {
   auth: firebase.auth.Auth;
 
   constructor() {
-    console.log("asdf");
     app.initializeApp(config);
     this.db = app.firestore();
     this.auth = app.auth();

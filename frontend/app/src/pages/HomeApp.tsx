@@ -10,10 +10,17 @@ import ReaderPage from './ReaderPage';
 
 const HomeApp = () => {
   const items = (
-    <IonRouterOutlet>
-      <Route path="/reader/:id" component={ReaderPage} />
-      <Route exact path="/" component={BooksPage} />
-    </IonRouterOutlet>
+    <>
+    <IonTabs>
+      <IonRouterOutlet>
+        <Route path="/:tab(reader)/:id" component={ReaderPage} />
+        <Route path="/:tab(books)" component={BooksPage}/>
+        <Route path="/:tab(settings)" component={BooksPage} />
+        <Route exact path="/" render={()=> <Redirect to="/books" />} />
+      </IonRouterOutlet>
+      <IonTabBar></IonTabBar>
+    </IonTabs>
+    </>
   );
   return (
    <IonApp>

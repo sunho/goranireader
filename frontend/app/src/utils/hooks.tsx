@@ -16,7 +16,7 @@ export function useOutsideClickObserver(
   }
 
   useEffect(() => {
-    if (isPlatform('electron')) {
+    if (isPlatform('desktop')) {
       document.addEventListener("mousedown", handleClickOutside);
       return () => {
         document.removeEventListener("mousedown", handleClickOutside);

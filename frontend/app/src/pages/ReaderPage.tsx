@@ -10,6 +10,7 @@ import ReaderStore from '../stores/ReaderUIStore';
 import { book } from 'ionicons/icons';
 import ReaderRootStore from '../stores/ReaderRootStore';
 import styled from 'styled-components';
+import "./ReaderPage.css";
 
 interface BooksParameters extends RouteComponentProps<{
   id: string;
@@ -43,12 +44,7 @@ const ReaderPage: React.FC<BooksParameters> = ({match, history}) => {
   const { id } = match.params;
   useEffect(() => {
     (async () => {
-      const file = bookStore.downloaded.get(id);
-      if (!file) {
-        history.push('/');
-        return;
-      };
-      const book = await bookStore.open(file);
+      const book = await bookStore.open(id);
       setReaderRootState(new ReaderRootStore(rootStore, book));
     })().catch(e => console.error(e));
   },[]);
@@ -69,13 +65,13 @@ const ReaderPageContent: React.FC = () => {
   const { readerUIStore, readerStore } = readerRootStore;
   return useObserver(() => (
     <>
-      <IonMenu side="start" contentId="content1" menuId="first">
+      <IonMenu swipeGesture={false} side="start" contentId="content1" menuId="first">
         <IonHeader>
           <IonToolbar color="primary">
             <IonTitle>Go to Chapter</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent>
+        <IonContent className="no-scroll">
           <IonList>
             {
               readerStore.book.chapters.map(x => (
@@ -85,7 +81,7 @@ const ReaderPageContent: React.FC = () => {
           </IonList>
         </IonContent>
       </IonMenu>
-      <IonMenu side="end" contentId="content2" menuId="tools">
+      <IonMenu swipeGesture={false} side="end" contentId="content2" menuId="tools">
         <IonHeader>
           <IonToolbar color="primary">
             <IonTitle>Tools</IonTitle>
