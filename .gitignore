@@ -5,6 +5,8 @@
 *.swp
 *.bak
 ._*
+.metaflow
+/backend/dataserver/books
 Carthage
 google-services.json
 GoogleService-Info.plist

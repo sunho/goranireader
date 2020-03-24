@@ -10,4 +10,5 @@ export function removeSuffix(word: string, suffix: string, callback?: (word: str
     return out;
   }
   return word;
-}
+};
+

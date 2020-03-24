@@ -50,11 +50,13 @@ class BookStore {
           this.downloaded.set(file.replace(/\.book$/, ""), path.join(this.booksDir(), file));
         });
       });
-    } else {
+    } else if (isPlatform('hybrid')) {
       const files = await File.listDir(File.dataDirectory, 'books');
       files.forEach(file => {
         this.downloaded.set(file.name.replace(/\.book$/, ""), file.fullPath);
       });
+    } else {
+      this.books.forEach(x => {this.downloaded.set(x.id, 'yes')});
     }
     return Promise.resolve();
   }
@@ -86,7 +88,7 @@ class BookStore {
       } else {
         throw new Error("invalid book download link");
       }
-    } else {
+    } else if (isPlatform('hybrid')) {
       if (this.transfers.has(book.id)) this.transfers.get(book.id)!.abort();
       const fileTransfer = this.transfer.create();
       this.transfers.set(book.id, fileTransfer);
@@ -102,9 +104,9 @@ class BookStore {
     }
   }
 
-  async open(file: string): Promise<BookyBook> {
-    console.log(file);
+  async open(id: string): Promise<BookyBook> {
     if (isPlatform('electron')) {
+      const file = this.downloaded.get(id);
       const fs = window.require('fs');
       return new Promise((resolve, reject) => {
         fs.readFile(file,  "utf8", (err: any, buf:any) => {
@@ -116,7 +118,8 @@ class BookStore {
         });
       });
     } else {
-      throw new Error("not implemented");
+      const url = this.books.find(x => x.id === id)!.downloadLink;
+      return fetch(url).then(x => x.json()).then(x => (x as BookyBook));
     }
   }
 }

@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "gorani-reader-249509"
+  },
+  "targets": {
+    "gorani-reader-249509": {
+      "hosting": {
+        "admin": [
+          "gorani-admin"
+        ]
+      }
+    }
   }
 }

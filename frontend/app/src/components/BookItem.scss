@@ -1,0 +1,57 @@
+@import "../styles/utils.scss";
+
+.BookItem {
+    &__image {
+        background-size: cover;
+    }
+
+    &__header {
+        height: 90px;    
+        @include respond(md) {
+            height: 150px;
+        }
+        @include respond(lg) {
+            height: 200px;
+        }
+        @include respond(xl) {
+            height: 150px;
+        }
+
+        padding: 20px;
+        &__box {
+            text-overflow: ellipsis;
+            word-wrap: break-word;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        &__subtitle {
+            text-overflow: ellipsis;
+            
+            word-break: break-all;
+            overflow: hidden;
+            white-space: nowrap;
+            flex: 0 0 1.2em;
+            margin: 0;
+            margin-bottom: 5px;
+        }
+
+        &__title {
+            display: -webkit-box;
+            min-height: 0;
+            margin: 0;
+            overflow: hidden;
+            flex: 0 1 auto;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            @include respond(md) {
+                -webkit-line-clamp: 2;
+            }
+            @include respond(lg) {
+                -webkit-line-clamp: 3;
+            }
+        }
+    }
+    
+}

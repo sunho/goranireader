@@ -10,33 +10,33 @@ export class EnglishWords {
 
   }
 
-  normalizedForms(word:string): string[] {
-    word = word.toLowerCase();
-    const arr = [word];
+  normalizedForms(word_:string): string[] {
+    const oword = word_.toLowerCase();
+    const arr = [oword];
     const iregularPasts = enData.iregularPasts as any;
     const irregularCompletes = enData.irregularCompletes as any;
-    if (iregularPasts.hasOwnProperty(word)){
-      arr.push(iregularPasts[word]);
+    if (iregularPasts.hasOwnProperty(oword)){
+      arr.push(iregularPasts[oword]);
     }
-    if (irregularCompletes.hasOwnProperty(word)) {
-      arr.push(irregularCompletes[word]);
+    if (irregularCompletes.hasOwnProperty(oword)) {
+      arr.push(irregularCompletes[oword]);
     }
 
     let suffixes = enData.suffixes;
     suffixes.forEach(suffix => {
-      removeSuffix(word, 'y' + suffixes, word => {
+      removeSuffix(oword, 'y' + suffixes, word => {
         arr.push(word + 'ie');
       });
 
-      removeSuffix(word, 'i' + suffix, word => {
+      removeSuffix(oword, 'i' + suffix, word => {
         arr.push(word + 'y');
       });
 
-      removeSuffix(word, 'al' + suffixes, word => {
+      removeSuffix(oword, 'al' + suffixes, word => {
         arr.push(word);
       });
 
-      removeSuffix(word, suffix, word => {
+      removeSuffix(oword, suffix, word => {
         arr.push(word + "e");
         if (word.length >= 2 && word.slice(-1) === word.slice(-2)) {
           // get -> getting
