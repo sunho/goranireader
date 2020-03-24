@@ -14,10 +14,62 @@ def read_epub(path):
     book = epub.read_epub(path)
     return Book(*convert_epub(book))
 
-class Sentence(typing.NamedTuple):
-    id: str
-    start: bool
-    content: str
+class Item:
+    def __init__(self, kind: str):
+        self.kind = kind
+
+    @staticmethod
+    def from_xml(tag):
+        if tag.tag == 'sentence':
+            return Sentence.from_xml(tag)
+        else:
+            return Image.from_xml(tag)
+
+    @classmethod
+    def from_dict(cls, obj):
+        if obj['kind'] == 'sentence':
+            return Sentence.from_dict(obj)
+        elif obj['kind'] == 'image':
+            return Image.from_dict(obj)
+        else:
+            raise Exception('FUCK')
+
+class Image(Item):
+    def __init__(self, id, image, imageType):
+        super().__init__('image')
+        self.id = id
+        self.image = image
+        self.imageType = imageType
+
+    def to_xml(self):
+        out = xml.Element('image', imageType=str(self.imageType).lower(), id=self.id)
+        out.text = saxutils.escape(self.image)
+        return out
+
+    @staticmethod
+    def from_xml(tag):
+        id = tag.get('id')
+        return Image(id, tag.text,  tag.get('imageType'))
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'image': self.image,
+            'imageType': self.imageType,
+            'kind': self.kind
+        }
+
+    @classmethod
+    def from_dict(cls, obj):
+        return cls(obj['id'], obj['image'], obj['imageType'])
+
+
+class Sentence(Item):
+    def __init__(self, id, start, content):
+        super().__init__('sentence')
+        self.id = id
+        self.start = start
+        self.content = content
 
     def to_xml(self):
         out = xml.Element('sentence', start=str(self.start).lower(), id=self.id)
@@ -37,7 +89,8 @@ class Sentence(typing.NamedTuple):
         return {
             'id': self.id,
             'start': self.start,
-            'content': self.content
+            'content': self.content,
+            'kind': self.kind
         }
 
     @classmethod
@@ -48,7 +101,7 @@ class Chapter(typing.NamedTuple):
     id: str
     title: str
     fileName: str
-    items: typing.List[Sentence]
+    items: typing.List[Item]
 
     def to_xml(self):
         title = self.title
@@ -63,7 +116,7 @@ class Chapter(typing.NamedTuple):
     def from_xml(cls, tag):
         items = list()
         for item in tag:
-            items.append(Sentence.from_xml(item))
+            items.append(Item.from_xml(item))
         title = tag.get('title')
         id = tag.get('id')
         filename = tag.get('fileName')
@@ -79,7 +132,7 @@ class Chapter(typing.NamedTuple):
 
     @classmethod
     def from_dict(cls, obj):
-        items = [Sentence.from_dict(item) for item in obj['items']]
+        items = [Item.from_dict(item) for item in obj['items']]
         return cls(obj['id'], obj['title'], obj['fileName'], items)
 
 class Metadata(typing.NamedTuple):
@@ -116,6 +169,7 @@ class Metadata(typing.NamedTuple):
             'id': self.id,
             'title': self.title,
             'cover': self.cover,
+            'author': self.author,
             'coverType': self.coverType
         }
 
@@ -141,14 +195,17 @@ class Book:
             self.id_to_chapter[chap.id] = chap
             def get_surrounding_text(sentence_id):
                 for i in range(0, len(chap.items)):
+                    if not isinstance(chap.items[i], Sentence):
+                        continue
                     if chap.items[i].id == sentence_id:
                         return ' '.join(
-                            s.content for s in chap.items[max(0, i - 3):min(len(chap.items), i + 3)])
+                            s.content for s in chap.items[max(0, i - 3):min(len(chap.items), i + 3)] if isinstance(s, Sentence))
                 raise Exception("wtf")
 
             for item in chap.items:
-                self.id_to_sentence[item.id] = item.content
-                self.id_to_sentence_context[item.id] = get_surrounding_text(item.id)
+                if isinstance(item, Sentence):
+                    self.id_to_sentence[item.id] = item.content
+                    self.id_to_sentence_context[item.id] = get_surrounding_text(item.id)
 
     def compare_by_wordset(self, wordset):
         b = self.get_wordset()

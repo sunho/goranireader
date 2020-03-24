@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useEffect, useState } from 'react';
-import { IonApp, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel, IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonVirtualScroll, IonList, IonCard, IonCardTitle, IonItem, useIonViewWillEnter, useIonViewDidEnter, IonMenu, IonMenuButton, IonBackButton, IonButtons, IonButton, IonMenuToggle, IonSlide, IonRange } from "@ionic/react";
+import { IonApp, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel, IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonVirtualScroll, IonList, IonCard, IonCardTitle, IonItem, useIonViewWillEnter, useIonViewDidEnter, IonMenu, IonMenuButton, IonBackButton, IonButtons, IonButton, IonMenuToggle, IonSlide, IonRange, IonToggle } from "@ionic/react";
 import ExploreContainer from '../components/ExploreContainer';
 import { storeContext } from '../stores/Context';
 import { useObserver } from 'mobx-react-lite';
@@ -63,6 +63,7 @@ const ReaderPage: React.FC<BooksParameters> = ({match, history}) => {
 const ReaderPageContent: React.FC = () => {
   const readerRootStore = useContext(ReaderContext);
   const { readerUIStore, readerStore } = readerRootStore;
+  const [checked, setChecked] = useState(false);
   return useObserver(() => (
     <>
       <IonMenu swipeGesture={false} side="start" contentId="content1" menuId="first">
@@ -91,6 +92,8 @@ const ReaderPageContent: React.FC = () => {
           <IonList>
             <IonItem> Font size</IonItem>
             <IonItem><IonRange min={10} max={40} pin={true} value={readerUIStore.fontSize} onIonChange={e => readerUIStore.fontSize = (e.detail.value as number)} /></IonItem>'
+            <IonItem> Theme </IonItem>
+            <IonItem> <IonToggle checked={checked} onIonChange={(ev) => { setChecked(ev.detail.checked); document.body.classList.toggle('dark', ev.detail.checked); }}>Toggle</IonToggle></IonItem>'
           </IonList>
         </IonContent>
       </IonMenu>

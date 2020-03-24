@@ -5,10 +5,20 @@ import re
 import mimetypes
 from urllib.parse import urlparse
 
-from . import Metadata, Chapter, Sentence
+from .book import Metadata, Chapter, Sentence, Image
 
 from nltk.tokenize import sent_tokenize
-from inscriptis import get_text
+from inscriptis import get_text, Inscriptis
+
+class InscriptisImg(Inscriptis):
+    def start_img(self, attrs):
+        image_text = attrs.get('src', '')
+        if image_text and not (self.cfg_deduplicate_captions and
+                               image_text == self.last_caption):
+            self.current_line[-1].content += '\n@[@{}\n'.format(image_text)
+            self.last_caption = image_text
+
+from lxml.html import fromstring
 import json
 
 def convert_epub(book):
@@ -36,12 +46,21 @@ def convert_epub(book):
     meta = Metadata(0, title, cover, author, coverType)
     return meta, _book_to_chapters(book)
 
+def _get_item_by_href(book, href:str):
+    for item in book.get_items():
+        if item.get_name() in href:
+            return item
+    return None
 
 def _get_contents(book):
-    out = map(lambda item: {'content': get_text(item.get_content().decode('utf-8')), 'name': item.file_name},
+    out = map(lambda item: {'content': _get_text(item.get_content()), 'name': item.file_name},
               filter(lambda item: isinstance(item, epub.EpubHtml), book.items)
               )
     return list(out)
+
+def _get_text(html):
+    tree = fromstring(html)
+    return InscriptisImg(tree, display_images=True).get_text()
 
 def _flatten(items):
     out = list()
@@ -75,23 +94,31 @@ def _book_to_chapters(book):
                 content['chapter'] = chap['title']
     out = list()
     for content in contents:
-        content['sentences'] = _content_to_sentences(content['content'])
+        content['items'] = _content_to_items(book, content['content'])
         if 'chapter' not in content:
             content['chapter'] = None
-        out.append(Chapter(str(uuid.uuid1()), content['chapter'], content['name'], content['sentences']))
+        out.append(Chapter(str(uuid.uuid1()), content['chapter'], content['name'], content['items']))
     return out
 
-def _content_to_sentences(content):
+def _content_to_items(book, content):
     raw = content.split('\n')
     raw = filter(lambda item: len(re.sub(r'[\s+]', '', item)) != 0, raw)
     raw = map(lambda item: item.strip(' \t\n\r'), raw)
     raw = list(raw)
     out = list()
     for sen in raw:
-        sens = sent_tokenize(sen)
-        for i in range(0, len(sens)):
-            if i == 0:
-                out.append(Sentence(str(uuid.uuid1()), True, sens[i]))
-            else:
-                out.append(Sentence(str(uuid.uuid1()), False, sens[i]))
+        if len(sen) >= 4 and sen[0:3] == '@[@':
+            sen = sen[3:]
+            import base64
+            item = _get_item_by_href(book, sen)
+            imageType = mimetypes.guess_type(item.file_name)[0]
+            image = base64.b64encode(item.get_content()).decode('utf-8')
+            out.append(Image(str(uuid.uuid1()), image, imageType))
+        else:
+            sens = sent_tokenize(sen)
+            for i in range(0, len(sens)):
+                if i == 0:
+                    out.append(Sentence(str(uuid.uuid1()), True, sens[i]))
+                else:
+                    out.append(Sentence(str(uuid.uuid1()), False, sens[i]))
     return out

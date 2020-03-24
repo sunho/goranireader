@@ -1,5 +1,5 @@
 import React, { MutableRefObject, useRef, useState, useEffect, useContext, forwardRef } from "react";
-import { Sentence, SelectedWord, SelectedSentence } from "../../models";
+import { Sentence, SelectedWord, SelectedSentence, Item } from "../../models";
 import styled, { css } from "styled-components";
 import Dict from "./Dict";
 import SentenceSelector from "./SetenceSelector";
@@ -59,10 +59,19 @@ const WordComponent = styled.span<{ selected: boolean; first: boolean, enabled: 
   }
 `;
 
+interface Props2 {
+  image: string;
+  imageType: string;
+}
+
+const ImageComponet: React.FC<Props2> = props => (
+  <img style={{display: "block", maxHeight: "100%", objectFit: 'contain'}} src={`data:${props.imageType};base64, ${props.image}`}></img>
+)
+
 export const pat = /([^a-zA-Z-']+)/;
 
 interface Props {
-  sentences: Sentence[];
+  sentences: Item[];
 }
 
 const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
@@ -162,7 +171,8 @@ const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
         <Dict selectedWord={selectedWord}></Dict>
       }
       {sentences.map((sentence, j) => (
-        <SentenceComponent
+        (sentence.kind === 'sentence' ?
+        (<SentenceComponent
           selected={false}
           inline={!sentence.start || sentence.content.trim() === '.'}
           key={j}
@@ -225,8 +235,8 @@ const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
               {word}
             </WordComponent>
           ))}
-        </SentenceComponent>
-      ))}
+        </SentenceComponent>) : (<ImageComponet image={sentence.image} imageType={sentence.imageType}></ImageComponet>)
+        )))}
     </div>
   );
 });
