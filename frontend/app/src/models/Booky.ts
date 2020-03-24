@@ -12,13 +12,23 @@ export interface Meta {
 export interface Chapter {
   id: string;
   title: string;
-  items: Sentence[];
+  items: Item[];
 }
+
+export type Item = Sentence | Image;
 
 export interface Sentence {
   id: string;
   content: string;
   start: boolean;
+  kind: 'sentence';
+}
+
+export interface Image {
+  id: string;
+  image: string;
+  imageType: string;
+  kind: 'image';
 }
 
 export interface SelectedWord {

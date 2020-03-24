@@ -14,18 +14,21 @@ const Main = styled.div<{ font: number }>`
   height: 100%;
   font-size: ${props => props.font}px;
 `;
+
+
 const Cover = styled.div<{ enabled: Boolean; }>`
   width: 100%;
   height: 100%;
   z-index: 2;
   position: fixed;
-  background: white;
+  background: var(--ion-background-color);
   cursor: pointer;
   display: block;
   ${props => ((props.enabled) && css`
     display: none;
   `)}
 `;
+
 
 const Reader = observer(() => {
   const readerRootStore = useContext(ReaderContext);
