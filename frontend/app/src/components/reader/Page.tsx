@@ -153,7 +153,8 @@ const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
   return (
     <div
       className="swiper-slide"
-      style={{cursor: !isPlatform('electron') ? 'pointer':undefined}}
+      style={{cursor: !isPlatform('desktop') ? 'pointer':undefined,
+      padding: isPlatform('desktop') ? "0 70px":undefined}}
       ref={ref}
     >
       {

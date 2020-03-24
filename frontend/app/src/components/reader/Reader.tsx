@@ -100,7 +100,7 @@ const Reader = observer(() => {
       }
     };
 
-    if (swipeRef.current?.$el) {
+    if (swipeRef.current?.$el && cutted) {
       swipeRef.current.slideTo(readerUIStore.getPageBySentenceId(readingSentence) + 1, 0);
       swipeRef.current.on("slideChange", handler);
       return () => {
@@ -119,12 +119,16 @@ const Reader = observer(() => {
     rerender();
   });
 
-  const params = {
-    navigation: {
+  const navigation = isPlatform('desktop') ?
+    {
       nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-    allowTouchMove: !isPlatform('electron'),
+      prevEl: '.swiper-button-prev'
+    } : {};
+
+  const params = {
+
+    navigation: navigation,
+    allowTouchMove: !isPlatform('desktop'),
     preventInteractionOnTransition: true,
     spaceBetween: 30,
   }

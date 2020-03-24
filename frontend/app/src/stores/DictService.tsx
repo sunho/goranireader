@@ -1,29 +1,34 @@
-import { SqlJs } from "sql.js/module";
 import { autobind } from "core-decorators";
 import { EnglishWords } from "../nlp/words";
 
 @autobind
 class DictService {
-  db: SqlJs.Database | undefined = undefined;
+  db: any | undefined = undefined;
   words: EnglishWords;
   constructor() {
     this.words = new EnglishWords();
-    initSqlJs({
-      locateFile: (file: any) => `./assets/${file}`
-    }).then((sql: any) => {
-      const SQL = sql;
+    const init = () => {
+      console.log('init');
+      initSqlJs({
+        locateFile: (file: any) => `${process.env.PUBLIC_URL}/assets/${file}`
+      }).then((sql: any) => {
+        const SQL = sql;
 
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', './assets/dict.db', true);
-      xhr.responseType = 'arraybuffer';
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `${process.env.PUBLIC_URL}/assets/dict.db`, true);
+        xhr.responseType = 'arraybuffer';
 
-      xhr.onload = e => {
-        const uInt8Array = new Uint8Array(xhr.response);
-        this.db = new SQL.Database(uInt8Array);
-      };
+        xhr.onload = e => {
+          const uInt8Array = new Uint8Array(xhr.response);
+          this.db = new SQL.Database(uInt8Array);
+        };
 
-      xhr.send();
-    });
+        xhr.send();
+      }).catch(e => {
+        init();
+      });
+    };
+    init();
   }
 
   find(word: string) {

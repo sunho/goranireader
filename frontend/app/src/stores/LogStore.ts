@@ -1,9 +1,8 @@
 import { autobind } from "core-decorators";
 import RootStore from "./RootStore";
 import { EventLogPayload, EventLog } from "../models/Log";
-import uuid from 'uuid/v4';
+import * as uuid from 'uuid';
 import { ISODateString } from "../utils/util";
-
 
 const url = "https://asia-northeast1-gorani-reader-249509.cloudfunctions.net/addLog";
 
@@ -16,7 +15,7 @@ class LogStore {
 
   async send(payload: EventLogPayload) {
     const log: EventLog = {
-      id: uuid(),
+      id: uuid.v4(),
       type: payload.type,
       time: ISODateString(new Date()),
       payload: JSON.stringify(payload),
