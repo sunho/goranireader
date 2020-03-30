@@ -4,8 +4,10 @@ import styled, { css } from "styled-components";
 import { useOutsideClickObserver } from "../../utils/hooks";
 import { instanceOf } from "prop-types";
 import { ReaderContext } from "../../pages/ReaderPage";
+import { IonCard, IonCardContent, IonList, IonItem, IonLabel, IonRow, IonCol, IonButton, IonIcon } from "@ionic/react";
+import { caretForwardOutline, caretBackOutline } from 'ionicons/icons';
 
-const DictContainer2 = styled.div`
+const Cover = styled.div`
   position: fixed;
   width: 100%;
   height: 100%;
@@ -13,32 +15,49 @@ const DictContainer2 = styled.div`
   justify-content: center;
 `;
 
-const DictContainer = styled.div<{ up: boolean; hide: boolean }>`
+
+const Container = styled.div<{ up: boolean; hide: boolean }>`
   font-family: 'Noto Sans KR', sans-serif;
-  font-size: .8em;
+  font-size: 14px;
   position: absolute;
   ${props =>
     props.up
       ? css`
-          top: 10px;
+          top: 0px;
         `
       : css`
-          bottom: 10px;
+          bottom: 30px;
         `}
   ${props =>
     props.hide &&
     css`
       visibility: none;
     `}
-  background: white;
-  height: calc(40%);
+  height: calc(50%);
+  max-height: 300px;
+  width: 100%;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 999;
+`;
+
+const Card = styled(IonCard)`
   width: calc(100% - 40px);
   max-width: 500px;
+  height: 100%;
+`;
+
+
+const Content = styled(IonCardContent)`
   display: flex;
   flex-direction: column;
-  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
-  margin-left: 20px;
-  z-index: 999;
+  height: 100%;
+`;
+
+const List = styled(IonList)`
+  flex: 1 1;
+  overflow-y: scroll;
 `;
 
 const DictWordComponent = styled.div`
@@ -51,23 +70,19 @@ const DictWordComponent = styled.div`
   font-size: 1.5em;
 `;
 
-const DictDefsComponent = styled.div`
-  margin-top: .25em;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  font-weight: 400;
-  & > div {
-    background: lightgray;
-    padding: .5em;
-    margin-bottom: .5em;
-    margin-left: .5em;
-    margin-right: .5em;
-    border-radius: .5em;
-    &:active {
-      background: gray;
-    }
-  }
+const WordSection = styled.div`
+  display: flex;
 `;
+
+const WordSectionButton = styled.div`
+  flex: 0 0 auto;
+`;
+
+const WordSectionText = styled.div`
+  flex: 1;
+  text-align: center;
+`;
+
 
 const DictButtons = styled.div`
   display: flex;
@@ -115,45 +130,53 @@ const Dict: React.FC<Props> = props => {
   const result = (resWord: DictWord) => {
     return (
       <>
-        {res.length !== 1 && (
-          <DictButtons>
-            <DictButton
+        <WordSection>
+          <WordSectionButton>
+            <IonButton
               onClick={() => {
                 setPos(pos - 1);
               }}
-              enabled={pos !== 0}
+              disabled={pos === 0}
             >
-              prev
-            </DictButton>
-            <DictButton
+              <IonIcon icon={caretBackOutline}></IonIcon>
+            </IonButton>
+          </WordSectionButton>
+          <WordSectionText>
+            <DictWordComponent>{resWord.word}</DictWordComponent>
+          </WordSectionText>
+          <WordSectionButton>
+            <IonButton
               onClick={() => {
                 setPos(pos + 1);
               }}
-              enabled={pos !== res.length - 1}
+              disabled={pos === res.length - 1}
             >
-              next
-            </DictButton>
-          </DictButtons>
-        )}
-        <DictWordComponent>{resWord.word}</DictWordComponent>
-        <DictDefsComponent>
+              <IonIcon icon={caretForwardOutline}></IonIcon>
+            </IonButton>
+          </WordSectionButton>
+        </WordSection>
+        <List lines="full">
           {resWord.defs.map((def, i) => (
-            <div key={i} onClick={() => {
-              // window.app.addUnknownWord(sentenceId, wordIndex, resWord.word, def.def);
-              // window.webapp.cancelSelect();
-            }}>{def.def}</div>
+            <IonItem>
+              <IonLabel className="ion-text-wrap">{def.def}
+            </IonLabel>
+          </IonItem>
           ))}
-        </DictDefsComponent>
+        </List>
       </>
     );
   };
   const notFound = <div>Not found</div>;
   return (
-    <DictContainer2>
-    <DictContainer hide={!res} ref={node => (dictRef.current = node)} up={up}>
-      {res.length !== 0 && res[pos] ? result(res[pos]) : notFound}
-    </DictContainer>
-    </DictContainer2>
+    <Cover>
+      <Container hide={!res} ref={node => (dictRef.current = node)} up={up}>
+        <Card>
+          <Content>
+            {res.length !== 0 && res[pos] ? result(res[pos]) : notFound}
+          </Content>
+        </Card>
+      </Container>
+    </Cover>
   );
 };
 

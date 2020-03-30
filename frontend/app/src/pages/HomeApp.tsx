@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonApp, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel, IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from "@ionic/react";
+import { IonApp, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel, IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonTab } from "@ionic/react";
 import { IonReactRouter, IonReactHashRouter } from "@ionic/react-router";
 import { Route, Redirect } from "react-router";
 import { triangle, ellipse, square } from "ionicons/icons";
@@ -7,20 +7,17 @@ import ExploreContainer from '../components/ExploreContainer';
 import BooksPage from './BooksPage';
 import { isPlatform } from '@ionic/react';
 import ReaderPage from './ReaderPage';
+import { MyTabs } from '../components/MyTabs';
+import TabsPage from './TabsPage';
 
-const HomeApp = () => {
+const HomeApp = props => {
   const items = (
-    <>
-    <IonTabs>
-      <IonRouterOutlet>
-        <Route path="/:tab(reader)/:id" component={ReaderPage} />
-        <Route path="/:tab(books)" component={BooksPage}/>
-        <Route path="/:tab(settings)" component={BooksPage} />
-        <Route exact path="/" render={()=> <Redirect to="/books" />} />
-      </IonRouterOutlet>
-      <IonTabBar></IonTabBar>
-    </IonTabs>
-    </>
+    <IonRouterOutlet>
+      <Route path="/reader/:id" component={ReaderPage} />
+      <Route path="/main" component={TabsPage}/>
+      <Route exact path="/" render={()=> <Redirect to="/main" />} />
+      <Route render={()=> <Redirect to="/main" />} />
+    </IonRouterOutlet>
   );
   return (
    <IonApp>

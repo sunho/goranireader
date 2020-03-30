@@ -48,12 +48,12 @@ def convert_epub(book):
 
 def _get_item_by_href(book, href:str):
     for item in book.get_items():
-        if item.get_name() in href:
+        if item.get_name() in href or href in item.get_name():
             return item
     return None
 
 def _get_contents(book):
-    out = map(lambda item: {'content': _get_text(item.get_content()), 'name': item.file_name},
+    out = map(lambda item: {'content': _get_text(item.get_content()), 'name': item.file_name, 'id': item.id},
               filter(lambda item: isinstance(item, epub.EpubHtml), book.items)
               )
     return list(out)
@@ -87,11 +87,18 @@ def _flatten(items):
 
 def _book_to_chapters(book):
     chaps = _flatten(book.toc)
-    contents = _get_contents(book)
+    contents_ = _get_contents(book)
+
     for chap in chaps:
-        for content in contents:
+        for content in contents_:
             if chap['href'] == content['name']:
                 content['chapter'] = chap['title']
+    contents = []
+    for chap in book.spine:
+        href = chap[0]
+        for content in contents_:
+            if href == content['id']:
+                contents.append(content)
     out = list()
     for content in contents:
         content['items'] = _content_to_items(book, content['content'])
@@ -111,6 +118,7 @@ def _content_to_items(book, content):
             sen = sen[3:]
             import base64
             item = _get_item_by_href(book, sen)
+            print(sen)
             imageType = mimetypes.guess_type(item.file_name)[0]
             image = base64.b64encode(item.get_content()).decode('utf-8')
             out.append(Image(str(uuid.uuid1()), image, imageType))
