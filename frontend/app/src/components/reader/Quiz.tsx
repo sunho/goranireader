@@ -112,53 +112,53 @@ const Quiz: React.FC<Props> = (props: Props) => {
 
   return (
     <Main>
-        {question.type === 'word' && (
-          <Container>
-            <QuestionComponent>
-              Choose the definition of highlighted word in this paragraph.
-            </QuestionComponent>
-            <SentenceComponent>
-              {question.sentence.split(pat).filter(w => w.length !== 0).map((word, i) => {
-                return <WordComponent selected={Math.floor(i/2) === question.wordIndex && !word.match(pat) }>{word}</WordComponent>;
-              })}
-            </SentenceComponent>
-            <OptionContainer>
-              {
-                question.options.map((option, j) => (
-                  <OptionComponent onClick={() => {
-                    setAnswer(j);
-                  }} key={j} selected={answer === j}>
-                    {option}
-                  </OptionComponent>
-                ))
-              }
-            </OptionContainer>
-            <ButtonContainer>
-              <NextButton onClick={() => {submit()}} selected={answer !== null}>Next</NextButton>
-            </ButtonContainer>
-          </Container>
-        )}
-        {question.type === 'summary' && (
-          <Container>
-            <QuestionComponent>
-              Choose the most accurate summary of the last chapter.
-            </QuestionComponent>
-            <OptionContainer>
-              {
-                question.options.map((option, j) => (
-                  <OptionComponent onClick={() => {
-                    setAnswer(j);
-                  }} key={j} selected={answer === j}>
-                    {option}
-                  </OptionComponent>
-                ))
-              }
-            </OptionContainer>
-            <ButtonContainer>
-              <NextButton onClick={() => {submit()}} selected={answer !== null}>Next</NextButton>
-            </ButtonContainer>
-          </Container>
-        )}
+      {question.type === 'word' && (
+        <Container>
+          <QuestionComponent>
+            Choose the definition of highlighted word in this paragraph.
+          </QuestionComponent>
+          <SentenceComponent>
+            {question.sentence.split(pat).filter(w => w.length !== 0).map((word, i) => {
+              return <WordComponent selected={Math.floor(i/2) === question.wordIndex && !word.match(pat) }>{word}</WordComponent>;
+            })}
+          </SentenceComponent>
+          <OptionContainer>
+            {
+              question.options.map((option, j) => (
+                <OptionComponent onClick={() => {
+                  setAnswer(j);
+                }} key={j} selected={answer === j}>
+                  {option}
+                </OptionComponent>
+              ))
+            }
+          </OptionContainer>
+          <ButtonContainer>
+            <NextButton onClick={() => {submit()}} selected={answer !== null}>Next</NextButton>
+          </ButtonContainer>
+        </Container>
+      )}
+      {question.type === 'summary' && (
+        <Container>
+          <QuestionComponent>
+            Choose the most accurate summary of the last chapter.
+          </QuestionComponent>
+          <OptionContainer>
+            {
+              question.options.map((option, j) => (
+                <OptionComponent onClick={() => {
+                  setAnswer(j);
+                }} key={j} selected={answer === j}>
+                  {option}
+                </OptionComponent>
+              ))
+            }
+          </OptionContainer>
+          <ButtonContainer>
+            <NextButton onClick={() => {submit()}} selected={answer !== null}>Next</NextButton>
+          </ButtonContainer>
+        </Container>
+      )}
     </Main>
   );
 };

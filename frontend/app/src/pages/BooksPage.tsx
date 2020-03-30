@@ -1,11 +1,16 @@
 import React, { useContext } from 'react';
-import { IonApp, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel, IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonVirtualScroll, IonList, IonCard, IonCardTitle, IonItem, IonGrid, IonRow, IonCol } from "@ionic/react";
+import { IonApp, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel, IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonVirtualScroll, IonList, IonCard, IonCardTitle, IonItem, IonGrid, IonRow, IonCol, IonText } from "@ionic/react";
 import ExploreContainer from '../components/ExploreContainer';
 import { storeContext } from '../stores/Context';
 import { useObserver } from 'mobx-react-lite';
 import { Book } from '../models';
 import BookItem from '../components/BookItem';
 import Layout from '../components/Layout';
+import styled from 'styled-components';
+
+const Text = styled(IonText)`
+  margin: 0 10px;
+`;
 
 const BooksPage = ({history}) => {
   const { bookStore } = useContext(storeContext);
@@ -17,9 +22,17 @@ const BooksPage = ({history}) => {
     }
   };
   return useObserver(() => (
-    <Layout title="Books">
+    <Layout>
       <IonGrid>
         <IonRow>
+          <Text>
+            <h3>
+              Books
+            </h3>
+          </Text>
+        </IonRow>
+        <IonRow>
+
         {
           bookStore.books.map(x => (
             <IonCol size="12" sizeMd="6" sizeLg="4" sizeXl="3">
@@ -27,6 +40,13 @@ const BooksPage = ({history}) => {
             </IonCol>
           ))
         }
+        </IonRow>
+        <IonRow>
+          <Text>
+            <h3>
+              Coming
+            </h3>
+          </Text>
         </IonRow>
       </IonGrid>
     </Layout>

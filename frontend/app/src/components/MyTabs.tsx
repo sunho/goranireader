@@ -49,10 +49,6 @@ export class MyTabs extends React.Component<Props> {
       if (child.type === IonRouterOutlet) {
         outlet = child;
       }
-      if (child.type === IonTabBar) {
-        const { onIonTabsDidChange, onIonTabsWillChange } = this.props;
-        tabBar = React.cloneElement(child, { onIonTabsDidChange, onIonTabsWillChange });
-      }
     });
 
     if (!outlet) {
