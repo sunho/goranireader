@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, MutableRefObject } from "react";
 import styled, { css } from "styled-components";
-import { Question } from "../../models";
+import { Question } from "../../core/models";
 import { pat } from "./Page";
 
 const Main = styled.div`

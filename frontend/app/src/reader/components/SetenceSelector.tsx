@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
-import { SelectedSentence } from "../../models";
+import { SelectedSentence } from "../../core/models";
 import styled, { css } from "styled-components";
-import { useOutsideClickObserver } from "../../utils/hooks";
+import { useOutsideClickObserver } from "../../core/utils/hooks";
 
 const SentenceSelectorContainer = styled.div<{  bottom: number; top: number; up: boolean;}>`
   display: flex;

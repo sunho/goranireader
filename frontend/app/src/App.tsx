@@ -11,10 +11,10 @@ import '@ionic/react/css/typography.css';
 /* Optional CSS utils that can be commented out */
 /* Theme variables */
 import './theme/variables.css';
-import { storeContext } from './stores/Context';
+import { storeContext } from './core/stores/Context';
 import { useObserver } from 'mobx-react-lite';
-import HomeApp from './pages/HomeApp';
-import LoginApp from './pages/LoginApp';
+import HomeApp from './core/pages/HomeApp';
+import LoginApp from './core/pages/LoginApp';
 import { IonApp, IonContent, IonLoading, IonSpinner } from '@ionic/react';
 
 const App: React.FC = () => {

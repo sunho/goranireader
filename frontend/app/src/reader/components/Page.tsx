@@ -1,12 +1,12 @@
 import React, { MutableRefObject, useRef, useState, useEffect, useContext, forwardRef } from "react";
-import { Sentence, SelectedWord, SelectedSentence, Item } from "../../models";
+import { Sentence, SelectedWord, SelectedSentence, Item } from "../../core/models";
 import styled, { css } from "styled-components";
 import Dict from "./Dict";
 import SentenceSelector from "./SetenceSelector";
 
-import { useOutsideClickObserver } from "../../utils/hooks";
+import { useOutsideClickObserver } from "../../core/utils/hooks";
 import { isPlatform } from "@ionic/react";
-import { ReaderContext } from "../../pages/ReaderPage";
+import { ReaderContext } from "../pages/ReaderPage";
 const SentenceComponent = styled.p<{ inline: boolean; selected: boolean }>`
   padding: 0;
   margin: 10px 0;
