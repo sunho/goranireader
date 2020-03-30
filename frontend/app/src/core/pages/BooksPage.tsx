@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { IonApp, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel, IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonVirtualScroll, IonList, IonCard, IonCardTitle, IonItem, IonGrid, IonRow, IonCol, IonText } from "@ionic/react";
-import ExploreContainer from '../components/ExploreContainer';
 import { storeContext } from '../stores/Context';
 import { useObserver } from 'mobx-react-lite';
 import { Book } from '../models';

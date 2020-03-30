@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
-import { SelectedWord, DictSearchResult, DictWord } from "../../models";
+import { SelectedWord, DictSearchResult, DictWord } from "../../core/models";
 import styled, { css } from "styled-components";
-import { useOutsideClickObserver } from "../../utils/hooks";
+import { useOutsideClickObserver } from "../../core/utils/hooks";
 import { instanceOf } from "prop-types";
-import { ReaderContext } from "../../pages/ReaderPage";
+import { ReaderContext } from "../pages/ReaderPage";
 import { IonCard, IonCardContent, IonList, IonItem, IonLabel, IonRow, IonCol, IonButton, IonIcon } from "@ionic/react";
 import { caretForwardOutline, caretBackOutline } from 'ionicons/icons';
 

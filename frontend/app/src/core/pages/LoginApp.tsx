@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import { IonApp, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel, IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItemDivider, IonItem, IonInput, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonButton } from "@ionic/react";
-import ExploreContainer from '../components/ExploreContainer';
 import { text } from 'ionicons/icons';
 import { storeContext } from '../stores/Context';
 import { AlertContainer } from '../components/AlertContainer';

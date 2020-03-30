@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef, MutableRefObject, useContext } from
 import styled, { css } from "styled-components";
 import "./Reader.css";
 import { isPlatform, IonProgressBar, IonContent, IonSpinner } from "@ionic/react";
-import { ReaderContext } from "../../pages/ReaderPage";
+import { ReaderContext } from "../pages/ReaderPage";
 import { reaction, untracked } from "mobx";
 import Page from "./Page";
 import { useObserver, observer } from "mobx-react-lite";
 import Swiper from 'react-id-swiper';
 import 'swiper/css/swiper.css';
-import { useWindowSize } from "../../utils/hooks";
+import { useWindowSize } from "../../core/utils/hooks";
 
 const Main = styled.div<{ font: number }>`
   height: 100%;

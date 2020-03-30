@@ -1,12 +1,12 @@
 import { observable, action, computed, reaction } from "mobx";
-import RootStore from './RootStore';
-import { User, BookyBook, Book } from "../models";
-import FirebaseService from "./FirebaseService";
+import RootStore from '../../core/stores/RootStore';
+import { User, BookyBook, Book } from "../../core/models";
+import FirebaseService from "../../core/stores/FirebaseService";
 import { autobind } from "core-decorators";
-import { LiteEvent } from "../utils/event";
+import { LiteEvent } from "../../core/utils/event";
 import ReaderRootStore from "./ReaderRootStore";
 import ReaderStore from "./ReaderStore";
-import { PaginateWordUnknown } from "../models/Log";
+import { PaginateWordUnknown } from "../../core/models/Log";
 
 export interface LookUp {
   id: string;

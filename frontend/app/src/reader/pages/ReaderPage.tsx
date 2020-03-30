@@ -1,10 +1,9 @@
 import React, { useContext, useRef, useEffect, useState } from 'react';
 import { IonApp, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel, IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonVirtualScroll, IonList, IonCard, IonCardTitle, IonItem, useIonViewWillEnter, useIonViewDidEnter, IonMenu, IonMenuButton, IonBackButton, IonButtons, IonButton, IonMenuToggle, IonSlide, IonRange, IonToggle } from "@ionic/react";
-import ExploreContainer from '../components/ExploreContainer';
-import { storeContext } from '../stores/Context';
+import { storeContext } from '../../core/stores/Context';
 import { useObserver } from 'mobx-react-lite';
-import { Book } from '../models';
-import Reader from '../components/reader/Reader';
+import { Book } from '../../core/models';
+import Reader from '../components/Reader';
 import { RouteComponentProps } from 'react-router';
 import ReaderStore from '../stores/ReaderUIStore';
 import { book } from 'ionicons/icons';
