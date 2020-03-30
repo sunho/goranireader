@@ -3,11 +3,9 @@ import { IonApp, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, Ion
 import { IonReactRouter, IonReactHashRouter } from "@ionic/react-router";
 import { Route, Redirect } from "react-router";
 import { triangle, ellipse, square } from "ionicons/icons";
-import ExploreContainer from '../components/ExploreContainer';
 import BooksPage from './BooksPage';
 import { isPlatform } from '@ionic/react';
-import ReaderPage from './ReaderPage';
-import { MyTabs } from '../components/MyTabs';
+import ReaderPage from '../../reader/pages/ReaderPage';
 import TabsPage from './TabsPage';
 
 const HomeApp = props => {

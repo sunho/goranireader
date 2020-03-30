@@ -1,4 +1,4 @@
-import {Location} from '../stores/ReaderStore';
+import {Location} from '../../reader/stores/ReaderStore';
 
 interface LocationMap {
   [key: string]: Location;
