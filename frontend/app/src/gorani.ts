@@ -51,4 +51,4 @@ export const text = `
     |:|  |        \:\__\         /:/  /       \::/__/       \:\__\        |:|  |
      \|__|         \/__/         \/__/         ~~            \/__/         \|__|
 `;
-export const version = 'v1.0.1';
+export const version = 'v1.0.3';

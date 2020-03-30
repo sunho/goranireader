@@ -7,7 +7,7 @@ import SentenceSelector from "./SetenceSelector";
 import { useOutsideClickObserver } from "../../utils/hooks";
 import { isPlatform } from "@ionic/react";
 import { ReaderContext } from "../../pages/ReaderPage";
-const SentenceComponent = styled.p<{ inline: boolean; selected: boolean}>`
+const SentenceComponent = styled.p<{ inline: boolean; selected: boolean }>`
   padding: 0;
   margin: 10px 0;
   -webkit-touch-callout: none; /* iOS Safari */
@@ -34,7 +34,7 @@ const SentenceComponent = styled.p<{ inline: boolean; selected: boolean}>`
     `}
 `;
 
-const WordComponent = styled.span<{ selected: boolean; first: boolean, enabled: boolean}>`
+const WordComponent = styled.span<{ selected: boolean; first: boolean, enabled: boolean }>`
   display: inline;
   ${props =>
     props.selected &&
@@ -50,7 +50,7 @@ const WordComponent = styled.span<{ selected: boolean; first: boolean, enabled: 
       margin-left: 4px;
     `}
   ${props =>
-      props.enabled &&
+    props.enabled &&
     css`
       pointer-events: none;
     `}
@@ -65,7 +65,7 @@ interface Props2 {
 }
 
 const ImageComponet: React.FC<Props2> = props => (
-  <img style={{display: "block", maxHeight: "100%", objectFit: 'contain'}} src={`data:${props.imageType};base64, ${props.image}`}></img>
+  <img style={{ display: "block", maxHeight: "100%", objectFit: 'contain' }} src={`data:${props.imageType};base64, ${props.image}`}></img>
 )
 
 export const pat = /([^a-zA-Z-']+)/;
@@ -79,7 +79,7 @@ const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const { readerUIStore } = readerRootStore;
   const [selectedWord, setSelectedWord] = useState<SelectedWord | undefined>(undefined);
   const touch: MutableRefObject<
-    { id: string; n: number; timer:  ReturnType<typeof setTimeout>; x: number; y: number, el: HTMLElement } | undefined
+    { id: string; n: number; timer: ReturnType<typeof setTimeout>; x: number; y: number, el: HTMLElement } | undefined
   > = useRef(undefined);
   const figureWordUp = (word: HTMLElement) => {
     const parentRect = word.parentElement!.parentElement!.getBoundingClientRect();
@@ -99,7 +99,7 @@ const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
         id: `${j}-${k}`,
         word: word,
         sentenceId: sentences[j].id,
-        wordIndex: k/2,
+        wordIndex: k / 2,
         up: figureWordUp(node)
       });
       readerUIStore.selectWord(word, Math.floor(k / 2), sentences[j].id);
@@ -139,7 +139,7 @@ const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
     const handler = (e) => {
       const x = e.clientX;
       const y = e.clientY;
-      if (touch.current && Math.sqrt((x-touch.current.x)**2 + (y-touch.current.y) ** 2) > 30) {
+      if (touch.current && Math.sqrt((x - touch.current.x) ** 2 + (y - touch.current.y) ** 2) > 30) {
         clearTimeout(touch.current.timer);
       }
     };
@@ -162,8 +162,10 @@ const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
   return (
     <div
       className="swiper-slide"
-      style={{cursor: !isPlatform('desktop') ? 'pointer':undefined,
-      padding: isPlatform('desktop') ? "0 70px":undefined}}
+      style={{
+        cursor: !isPlatform('desktop') ? 'pointer' : undefined,
+        padding: isPlatform('desktop') ? "0 70px" : undefined
+      }}
       ref={ref}
     >
       {
@@ -171,44 +173,44 @@ const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
         <Dict selectedWord={selectedWord}></Dict>
       }
       {sentences.map((sentence, j) => (
-        (sentence.kind === 'sentence' ?
-        (<SentenceComponent
-          selected={false}
-          inline={!sentence.start || sentence.content.trim() === '.'}
-          key={j}
-        >
-          {sentence.content.split(pat).filter(s => s.length !== 0).map((word: string, k: number) => (
-            <WordComponent
-              selected={ selectedWord ? selectedWord.id === `${j}-${k}` : false}
-              first={k===0}
-              key={k}
-              onTouchEnd={() => {
-                if (touch.current) {
-                  clearTimeout(touch.current.timer);
-                }
-              }}
-              onTouchMove={(e) => {
-                if (e.touches.length !== 1) {
-                  return;
-                }
-                const x = e.touches[0].clientX;
-                const y = e.touches[0].clientY;
-                if (touch.current && Math.sqrt((x-touch.current.x)**2 + (y-touch.current.y) ** 2) > 30) {
-                  clearTimeout(touch.current.timer);
-                }
-              }}
+        (sentence.kind === 'image' ?
+          (<ImageComponet image={sentence.image} imageType={sentence.imageType}></ImageComponet>) : <SentenceComponent
+            selected={false}
+            inline={!sentence.start || sentence.content.trim() === '.'}
+            key={j}
+          >
+            {sentence.content.split(pat).filter(s => s.length !== 0).map((word: string, k: number) => (
+              <WordComponent
+                selected={selectedWord ? selectedWord.id === `${j}-${k}` : false}
+                first={k === 0}
+                key={k}
+                onTouchEnd={() => {
+                  if (touch.current) {
+                    clearTimeout(touch.current.timer);
+                  }
+                }}
+                onTouchMove={(e) => {
+                  if (e.touches.length !== 1) {
+                    return;
+                  }
+                  const x = e.touches[0].clientX;
+                  const y = e.touches[0].clientY;
+                  if (touch.current && Math.sqrt((x - touch.current.x) ** 2 + (y - touch.current.y) ** 2) > 30) {
+                    clearTimeout(touch.current.timer);
+                  }
+                }}
 
-              onTouchCancel={(e) => {
-                if (touch.current) {
-                  clearTimeout(touch.current.timer);
+                onTouchCancel={(e) => {
+                  if (touch.current) {
+                    clearTimeout(touch.current.timer);
+                  }
+                }}
+                enabled={
+                  word.match(pat) !== null
                 }
-              }}
-              enabled={
-                word.match(pat) !== null
-              }
-              onTouchStart={
-                !word.match(pat)
-                  ? (e) => {
+                onTouchStart={
+                  !word.match(pat)
+                    ? (e) => {
                       if (e.touches.length !== 1) {
                         if (touch.current) {
                           clearTimeout(touch.current.timer);
@@ -217,25 +219,25 @@ const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
                       }
                       onTouchWord(e.target as HTMLElement, j, k, word, e.touches[0].clientX, e.touches[0].clientY);
                     }
-                  : undefined
-              }
+                    : undefined
+                }
 
-              onMouseDown={
-                !word.match(pat)
-                  ? (e) => {
+                onMouseDown={
+                  !word.match(pat)
+                    ? (e) => {
                       if (touch.current) {
                         clearTimeout(touch.current.timer);
                         touch.current = undefined;
                       }
                       onTouchWord(e.target as HTMLElement, j, k, word, e.clientX, e.clientY);
                     }
-                  : undefined
-              }
-            >
-              {word}
-            </WordComponent>
-          ))}
-        </SentenceComponent>) : (<ImageComponet image={sentence.image} imageType={sentence.imageType}></ImageComponet>)
+                    : undefined
+                }
+              >
+                {word}
+              </WordComponent>
+            ))}
+          </SentenceComponent>
         )))}
     </div>
   );
