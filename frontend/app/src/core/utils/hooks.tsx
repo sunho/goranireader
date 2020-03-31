@@ -54,7 +54,6 @@ export function useWindowSize(event: () => void) {
       event();
     }
     window.addEventListener('resize', updateSize);
-    updateSize();
     return () => window.removeEventListener('resize', updateSize);
   }, []);
   return size;

@@ -3,7 +3,7 @@ import RootStore from './RootStore';
 import { User } from "../models";
 import FirebaseService from "./FirebaseService";
 import { autobind } from "core-decorators";
-import {Location} from '../../reader/stores/ReaderStore';
+import {Location} from '../../reader/stores/BookReaderStore';
 @autobind
 class UserStore {
   rootStore: RootStore;
