@@ -7,11 +7,13 @@ import BooksPage from './BooksPage';
 import { isPlatform } from '@ionic/react';
 import ReaderPage from '../../reader/pages/ReaderPage';
 import TabsPage from './TabsPage';
+import GamePage from '../../game/pages/GamePage';
 
 const HomeApp = props => {
   const items = (
     <IonRouterOutlet>
-      <Route path="/reader/:id" component={ReaderPage} />
+      <Route path="/game" component={GamePage} />
+      <Route path="/reader/:id" component={ReaderPage}/>
       <Route path="/main" component={TabsPage}/>
       <Route exact path="/" render={()=> <Redirect to="/main" />} />
       <Route render={()=> <Redirect to="/main" />} />
