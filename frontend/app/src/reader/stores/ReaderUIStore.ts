@@ -1,12 +1,11 @@
 import { observable, action, computed, reaction } from "mobx";
 import RootStore from '../../core/stores/RootStore';
-import { User, BookyBook, Book } from "../../core/models";
+import { User, BookyBook, Book, SelectedWord } from "../../core/models";
 import FirebaseService from "../../core/stores/FirebaseService";
-import { autobind } from "core-decorators";
 import { LiteEvent } from "../../core/utils/event";
-import ReaderRootStore from "./ReaderRootStore";
-import ReaderStore from "./ReaderStore";
+import ReaderRootStore, { ReaderStore } from "./ReaderRootStore";
 import { PaginateWordUnknown } from "../../core/models/Log";
+import React from "react";
 
 export interface LookUp {
   id: string;
@@ -14,7 +13,6 @@ export interface LookUp {
   duration: number;
 }
 
-@autobind
 class ReaderUIStore {
   readerRootStore: ReaderRootStore;
   rootStore: RootStore;
@@ -24,6 +22,7 @@ class ReaderUIStore {
   @observable loaded: Boolean = false;
   @observable dividePositions: number[] = [];
   @observable fontSize: number = 20;
+  @observable selectedWord?: SelectedWord;
   timer: ReturnType<typeof setInterval> = -1;
 
   onCancelSelection: LiteEvent<void> = new LiteEvent();
@@ -37,8 +36,8 @@ class ReaderUIStore {
     this.rootStore = readerRootStore.rootStore;
     this.readerStore = readerRootStore.readerStore;
     this.startTimer();
-    window.addEventListener('focus', this.startTimer);
-    window.addEventListener('blur', this.stopTimer);
+    window.addEventListener('focus', this.startTimer.bind(this));
+    window.addEventListener('blur', this.stopTimer.bind(this));
     reaction(() => this.cutted, cutted => {
       if (cutted) {
         this.currentTime = 0;
@@ -51,7 +50,6 @@ class ReaderUIStore {
   }
 
   startTimer() {
-    console.log("start");
     if (this.timer !== -1) {
       this.stopTimer();
     }
@@ -59,7 +57,6 @@ class ReaderUIStore {
    }
 
   stopTimer() {
-    console.log("stop");
     window.clearInterval(this.timer);
     this.timer = -1;
    }
@@ -100,10 +97,10 @@ class ReaderUIStore {
 
   @action changePage(page: number) {
     const sens = this.getPageSentences(page).map(x => x.id);
-    const old = this.getPageBySentenceId(this.readerStore.location.sentenceId) || 0;
+    const old = this.getPageBySentenceId(this.readerStore.currentSentenceId) || 0;
     const neww = this.getPageBySentenceId(sens[0]) || 0;
     if (this.cutted) {
-      this.readerStore.location.sentenceId = sens[0];
+      this.readerStore.setCurrentSentenceId(sens[0]);
       if (neww > old) {
         const sens = this.getPageSentences(old).map(x => x.id);
         this.paginate(sens);
@@ -115,7 +112,7 @@ class ReaderUIStore {
   }
 
   @computed get currentPageSentences() {
-    return this.getPageSentences(this.getPageBySentenceId(this.readerStore.location.sentenceId))
+    return this.getPageSentences(this.getPageBySentenceId(this.readerStore.currentSentenceId))
   }
 
   @computed get idToPage() {
@@ -130,24 +127,20 @@ class ReaderUIStore {
       }, new Map());
   }
 
-  @action moveChapter(id: string) {
-    this.clearDivision();
-    this.readerStore.location.chapterId = id;
-  }
-
-  @action nextChapter() {
+  @action nextSection() {
     const sens = this.currentPageSentences.map(x => x.id);
     this.paginate(sens);
     this.clearDivision();
-    this.readerStore.nextChapter();
+    this.readerStore.nextSection();
   }
 
-  @action prevChapter() {
+  @action prevSection() {
     this.clearDivision();
-    this.readerStore.prevChapter();
+    this.readerStore.prevSection();
   }
 
   @action clearDivision() {
+    console.log('clearDivision');
     this.cutted = false;
     this.loaded = false;
     this.dividePositions = [];

@@ -1,20 +1,50 @@
-import React, { useContext, useRef, useEffect, useState } from 'react';
-import { IonApp, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel, IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonVirtualScroll, IonList, IonCard, IonCardTitle, IonItem, useIonViewWillEnter, useIonViewDidEnter, IonMenu, IonMenuButton, IonBackButton, IonButtons, IonButton, IonMenuToggle, IonSlide, IonRange, IonToggle } from "@ionic/react";
-import { storeContext } from '../../core/stores/Context';
-import { useObserver } from 'mobx-react-lite';
-import { Book } from '../../core/models';
-import Reader from '../components/Reader';
-import { RouteComponentProps } from 'react-router';
-import ReaderStore from '../stores/ReaderUIStore';
-import { book } from 'ionicons/icons';
-import ReaderRootStore from '../stores/ReaderRootStore';
-import styled from 'styled-components';
+import React, { useContext, useRef, useEffect, useState } from "react";
+import {
+  IonApp,
+  IonTabs,
+  IonRouterOutlet,
+  IonTabBar,
+  IonTabButton,
+  IonIcon,
+  IonLabel,
+  IonPage,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonVirtualScroll,
+  IonList,
+  IonCard,
+  IonCardTitle,
+  IonItem,
+  useIonViewWillEnter,
+  useIonViewDidEnter,
+  IonMenu,
+  IonMenuButton,
+  IonBackButton,
+  IonButtons,
+  IonButton,
+  IonMenuToggle,
+  IonSlide,
+  IonRange,
+  IonToggle
+} from "@ionic/react";
+import { storeContext } from "../../core/stores/Context";
+import { useObserver } from "mobx-react-lite";
+import { Book } from "../../core/models";
+import Reader from "../components/Reader";
+import { RouteComponentProps } from "react-router";
+import ReaderStore from "../stores/ReaderUIStore";
+import { book } from "ionicons/icons";
+import ReaderRootStore, { ReaderContext } from "../stores/ReaderRootStore";
+import styled from "styled-components";
 import "./ReaderPage.css";
+import BookReaderStore from "../stores/BookReaderStore";
 
-interface BooksParameters extends RouteComponentProps<{
-  id: string;
-}> {}
-
+interface BooksParameters
+  extends RouteComponentProps<{
+    id: string;
+  }> {}
 
 const Main = styled.div`
   display: block;
@@ -29,43 +59,45 @@ const ReaderContainer = styled.div`
   height: 100%;
 `;
 
-const Button = styled.div`
-  height: 10px;
-  background: gray;
-`;
-
-export const ReaderContext = React.createContext<ReaderRootStore | null>(null);
-
-const ReaderPage: React.FC<BooksParameters> = ({match, history}) => {
+const ReaderPage: React.FC<BooksParameters> = ({ match, history }) => {
   const rootStore = useContext(storeContext);
   const { bookStore } = rootStore;
-  const [readerRootStore, setReaderRootState] = useState<ReaderRootStore | undefined>(undefined);
+  const [readerRootStore, setReaderRootState] = useState<
+    ReaderRootStore | undefined
+  >(undefined);
   const { id } = match.params;
   useEffect(() => {
     (async () => {
       const book = await bookStore.open(id);
-      setReaderRootState(new ReaderRootStore(rootStore, book));
+      setReaderRootState(
+        new ReaderRootStore(rootStore, new BookReaderStore(book))
+      );
     })().catch(e => console.error(e));
-  },[]);
+  }, []);
 
   if (readerRootStore) {
     return (
       <ReaderContext.Provider value={readerRootStore}>
-        <ReaderPageContent/>
+        <ReaderPageContent />
       </ReaderContext.Provider>
     );
   }
   return <></>;
 };
 
-
 const ReaderPageContent: React.FC = () => {
   const readerRootStore = useContext(ReaderContext);
-  const { readerUIStore, readerStore } = readerRootStore;
+  const { readerUIStore } = readerRootStore;
+  const readerStore = readerRootStore.readerStore as BookReaderStore;
   const [checked, setChecked] = useState(false);
   return useObserver(() => (
     <>
-      <IonMenu swipeGesture={false} side="start" contentId="content1" menuId="first">
+      <IonMenu
+        swipeGesture={false}
+        side="start"
+        contentId="content1"
+        menuId="first"
+      >
         <IonHeader>
           <IonToolbar color="primary">
             <IonTitle>Go to Chapter</IonTitle>
@@ -73,15 +105,28 @@ const ReaderPageContent: React.FC = () => {
         </IonHeader>
         <IonContent className="no-scroll">
           <IonList>
-            {
-              readerStore.book.chapters.map(x => (
-              <IonItem disabled={x.id === readerStore.location.chapterId} key={x.id} button={x.id !== readerStore.location.chapterId} onClick={() => {readerUIStore.moveChapter(x.id)}}>{x.title}</IonItem>
-              ))
-            }
+            {readerStore.book.chapters.map(x => (
+              <IonItem
+                disabled={x.id === readerStore.location.chapterId}
+                key={x.id}
+                button={x.id !== readerStore.location.chapterId}
+                onClick={() => {
+                  readerUIStore.clearDivision();
+                  readerStore.location.chapterId = x.id;
+                }}
+              >
+                {x.title}
+              </IonItem>
+            ))}
           </IonList>
         </IonContent>
       </IonMenu>
-      <IonMenu swipeGesture={false} side="end" contentId="content2" menuId="tools">
+      <IonMenu
+        swipeGesture={false}
+        side="end"
+        contentId="content2"
+        menuId="tools"
+      >
         <IonHeader>
           <IonToolbar color="primary">
             <IonTitle>Tools</IonTitle>
@@ -90,9 +135,31 @@ const ReaderPageContent: React.FC = () => {
         <IonContent>
           <IonList>
             <IonItem> Font size</IonItem>
-            <IonItem><IonRange min={10} max={40} pin={true} value={readerUIStore.fontSize} onIonChange={e => readerUIStore.fontSize = (e.detail.value as number)} /></IonItem>'
-            <IonItem> Theme </IonItem>
-            <IonItem> <IonToggle checked={checked} onIonChange={(ev) => { setChecked(ev.detail.checked); document.body.classList.toggle('dark', ev.detail.checked); }}>Toggle</IonToggle></IonItem>'
+            <IonItem>
+              <IonRange
+                min={10}
+                max={40}
+                pin={true}
+                value={readerUIStore.fontSize}
+                onIonChange={e =>
+                  (readerUIStore.fontSize = e.detail.value as number)
+                }
+              />
+            </IonItem>
+            '<IonItem> Theme </IonItem>
+            <IonItem>
+              {" "}
+              <IonToggle
+                checked={checked}
+                onIonChange={ev => {
+                  setChecked(ev.detail.checked);
+                  document.body.classList.toggle("dark", ev.detail.checked);
+                }}
+              >
+                Toggle
+              </IonToggle>
+            </IonItem>
+            '
           </IonList>
         </IonContent>
       </IonMenu>
@@ -105,25 +172,19 @@ const ReaderPageContent: React.FC = () => {
             </IonButtons>
             <IonButtons slot="end">
               <IonMenuToggle autoHide={false} menu="first">
-                <IonButton>
-                  go to
-                </IonButton>
+                <IonButton>go to</IonButton>
               </IonMenuToggle>
               <IonMenuToggle autoHide={false} menu="tools">
-                <IonButton>
-                  tools
-                </IonButton>
+                <IonButton>tools</IonButton>
               </IonMenuToggle>
             </IonButtons>
           </IonToolbar>
         </IonHeader>
         <IonContent>
           <Main>
-            {/* <Button onClick={()=>{readerUIStore.prevPage.trigger()}}/> */}
             <ReaderContainer>
-              <Reader key={readerRootStore.readerStore.currentChapter.id}/>
+              <Reader key={readerStore.currentChapter.id} />
             </ReaderContainer>
-            {/* <Button onClick={()=>{readerUIStore.nextPage.trigger()}}/> */}
           </Main>
         </IonContent>
       </IonPage>
@@ -131,6 +192,6 @@ const ReaderPageContent: React.FC = () => {
       <IonRouterOutlet id="content2"></IonRouterOutlet>
     </>
   ));
-}
+};
 
 export default ReaderPage;

@@ -4,7 +4,7 @@ import { User, BookyBook, Book } from "../../core/models";
 import FirebaseService from "../../core/stores/FirebaseService";
 import { autobind } from "core-decorators";
 import { LiteEvent } from "../../core/utils/event";
-import ReaderRootStore from "./ReaderRootStore";
+import ReaderRootStore, { ReaderStore } from "./ReaderRootStore";
 import { LogPaginatePayload, PaginateWordUnknown } from "../../core/models/Log";
 
 export interface Location {
@@ -12,25 +12,27 @@ export interface Location {
   sentenceId: string;
 }
 
-@autobind
-class ReaderStore {
-  rootStore: RootStore;
+class BookReaderStore implements ReaderStore {
+  rootStore: RootStore | null = null;
   book: BookyBook;
-  readerRootStore: ReaderRootStore;
-  @observable location: Location;
+  readerRootStore: ReaderRootStore | null = null;
+  @observable location: Location = {sentenceId: '', chapterId: ''};
 
-  constructor(readerRootStore: ReaderRootStore, book: BookyBook) {
+  constructor(book: BookyBook) {
+    this.book = book;
+  }
+
+  init(readerRootStore: ReaderRootStore) {
     this.readerRootStore = readerRootStore;
     this.rootStore = readerRootStore.rootStore;
-    this.book = book;
-    this.location = this.rootStore.userStore.getLocation(book.meta.id);
+    this.location = this.rootStore.userStore.getLocation(this.book.meta.id);
     reaction(
       () => ({sentenceId: this.location.sentenceId, chapterId: this.location.chapterId}),
       (res) => {
         const {sentenceId, chapterId} = res;
-        this.rootStore.userStore
+        this.rootStore!.userStore
           .saveLocation(this.book.meta.id, {sentenceId, chapterId})
-          .catch((e: any) => {this.rootStore.alertStore.add(e.meesage, 1000)})
+          .catch((e: any) => {this.rootStore!.alertStore.add(e.meesage, 1000)})
           .then(() => {});
       }
     );
@@ -47,14 +49,30 @@ class ReaderStore {
     return out === -1 ? 0 : out;
   }
 
-  @action nextChapter() {
+  @computed get atStart() {
+    return this.currentChapterIndex === 0;
+  }
+
+  @computed get atEnd() {
+    return this.currentChapterIndex ===  this.book.chapters.length -1;
+  }
+
+  @action nextSection() {
     if (this.currentChapterIndex  == this.book.chapters.length -1) return;
     const newChapter = this.book.chapters[this.currentChapterIndex + 1];
     this.location.chapterId = newChapter.id;
     this.location.sentenceId = newChapter.items[0].id;
   }
 
-  @action prevChapter() {
+  @computed get currentSentenceId() {
+    return this.location.sentenceId;
+  }
+
+  @action setCurrentSentenceId(sid: string) {
+    this.location.sentenceId = sid;
+  }
+
+  @action prevSection() {
     if (this.currentChapterIndex == 0) return;
     const newChapter = this.book.chapters[this.currentChapterIndex - 1];
     this.location.chapterId = newChapter.id;
@@ -71,8 +89,8 @@ class ReaderStore {
       bookId: this.book.meta.id,
       chapterId: this.currentChapter.id,
     };
-    this.rootStore.logStore.send(payload).catch(e => {this.rootStore.alertStore.add(e.message, 1000)}).then(resp => console.log('sent'));
+    this.rootStore!.logStore.send(payload).catch(e => {this.rootStore!.alertStore.add(e.message, 1000)}).then(resp => console.log('sent'));
   }
 }
 
-export default ReaderStore;
+export default BookReaderStore;

@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useRef, MutableRefObject, useContext } from "react";
+import React, { useState, useEffect, useRef, MutableRefObject, useContext, useCallback } from "react";
 import styled, { css } from "styled-components";
 import "./Reader.css";
 import { isPlatform, IonProgressBar, IonContent, IonSpinner } from "@ionic/react";
-import { ReaderContext } from "../pages/ReaderPage";
 import { reaction, untracked } from "mobx";
 import Page from "./Page";
 import { useObserver, observer } from "mobx-react-lite";
 import Swiper from 'react-id-swiper';
 import 'swiper/css/swiper.css';
-import { useWindowSize } from "../../core/utils/hooks";
+import { useWindowSize } from '../../core/utils/hooks';
+import { ReaderContext } from "../stores/ReaderRootStore";
+import Dict from "./Dict";
 
 const Main = styled.div<{ font: number }>`
   height: 100%;
@@ -29,14 +30,17 @@ const Cover = styled.div<{ enabled: Boolean; }>`
   `)}
 `;
 
+interface Props {
+  hightlightWord?: string[];
+}
 
-const Reader = observer(() => {
+const Reader: React.FC<Props> = (props) => {
   const readerRootStore = useContext(ReaderContext);
   const { readerStore, readerUIStore } = readerRootStore;
   const { dividePositions, cutted, loaded } = readerUIStore;
   const pageRefs: any = useRef([]);
   const swipeRef: MutableRefObject<any | null> = useRef(null);
-  const readingSentence = untracked(()=>(readerStore.location.sentenceId));
+  const readingSentence = untracked(()=>(readerStore.currentSentenceId));
 
   useEffect(() => {
     if (swipeRef.current?.$el) {
@@ -64,9 +68,9 @@ const Reader = observer(() => {
     readerUIStore.dividePositions = cutPos;
     readerUIStore.cutted = true;
   });
-
-  const rerender = () => {
-    setTimeout(() => {
+  const rerenderTimer = useRef(-1);
+  const rerender = useCallback(() => {
+    rerenderTimer.current = setTimeout(() => {
       if (!swipeRef.current?.$el) {
         rerender();
         return;
@@ -81,22 +85,25 @@ const Reader = observer(() => {
       }
       readerUIStore.loaded = true;
     }, 50);
-  };
+  }, []);
 
   useEffect(() => {
     rerender();
+    return () => {
+      clearTimeout(rerenderTimer.current);
+    };
   }, []);
 
   useEffect(() => {
     const handler = () => {
       const page = swipeRef.current.activeIndex;
       if (page === 0) {
-        if (readerStore.currentChapterIndex !== 0) {
-          setTimeout(readerUIStore.prevChapter, 0.1);
+        if (!readerStore.atStart) {
+          setTimeout(readerUIStore.prevSection, 0.1);
         }
       } else if (page === dividePositions.length + 2) {
-        if (readerStore.currentChapterIndex !== readerStore.book.chapters.length -1) {
-          setTimeout(readerUIStore.nextChapter, 0.1);
+        if (!readerStore.atEnd) {
+          setTimeout(readerUIStore.nextSection, 0.1);
         }
       } else {
         untracked(()=>{readerUIStore.changePage(swipeRef.current.activeIndex - 1)});
@@ -113,14 +120,16 @@ const Reader = observer(() => {
   });
 
   useWindowSize(() => {
+    console.log("clearWindow");
     readerUIStore.clearDivision();
     rerender();
   });
 
-  reaction(() => readerUIStore.fontSize, () =>{
+  useEffect(reaction(() => readerUIStore.fontSize, () =>{
     readerUIStore.clearDivision();
     rerender();
-  });
+  }),[]);
+
 
   const navigation = isPlatform('desktop') ?
     {
@@ -140,6 +149,7 @@ const Reader = observer(() => {
     .fill(1)
     .map((_: any, i: number) => (
       <Page
+        hightlightWord = {props.hightlightWord}
         key={i}
         ref={node => {
           pageRefs.current[i] = node;
@@ -148,16 +158,17 @@ const Reader = observer(() => {
       />
     ));
 
-  return (
+  return useObserver(() => (
     <Main font={readerUIStore.fontSize}>
-      <Cover enabled={(loaded && cutted)}>
+      <Dict/>
+      <Cover enabled={(readerUIStore.loaded && readerUIStore.cutted)}>
         <IonSpinner name="crescent"/>
       </Cover>
-      <Swiper key={dividePositions.length} {...params} getSwiper={(node) => {swipeRef.current = node}}>
+      <Swiper key={readerUIStore.dividePositions.length} {...params} getSwiper={(node) => {swipeRef.current = node}}>
         {([<div key="start"></div>].concat(pages).concat([<div key="end"></div>]))}
       </Swiper>
     </Main>
-  );
-});
+  ));
+};
 
 export default Reader;

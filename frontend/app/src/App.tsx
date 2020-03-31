@@ -12,7 +12,7 @@ import '@ionic/react/css/typography.css';
 /* Theme variables */
 import './theme/variables.css';
 import { storeContext } from './core/stores/Context';
-import { useObserver } from 'mobx-react-lite';
+import { useObserver } from 'mobx-react';
 import HomeApp from './core/pages/HomeApp';
 import LoginApp from './core/pages/LoginApp';
 import { IonApp, IonContent, IonLoading, IonSpinner } from '@ionic/react';

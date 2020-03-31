@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { storeContext } from '../stores/Context';
 import { IonToast } from '@ionic/react';
-import { useObserver } from 'mobx-react-lite';
+import { useObserver } from 'mobx-react';
 
 export const AlertContainer = () => {
   const { alertStore } = useContext(storeContext);

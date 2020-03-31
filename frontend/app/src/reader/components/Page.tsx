@@ -6,7 +6,8 @@ import SentenceSelector from "./SetenceSelector";
 
 import { useOutsideClickObserver } from "../../core/utils/hooks";
 import { isPlatform } from "@ionic/react";
-import { ReaderContext } from "../pages/ReaderPage";
+import { ReaderContext } from "../stores/ReaderRootStore";
+import { useObserver } from "mobx-react";
 const SentenceComponent = styled.p<{ inline: boolean; selected: boolean }>`
   padding: 0;
   margin: 10px 0;
@@ -72,12 +73,12 @@ export const pat = /([^a-zA-Z-']+)/;
 
 interface Props {
   sentences: Item[];
+  hightlightWord?: string[];
 }
 
 const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const readerRootStore = useContext(ReaderContext);
   const { readerUIStore } = readerRootStore;
-  const [selectedWord, setSelectedWord] = useState<SelectedWord | undefined>(undefined);
   const touch: MutableRefObject<
     { id: string; n: number; timer: ReturnType<typeof setTimeout>; x: number; y: number, el: HTMLElement } | undefined
   > = useRef(undefined);
@@ -89,20 +90,20 @@ const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const onTouchWord = (node: HTMLElement, j: number, k: number, word: string, x: number, y: number) => {
     const id = `${j}-${k}`;
     if (touch.current) {
-      setSelectedWord(undefined);
+      readerUIStore.selectedWord = undefined;
       clearTimeout(touch.current.timer);
       touch.current = undefined;
     }
     const handle = () => {
       if (!touch.current) return;
-      setSelectedWord({
+      readerUIStore.selectWord(word, Math.floor(k / 2), sentences[j].id);
+      readerUIStore.selectedWord = {
         id: `${j}-${k}`,
         word: word,
         sentenceId: sentences[j].id,
         wordIndex: k / 2,
         up: figureWordUp(node)
-      });
-      readerUIStore.selectWord(word, Math.floor(k / 2), sentences[j].id);
+      };
     };
     const timer = setTimeout(() => {
       handle();
@@ -116,24 +117,6 @@ const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
       el: node,
     };
   };
-
-  useEffect(() => {
-    let handler: any;
-    if (selectedWord) {
-      handler = () => {
-        setSelectedWord(undefined);
-      };
-    }
-
-    if (handler) {
-      readerUIStore.onCancelSelection.on(handler);
-    }
-    return () => {
-      if (handler) {
-        readerUIStore.onCancelSelection.off(handler);
-      }
-    };
-  }, [selectedWord]);
 
   useEffect(() => {
     const handler = (e) => {
@@ -159,7 +142,7 @@ const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
 
   const { sentences } = props;
 
-  return (
+  return useObserver(()=>(
     <div
       className="swiper-slide"
       style={{
@@ -168,10 +151,6 @@ const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
       }}
       ref={ref}
     >
-      {
-        selectedWord &&
-        <Dict selectedWord={selectedWord}></Dict>
-      }
       {sentences.map((sentence, j) => (
         (sentence.kind === 'image' ?
           (<ImageComponet image={sentence.image} imageType={sentence.imageType}></ImageComponet>) : <SentenceComponent
@@ -181,7 +160,7 @@ const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
           >
             {sentence.content.split(pat).filter(s => s.length !== 0).map((word: string, k: number) => (
               <WordComponent
-                selected={selectedWord ? selectedWord.id === `${j}-${k}` : false}
+                selected={readerUIStore.selectedWord ? readerUIStore.selectedWord.id === `${j}-${k}` : false}
                 first={k === 0}
                 key={k}
                 onTouchEnd={() => {
@@ -240,7 +219,7 @@ const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
           </SentenceComponent>
         )))}
     </div>
-  );
+  ));
 });
 
 export default Page;

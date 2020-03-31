@@ -1,10 +1,10 @@
-import {Location} from '../../reader/stores/ReaderStore';
+import {Location} from '../../reader/stores/BookReaderStore';
 
 interface LocationMap {
   [key: string]: Location;
 }
 export interface User {
   fireId: string;
-  name: string;
+  username: string;
   locations: LocationMap;
 }
