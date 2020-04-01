@@ -15,7 +15,7 @@
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "strict": false,
+    "strict": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -23,7 +23,7 @@
     "jsx": "react"
   },
   "include": [
-    "src/**/*.ts", "src/common/stores/DictService.tsx", "src/common/stores/Boosrc/common/utils/hooks.tsxtils/hooks.tsx", "src/game/stores/GameRootStore.tsx", "src/game/models/Dialog.tsx", "src/game/components/steps/index.tsx"
+    "src/**/*.ts",
   ],
   "exclude": [
     "node_modules"

@@ -84,9 +84,38 @@ const GamePage: React.FC = (props) => {
       sid: ''
     },],
     targetLastWords: 10,
-    unfamiliarWords: [],
-    targetUnfamiliarWords: 10,
-    texts: [],
+    unfamiliarWords: [{
+      word: 'hello',
+      texts: [0]
+    }, {
+      word: 'hey',
+      texts: [0]
+    },
+    {
+      word: 'guy',
+      texts: [0, 1]
+    }],
+    targetCompletedTexts: 1,
+    texts: [
+      {
+        unfamiliarWords: ['hello'],
+        content:[{
+          id: 'asdf',
+          content: 'Hey hello hey hey hey.',
+          kind: 'sentence',
+          start: false
+        }]
+      },
+      {
+        unfamiliarWords: ['hello'],
+        content:[{
+          id: 'asdf',
+          content: 'Hey hello hey hey hey.',
+          kind: 'sentence',
+          start: false
+        }]
+      }
+    ],
   };
   const gameRootStore = useRef(new GameRootStore(rootStore, review));
   return useObserver(() => {

@@ -115,7 +115,7 @@ const ReaderPageContent: React.FC = () => {
                   readerStore.location.chapterId = x.id;
                 }}
               >
-                {x.title}
+                {x.title === '' ? 'gorani' : x.title}
               </IonItem>
             ))}
           </IonList>

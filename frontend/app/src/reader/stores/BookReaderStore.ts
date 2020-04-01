@@ -12,6 +12,7 @@ export interface Location {
   sentenceId: string;
 }
 
+@autobind
 class BookReaderStore implements ReaderStore {
   rootStore: RootStore | null = null;
   book: BookyBook;

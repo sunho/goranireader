@@ -4,8 +4,9 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
 import WordsCloud from '../WordsCloud';
+import { StepStore } from '../../stores/StepStore';
 
-const Initial: React.FC<{store: any}> = props => {
+const Initial: React.FC<{store?: StepStore}> = props => {
   const { gameStore } = useContext(GameContext)!;
   const { store } = props;
   const lastWords = gameStore.progress.review.lastWords;
@@ -30,11 +31,10 @@ const Initial: React.FC<{store: any}> = props => {
   );
 };
 
-const LastWordsReviewStep = {
-  storeGenerator: () => ({}),
+const LWReviewStepComponent = {
   substeps: [
     Initial
   ]
 }
 
-export default LastWordsReviewStep;
+export default LWReviewStepComponent;

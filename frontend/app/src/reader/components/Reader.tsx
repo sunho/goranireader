@@ -4,7 +4,7 @@ import "./Reader.css";
 import { isPlatform, IonProgressBar, IonContent, IonSpinner } from "@ionic/react";
 import { reaction, untracked } from "mobx";
 import Page from "./Page";
-import { useObserver, observer } from "mobx-react-lite";
+import { useObserver } from "mobx-react";
 import Swiper from 'react-id-swiper';
 import 'swiper/css/swiper.css';
 import { useWindowSize } from '../../core/utils/hooks';
@@ -36,18 +36,17 @@ interface Props {
 
 const Reader: React.FC<Props> = (props) => {
   const readerRootStore = useContext(ReaderContext);
-  const { readerStore, readerUIStore } = readerRootStore;
-  const { dividePositions, cutted, loaded } = readerUIStore;
+  const { readerStore, readerUIStore } = readerRootStore!;
+  const { dividePositions } = readerUIStore;
   const pageRefs: any = useRef([]);
   const swipeRef: MutableRefObject<any | null> = useRef(null);
   const readingSentence = untracked(()=>(readerStore.currentSentenceId));
-
   useEffect(() => {
     if (swipeRef.current?.$el) {
       swipeRef.current.update();
     }
-    if (!loaded) return;
-    if (cutted) return;
+    if (!readerUIStore.loaded.get()) return;
+    if (readerUIStore.cutted.get()) return;
     const lastItem = pageRefs.current[0];
     const parentBounds = swipeRef.current.$el[0].getBoundingClientRect();
     const parentTop = parentBounds.top;
@@ -66,11 +65,15 @@ const Reader: React.FC<Props> = (props) => {
       }
     }
     readerUIStore.dividePositions = cutPos;
-    readerUIStore.cutted = true;
+    readerUIStore.cutted.set(true);
   });
   const rerenderTimer = useRef(-1);
   const rerender = useCallback(() => {
     rerenderTimer.current = setTimeout(() => {
+      if ((readerUIStore.loaded as any).observers.size === 0) {
+        rerender();
+        return;
+      }
       if (!swipeRef.current?.$el) {
         rerender();
         return;
@@ -83,9 +86,10 @@ const Reader: React.FC<Props> = (props) => {
         rerender();
         return;
       }
-      readerUIStore.loaded = true;
+      readerUIStore.loaded.set(true);
+      console.log(readerUIStore.loaded, "loaded");
     }, 50);
-  }, []);
+  }, [readerUIStore]);
 
   useEffect(() => {
     rerender();
@@ -110,7 +114,7 @@ const Reader: React.FC<Props> = (props) => {
       }
     };
 
-    if (swipeRef.current?.$el && cutted) {
+    if (swipeRef.current?.$el && readerUIStore.cutted.get()) {
       swipeRef.current.slideTo(readerUIStore.getPageBySentenceId(readingSentence) + 1, 0);
       swipeRef.current.on("slideChange", handler);
       return () => {
@@ -158,17 +162,21 @@ const Reader: React.FC<Props> = (props) => {
       />
     ));
 
-  return useObserver(() => (
+  return useObserver(() => {
+    const loaded = readerUIStore.loaded.get();
+    const cutted = readerUIStore.cutted.get();
+    return (
     <Main font={readerUIStore.fontSize}>
       <Dict/>
-      <Cover enabled={(readerUIStore.loaded && readerUIStore.cutted)}>
+      <Cover enabled={(loaded && cutted)}>
         <IonSpinner name="crescent"/>
       </Cover>
       <Swiper key={readerUIStore.dividePositions.length} {...params} getSwiper={(node) => {swipeRef.current = node}}>
         {([<div key="start"></div>].concat(pages).concat([<div key="end"></div>]))}
       </Swiper>
     </Main>
-  ));
+    );
+  });
 };
 
 export default Reader;

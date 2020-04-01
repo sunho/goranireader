@@ -77,7 +77,7 @@ interface Props {
 }
 
 const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
-  const readerRootStore = useContext(ReaderContext);
+  const readerRootStore = useContext(ReaderContext)!;
   const { readerUIStore } = readerRootStore;
   const touch: MutableRefObject<
     { id: string; n: number; timer: ReturnType<typeof setTimeout>; x: number; y: number, el: HTMLElement } | undefined
@@ -119,7 +119,7 @@ const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
   };
 
   useEffect(() => {
-    const handler = (e) => {
+    const handler = (e: any) => {
       const x = e.clientX;
       const y = e.clientY;
       if (touch.current && Math.sqrt((x - touch.current.x) ** 2 + (y - touch.current.y) ** 2) > 30) {
