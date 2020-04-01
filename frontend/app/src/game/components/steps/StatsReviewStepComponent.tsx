@@ -3,10 +3,10 @@ import { GameContext } from '../../stores/GameRootStore';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
+import { StepStore } from '../../stores/StepStore';
 
-const Initial: React.FC<{store: any}> = props => {
+const Initial: React.SFC = () => {
   const { gameStore } = useContext(GameContext)!;
-  const { store } = props;
   useEffect(() => {
     gameStore.pushDialog([
       {
@@ -32,11 +32,9 @@ const Initial: React.FC<{store: any}> = props => {
   );
 };
 
-const WordStats: React.FC<{store: any}> = props => {
+const WordStats: React.SFC = () => {
   const { gameStore } = useContext(GameContext)!;
   const { progress } = gameStore;
-  const { store } = props;
-
   return (
     <div>
       <LineChart width={500} height={300} data={progress.review.stats.lastReadWords}>
@@ -50,7 +48,6 @@ const WordStats: React.FC<{store: any}> = props => {
 };
 
 const StatsReviewStep = {
-  storeGenerator: () => ({}),
   substeps: [
     Initial,
     WordStats,

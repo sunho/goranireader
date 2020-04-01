@@ -62,7 +62,7 @@ const LastWordDetailContainer = () => {
         width: "80%",
         height: "500px",
         left: "10%",
-        top: "25%",
+        top: "10%",
         transition: {
           type: 'tween',
           ease: 'circOut',

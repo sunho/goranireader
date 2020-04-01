@@ -12,12 +12,13 @@ export interface Location {
   sentenceId: string;
 }
 
+@autobind
 class GameReaderStore implements ReaderStore {
   rootStore: RootStore | null = null;
   sentences: Item[];
   readerRootStore: ReaderRootStore | null = null;
   sentenceId: string = '';
-  constructor(sentences: Sentence[]) {
+  constructor(sentences: Item[]) {
     this.sentences = sentences;
   }
 

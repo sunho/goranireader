@@ -6,6 +6,7 @@ import { LiteEvent } from "../../core/utils/event";
 import ReaderRootStore, { ReaderStore } from "./ReaderRootStore";
 import { PaginateWordUnknown } from "../../core/models/Log";
 import React from "react";
+import { autobind } from "core-decorators";
 
 export interface LookUp {
   id: string;
@@ -13,13 +14,14 @@ export interface LookUp {
   duration: number;
 }
 
+@autobind
 class ReaderUIStore {
   readerRootStore: ReaderRootStore;
   rootStore: RootStore;
 
   @observable lookUp: LookUp | undefined = undefined;
-  @observable cutted: Boolean = false;
-  @observable loaded: Boolean = false;
+  cutted = observable.box(false);
+  loaded = observable.box(false);
   @observable dividePositions: number[] = [];
   @observable fontSize: number = 20;
   @observable selectedWord?: SelectedWord;
@@ -39,7 +41,7 @@ class ReaderUIStore {
     window.addEventListener('focus', this.startTimer.bind(this));
     window.addEventListener('blur', this.stopTimer.bind(this));
     reaction(() => this.cutted, cutted => {
-      if (cutted) {
+      if (cutted.get()) {
         this.currentTime = 0;
       }
     });
@@ -99,7 +101,7 @@ class ReaderUIStore {
     const sens = this.getPageSentences(page).map(x => x.id);
     const old = this.getPageBySentenceId(this.readerStore.currentSentenceId) || 0;
     const neww = this.getPageBySentenceId(sens[0]) || 0;
-    if (this.cutted) {
+    if (this.cutted.get()) {
       this.readerStore.setCurrentSentenceId(sens[0]);
       if (neww > old) {
         const sens = this.getPageSentences(old).map(x => x.id);
@@ -141,8 +143,8 @@ class ReaderUIStore {
 
   @action clearDivision() {
     console.log('clearDivision');
-    this.cutted = false;
-    this.loaded = false;
+    this.cutted.set(false);
+    this.loaded.set(false);
     this.dividePositions = [];
   }
 }

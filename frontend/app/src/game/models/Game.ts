@@ -5,7 +5,7 @@ export interface Review {
   lastWords: LastWord[];
   targetLastWords: number;
   unfamiliarWords: UnfamiliarWord[];
-  targetUnfamiliarWords: number;
+  targetCompletedTexts: number;
   texts: Text[];
 }
 
@@ -13,6 +13,7 @@ export interface Progress {
   step: number;
   steps: Step[];
   review: Review;
+  savedata: { [step: number]: object };
 }
 
 export function generateProgress(review: Review): Progress {
@@ -21,16 +22,20 @@ export function generateProgress(review: Review): Progress {
     review: review,
     steps: [
       {
-        kind: StepKind.UnfamiliarWordsReview,
+        kind: StepKind.LWReview,
+      },
+      {
+        kind: StepKind.UWReview,
       },
       {
         kind: StepKind.StatsReview
       },
-    ]
+    ],
+    savedata: {}
   }
 }
 
-export type Step = StatsReviewStep | LastWordsReviewStep | UnfamiliarWordsReview;
+export type Step = StatsReviewStep | LWReviewStep | UWReviewStep;
 
 export interface GameStep {
   completed: number;
@@ -41,18 +46,18 @@ export interface StatsReviewStep {
   kind: StepKind.StatsReview,
 }
 
-export interface LastWordsReviewStep {
-  kind: StepKind.LastWordsReview,
+export interface LWReviewStep {
+  kind: StepKind.LWReview,
 }
 
-export interface UnfamiliarWordsReview {
-  kind: StepKind.UnfamiliarWordsReview,
+export interface UWReviewStep {
+  kind: StepKind.UWReview,
 }
 
 export enum StepKind {
   StatsReview = 1,
-  LastWordsReview = 2,
-  UnfamiliarWordsReview = 3,
+  LWReview = 2,
+  UWReview = 3,
   Finalize = 4
 }
 

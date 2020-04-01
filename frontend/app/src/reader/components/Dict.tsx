@@ -56,7 +56,7 @@ const Card = styled(IonCard)`
 
 const Dict: React.FC = () => {
   const readerRootStore = useContext(ReaderContext);
-  const { readerUIStore, rootStore } = readerRootStore;
+  const { readerUIStore, rootStore } = readerRootStore!;
   const { dictService } = rootStore;
   const [res, setRes] = useState<any[]>([]);
   const dictRef = useRef<HTMLElement | null | undefined>(undefined);
