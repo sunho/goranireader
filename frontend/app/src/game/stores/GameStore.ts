@@ -2,8 +2,11 @@ import { Progress, Review, generateProgress, LastWord } from "../models/Game";
 import { observable, computed, action } from "mobx";
 import RootStore from "../../core/stores/RootStore";
 import { Message } from "../models/Dialog";
+import { autobind } from "core-decorators";
 
+@autobind
 class GameStore {
+  @observable substepI: number = 0;
   @observable substep: number = 0;
   @observable step: number = 0;
 
@@ -18,7 +21,6 @@ class GameStore {
   @computed get canComplete(): boolean {
     return this._completeCallback != null;
   }
-
 
   @observable msgs?: Message[];
 
@@ -61,20 +63,21 @@ class GameStore {
   }
 
   @action nextStep() {
-    this.step ++;
+    this.step++;
   }
 
   @action gotoSubstep(step: number) {
     this.substep = step;
+    this.substepI ++;
   }
 
   @action nextSubStep() {
-    this.substep ++;
+    this.substep++;
   }
 
   @action nextMsg() {
     if (this.msgIndex !== this.msgs!.length - 1) {
-      this.msgIndex ++;
+      this.msgIndex++;
       const goToSubstep = this.msgs![this.msgIndex].goToSubstep;
       if (goToSubstep) {
         this.substep = goToSubstep;
@@ -89,7 +92,15 @@ class GameStore {
     this.msgIndex = 0;
   }
 
-  @action setNext(callback: ()=>void) {
+  @action setComplete(callback: () => void) {
+    this._completeCallback = callback;
+  }
+
+  @action setGiveup(callback: () => void) {
+    this._giveupCallback = callback;
+  }
+
+  @action setNext(callback: () => void) {
     this._nextCallback = callback;
   }
 
@@ -97,10 +108,7 @@ class GameStore {
     this._nextCallback = null;
   }
 
-  updateProgress() {
-
-  }
+  updateProgress() {}
 }
-
 
 export default GameStore;

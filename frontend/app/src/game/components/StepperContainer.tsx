@@ -7,15 +7,7 @@ import { GameContext } from '../stores/GameRootStore';
 import { SwitchTransition, CSSTransition } from "react-transition-group";
 import { useObserver } from 'mobx-react';
 import styled from 'styled-components';
-
-export interface StepComponent {
-  storeGenerator: StepStoreGenerator;
-  substeps: SubStep[];
-}
-
-type SubStep = React.FC<{store: any}>;
-
-type StepStoreGenerator = (rootStore: RootStore, step: any) => any;
+import { StepComponent } from '../stores/StepStore';
 
 const Container = styled.div`
   flex: 1;

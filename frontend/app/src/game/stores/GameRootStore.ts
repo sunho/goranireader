@@ -1,8 +1,10 @@
 import React from "react";
 import RootStore from "../../core/stores/RootStore";
-import GameStore from "./GamtStore";
+import GameStore from "./GameStore";
 import { Review } from "../models/Game";
+import { autobind } from "core-decorators";
 
+@autobind
 class GameRootStore {
   rootStore: RootStore;
   gameStore: GameStore;

@@ -10,6 +10,7 @@ import ReaderUIStore from './ReaderUIStore';
 import { PaginateWordUnknown } from '../../core/models/Log';
 import React from 'react';
 
+@autobind
 class ReaderRootStore {
   rootStore: RootStore;
   readerStore: ReaderStore;
