@@ -27,6 +27,8 @@ class Item:
 
     @classmethod
     def from_dict(cls, obj):
+        if 'kind' not in obj:
+            return Sentence.from_dict(obj)
         if obj['kind'] == 'sentence':
             return Sentence.from_dict(obj)
         elif obj['kind'] == 'image':
@@ -190,6 +192,7 @@ class Book:
     def _init_cache(self):
         self.id_to_sentence_context = dict()
         self.id_to_sentence = dict()
+        self.id_to_item = dict()
         self.id_to_chapter = dict()
         for chap in self.chapters:
             self.id_to_chapter[chap.id] = chap
@@ -203,6 +206,7 @@ class Book:
                 raise Exception("wtf")
 
             for item in chap.items:
+                self.id_to_item[item.id] = item
                 if isinstance(item, Sentence):
                     self.id_to_sentence[item.id] = item.content
                     self.id_to_sentence_context[item.id] = get_surrounding_text(item.id)
@@ -228,8 +232,12 @@ class Book:
                     out.add(word.lower())
         return out
 
+    def get_item(self, id):
+        return self.id_to_item.get(id, None)
+
     def get_sentence(self, sid):
         return self.id_to_sentence.get(sid, None)
+
 
     def to_dict(self):
         return {
