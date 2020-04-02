@@ -12,7 +12,7 @@ import datetime
 
 TABLE_ID = "goranireader.raw_event_logs"
 
-class DownlodLog(FlowSpec):
+class DownloadLog(FlowSpec):
     firebase_key = IncludeFile(
         'firebase-key',
         is_text=False,
@@ -88,4 +88,4 @@ class DownlodLog(FlowSpec):
 
 
 if __name__ == '__main__':
-    DownlodLog()
+    DownloadLog()

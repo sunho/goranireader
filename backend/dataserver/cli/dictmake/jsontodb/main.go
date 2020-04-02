@@ -37,6 +37,11 @@ func init() {
 		cmd.Stdout = os.Stdout
 		cmd.Run()
 	}
+	clear["darwin"] = func() {
+		cmd := exec.Command("clear") //Linux example, its tested
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	}
 }
 
 func callClear() {
@@ -97,10 +102,17 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var words []Word
-	err = json.Unmarshal(buf, &words)
+	var words2 map[string]map[string]Word
+	err = json.Unmarshal(buf, &words2)
 	if err != nil {
 		log.Fatal(err)
+	}
+	words := []Word{}
+
+	for _, words3 := range words2 {
+		for _, word := range words3 {
+			words = append(words, word)
+		}
 	}
 
 	total = len(words)
@@ -111,6 +123,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	log.Println(n)
 }
 
 func migrate(db *gorm.DB) error {
@@ -127,9 +141,18 @@ func insert(db *gorm.DB, words []Word) error {
 	db = db.Set("gorm:save_associations", false)
 
 	for _, word := range words {
+		fmt.Println(word.Word)
+		tmp := []Word{}
+		if err := db.Where("word = ?", word.Word).Find(&tmp); err != nil {
+			if len(tmp) != 0 {
+				continue
+			}
+		}
+
 		mu.Lock()
 		n++
 		mu.Unlock()
+
 		if err := db.
 			Create(&word).Error; err != nil {
 			return err
