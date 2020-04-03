@@ -1,8 +1,4 @@
-import {
-  UnfamiliarWord,
-  UWReviewStep,
-  Review
-} from "../models/Game";
+import { UnfamiliarWord, UWReviewStep, Review } from "../models/Game";
 import { observable } from "mobx";
 import RootStore from "../../core/stores/RootStore";
 import { Text } from "../models/Game";
@@ -25,11 +21,7 @@ class UWReviewStore extends BaseStepStore {
   suggestedTexts: Text[] = [];
   textPos: number = 0;
 
-  constructor(
-    step: UWReviewStep,
-    review: Review,
-    rootStore: RootStore
-  ) {
+  constructor(step: UWReviewStep, review: Review, rootStore: RootStore) {
     super();
     this.reviewWords = review.unfamiliarWords;
     this.avaliableTexts = review.texts;
@@ -53,7 +45,7 @@ class UWReviewStore extends BaseStepStore {
       new Map<number, number>()
     );
     const ranknedTexts = Array.from(freq.entries())
-      .filter(x => (x[1] !== 0))
+      .filter(x => x[1] !== 0)
       .sort((x, y) => x[1] - y[1])
       .map(x => x[0]);
     const suggested = ranknedTexts.filter(x => !this.previousTexts.includes(x));
@@ -90,11 +82,16 @@ class UWReviewStore extends BaseStepStore {
   loadData(data: object) {}
 
   shouldComplete() {
-    return this.previousWords.length === this.reviewWords.length || this.previousTexts.length === this.avaliableTexts.length;
+    return (
+      this.previousWords.length === this.reviewWords.length ||
+      this.previousTexts.length === this.avaliableTexts.length
+    );
   }
 
   canComplete() {
-    return this.completedTexts >= this.targetCompletedTexts || this.shouldComplete();
+    return (
+      this.completedTexts >= this.targetCompletedTexts || this.shouldComplete()
+    );
   }
 
   canGiveup() {

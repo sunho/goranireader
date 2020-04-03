@@ -86,6 +86,11 @@ class ReaderUIStore {
     });
   }
 
+  flushPaginate() {
+    const sens = this.currentPageSentences.map(x => x.id);
+    this.paginate(sens);
+  }
+
   paginate(sens: string[]) {
     this.readerStore.paginate(sens, this.currentTime, this.unknownWords);
     this.unknownWords = [];

@@ -1,7 +1,9 @@
 import * as functions from "firebase-functions";
 import { admin } from "../config/admin";
-import { Storage } from "@google-cloud/storage";
 import uuidv4 = require("uuid/v4");
+
+import * as AWS from 'aws-sdk';
+AWS.config.loadFromPath('./awscred.json');
 
 function ISODateString(d: Date) {
   function pad(n: number) {
@@ -23,7 +25,7 @@ function ISODateString(d: Date) {
   );
 }
 
-const EVENT_LOG_BUCKET = "gorani-reader-249509-gorani-reader-event-log";
+const EVENT_LOG_BUCKET = "gorani-reader-client-event-logs";
 
 export default functions
   .region("asia-northeast1")
@@ -53,21 +55,16 @@ export default functions
       type: item.type,
       payload: item.payload
     };
-    const storage = new Storage();
-    const bucket = storage.bucket(EVENT_LOG_BUCKET);
+    const s3 = new AWS.S3();
+    const buf = Buffer.from(JSON.stringify(obj));
     const name = `${obj.classId}$${obj.userId}$${obj.type}$${obj.time}$${serverTime}$${uuidv4()}`;
-    const file = bucket.file(name);
+    
+    await s3.putObject({
+      Bucket: EVENT_LOG_BUCKET,
+      Key: name,
+      ContentType:'binary/octet-stream',
+      Body: buf
+    }).promise()
 
-    const stream = file.createWriteStream({
-      resumable: false
-    });
-
-    stream.on("error", err => {
-      res.sendStatus(500);
-    });
-
-    stream.on("finish", () => {
-      res.sendStatus(200);
-    });
-    stream.end(Buffer.from(JSON.stringify(obj)));
+    res.sendStatus(200);
   });

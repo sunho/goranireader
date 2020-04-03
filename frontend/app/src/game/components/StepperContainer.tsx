@@ -15,7 +15,6 @@ const Container = styled.div`
 `;
 
 const StepperContainer: React.FC = () => {
-  const rootStore = useContext(storeContext);
   const gameRootStore = useContext(GameContext);
   const { gameStore } = gameRootStore!;
 
@@ -25,7 +24,7 @@ const StepperContainer: React.FC = () => {
     const component = stepComponents.get(step.kind)!;
     return (
       <Container>
-        <Stepper step={step} storeGenerator={component.storeGenerator} substeps={component.substeps}/>
+        <Stepper key={gameStore.step} step={step} storeGenerator={component.storeGenerator} substeps={component.substeps}/>
       </Container>
     );
   });

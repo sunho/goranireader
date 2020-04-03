@@ -17,7 +17,9 @@ export class BaseStepStore {
   private disposers: (() => void)[] = [];
 
   destroy() {
-    this.disposers.forEach(x => {x()});
+    this.disposers.forEach(x => {
+      x();
+    });
   }
 
   setDisposers(disposers: (() => void)[]) {
@@ -30,15 +32,27 @@ export interface StepComponent {
   substeps: SubStep[];
 }
 
-export type SubStep = React.FC<{store?: StepStore}> | React.SFC;
+export type SubStep = React.FC<{ store?: StepStore }> | React.SFC;
 
-export type StepStoreGenerator = (step: Step, review: Review, rootStore: RootStore) => StepStore;
+export type StepStoreGenerator = (
+  step: Step,
+  review: Review,
+  rootStore: RootStore
+) => StepStore;
 
-export function wrapStore(gameStore: GameStore, step: number, store: StepStore) {
-  store.setDisposers(Object.values(store).filter(x => isObservable(x)).map(x =>
-    (observe(x, () => {
-      gameStore.progress.savedata[step] = store.saveData();
-    }))
-  ));
+export function wrapStore(
+  gameStore: GameStore,
+  step: number,
+  store: StepStore
+) {
+  store.setDisposers(
+    Object.values(store)
+      .filter(x => isObservable(x))
+      .map(x =>
+        observe(x, () => {
+          gameStore.progress.savedata[step] = store.saveData();
+        })
+      )
+  );
   return store;
 }

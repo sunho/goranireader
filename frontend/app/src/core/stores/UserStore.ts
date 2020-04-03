@@ -78,6 +78,11 @@ class UserStore {
     await this.loadUser();
     return Promise.resolve();
   }
+
+  async saveLastReviewEnd(end: number) {
+    await this.firebaseService.userDoc(this.userId!).update({lastReviewEnd: end});
+    await this.loadUser();
+  }
 }
 
 export default UserStore;
