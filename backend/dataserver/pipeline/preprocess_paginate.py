@@ -70,6 +70,17 @@ CleanPagesDataFrame = pa.DataFrameSchema({
     "cheat": pa.Column(pa.Bool),
 }, strict = True)
 
+SessionInfoDataFrame = pa.DataFrameSchema({
+    "userId": pa.Column(pa.String),
+    "session": pa.Column(pa.Int),
+    "start": pa.Column(pa.Int),
+    "end": pa.Column(pa.Int),
+    "wpm": pa.Column(pa.Float),
+    "readWords": pa.Column(pa.Int),
+    "unknownWords": pa.Column(pa.Int),
+    "hours": pa.Column(pa.Float),
+}, strict = True)
+
 class PreprocessPaginate(FlowSpec):
     books: typing.Dict[str, Book]
     @step
@@ -272,10 +283,10 @@ class PreprocessPaginate(FlowSpec):
         pages_df = unnesting(pages_df[['userId', 'cheat', 'session', 'time', 'eltime', 'wpm', 'i', 'word', 'signal']],
                        ['word', 'signal'], axis=1)
         self.signals_df = SignalDataFrame.validate(pages_df)
-        self.next(self.clean_pages_df)
+        self.next(self.make_clean_pages_df)
 
     @step
-    def clean_pages_df(self):
+    def make_clean_pages_df(self):
         pages_df = self.pages_df.copy()
         def get_items_json(sids):
             out = []
@@ -300,7 +311,7 @@ class PreprocessPaginate(FlowSpec):
         del pages_df['unknownIndices']
         del pages_df['sids']
         self.clean_pages_df = CleanPagesDataFrame.validate(pages_df)
-        self.next(self.end)
+        self.next(self.extract_session_info_df)
 
     def get_item(self, sid):
         for book in self.books.values():
@@ -309,6 +320,29 @@ class PreprocessPaginate(FlowSpec):
                 return out.to_dict()
         return None
 
+    @step
+    def extract_session_info_df(self):
+        signals_df = self.signals_df.copy()
+
+        df = signals_df.groupby(['userId', 'session']) \
+            .agg(start=('time', 'min'),
+                 end=('time', 'max'),
+                 nwords=('signal', 'sum'),
+                 readWords=('word', 'count'))
+        df['unknownWords'] = (df['readWords'] - df['nwords']).astype('int64')
+        del df['nwords']
+
+        clean_pages_df = self.clean_pages_df.copy()
+        df2 = clean_pages_df.groupby(['userId', 'session']) \
+            .agg(wpm=('wpm', 'mean'),
+                 eltime=('eltime', 'sum'))
+        df2['hours'] = (df2['eltime']) / (60 * 60)
+        del df2['eltime']
+
+        df3 = df.join(df2).reset_index()
+
+        self.session_info_df = SessionInfoDataFrame.validate(df3)
+        self.next(self.end)
     @step
     def end(self):
         print('processed: %d' % self.signals_df.size)

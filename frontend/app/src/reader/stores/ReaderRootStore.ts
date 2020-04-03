@@ -37,6 +37,8 @@ export interface ReaderStore {
   nextSection(): void;
   prevSection(): void;
 
+  destroy(): void;
+
   paginate(sids: string[], time: number, words: PaginateWordUnknown[]): void;
 }
 

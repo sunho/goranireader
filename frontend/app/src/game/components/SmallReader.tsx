@@ -9,16 +9,22 @@ import { GameContext } from '../stores/GameRootStore';
 
 interface Props {
   sentences: Item[];
+  targetWords: string[];
 }
 
 
 const SmallReader: React.FC<Props> = props => {
   const rootStore = useContext(storeContext)!;
-  const gameStore = useContext(GameContext)!;
-  const store = useMemo(() => new ReaderRootStore(rootStore, new GameReaderStore(props.sentences)), []);
+  const { gameStore } = useContext(GameContext)!;
+  const store = useMemo(() => new ReaderRootStore(rootStore, new GameReaderStore(props.sentences, gameStore, props.targetWords)), []);
+  useEffect(() => {
+    return () => {
+      store.readerStore.destroy()
+    }
+  }, []);
   return (
     <ReaderContext.Provider value={store}>
-      <Reader/>
+      <Reader hightlightWord={props.targetWords}/>
     </ReaderContext.Provider>
   );
 }

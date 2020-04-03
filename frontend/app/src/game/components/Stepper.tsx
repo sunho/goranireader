@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import RootStore from "../../core/stores/RootStore";
 import { storeContext } from "../../core/stores/Context";
 import { Step, Review } from "../models/Game";
@@ -25,22 +25,18 @@ interface Props {
 const Container = styled.div`
   height: 100%;
   width: 100%;
-  background: lightgray;
 `;
 
 const Stepper = (props: Props) => {
   const rootStore = useContext(storeContext)!;
   const { gameStore } = useContext(GameContext)!;
   const { storeGenerator, substeps, step } = props;
-  const store = useRef<StepStore | undefined>(
-    storeGenerator
-      && wrapStore(
-          gameStore,
-          gameStore.step,
-          storeGenerator(step, gameStore.progress.review, rootStore)
-        )
-  );
-
+  const [store, _] = useState<StepStore | undefined>( storeGenerator
+    && wrapStore(
+        gameStore,
+        gameStore.step,
+        storeGenerator(step, gameStore.progress.review, rootStore)
+      ));
   return useObserver(() => {
     const CurrentStep = substeps[gameStore.substep];
     return (
@@ -55,7 +51,7 @@ const Stepper = (props: Props) => {
             exit={{ opacity: 0, left: "-10%", rotate: -10 }}
           >
             <Container>
-              <CurrentStep store={store.current} />
+              <CurrentStep store={store} />
             </Container>
           </motion.div>
         </AnimatePresence>

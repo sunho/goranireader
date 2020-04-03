@@ -35,8 +35,18 @@ const SentenceComponent = styled.p<{ inline: boolean; selected: boolean }>`
     `}
 `;
 
-const WordComponent = styled.span<{ selected: boolean; first: boolean, enabled: boolean }>`
+const WordComponent = styled.span<{ selected: boolean; first: boolean, enabled: boolean, highlight: boolean }>`
   display: inline;
+
+  ${props =>
+    props.highlight &&
+    css`
+      display: inline;
+      background: orange;
+      font-weight: 700;
+      color: white;
+    `}
+
   ${props =>
     props.selected &&
     css`
@@ -163,6 +173,7 @@ const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
                 selected={readerUIStore.selectedWord ? readerUIStore.selectedWord.id === `${j}-${k}` : false}
                 first={k === 0}
                 key={k}
+                highlight={props.hightlightWord ? props.hightlightWord.includes(word.toLowerCase()) : false}
                 onTouchEnd={() => {
                   if (touch.current) {
                     clearTimeout(touch.current.timer);

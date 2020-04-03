@@ -10,7 +10,7 @@ from google.cloud import bigquery
 import urllib.request
 import datetime
 
-TABLE_ID = "goranireader.raw_event_logs"
+TABLE_ID = "goranireader.raw_event_log"
 
 class DownloadLog(FlowSpec):
     firebase_key = IncludeFile(

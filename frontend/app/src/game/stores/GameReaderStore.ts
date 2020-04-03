@@ -1,11 +1,18 @@
 import { observable, action, computed, reaction } from "mobx";
-import RootStore from '../../core/stores/RootStore';
+import RootStore from "../../core/stores/RootStore";
 import { User, BookyBook, Book, Sentence, Item } from "../../core/models";
 import FirebaseService from "../../core/stores/FirebaseService";
 import { autobind } from "core-decorators";
 import { LiteEvent } from "../../core/utils/event";
-import ReaderRootStore, { ReaderStore } from "../../reader/stores/ReaderRootStore";
-import { LogPaginatePayload, PaginateWordUnknown } from "../../core/models/Log";
+import ReaderRootStore, {
+  ReaderStore
+} from "../../reader/stores/ReaderRootStore";
+import {
+  LogPaginatePayload,
+  PaginateWordUnknown,
+  LogReviewPaginatePayload
+} from "../../core/models/Log";
+import GameStore from "./GameStore";
 
 export interface Location {
   chapterId: string;
@@ -16,10 +23,15 @@ export interface Location {
 class GameReaderStore implements ReaderStore {
   rootStore: RootStore | null = null;
   sentences: Item[];
+  targetWords: string[];
   readerRootStore: ReaderRootStore | null = null;
-  sentenceId: string = '';
-  constructor(sentences: Item[]) {
+  sentenceId: string = "";
+  gameStore: GameStore;
+  constructor(sentences: Item[], gameStore: GameStore, targetWords: string[]) {
     this.sentences = sentences;
+    this.gameStore = gameStore;
+    this.targetWords = targetWords;
+    this.gameStore.onCancelLastWordDetail.on(this.onCancel);
   }
 
   init(readerRootStore: ReaderRootStore) {
@@ -27,6 +39,9 @@ class GameReaderStore implements ReaderStore {
     this.rootStore = readerRootStore.rootStore;
   }
 
+  onCancel() {
+    this.readerRootStore!.readerUIStore.flushPaginate();
+  }
 
   get atStart() {
     return true;
@@ -36,8 +51,7 @@ class GameReaderStore implements ReaderStore {
     return true;
   }
 
-  nextSection() {
-  }
+  nextSection() {}
 
   get currentSentenceId() {
     return this.sentenceId;
@@ -47,20 +61,19 @@ class GameReaderStore implements ReaderStore {
     this.sentenceId = sid;
   }
 
-  prevSection() {
-  }
+  prevSection() {}
 
   paginate(sids: string[], time: number, words: PaginateWordUnknown[]) {
-  //   const payload: LogPaginatePayload = {
-  //     type: 'paginate',
-  //     sids: sids,
-  //     time,
-  //     wordUnknowns: words,
-  //     sentenceUnknowns: [],
-  //     bookId: this.book.meta.id,
-  //     chapterId: this.currentChapter.id,
-  //   };
-  //   this.rootStore!.logStore.send(payload).catch(e => {this.rootStore!.alertStore.add(e.message, 1000)}).then(resp => console.log('sent'));
+    const contents = this.sentences
+      .filter(x => x.kind === "sentence")
+      .filter(x => sids.includes(x.id))
+      .map(x => (x as Sentence).content);
+
+    this.gameStore.logPaginate(this.targetWords, contents, sids, time, words);
+  }
+
+  destroy() {
+    this.gameStore.onCancelLastWordDetail.off(this.onCancel);
   }
 }
 
