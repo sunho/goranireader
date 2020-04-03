@@ -5,7 +5,9 @@ import * as os from 'os';
 import mkdirp = require('mkdirp-promise');
 import { readFileSync, writeFileSync } from 'fs';
 
+
 const getPublicUrl = (bucketName: string, fileName: string) => `https://storage.googleapis.com/${bucketName}/${fileName}`;
+
 
 export default functions.region('asia-northeast1').storage.object().onFinalize(async (object) => {
     const filePath = object.name;

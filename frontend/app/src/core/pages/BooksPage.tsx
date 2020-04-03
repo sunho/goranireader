@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { IonApp, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel, IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonVirtualScroll, IonList, IonCard, IonCardTitle, IonItem, IonGrid, IonRow, IonCol, IonText } from "@ionic/react";
+import { IonApp, IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel, IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonVirtualScroll, IonList, IonCard, IonCardTitle, IonItem, IonGrid, IonRow, IonCol, IonText, IonButton } from "@ionic/react";
 import { storeContext } from '../stores/Context';
 import { useObserver } from 'mobx-react';
 import { Book } from '../models';
@@ -12,7 +12,7 @@ const Text = styled(IonText)`
 `;
 
 const BooksPage = ({history}) => {
-  const { bookStore } = useContext(storeContext);
+  const { bookStore, userStore } = useContext(storeContext)!;
   const click = (book: Book) => {
     if (!bookStore.downloaded.has(book.id)) {
       bookStore.download(book).then(() => {bookStore.refresh().catch(() => {})});
@@ -20,9 +20,30 @@ const BooksPage = ({history}) => {
       history.push('/reader/'+book.id);
     }
   };
+
+  let gotoGame: any = undefined;
+  if (userStore.user.review) {
+    if (userStore.user.review.end > (userStore.user.lastReviewEnd || 0)) {
+      gotoGame = (
+        <>
+          <IonRow>
+            <Text>
+              <h3>
+                Review Game Available
+              </h3>
+            </Text>
+          </IonRow>
+          <IonRow>
+            <IonButton href="/game">GO</IonButton>
+          </IonRow>
+        </>
+      );
+    }
+  }
   return useObserver(() => (
     <Layout>
       <IonGrid>
+        {gotoGame}
         <IonRow>
           <Text>
             <h3>

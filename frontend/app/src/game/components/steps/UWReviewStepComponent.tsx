@@ -14,10 +14,7 @@ const PickWords: React.FC<{store?: UWReviewStore}> = props => {
   useEffect(() => {
     gameStore.pushDialog([
       {
-        msg: "이번에 보이는 단어들은 옛날에 너가 봤던 단어들이야"
-      },
-      {
-        msg: "모르는 단어가 있으면 죄다 누르고 아래 Next를 눌러"
+        msg: "이번에 보이는 단어들은 옛날에 너가 봤던 단어들이야. \n 모르는 단어가 있으면 죄다 누르고 아래 Next를 눌러"
       },
     ]);
 
@@ -53,7 +50,7 @@ const PickWords: React.FC<{store?: UWReviewStore}> = props => {
   }, []);
 
   return (
-    <WordsCloud words={words} onSelect={(word, rect) => {
+    <WordsCloud getVisibleWord={() => {}} words={words} onSelect={(word, rect) => {
       addWord(word);
     }}/>
   );
@@ -92,10 +89,9 @@ const ReadText: React.FC<{store?: UWReviewStore}> = props => {
         gameStore.gotoSubstep(0);
       }
     });
-
   }, []);
   return (
-    <SmallReader sentences={text!.content}/>
+    <SmallReader targetWords={[]} sentences={text!.content}/>
   );
 };
 

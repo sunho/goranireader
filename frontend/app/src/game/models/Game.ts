@@ -1,7 +1,9 @@
 import { Sentence, Item } from "../../core/models";
 export interface Review {
-  time: string;
-  stats: Stats;
+  id: string;
+  start: number;
+  end: number;
+  stats?: Stats;
   lastWords: LastWord[];
   targetLastWords: number;
   unfamiliarWords: UnfamiliarWord[];
@@ -17,20 +19,26 @@ export interface Progress {
 }
 
 export function generateProgress(review: Review): Progress {
+  const steps: Step[] = [];
+  if (review.stats) {
+    steps.push({
+      kind: StepKind.StatsReview
+    })
+  }
+  if (review.lastWords.length !== 0) {
+    steps.push({
+      kind: StepKind.LWReview,
+    });
+  }
+  if (review.unfamiliarWords.length !== 0) {
+    steps.push({
+      kind: StepKind.UWReview,
+    });
+  }
   return {
     step: 0,
     review: review,
-    steps: [
-      {
-        kind: StepKind.LWReview,
-      },
-      {
-        kind: StepKind.UWReview,
-      },
-      {
-        kind: StepKind.StatsReview
-      },
-    ],
+    steps: steps,
     savedata: {}
   }
 }
@@ -75,8 +83,7 @@ interface Datapoint {
 
 export interface LastWord {
   word: string;
-  sid: string;
-  sentences: Sentence[];
+  items: Item[];
 }
 
 export interface Text {

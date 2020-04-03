@@ -37,6 +37,7 @@ class BookReaderStore implements ReaderStore {
           .then(() => {});
       }
     );
+
   }
 
   @computed get sentences() {
@@ -90,7 +91,11 @@ class BookReaderStore implements ReaderStore {
       bookId: this.book.meta.id,
       chapterId: this.currentChapter.id,
     };
-    this.rootStore!.logStore.send(payload).catch(e => {this.rootStore!.alertStore.add(e.message, 1000)}).then(resp => console.log('sent'));
+    this.rootStore!.logStore.sendSync(payload)
+  }
+
+  destroy() {
+
   }
 }
 
