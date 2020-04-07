@@ -1,0 +1,96 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+# general visualisation
+library('ggplot2') # visualisation
+library('scales') # visualisation
+library('patchwork') # visualisation
+library('RColorBrewer') # visualisation
+library('corrplot') # visualisation
+
+# general data manipulation
+library('dplyr') # data manipulation
+library('readr') # input/output
+library('vroom') # input/output
+library('skimr') # overview
+library('tibble') # data wrangling
+library('tidyr') # data wrangling
+library('purrr') # data wrangling
+library('stringr') # string manipulation
+library('forcats') # factor manipulation
+
+# specific visualisation
+library('alluvial') # visualisation
+library('ggrepel') # visualisation
+library('ggforce') # visualisation
+library('ggridges') # visualisation
+library('gganimate') # animations
+library('GGally') # visualisation
+library('ggthemes') # visualisation
+library('wesanderson') # visualisation
+library('kableExtra') # display
+
+# Date + forecast
+library('lubridate') # date and time
+library('forecast') # time series analysis
+library('prophet') # time series analysis
+library('timetk') # time series analysis
+
+# Interactivity
+library('crosstalk')
+library('plotly')
+
+# parallel
+library('foreach')
+library('doParallel')
+library('SnowballC')
+```
+
+```{r}
+library(reshape2)
+library(stringr)
+words <- vroom(str_c('ebs words.csv'), delim = ",", col_types = cols())
+words <- words %>% 
+  lapply(gsub, pattern='[^A-Za-z \\-]+', replacement='') %>% 
+  melt() %>% 
+  select(value) %>% 
+  drop_na() %>% 
+  mutate(value=str_squish(trimws(value))) %>% 
+  filter(value != '') %>% 
+  rename(word=value) %>% 
+  mutate(word = strsplit(as.character(word), " ")) %>% 
+  unnest(word) %>% 
+  distinct(word)
+write.csv(words, 'cleaned_ebs_words.csv', row.names = FALSE, quote = FALSE)
+```
+
+```{r}
+words2 <- vroom(str_c('cleaned_ebs_words.csv'), delim = ",", col_types = cols())
+```
+
+```{r}
+words
+```
+
+```{r}
+
+words <- words %>%
+  mutate(word = wordStem(word, language = "porter"))
+
+signals <- signals %>%
+  mutate(word = wordStem(word, language = "porter"))
+
+df2 <- signals %>% select(userId, word, signal, time) %>% distinct(userId, word, .keep_all = TRUE)
+
+userId <- signals %>% distinct(userId)
+
+df <- merge(userId, words, all=TRUE)
+df %>%
+  left_join(df2, by=c("word", "userId")) %>%
+  group_by(userId) %>%
+  summarise(perc = mean(!is.na(time))) %>%
+  ungroup()
+
+```

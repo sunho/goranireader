@@ -23,16 +23,16 @@ export function generateProgress(review: Review): Progress {
   if (review.stats) {
     steps.push({
       kind: StepKind.StatsReview
-    })
+    });
   }
   if (review.lastWords.length !== 0) {
     steps.push({
-      kind: StepKind.LWReview,
+      kind: StepKind.LWReview
     });
   }
   if (review.unfamiliarWords.length !== 0) {
     steps.push({
-      kind: StepKind.UWReview,
+      kind: StepKind.UWReview
     });
   }
   return {
@@ -40,7 +40,7 @@ export function generateProgress(review: Review): Progress {
     review: review,
     steps: steps,
     savedata: {}
-  }
+  };
 }
 
 export type Step = StatsReviewStep | LWReviewStep | UWReviewStep;
@@ -51,15 +51,15 @@ export interface GameStep {
 }
 
 export interface StatsReviewStep {
-  kind: StepKind.StatsReview,
+  kind: StepKind.StatsReview;
 }
 
 export interface LWReviewStep {
-  kind: StepKind.LWReview,
+  kind: StepKind.LWReview;
 }
 
 export interface UWReviewStep {
-  kind: StepKind.UWReview,
+  kind: StepKind.UWReview;
 }
 
 export enum StepKind {

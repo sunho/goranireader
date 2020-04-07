@@ -1,21 +1,21 @@
-import React from 'react';
+import React from "react";
 import app from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
 import "firebase/firestore";
-import {autobind} from "core-decorators";
-import { action, observable, autorun } from 'mobx';
-import { User } from '../models';
+import { autobind } from "core-decorators";
+import { action, observable, autorun } from "mobx";
+import { User } from "../models";
 
 const config = {
-    apiKey: "AIzaSyDPdHYw3Q5_3oZz-vW6Km57JevsMO9AKyw",
-    authDomain: "gorani-reader-249509.firebaseapp.com",
-    databaseURL: "https://gorani-reader-249509.firebaseio.com",
-    projectId: "gorani-reader-249509",
-    storageBucket: "gorani-reader-249509.appspot.com",
-    messagingSenderId: "119282460172",
-    appId: "1:119282460172:web:961b939ab3a6544fd07029",
-    measurementId: "G-KH251583QK"
+  apiKey: "AIzaSyDPdHYw3Q5_3oZz-vW6Km57JevsMO9AKyw",
+  authDomain: "gorani-reader-249509.firebaseapp.com",
+  databaseURL: "https://gorani-reader-249509.firebaseio.com",
+  projectId: "gorani-reader-249509",
+  storageBucket: "gorani-reader-249509.appspot.com",
+  messagingSenderId: "119282460172",
+  appId: "1:119282460172:web:961b939ab3a6544fd07029",
+  measurementId: "G-KH251583QK"
 };
 
 @autobind
@@ -50,6 +50,6 @@ class FirebaseService {
   users() {
     return this.db.collection("users");
   }
-};
+}
 
 export default FirebaseService;

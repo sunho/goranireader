@@ -1,5 +1,5 @@
 import { observable, action } from "mobx";
-import RootStore from './RootStore';
+import RootStore from "./RootStore";
 import { User } from "../models";
 import FirebaseService from "./FirebaseService";
 import { autobind } from "core-decorators";
@@ -21,7 +21,11 @@ class AlertStore {
   }
 
   add(msg: string, duration: number) {
-    this.msgs.unshift({id: (this.i+1).toString(), msg: msg, duration: duration });
+    this.msgs.unshift({
+      id: (this.i + 1).toString(),
+      msg: msg,
+      duration: duration
+    });
     this.i++;
   }
 

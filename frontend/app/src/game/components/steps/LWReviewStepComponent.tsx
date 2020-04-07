@@ -24,9 +24,18 @@ const Initial: React.FC<{store?: LWReviewStore}> = props => {
     if (store.shouldComplete()) {
       gameStore.nextStep();
     }
+
+    if (store.canComplete()) {
+      gameStore.setComplete(() => {
+        store.logComplete();
+        gameStore.nextStep();
+      });
+    }
+
     if (store.canGiveup()) {
       gameStore.setGiveup(() => {
         store.logGiveup();
+        gameStore.nextStep();
       });
     }
 

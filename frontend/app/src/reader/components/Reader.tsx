@@ -1,13 +1,25 @@
-import React, { useState, useEffect, useRef, MutableRefObject, useContext, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  MutableRefObject,
+  useContext,
+  useCallback
+} from "react";
 import styled, { css } from "styled-components";
 import "./Reader.css";
-import { isPlatform, IonProgressBar, IonContent, IonSpinner } from "@ionic/react";
+import {
+  isPlatform,
+  IonProgressBar,
+  IonContent,
+  IonSpinner
+} from "@ionic/react";
 import { reaction, untracked } from "mobx";
 import Page from "./Page";
 import { useObserver } from "mobx-react";
-import Swiper from 'react-id-swiper';
-import 'swiper/css/swiper.css';
-import { useWindowSize } from '../../core/utils/hooks';
+import Swiper from "react-id-swiper";
+import "swiper/css/swiper.css";
+import { useWindowSize } from "../../core/utils/hooks";
 import { ReaderContext } from "../stores/ReaderRootStore";
 import Dict from "./Dict";
 
@@ -16,8 +28,7 @@ const Main = styled.div<{ font: number }>`
   font-size: ${props => props.font}px;
 `;
 
-
-const Cover = styled.div<{ enabled: Boolean; }>`
+const Cover = styled.div<{ enabled: Boolean }>`
   width: 100%;
   height: 100%;
   z-index: 2;
@@ -25,22 +36,24 @@ const Cover = styled.div<{ enabled: Boolean; }>`
   background: var(--ion-background-color);
   cursor: pointer;
   display: block;
-  ${props => ((props.enabled) && css`
-    display: none;
-  `)}
+  ${props =>
+    props.enabled &&
+    css`
+      display: none;
+    `}
 `;
 
 interface Props {
   hightlightWord?: string[];
 }
 
-const Reader: React.FC<Props> = (props) => {
+const Reader: React.FC<Props> = props => {
   const readerRootStore = useContext(ReaderContext);
   const { readerStore, readerUIStore } = readerRootStore!;
   const { dividePositions } = readerUIStore;
   const pageRefs: any = useRef([]);
   const swipeRef: MutableRefObject<any | null> = useRef(null);
-  const readingSentence = untracked(()=>(readerStore.currentSentenceId));
+  const readingSentence = untracked(() => readerStore.currentSentenceId);
   useEffect(() => {
     if (swipeRef.current?.$el) {
       swipeRef.current.update();
@@ -59,7 +72,9 @@ const Reader: React.FC<Props> = (props) => {
       const childBounds = childNode.getBoundingClientRect()!;
       const offset = childBounds.bottom - pageTop + 20;
       if (offset >= parentHeight) {
-        pageTop = (lastItem.children[i - 1] || lastItem.children[i]).getBoundingClientRect().bottom;
+        pageTop = (
+          lastItem.children[i - 1] || lastItem.children[i]
+        ).getBoundingClientRect().bottom;
         cutPos[currentPage] = i;
         currentPage += 1;
       }
@@ -110,16 +125,21 @@ const Reader: React.FC<Props> = (props) => {
           setTimeout(readerUIStore.nextSection, 0.1);
         }
       } else {
-        untracked(()=>{readerUIStore.changePage(swipeRef.current.activeIndex - 1)});
+        untracked(() => {
+          readerUIStore.changePage(swipeRef.current.activeIndex - 1);
+        });
       }
     };
 
     if (swipeRef.current?.$el && readerUIStore.cutted.get()) {
-      swipeRef.current.slideTo(readerUIStore.getPageBySentenceId(readingSentence) + 1, 0);
+      swipeRef.current.slideTo(
+        readerUIStore.getPageBySentenceId(readingSentence) + 1,
+        0
+      );
       swipeRef.current.on("slideChange", handler);
       return () => {
         swipeRef.current.off("slideChange", handler);
-      }
+      };
     }
   });
 
@@ -129,31 +149,36 @@ const Reader: React.FC<Props> = (props) => {
     rerender();
   });
 
-  useEffect(reaction(() => readerUIStore.fontSize, () =>{
-    readerUIStore.clearDivision();
-    rerender();
-  }),[]);
+  useEffect(
+    reaction(
+      () => readerUIStore.fontSize,
+      () => {
+        readerUIStore.clearDivision();
+        rerender();
+      }
+    ),
+    []
+  );
 
-
-  const navigation = isPlatform('desktop') ?
-    {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev'
-    } : {};
+  const navigation = isPlatform("desktop")
+    ? {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev"
+      }
+    : {};
 
   const params = {
-
     navigation: navigation,
-    allowTouchMove: !isPlatform('desktop'),
+    allowTouchMove: !isPlatform("desktop"),
     preventInteractionOnTransition: true,
-    spaceBetween: 30,
-  }
+    spaceBetween: 30
+  };
 
   const pages = Array(dividePositions.length + 1)
     .fill(1)
     .map((_: any, i: number) => (
       <Page
-        hightlightWord = {props.hightlightWord}
+        hightlightWord={props.hightlightWord}
         key={i}
         ref={node => {
           pageRefs.current[i] = node;
@@ -166,15 +191,23 @@ const Reader: React.FC<Props> = (props) => {
     const loaded = readerUIStore.loaded.get();
     const cutted = readerUIStore.cutted.get();
     return (
-    <Main font={readerUIStore.fontSize}>
-      <Dict/>
-      <Cover enabled={(loaded && cutted)}>
-        <IonSpinner name="crescent"/>
-      </Cover>
-      <Swiper key={readerUIStore.dividePositions.length} {...params} getSwiper={(node) => {swipeRef.current = node}}>
-        {([<div key="start"></div>].concat(pages).concat([<div key="end"></div>]))}
-      </Swiper>
-    </Main>
+      <Main font={readerUIStore.fontSize}>
+        <Dict />
+        <Cover enabled={loaded && cutted}>
+          <IonSpinner name="crescent" />
+        </Cover>
+        <Swiper
+          key={readerUIStore.dividePositions.length}
+          {...params}
+          getSwiper={node => {
+            swipeRef.current = node;
+          }}
+        >
+          {[<div key="start"></div>]
+            .concat(pages)
+            .concat([<div key="end"></div>])}
+        </Swiper>
+      </Main>
     );
   });
 };

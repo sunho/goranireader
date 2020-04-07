@@ -1,12 +1,13 @@
 from gorani.utils import split_sentence, unnesting
-from metaflow import FlowSpec, step, Flow
+from metaflow import FlowSpec, step, Flow, IncludeFile, conda_base, batch
 import pandas as pd
 import json
 import typing
 import numpy as np
 from gorani.booky import Book
-from pandas import DataFrame
+from send import log_msg
 import pandera as pa
+from nltk import pos_tag
 
 ExpandPagesOutput = pages_df=pa.DataFrameSchema({
     "time": pa.Column(pa.String),
@@ -14,7 +15,7 @@ ExpandPagesOutput = pages_df=pa.DataFrameSchema({
     "eltime": pa.Column(pa.Int),
     "bookId": pa.Column(pa.String),
     "text": pa.Column(pa.Object),
-}, strict = True)
+}, strict=True)
 
 MergeFilterPagesOutput = pa.DataFrameSchema({
     "time": pa.Column(pa.Int),
@@ -23,10 +24,11 @@ MergeFilterPagesOutput = pa.DataFrameSchema({
     "wpm": pa.Column(pa.Float),
     "bookId": pa.Column(pa.String),
     "sids": pa.Column(pa.Object),
+    "pos": pa.Column(pa.Object),
     "words": pa.Column(pa.Object),
     "unknownWords": pa.Column(pa.Object),
     "unknownIndices": pa.Column(pa.Object)
-}, strict = True)
+}, strict=True)
 
 PagesDataFrame = pa.DataFrameSchema({
     "i": pa.Column(pa.Int),
@@ -37,11 +39,12 @@ PagesDataFrame = pa.DataFrameSchema({
     "bookId": pa.Column(pa.String),
     "sids": pa.Column(pa.Object),
     "words": pa.Column(pa.Object),
+    "pos": pa.Column(pa.Object),
     "unknownWords": pa.Column(pa.Object),
     "unknownIndices": pa.Column(pa.Object),
     "session": pa.Column(pa.Int),
     "cheat": pa.Column(pa.Bool),
-}, strict = True)
+}, strict=True)
 
 SignalDataFrame = pa.DataFrameSchema({
     "i": pa.Column(pa.Int),
@@ -50,10 +53,11 @@ SignalDataFrame = pa.DataFrameSchema({
     "userId": pa.Column(pa.String),
     "session": pa.Column(pa.Int),
     "cheat": pa.Column(pa.Bool),
+    "pos": pa.Column(pa.String),
     "time": pa.Column(pa.Int),
     "eltime": pa.Column(pa.Float),
     "wpm": pa.Column(pa.Float)
-}, strict = True)
+}, strict=True)
 
 CleanPagesDataFrame = pa.DataFrameSchema({
     "i": pa.Column(pa.Int),
@@ -68,7 +72,7 @@ CleanPagesDataFrame = pa.DataFrameSchema({
     "unknownWords": pa.Column(pa.Object),
     "session": pa.Column(pa.Int),
     "cheat": pa.Column(pa.Bool),
-}, strict = True)
+}, strict=True)
 
 SessionInfoDataFrame = pa.DataFrameSchema({
     "userId": pa.Column(pa.String),
@@ -79,10 +83,15 @@ SessionInfoDataFrame = pa.DataFrameSchema({
     "readWords": pa.Column(pa.Int),
     "unknownWords": pa.Column(pa.Int),
     "hours": pa.Column(pa.Float),
-}, strict = True)
+}, strict=True)
 
+@conda_base(libraries= {
+    'boto3': '1.12',
+    'gorani': '1.0.5',
+    'pandera': '0.3.2',
+    'rsa': '4.0'
+})
 class PreprocessPaginate(FlowSpec):
-    books: typing.Dict[str, Book]
     @step
     def start(self):
         flow = Flow('DownloadLog').latest_successful_run
@@ -133,10 +142,13 @@ class PreprocessPaginate(FlowSpec):
         words = []
         unknown_indices = []
         unknown_words = []
+        poss = []
         for sid in sids:
             sentence = self.books[book_id].get_sentence(sid) or ""
             tmp = split_sentence(sentence)
-            words.extend(split_sentence(sentence))
+            pos = [x[1] for x in pos_tag(tmp)]
+            poss.extend(pos)
+            words.extend(tmp)
             for wu in word_unknowns:
                 if wu['sentenceId'] == sid:
                     wi = wu['wordIndex']
@@ -144,7 +156,7 @@ class PreprocessPaginate(FlowSpec):
                         raise Exception(sentence + ' ' + sid + ' word mismatch: ' + tmp[wi] + ',' + wu['word'])
                     unknown_indices.append(wi)
                     unknown_words.append(tmp[wi])
-        return [{'words': words, 'unknownIndices': unknown_indices, 'unknownWords': unknown_words, 'sids': sids}]
+        return [{'words': words, 'pos': poss, 'unknownIndices': unknown_indices, 'unknownWords': unknown_words, 'sids': sids}]
 
     @step
     def merge_filter_pages_df(self):
@@ -152,6 +164,7 @@ class PreprocessPaginate(FlowSpec):
 
         def flatten_text(df):
             df['words'] = df['text'].map(lambda x: x['words'])
+            df['pos'] = df['text'].map(lambda x: x['pos'])
             df['unknownIndices'] = df['text'].map(lambda x: x['unknownIndices'])
             df['unknownWords'] = df['text'].map(lambda x: x['unknownWords'])
             df['unknownIndices'] = df['text'].map(lambda x: x['unknownIndices'])
@@ -186,6 +199,7 @@ class PreprocessPaginate(FlowSpec):
                 uwords = rows['unknownWords'].iloc[i]
                 bookId = rows['bookId'].iloc[i]
                 sids = rows['sids'].iloc[i]
+                pos = rows['pos'].iloc[i]
 
                 if last_time == 0:
                     last_time = time
@@ -194,6 +208,7 @@ class PreprocessPaginate(FlowSpec):
                     words_ = words
                     uis_ = uis
                     sids_ = sids
+                    pos_ = pos
                     uwords_ = uwords
                     bookId_ = bookId
                 else:
@@ -203,11 +218,11 @@ class PreprocessPaginate(FlowSpec):
 
                 if time - last_time >= cluster_threshold * 60:
                     out.append(
-                        {'time': time_, 'eltime': eltime_, 'bookId': bookId_, 'unknownIndices': uis_, 'sids': sids_,
+                        {'time': time_, 'pos': pos_, 'eltime': eltime_, 'bookId': bookId_, 'unknownIndices': uis_, 'sids': sids_,
                          'unknownWords': uwords_, 'words': words_, })
                     last_time = 0
             if last_time != 0:
-                out.append({'time': time_, 'eltime': eltime_, 'bookId': bookId_, 'unknownIndices': uis_,
+                out.append({'time': time_, 'pos': pos_, 'eltime': eltime_, 'bookId': bookId_, 'unknownIndices': uis_,
                             'unknownWords': uwords_, 'words': words_, 'sids': sids_})
             return pd.DataFrame(out).reset_index(drop=True)
         pages_df = pages_df\
@@ -266,7 +281,7 @@ class PreprocessPaginate(FlowSpec):
         def to_word(x):
             words = []
             for i in range(len(x['words'])):
-                word = x['words'][i].lower()
+                word = x['words'][i]
                 words.append(word)
             return words
 
@@ -278,11 +293,26 @@ class PreprocessPaginate(FlowSpec):
                 signal = 0 if word in unknown_words else 1
                 signals.append(signal)
             return signals
+
+        def to_pos(x):
+            poss = []
+            for i in range(len(x['pos'])):
+                pos = x['pos'][i]
+                poss.append(pos)
+            return poss
         pages_df['word'] = pages_df.apply(to_word, axis=1)
         pages_df['signal'] = pages_df.apply(to_signal, axis=1)
-        pages_df = unnesting(pages_df[['userId', 'cheat', 'session', 'time', 'eltime', 'wpm', 'i', 'word', 'signal']],
-                       ['word', 'signal'], axis=1)
+        pages_df['pos'] = pages_df.apply(to_pos, axis=1)
+        pages_df = unnesting(pages_df[['userId', 'cheat', 'session', 'pos', 'time', 'eltime', 'wpm', 'i', 'word', 'signal']],
+                       ['word', 'pos', 'signal'], axis=1)
+        pages_df = pages_df.reset_index(drop=True)
         self.signals_df = SignalDataFrame.validate(pages_df)
+        df = pages_df.copy()
+        df = df.loc[(df['signal'] == 0).groupby([df['userId'], df['word']]).transform('any')]
+        from nltk.corpus import stopwords
+        words = list(stopwords.words('english'))
+        clean_signals_df = df.loc[~df['word'].isin(words)]
+        self.clean_signals_df = SignalDataFrame.validate(clean_signals_df)
         self.next(self.make_clean_pages_df)
 
     @step
@@ -302,7 +332,7 @@ class PreprocessPaginate(FlowSpec):
 
         pages_df['words'] = pages_df['words'].map(clean_words)
         pages_df['unknownWords'] = pages_df['unknownWords'].map(clean_words)
-
+        del pages_df['pos']
         def extract_known_words(words, unknown_words):
             unknown_words = pd.Series(unknown_words)
             words = pd.Series(words)
@@ -345,7 +375,7 @@ class PreprocessPaginate(FlowSpec):
         self.next(self.end)
     @step
     def end(self):
-        print('processed: %d' % self.signals_df.size)
+        log_msg('./preprocess_paginate.py', 'processed: %d' % self.signals_df.size, False)
 
 if __name__ == '__main__':
     PreprocessPaginate()

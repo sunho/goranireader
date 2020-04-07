@@ -1,8 +1,10 @@
+import functools
 from datetime import timedelta, tzinfo
 from dateutil.parser import parse
 import datetime
 import time
 import numpy as np
+import calendar
 
 ZERO = timedelta(0)
 
@@ -41,7 +43,7 @@ def to_timestamp(x):
     return int(time.mktime(x.timetuple()))
 
 def parse_ts(s):
-    return to_timestamp(parse(str(s)))
+    return calendar.timegm(parse(str(s)).utctimetuple())
 
 def parse_date(s):
     return datetime.datetime.fromtimestamp(s).strftime('%m/%d')
@@ -75,3 +77,19 @@ def unnesting(df, explode, axis=1):
         df1 = pd.concat([
                          pd.DataFrame(df[x].tolist(), index=df.index).add_prefix(x) for x in explode], axis=1)
         return df1.join(df.drop(explode, 1), how='left')
+
+def pip(libraries):
+    def decorator(function):
+        @functools.wraps(function)
+        def wrapper(*args, **kwargs):
+            import subprocess
+            import sys
+
+            for library, version in libraries.items():
+                print('Pip Install:', library, version)
+                subprocess.run([sys.executable, '-m', 'pip', 'install', '--quiet', library + '==' + version])
+            return function(*args, **kwargs)
+
+        return wrapper
+
+    return decorator

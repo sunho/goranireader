@@ -64,7 +64,7 @@ class LWReviewStore extends BaseStepStore {
   finalize(words: string[], selectedWords: string[]) {
     this.logNext(words, selectedWords);
     this.previousWords = this.previousWords.concat(words);
-    this.completedWords += selectedWords.length;
+    this.completedWords += words.length;
     const out = this.shouldComplete();
     if (out) {
       this.logComplete();
@@ -90,7 +90,7 @@ class LWReviewStore extends BaseStepStore {
     return this.targetLastWords >= 1;
   }
 
-  private logComplete() {
+  logComplete() {
     const payload: LogLWReviewCompletePayload = {
       type: 'last-words-review-complete',
       reviewId: this.review.id,
