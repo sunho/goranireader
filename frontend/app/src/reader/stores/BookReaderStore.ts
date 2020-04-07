@@ -1,5 +1,5 @@
 import { observable, action, computed, reaction } from "mobx";
-import RootStore from '../../core/stores/RootStore';
+import RootStore from "../../core/stores/RootStore";
 import { User, BookyBook, Book } from "../../core/models";
 import FirebaseService from "../../core/stores/FirebaseService";
 import { autobind } from "core-decorators";
@@ -17,7 +17,7 @@ class BookReaderStore implements ReaderStore {
   rootStore: RootStore | null = null;
   book: BookyBook;
   readerRootStore: ReaderRootStore | null = null;
-  @observable location: Location = {sentenceId: '', chapterId: ''};
+  @observable location: Location = { sentenceId: "", chapterId: "" };
 
   constructor(book: BookyBook) {
     this.book = book;
@@ -28,16 +28,22 @@ class BookReaderStore implements ReaderStore {
     this.rootStore = readerRootStore.rootStore;
     this.location = this.rootStore.userStore.getLocation(this.book.meta.id);
     reaction(
-      () => ({sentenceId: this.location.sentenceId, chapterId: this.location.chapterId}),
-      (res) => {
-        const {sentenceId, chapterId} = res;
-        this.rootStore!.userStore
-          .saveLocation(this.book.meta.id, {sentenceId, chapterId})
-          .catch((e: any) => {this.rootStore!.alertStore.add(e.meesage, 1000)})
+      () => ({
+        sentenceId: this.location.sentenceId,
+        chapterId: this.location.chapterId
+      }),
+      res => {
+        const { sentenceId, chapterId } = res;
+        this.rootStore!.userStore.saveLocation(this.book.meta.id, {
+          sentenceId,
+          chapterId
+        })
+          .catch((e: any) => {
+            this.rootStore!.alertStore.add(e.meesage, 1000);
+          })
           .then(() => {});
       }
     );
-
   }
 
   @computed get sentences() {
@@ -47,7 +53,9 @@ class BookReaderStore implements ReaderStore {
     return this.book.chapters[this.currentChapterIndex];
   }
   @computed get currentChapterIndex() {
-    const out = this.book.chapters.findIndex(x => x.id === this.location.chapterId);
+    const out = this.book.chapters.findIndex(
+      x => x.id === this.location.chapterId
+    );
     return out === -1 ? 0 : out;
   }
 
@@ -56,11 +64,11 @@ class BookReaderStore implements ReaderStore {
   }
 
   @computed get atEnd() {
-    return this.currentChapterIndex ===  this.book.chapters.length -1;
+    return this.currentChapterIndex === this.book.chapters.length - 1;
   }
 
   @action nextSection() {
-    if (this.currentChapterIndex  == this.book.chapters.length -1) return;
+    if (this.currentChapterIndex == this.book.chapters.length - 1) return;
     const newChapter = this.book.chapters[this.currentChapterIndex + 1];
     this.location.chapterId = newChapter.id;
     this.location.sentenceId = newChapter.items[0].id;
@@ -83,20 +91,18 @@ class BookReaderStore implements ReaderStore {
 
   @action paginate(sids: string[], time: number, words: PaginateWordUnknown[]) {
     const payload: LogPaginatePayload = {
-      type: 'paginate',
+      type: "paginate",
       sids: sids,
       time,
       wordUnknowns: words,
       sentenceUnknowns: [],
       bookId: this.book.meta.id,
-      chapterId: this.currentChapter.id,
+      chapterId: this.currentChapter.id
     };
-    this.rootStore!.logStore.sendSync(payload)
+    this.rootStore!.logStore.sendSync(payload);
   }
 
-  destroy() {
-
-  }
+  destroy() {}
 }
 
 export default BookReaderStore;

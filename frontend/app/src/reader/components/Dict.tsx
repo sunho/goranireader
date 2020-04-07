@@ -3,8 +3,18 @@ import { SelectedWord, DictSearchResult, DictWord } from "../../core/models";
 import styled, { css } from "styled-components";
 import { useOutsideClickObserver } from "../../core/utils/hooks";
 import { instanceOf } from "prop-types";
-import { IonCard, IonCardContent, IonList, IonItem, IonLabel, IonRow, IonCol, IonButton, IonIcon } from "@ionic/react";
-import { caretForwardOutline, caretBackOutline } from 'ionicons/icons';
+import {
+  IonCard,
+  IonCardContent,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonRow,
+  IonCol,
+  IonButton,
+  IonIcon
+} from "@ionic/react";
+import { caretForwardOutline, caretBackOutline } from "ionicons/icons";
 import { ReaderContext } from "../stores/ReaderRootStore";
 import DictResultList from "./DictResultList";
 import { autorun } from "mobx";
@@ -15,15 +25,14 @@ const Cover = styled.div`
   left: 0;
   top: 0;
   right: 0;
-  bottom :0;
+  bottom: 0;
   z-index: 54;
   display: flex;
   justify-content: center;
 `;
 
-
 const Container = styled.div<{ up: boolean; hide: boolean }>`
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
   position: absolute;
   ${props =>
@@ -63,12 +72,13 @@ const Dict: React.FC = () => {
 
   useEffect(
     () =>
-    autorun(() => {
-      if (readerUIStore.selectedWord) {
-        setRes(dictService.find(readerUIStore.selectedWord.word));
-      }
-    }
- ),[]);
+      autorun(() => {
+        if (readerUIStore.selectedWord) {
+          setRes(dictService.find(readerUIStore.selectedWord.word));
+        }
+      }),
+    []
+  );
 
   useOutsideClickObserver(dictRef, () => {
     readerUIStore.selectedWord = undefined;
@@ -77,16 +87,19 @@ const Dict: React.FC = () => {
   const notFound = <div>Not found</div>;
   return useObserver(() => (
     <>
-    {
-      readerUIStore.selectedWord &&
-      <Cover>
-        <Container hide={!res} ref={node => (dictRef.current = node)} up={readerUIStore.selectedWord.up}>
-          <Card>
-            {res.length !== 0 ? <DictResultList res={res}/> : notFound}
-          </Card>
-        </Container>
-      </Cover>
-      }
+      {readerUIStore.selectedWord && (
+        <Cover>
+          <Container
+            hide={!res}
+            ref={node => (dictRef.current = node)}
+            up={readerUIStore.selectedWord.up}
+          >
+            <Card>
+              {res.length !== 0 ? <DictResultList res={res} /> : notFound}
+            </Card>
+          </Container>
+        </Cover>
+      )}
     </>
   ));
 };

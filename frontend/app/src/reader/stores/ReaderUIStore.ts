@@ -1,5 +1,5 @@
 import { observable, action, computed, reaction } from "mobx";
-import RootStore from '../../core/stores/RootStore';
+import RootStore from "../../core/stores/RootStore";
 import { User, BookyBook, Book, SelectedWord } from "../../core/models";
 import FirebaseService from "../../core/stores/FirebaseService";
 import { LiteEvent } from "../../core/utils/event";
@@ -38,17 +38,20 @@ class ReaderUIStore {
     this.rootStore = readerRootStore.rootStore;
     this.readerStore = readerRootStore.readerStore;
     this.startTimer();
-    window.addEventListener('focus', this.startTimer.bind(this));
-    window.addEventListener('blur', this.stopTimer.bind(this));
-    reaction(() => this.cutted, cutted => {
-      if (cutted.get()) {
-        this.currentTime = 0;
+    window.addEventListener("focus", this.startTimer.bind(this));
+    window.addEventListener("blur", this.stopTimer.bind(this));
+    reaction(
+      () => this.cutted,
+      cutted => {
+        if (cutted.get()) {
+          this.currentTime = 0;
+        }
       }
-    });
+    );
   }
 
   timerHandler() {
-    this.currentTime+=100;
+    this.currentTime += 100;
   }
 
   startTimer() {
@@ -56,12 +59,12 @@ class ReaderUIStore {
       this.stopTimer();
     }
     this.timer = window.setInterval(this.timerHandler, 100);
-   }
+  }
 
   stopTimer() {
     window.clearInterval(this.timer);
     this.timer = -1;
-   }
+  }
 
   getPageBySentenceId(id: string) {
     return this.idToPage.get(id) || 0;
@@ -69,7 +72,9 @@ class ReaderUIStore {
 
   getPageSentences(page: number) {
     if (page === this.dividePositions.length) {
-      return this.readerStore.sentences.slice(this.dividePositions[page - 1] || 0);
+      return this.readerStore.sentences.slice(
+        this.dividePositions[page - 1] || 0
+      );
     }
     return this.readerStore.sentences.slice(
       this.dividePositions[page - 1] || 0,
@@ -82,7 +87,7 @@ class ReaderUIStore {
       word: word,
       wordIndex: i,
       sentenceId: sentenceId,
-      time: this.currentTime,
+      time: this.currentTime
     });
   }
 
@@ -104,14 +109,15 @@ class ReaderUIStore {
 
   @action changePage(page: number) {
     const sens = this.getPageSentences(page).map(x => x.id);
-    const old = this.getPageBySentenceId(this.readerStore.currentSentenceId) || 0;
+    const old =
+      this.getPageBySentenceId(this.readerStore.currentSentenceId) || 0;
     const neww = this.getPageBySentenceId(sens[0]) || 0;
     if (this.cutted.get()) {
       this.readerStore.setCurrentSentenceId(sens[0]);
       if (neww > old) {
         const sens = this.getPageSentences(old).map(x => x.id);
         this.paginate(sens);
-      } else if(neww < old) {
+      } else if (neww < old) {
         const sens = this.getPageSentences(old).map(x => x.id);
         this.paginate(sens);
       }
@@ -119,7 +125,9 @@ class ReaderUIStore {
   }
 
   @computed get currentPageSentences() {
-    return this.getPageSentences(this.getPageBySentenceId(this.readerStore.currentSentenceId))
+    return this.getPageSentences(
+      this.getPageBySentenceId(this.readerStore.currentSentenceId)
+    );
   }
 
   @computed get idToPage() {
@@ -147,7 +155,7 @@ class ReaderUIStore {
   }
 
   @action clearDivision() {
-    console.log('clearDivision');
+    console.log("clearDivision");
     this.cutted.set(false);
     this.loaded.set(false);
     this.dividePositions = [];

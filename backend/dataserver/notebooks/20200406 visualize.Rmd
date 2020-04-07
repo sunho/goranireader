@@ -1,0 +1,506 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    code_folding: hide
+    df_print: paged
+---
+
+```{r message=FALSE, warning=FALSE}
+# general visualisation
+library('ggplot2') # visualisation
+library('scales') # visualisation
+library('patchwork') # visualisation
+library('RColorBrewer') # visualisation
+library('corrplot') # visualisation
+
+# general data manipulation
+library('dplyr') # data manipulation
+library('readr') # input/output
+library('vroom') # input/output
+library('skimr') # overview
+library('tibble') # data wrangling
+library('tidyr') # data wrangling
+library('purrr') # data wrangling
+library('stringr') # string manipulation
+library('forcats') # factor manipulation
+
+# specific visualisation
+library('alluvial') # visualisation
+library('ggrepel') # visualisation
+library('ggforce') # visualisation
+library('ggridges') # visualisation
+library('gganimate') # animations
+library('GGally') # visualisation
+library('ggthemes') # visualisation
+library('wesanderson') # visualisation
+library('kableExtra') # display
+
+# Date + forecast
+library('lubridate') # date and time
+library('forecast') # time series analysis
+library('prophet') # time series analysis
+library('timetk') # time series analysis
+
+# Interactivity
+library('crosstalk')
+library('plotly')
+
+# parallel
+library('foreach')
+library('doParallel')
+library('SnowballC')
+
+get_binCI <- function(x,n) as.list(setNames(binom.test(x,n)$conf.int, c("lwr", "upr")))
+```
+
+```{r message=FALSE, warning=FALSE}
+
+library(mgcv)
+clean_pages <- vroom(str_c('clean_pages.csv'), delim = ",", col_types = cols())
+session_info <- vroom(str_c('sess.csv'), delim = ",", col_types = cols())
+signals <- vroom(str_c('signals.csv'), delim = ",", col_types = cols())
+clean_signals <- vroom(str_c('csignals.csv'), delim = ",", col_types = cols())
+```
+
+```{r warning=FALSE}
+set.seed(4321)
+
+clean_pages <- clean_pages %>%
+  select(userId, time)
+
+cols <- clean_pages %>% 
+  distinct(userId) %>% 
+  mutate(cols = rep_len(brewer.pal(7, "Set2"), length.out = n_distinct(clean_pages$userId)))
+
+ts_out <- clean_pages %>% 
+  left_join(cols, by = "userId") %>%
+  mutate(time = as.POSIXct(as.numeric(time) %% 86400, origin="1970-01-01", tz="GMT")) 
+
+pal <- cols$cols %>%
+   setNames(cols$userId)
+
+shared_ts <- highlight_key(ts_out)
+
+palette(brewer.pal(100, "Set3"))
+
+gg <- shared_ts %>% 
+    ggplot(aes(time, fill = userId, group = userId)) +
+  geom_histogram(bins=60) +
+  scale_color_manual(values = pal) +
+  labs(x = "Time", y = "Count") +
+  theme_tufte() + 
+  NULL
+
+filter2 <- bscols(
+  ggplotly(gg, dynamicTicks = TRUE),
+  widths = c(12, 12)
+)
+
+bscols(filter2)
+```
+
+```{r warning=FALSE}
+
+p <- signals %>% 
+  select(signal, pos) %>% 
+  count(pos) %>% 
+  add_tally(n, name = "total") %>% 
+  mutate(perc = n/total) %>% 
+  ggplot(aes(reorder(pos, n, FUN = min), perc, fill = pos)) +
+  geom_col() +
+  scale_y_continuous(labels = scales::percent) +
+  coord_flip() +
+  theme_hc() +
+  theme(legend.position = "none") +
+  labs(x = "", y = "", title = "Original")
+
+p2 <- signals %>% 
+  filter(signal == 0) %>% 
+  select(signal, pos) %>% 
+  count(pos) %>% 
+  add_tally(n, name = "total") %>% 
+  mutate(perc = n/total) %>% 
+  ggplot(aes(reorder(pos, n, FUN = min), perc, fill = pos)) +
+  geom_col() +
+  scale_y_continuous(labels = scales::percent) +
+  coord_flip() +
+  theme_hc() +
+  theme(legend.position = "none") +
+  labs(x = "", y = "", title = "Unknown")
+
+layout <- "
+AAABBB
+"
+
+p + p2  + plot_layout(design = layout)
+```
+
+
+```{r warning=FALSE}
+
+signals <- signals %>%
+  mutate(word = wordStem(word, language = "porter"))
+
+signal_with_id <- clean_signals %>% 
+  group_by(userId, word) %>% 
+  mutate(count = sequence(n()))
+
+diff_df <- signal_with_id %>%
+    group_by(userId, word) %>%
+    mutate(diff = time - lag(time, 2)) %>%
+    mutate(tran=paste(lag(signal, 2), '->', lag(signal,1),'->',signal)) %>%
+    ungroup() %>%
+    mutate(diff = diff/(60*60*24)) %>%
+    filter(!(diff == 0 | is.na(diff))) %>%
+    filter(diff > 0.1) %>%
+    select(word, diff, signal, tran)
+
+p <- diff_df %>% 
+  ggplot(aes(x=diff, color=tran)) +
+  stat_ecdf(geom="point", size=0.5)+
+  scale_x_log10(breaks = c(0.1, 0.5, 1, 2, 5, 10, 40)) +
+  theme_hc() +
+  labs(x = "Days", y = "", title = "Wait Time CDF") + 
+  scale_fill_discrete("")
+
+p2 <- diff_df %>%
+  count(tran) %>% 
+  add_tally(n, name = "total") %>% 
+  mutate(perc = n/total) %>% 
+  ggplot(aes(reorder(tran, n, FUN = min), perc, fill = tran)) +
+  geom_col() +
+  scale_y_continuous(labels = scales::percent) +
+  coord_flip() +
+  theme_hc() +
+  theme(legend.position = "none") +
+  labs(x = "", y = "", title = "Transition Type")
+ 
+
+p3 <- diff_df %>% 
+  ggplot(aes(x=diff, fill='cdf', show.legend = FALSE)) +
+  stat_ecdf(aes(ymin=0,ymax=..y..), geom = "ribbon") +
+  scale_x_log10(breaks = c(0.1, 0.5, 1, 2,  5, 10, 40)) +
+  theme_hc() +
+  theme(legend.position="none") +
+  labs(x = "Days", y = "", title = "Wait Time CDF by Transition Type") 
+
+layout <- "
+AAACC
+BBBBB
+BBBBB
+BBBBB
+"
+
+p3 + p + p2 + plot_layout(design = layout)
+```
+
+```{r warning=FALSE}
+
+signals <- signals %>%
+  mutate(word = wordStem(word, language = "porter"))
+
+signal_with_id <- clean_signals %>% 
+  group_by(userId, word) %>% 
+  mutate(count = sequence(n()))
+
+diff_df <- signal_with_id %>%
+    group_by(userId, word) %>%
+    mutate(diff = time - lag(time, 2)) %>%
+    mutate(tran=paste(lag(signal, 2), '->', lag(signal,1),'->',signal)) %>%
+    ungroup() %>%
+    mutate(diff = diff/(60*60*24)) %>%
+    filter(!(diff == 0 | is.na(diff))) %>%
+    filter(diff > 0.1) %>%
+    select(word, count, diff, time, signal, tran)
+
+p <- diff_df %>% 
+  ggplot(aes(x=count, color=tran)) +
+  stat_ecdf(geom="point", size=0.5)+
+  scale_x_log10(breaks = c(0.1, 0.5, 1, 2, 5, 7, 10, 12, 15, 40)) +
+  theme_hc() +
+  labs(x = "Count", y = "", title = "Count CDF") + 
+  scale_fill_discrete("")
+
+p2 <- diff_df %>%
+  count(tran) %>% 
+  add_tally(n, name = "total") %>% 
+  mutate(perc = n/total) %>% 
+  ggplot(aes(reorder(tran, n, FUN = min), perc, fill = tran)) +
+  geom_col() +
+  scale_y_continuous(labels = scales::percent) +
+  coord_flip() +
+  theme_hc() +
+  theme(legend.position = "none") +
+  labs(x = "", y = "", title = "Transition Type")
+ 
+
+p3 <- diff_df %>% 
+  ggplot(aes(x=count, fill='cdf', show.legend = FALSE)) +
+  stat_ecdf(aes(ymin=0,ymax=..y..), geom = "ribbon") +
+  scale_x_log10(breaks = c(0.1, 0.5, 1, 2, 5, 7, 10, 12, 15, 40)) +
+  theme_hc() +
+  theme(legend.position="none") +
+  labs(x = "Count", y = "", title = "Count CDF by Transition Type") 
+
+layout <- "
+AAACC
+BBBBB
+BBBBB
+BBBBB
+"
+
+p3 + p + p2 + plot_layout(design = layout)
+```
+
+
+```{r}
+diff_df <- signal_with_id %>%
+    group_by(userId, word) %>%
+    mutate(diff = time - lag(time)) %>%
+    ungroup() %>%
+    mutate(diff = diff/(60*60*24)) %>%
+    filter(!(diff == 0 | diff < 0.1 | is.na(diff))) %>%
+    select(word, diff, count, signal) %>%
+    mutate(signal = as.character(signal))
+
+diff_df %>%
+  ggplot(aes(diff, fill = signal)) +
+  geom_density(bw = 0.1, alpha = 0.5) +
+  scale_x_log10(breaks = c(0.1, 1, 7, 15, 40)) +
+  # facet_wrap(~ cat_id, nrow = 3) +
+  theme_hc() +
+  theme(legend.position = "bottom") +
+  labs(x = "Days", y = "", fill = "Signal",
+       title = "P(F|wait time)")
+
+```
+```{r}
+diff_df %>%
+  ggplot(aes(count, fill = signal)) +
+  geom_density(bw = 0.1, alpha = 0.5) +
+  scale_x_log10(breaks = c(0, 1, 2, 3, 4, 5, 6, 7, 15, 40)) +
+  # facet_wrap(~ cat_id, nrow = 3) +
+  theme_hc() +
+  theme(legend.position = "bottom") +
+  labs(x = "Days", y = "", fill = "Signal",
+       title = "f(# of encounters)")
+
+```
+```{r}
+diff_df %>%
+ filter(count < 50 & diff < 50) %>%
+  ggplot(aes(diff, count, color = signal)) +
+  geom_point(size=2 , alpha = 0.5) +
+  # facet_wrap(~ cat_id, nrow = 3) +
+  theme_hc() +
+  theme(legend.position = "bottom") +
+  labs(x = "diff", y = "count", fill = "Signal",
+       title = "P(F|# of encounters)")
+```
+
+```{r}
+word_freq <- signal_with_id %>%
+    select(userId, word, time) %>%
+    distinct(userId, word, time) %>%
+    group_by(userId, word) %>%
+    count() %>% group_by(word) %>%
+    summarise(n = mean(n)) %>%
+    ungroup()
+
+word_freq %>% 
+  ggplot(aes(n)) +
+  geom_boxplot(fill = 'blue', alpha = 0.7) +
+  scale_x_log10(breaks = c(0, 1, 2, 3, 7, 15, 40)) +
+  coord_cartesian(xlim = c(0.1,100)) +
+  theme_hc() +
+  labs(x = "", fill = "event", title="Count box plot")
+```
+```{r}
+make_tree <- function(seq_df, pp) {
+  make_tree2 <- function(g, df, sid, parent, sbefore, scount = 0, pp = 0, diff = 0, freq = 0) {
+    if (scount == 1) {
+      g <- g %>%
+        add_edges(c(parent,sid),width=2.5)
+    } else if (!is.na(parent)) {
+      if (pp == 0) {
+        l <- diff
+      } else {
+        l <- freq
+      }
+      g <- g %>%
+        add_edges(c(parent,sid),width=15*freq, arrow.mode='-', label=paste(round(l, digits=2)))
+    } else {
+      print(parent)
+    }
+    if (nrow(df) == 0 |scount > 6) {
+      return(g)
+    }
+    df2 <- df %>%
+      cbind() %>%
+      filter((count == scount | scount == 0) & (before==sbefore | is.na(sbefore))) %>%
+      group_by(signal) %>%
+      summarise(diff = mean(diff),n = n()) %>%
+      mutate(freq = n / sum(n)) %>%
+      ungroup() %>%
+      select(signal, freq, diff) 
+    if (nrow(df2) == 0) {
+      return(g)
+    }
+    
+    
+    myid <- sid
+    for(i in 1:nrow(df2)) 
+    {
+      df3 <- df %>%
+        cbind() %>%
+        filter((count > scount) & (before==df2$signal[[i]]))
+      id <<- id + 1
+      node_id <- id
+      classes <- c('orange', 'green')
+      g <- g %>%
+        add_vertices(1, label='', color=classes[df2$signal[[i]]+1])
+      g <- make_tree2(g, df3, node_id, myid, df2$signal[[i]], scount + 1, pp, df2$diff[[i]], df2$freq[[i]])
+      
+    }
+    
+    return(g);
+  }
+  id <<- 1
+  return(make_tree2( make_empty_graph() %>% add_vertices(1, color="gray"), seq_df, 1, NA, NA, 0, pp));
+}
+```
+
+```{r message=TRUE, warning=TRUE}
+library(igraph)
+
+to_seq_df <- function(df) {
+  return (df %>% group_by(userId, word) %>%
+  arrange(count) %>%
+  mutate(count = count, diff = time - lag(time), signal=signal, before=lag(signal)) %>%
+  ungroup() %>%
+  mutate(diff = diff/(60*60*24)) %>%
+  filter(!(diff == 0 | diff <= 0.1 | is.na(diff))) %>%
+  group_by(userId, word) %>% 
+  mutate(count = sequence(n())) %>%
+  mutate(seq_id=paste(userId, '-', word)) %>%
+  ungroup() %>%
+  select(seq_id, count, before, diff, signal));
+}
+
+seq_df <- signal_with_id %>%
+  to_seq_df()
+
+diff_tree = make_tree(seq_df, 0)
+freq_tree = make_tree(seq_df, 1)
+
+noun_tree <- signal_with_id %>%
+  filter(pos == 'NN') %>%
+  to_seq_df() %>%
+  make_tree(1)
+
+vbd_tree <- signal_with_id %>%
+  filter(pos == 'VB' | pos == 'VBN' | pos == 'VBG' | pos == 'VBP') %>%
+  to_seq_df() %>%
+  make_tree(1)
+
+jj_tree <- signal_with_id %>%
+  filter(pos == 'JJ') %>%
+  to_seq_df() %>%
+  make_tree(1)
+
+rb_tree <- signal_with_id %>%
+  filter(pos == 'RB') %>%
+  to_seq_df() %>%
+  make_tree(1)
+```
+```{r}
+
+par(mfrow=c(1,2))
+
+plot(noun_tree,
+     layout=layout_as_tree,
+     vertex.size=20,
+     main="noun",
+     edge.label.color="black",
+     edge.width = 2,
+     vertex.frame.color = "white", 
+     )
+
+plot(vbd_tree,
+     layout=layout_as_tree,
+     vertex.size=20,
+     main="verb",
+     edge.label.color="black",
+     edge.width = 2,
+     vertex.frame.color = "white", 
+     )
+
+plot(jj_tree,
+     layout=layout_as_tree,
+     vertex.size=20,
+     main="adj",
+     edge.label.color="black",
+     edge.width = 2,
+     vertex.frame.color = "white", 
+     )
+
+plot(rb_tree,
+     layout=layout_as_tree,
+     vertex.size=20,
+     main="rb",
+     edge.label.color="black",
+     edge.width = 2,
+     vertex.frame.color = "white", 
+     )
+plot(rb_tree,
+     layout=layout_as_tree,
+     vertex.size=20,
+     main="rb",
+     edge.label.color="black",
+     edge.width = 2,
+     vertex.frame.color = "white", 
+     )
+```
+
+
+```{r}
+p <- plot(diff_tree,
+     layout=layout_as_tree,
+     vertex.size=20,
+     edge.label.color="black",
+     vertex.frame.color = "white", 
+     )
+```
+
+```{r}
+p2 <- plot(freq_tree,
+     layout=layout_as_tree,
+     vertex.size=20,
+     edge.label.color="black",
+     edge.width = 2,
+     vertex.frame.color = "white", 
+     )
+```
+
+```{r}
+library(GGally)
+
+diff_df <- signal_with_id %>%
+    group_by(userId, word) %>%
+    arrange(count) %>%
+    mutate(time = time - min(time)) %>%
+    mutate(csignal = cumsum(signal)/count) %>%
+    filter(time == max(time)) %>%
+    ungroup()
+    
+
+df <- diff_df %>%
+  filter(count < 20) %>%
+  select(csignal, signal, time, count)
+  
+ggpairs(df)
+```
+
+
+
