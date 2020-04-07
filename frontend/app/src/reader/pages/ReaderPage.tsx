@@ -69,9 +69,9 @@ const ReaderPage: React.FC<BooksParameters> = ({ match, history }) => {
   useEffect(() => {
     (async () => {
       const book = await bookStore.open(id);
-      setReaderRootState(
-        new ReaderRootStore(rootStore, new BookReaderStore(book))
-      );
+      const store = new ReaderRootStore(rootStore, new BookReaderStore(book));
+      (window as any).readerRootStore = store;
+      setReaderRootState(store);
     })().catch(e => console.error(e));
   }, []);
 
@@ -115,7 +115,7 @@ const ReaderPageContent: React.FC = () => {
                   readerStore.location.chapterId = x.id;
                 }}
               >
-                {x.title === '' ? 'gorani' : x.title}
+                {x.title === "" ? "gorani" : x.title}
               </IonItem>
             ))}
           </IonList>

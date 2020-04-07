@@ -91,22 +91,20 @@ const LastWordDetailContainer = () => {
     };
 
     if (currentLastWord) {
-      setDictResults(dictService.find(currentLastWord.word));
       (async () => {
         await controls.start(variants.closed, {duration: 0.001});
-        contentControls.start({ opacity: 1}, {duration: 0.2, delay: 0.3});
         await controls.start(variants.open);
+        setDictResults(dictService.find(currentLastWord.word));
         setSentences(currentLastWord.items);
         setCurrentWord(currentLastWord.word);
       })();
     } else {
       (async () => {
         controls.stop();
-        contentControls.stop();
         setSentences([]);
         setCurrentWord('');
-        contentControls.start({ opacity: 0 });
-        controls.start(variants.closed, {delay: 0.3, type: 'tween', ease: 'circOut', duration: 0.4});
+        setDictResults([]);
+        controls.start(variants.closed, {type: 'tween', ease: 'circOut', duration: 0.4});
       })();
     }
   }, [currentLastWord]);
@@ -125,7 +123,7 @@ const LastWordDetailContainer = () => {
               {sentences.length !== 0 && <SmallReader targetWords={[currentWord]} key={currentLastWord ? '1':'0'} sentences={sentences}/>}
             </div>
             <div style={{height: "50%"}}>
-              {dictResults.length !== 0 && <DictResultList res={dictResults}/>}
+              {dictResults.length !== 0 && <DictResultList key={currentLastWord ? '1':'0'} res={dictResults}/>}
             </div>
           </Content>
         </Container>

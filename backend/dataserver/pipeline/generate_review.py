@@ -1,5 +1,7 @@
+import boto3
+from botocore.exceptions import ClientError
 from gorani.utils import split_sentence, unnesting
-from metaflow import FlowSpec, step, Flow, IncludeFile
+from metaflow import FlowSpec, step, Flow, IncludeFile, conda_base
 import pandas as pd
 import json
 import uuid
@@ -7,36 +9,41 @@ import typing
 import numpy as np
 from gorani.booky import Book
 from pandas import DataFrame
-from firebase_admin import credentials
-from firebase_admin import firestore
-import firebase_admin
+from send import log_msg
 import time
 from datetime import datetime, timedelta
 from pytz import timezone, utc
 import pandera as pa
+from gorani.utils import pip
 
 LastSessionDataFrame = pa.DataFrameSchema({
     "userId": pa.Column(pa.String),
     "session": pa.Column(pa.Int),
-}, strict = True)
+}, strict=True)
 
 LastWordsDataFrame = pa.DataFrameSchema({
     "userId": pa.Column(pa.String),
     "session": pa.Column(pa.Int),
     "lastWords": pa.Column(pa.String),
     "targetLastWords": pa.Column(pa.Int)
-}, strict = True)
+}, strict=True)
 
 StatsDataFrame = pa.DataFrameSchema({
     "userId": pa.Column(pa.String),
     "stats": pa.Column(pa.String)
-}, strict = True)
+}, strict=True)
 
 ReviewDataFrame = pa.DataFrameSchema({
     "userId": pa.Column(pa.String),
     "review": pa.Column(pa.String)
-}, strict = True)
+}, strict=True)
 
+@conda_base(libraries= {
+    'boto3': '1.12',
+    'gorani': '1.0.5',
+    'pandera': '0.3.2',
+    'rsa': '4.0'
+})
 class GenerateReview(FlowSpec):
     firebase_key = IncludeFile(
         'firebase-key',
@@ -122,6 +129,7 @@ class GenerateReview(FlowSpec):
                 }
                 out.append(item)
             return pd.Series({'lastWords': json.dumps(out), 'targetLastWords': min(len(out), 100)})
+
         combined_df = combined_df.sort_values(['userId', 'count'], ascending=False)
         combined_df = combined_df\
             .reset_index()\
@@ -189,6 +197,7 @@ class GenerateReview(FlowSpec):
             out = {
                 'id': str(uuid.uuid4()),
                 'stats': stats,
+                'time': time.time(),
                 'lastWords': json.loads(row['lastWords']),
                 'unfamiliarWords': [],
                 'texts': [],
@@ -207,28 +216,47 @@ class GenerateReview(FlowSpec):
         self.review_df = ReviewDataFrame.validate(combined_df)
         self.next(self.upload)
 
+    @pip(libraries={
+        'firebase-admin': '4.0.1'
+    })
     @step
     def upload(self):
+        import firebase_admin
+        from firebase_admin import credentials
+        from firebase_admin import firestore
         with open('/tmp/firebase-key.json', 'wb') as f:
             f.write(self.firebase_key)
         cred = credentials.Certificate('/tmp/firebase-key.json')
         firebase_admin.initialize_app(cred, {
             'projectId': "gorani-reader-249509",
+            'storageBucket': 'gorani-reader-249509.appspot.com'
         })
-
+        out = []
         db = firebase_admin.firestore.client()
-
+        bucket_name = 'gorani-reader-generated-reviews'
+        s3 = boto3.resource("s3")
         for _, row in self.review_df.iterrows():
-            ref = db.collection('users').document(row['userId'])
-            ref.set({
-                'review': json.loads(row['review'])
-            }, merge=True)
-
+            review = json.loads(row['review'])
+            filename = row['userId'] + '-' + str(review['end']) + '.json'
+            try:
+                s3.Object(bucket_name, filename).load()
+            except ClientError as e:
+                if e.response['Error']['Code'] == "404":
+                    out.append(row['userId'])
+                    s3.Object(bucket_name, filename).put(Body=json.dumps(review))
+                    url = "https://" + bucket_name + ".s3.ap-northeast-2.amazonaws.com/" + filename
+                    ref = db.collection('users').document(row['userId'])
+                    ref.set({
+                        'review': url
+                    }, merge=True)
+                else:
+                    raise
+        self.added = out
         self.next(self.end)
 
     @step
     def end(self):
-        print(self.review_df)
+        log_msg('./generate_review.py', '\n'.join(self.added), False)
 
 if __name__ == '__main__':
     GenerateReview()

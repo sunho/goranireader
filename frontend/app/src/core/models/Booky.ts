@@ -21,14 +21,14 @@ export interface Sentence {
   id: string;
   content: string;
   start: boolean;
-  kind: 'sentence';
+  kind: "sentence";
 }
 
 export interface Image {
   id: string;
   image: string;
   imageType: string;
-  kind: 'image';
+  kind: "image";
 }
 
 export interface SelectedWord {
@@ -65,7 +65,7 @@ export interface DictDefinition {
 }
 
 export interface WordQuestion {
-  type: 'word';
+  type: "word";
   id: string;
   sentence: string;
   wordIndex: number;
@@ -74,7 +74,7 @@ export interface WordQuestion {
 }
 
 export interface SummaryQuestion {
-  type: 'summary';
+  type: "summary";
   id: string;
   options: string[];
   answer: number;

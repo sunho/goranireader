@@ -1,10 +1,11 @@
 import { autobind } from "core-decorators";
 import RootStore from "./RootStore";
 import { EventLogPayload, EventLog } from "../models/Log";
-import * as uuid from 'uuid';
+import * as uuid from "uuid";
 import { ISODateString } from "../utils/util";
 
-const url = "https://asia-northeast1-gorani-reader-249509.cloudfunctions.net/addLog";
+const url =
+  "https://asia-northeast1-gorani-reader-249509.cloudfunctions.net/addLog";
 
 @autobind
 class LogStore {
@@ -18,15 +19,17 @@ class LogStore {
       id: uuid.v4(),
       type: payload.type,
       time: ISODateString(new Date()),
-      payload: JSON.stringify(payload),
+      payload: JSON.stringify(payload)
     };
     console.log(payload);
-    const token = await this.rootStore.firebaseService.auth.currentUser!.getIdToken(false);
+    const token = await this.rootStore.firebaseService.auth.currentUser!.getIdToken(
+      false
+    );
     return fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
+        "Content-Type": "application/json",
+        Authorization: token
       },
       body: JSON.stringify(log)
     });
@@ -34,8 +37,10 @@ class LogStore {
 
   sendSync(payload: EventLogPayload) {
     this.send(payload)
-      .catch(e => {this.rootStore!.alertStore.add(e.message, 1000)})
-      .then(resp => console.log('sent'));
+      .catch(e => {
+        this.rootStore!.alertStore.add(e.message, 1000);
+      })
+      .then(resp => console.log("sent"));
   }
 }
 

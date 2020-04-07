@@ -1,29 +1,30 @@
 import sys
 
 from gorani.booky.book import Book
-from metaflow import FlowSpec, step, Parameter, JSONType, IncludeFile
-import firebase_admin
+from metaflow import FlowSpec, step, Parameter, JSONType, IncludeFile, conda_base
+
 import json
-from firebase_admin import credentials
-from firebase_admin import firestore
-from google.cloud import bigquery
+
 import urllib.request
+import boto3
+from concurrent import futures
+from gorani.utils import pip
+import pandas as pd
+from send import log_msg
 import datetime
 
-TABLE_ID = "goranireader.raw_event_log"
-
+@conda_base(libraries= {
+    'boto3': '1.12',
+    'gorani': '1.0.5',
+    'pandera': '0.3.2',
+    'rsa': '4.0'
+})
 class DownloadLog(FlowSpec):
     firebase_key = IncludeFile(
         'firebase-key',
         is_text=False,
         help='Firebase Key File',
         default='./firebase-key.json')
-
-    storage_key = IncludeFile(
-        'storage-key',
-        is_text=False,
-        help='Google Storage Key File',
-        default='./storage-key.json')
 
     first_time = Parameter(
         'first-time',
@@ -34,8 +35,14 @@ class DownloadLog(FlowSpec):
     def start(self):
         self.next(self.download_firebase)
 
+    @pip(libraries={
+        'firebase-admin': '4.0.1'
+    })
     @step
     def download_firebase(self):
+        import firebase_admin
+        from firebase_admin import credentials
+        from firebase_admin import firestore
         with open('/tmp/firebase-key.json', 'wb') as f:
             f.write(self.firebase_key)
         cred = credentials.Certificate('/tmp/firebase-key.json')
@@ -48,24 +55,6 @@ class DownloadLog(FlowSpec):
         self.download_users(db)
 
         self.next(self.download_logs)
-
-    @step
-    def download_logs(self):
-        with open('/tmp/storage-key.json', 'wb') as f:
-            f.write(self.storage_key)
-
-        client = bigquery.Client.from_service_account_json(
-            '/tmp/storage-key.json')
-
-        rows_iter = client.list_rows(TABLE_ID)
-        rows = list(rows_iter)
-        def to_dict(row):
-            out = dict()
-            for key in row.keys():
-                out[key] = row[key]
-            return out
-        self.logs = [to_dict(row) for row in rows]
-        self.next(self.end)
 
     def download_books(self, db):
         self.books = dict()
@@ -82,9 +71,50 @@ class DownloadLog(FlowSpec):
         for doc in docs:
             user = doc.to_dict()
             self.users[doc.id] = user
+
+    @step
+    def download_logs(self):
+        rows = []
+        for row in self.fetch_all():
+            rows.append(row)
+        self.logs = rows
+        self.next(self.end)
+
+    def fetch_all(self):
+        s3 = boto3.client("s3")
+        bucket_name = "gorani-reader-client-event-logs"
+        s3_result = s3.list_objects_v2(Bucket=bucket_name)
+        file_list = []
+        if 'Contents'  in s3_result:
+            for key in s3_result['Contents']:
+                file_list.append(key['Key'])
+
+            while s3_result['IsTruncated']:
+                continuation_key = s3_result['NextContinuationToken']
+                s3_result = s3.list_objects_v2(Bucket=bucket_name,
+                                                    ContinuationToken=continuation_key)
+                for key in s3_result['Contents']:
+                    file_list.append(key['Key'])
+
+        def fetch(key):
+            obj = s3.get_object(Bucket=bucket_name, Key=key)
+            obj_df = json.load(obj["Body"])
+            return obj_df
+
+        with futures.ThreadPoolExecutor(max_workers=5) as executor:
+            future_to_key = {executor.submit(fetch, key): key for key in file_list}
+
+            for future in futures.as_completed(future_to_key):
+                exception = future.exception()
+
+                if not exception:
+                    yield future.result()
+                else:
+                    yield exception
+
     @step
     def end(self):
-        print('end')
+        log_msg('./download_log.py', 'processed: %d' % len(self.logs), False)
 
 
 if __name__ == '__main__':

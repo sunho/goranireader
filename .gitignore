@@ -4,13 +4,14 @@
 *.log*
 *.swp
 *.bak
+/backend/dataserver/cli/books/*
 ._*
 .metaflow
 /backend/dataserver/books
 Carthage
 google-services.json
 GoogleService-Info.plist
-
+GoogleNews-vectors-negative300.*
 /backend/config
 /backend/apiserver/gorani
 /backend/apiserver/migrations/schema.sql
@@ -160,3 +161,7 @@ yarn-error.log
 
 /backend/dataserver/out
 /frontend/android/app/src/main/assets/reader
+backend/dataserver/cli/books/outbreak.epub.xml
+backend/dataserver/cli/books/outbreak.epub.xml.book
+backend/dataserver/cli/books/rezero9.epub.xml
+backend/dataserver/cli/books/rezero9.epub.xml.book

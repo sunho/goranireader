@@ -3,7 +3,11 @@ import { SelectedSentence } from "../../core/models";
 import styled, { css } from "styled-components";
 import { useOutsideClickObserver } from "../../core/utils/hooks";
 
-const SentenceSelectorContainer = styled.div<{  bottom: number; top: number; up: boolean;}>`
+const SentenceSelectorContainer = styled.div<{
+  bottom: number;
+  top: number;
+  up: boolean;
+}>`
   display: flex;
   position: fixed;
   ${props => {
@@ -19,10 +23,10 @@ const SentenceSelectorContainer = styled.div<{  bottom: number; top: number; up:
   }}
 
   & > div {
-    background: #AB7756;
+    background: #ab7756;
     padding: 4px;
     margin-left: 6px;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: "Noto Sans KR", sans-serif;
     font-weight: 700;
     color: white;
   }
@@ -48,10 +52,14 @@ const SentenceSelector: React.FC<Props> = props => {
       top={props.selectedSentence.top}
       bottom={props.selectedSentence.bottom}
     >
-      <div onClick={() => {
-        // window.app.addUnknownSentence(props.selectedSentence.sentenceId);
-        // window.webapp.cancelSelect();
-      }}>I have no idea!</div>
+      <div
+        onClick={() => {
+          // window.app.addUnknownSentence(props.selectedSentence.sentenceId);
+          // window.webapp.cancelSelect();
+        }}
+      >
+        I have no idea!
+      </div>
     </SentenceSelectorContainer>
   );
 };
