@@ -7,6 +7,7 @@
 */*.js linguist-vendored
 *.kt linguist-vendored=false
 *.go linguist-vendored=false
+*.Rmd linguist-language=R
 *.ipynb linguist-vendored
 */*.ipynb linguist-vendored
 
