@@ -5,7 +5,7 @@ import {
   LastWord,
   StepKind
 } from "../models/Game";
-import { observable, computed, action, autorun } from "mobx";
+import { observable, computed, action, autorun, toJS } from "mobx";
 import RootStore from "../../core/stores/RootStore";
 import { Message } from "../models/Dialog";
 import LogStore from "../../core/stores/LogStore";
@@ -18,9 +18,11 @@ import {
 } from "../../core/models/Log";
 import { LiteEvent } from "../../core/utils/event";
 import UserStore from "../../core/stores/UserStore";
+import SaveStore from "../../core/stores/SaveStore";
 
 @autobind
 class GameStore {
+  saveStore: SaveStore;
   logStore: LogStore;
   userStore: UserStore;
   @observable substepI: number = 0;
@@ -56,13 +58,27 @@ class GameStore {
 
   progress: Progress;
   constructor(rootStore: RootStore, review: Review) {
+    this.saveStore = rootStore.saveStore;
     this.logStore = rootStore.logStore;
     this.userStore = rootStore.userStore;
-    this.progress = generateProgress(review);
+    const progress = this.saveStore.current!.progress;
+    if (!progress) {
+      this.progress = generateProgress(review);
+      this.saveStore.current!.progress = this.progress;
+      this.saveStore.save();
+    } else if (review.end > progress.review.end) {
+      this.progress = generateProgress(review);
+    } else {
+      this.progress = progress;
+    }
     this.step = this.progress.step;
     this.currentLastWord = null;
     this.clickedRectangle = null;
     this.logStart();
+    autorun(() => {
+      this.saveStore.current!.progress!.step = this.step;
+      this.saveStore.save();
+    })
     autorun(() => {
       if (this.ended) {
         (async () => {
@@ -177,6 +193,12 @@ class GameStore {
       };
       this.logStore.sendSync(payload);
     }
+  }
+
+  saveStep(data: any) {
+    this.progress.savedata[this.step.toString()] = data;
+    this.saveStore.current!.progress = this.progress;
+    this.saveStore.save();
   }
 
   logPaginate(

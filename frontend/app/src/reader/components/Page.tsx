@@ -227,7 +227,7 @@ const Page = forwardRef<HTMLDivElement, Props>((props, ref) => {
                   key={k}
                   highlight={
                     props.hightlightWord
-                      ? props.hightlightWord.includes(word.toLowerCase())
+                      ? props.hightlightWord.map(x=>x.toLowerCase()).includes(word.toLowerCase())
                       : false
                   }
                   onTouchEnd={() => {

@@ -37,6 +37,13 @@ const Stepper = (props: Props) => {
         gameStore.step,
         storeGenerator(step, gameStore.progress.review, rootStore)
       ));
+  useEffect(() => {
+   return () => {
+    if (store) {
+      store.destroy();
+    }
+   };
+  }, []);
   return useObserver(() => {
     const CurrentStep = substeps[gameStore.substep];
     return (
@@ -44,11 +51,11 @@ const Stepper = (props: Props) => {
         <AnimatePresence>
           <motion.div
             key={gameStore.substep + '-' + gameStore.substepI}
-            initial={{ opacity: 0, left: "10%", rotate: 10 }}
+            initial={{ opacity: 0, left: "10%" }}
             transition={{ duration: 0.3 }}
             animate={{ opacity: 1, left: 0, rotate: 0 }}
             style={{ position: "absolute", height: "100%", width: "100%" }}
-            exit={{ opacity: 0, left: "-10%", rotate: -10 }}
+            exit={{ opacity: 0, left: "-10%" }}
           >
             <Container>
               <CurrentStep store={store} />

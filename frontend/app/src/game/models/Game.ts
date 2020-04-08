@@ -15,7 +15,7 @@ export interface Progress {
   step: number;
   steps: Step[];
   review: Review;
-  savedata: { [step: number]: object };
+  savedata: { [step: string]: object };
 }
 
 export function generateProgress(review: Review): Progress {

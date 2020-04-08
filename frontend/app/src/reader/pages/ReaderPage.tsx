@@ -40,6 +40,7 @@ import ReaderRootStore, { ReaderContext } from "../stores/ReaderRootStore";
 import styled from "styled-components";
 import "./ReaderPage.css";
 import BookReaderStore from "../stores/BookReaderStore";
+import { AlertContainer } from "../../core/components/AlertContainer";
 
 interface BooksParameters
   extends RouteComponentProps<{
@@ -61,7 +62,7 @@ const ReaderContainer = styled.div`
 
 const ReaderPage: React.FC<BooksParameters> = ({ match, history }) => {
   const rootStore = useContext(storeContext);
-  const { bookStore } = rootStore;
+  const { bookStore, userStore, alertStore } = rootStore;
   const [readerRootStore, setReaderRootState] = useState<
     ReaderRootStore | undefined
   >(undefined);
@@ -72,6 +73,9 @@ const ReaderPage: React.FC<BooksParameters> = ({ match, history }) => {
       const store = new ReaderRootStore(rootStore, new BookReaderStore(book));
       (window as any).readerRootStore = store;
       setReaderRootState(store);
+      if (userStore.hasReview) {
+        alertStore.add('Review Availabe', 60*60*1000);
+      }
     })().catch(e => console.error(e));
   }, []);
 
@@ -187,6 +191,7 @@ const ReaderPageContent: React.FC = () => {
             </ReaderContainer>
           </Main>
         </IonContent>
+        <AlertContainer/>
       </IonPage>
       <IonRouterOutlet id="content1"></IonRouterOutlet>
       <IonRouterOutlet id="content2"></IonRouterOutlet>

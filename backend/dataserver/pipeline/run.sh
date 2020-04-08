@@ -1,1 +1,0 @@
-python $1 --environment=conda --no-pylint run || { python ./send.py $1; exit 1; }
