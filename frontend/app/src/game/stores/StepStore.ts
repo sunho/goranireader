@@ -4,22 +4,30 @@ import RootStore from "../../core/stores/RootStore";
 
 import GameStore from "./GameStore";
 
-import { isObservable, observe } from "mobx";
+import { isObservable, observe, isObservableProp } from "mobx";
 
 export interface StepStore {
+  gameStore?: GameStore;
   saveData(): object;
   loadData(data: object): void;
   destroy(): void;
   setDisposers(diposes: (() => void)[]): void;
 }
 
-export class BaseStepStore {
+export abstract class BaseStepStore {
+  gameStore?: GameStore;
   private disposers: (() => void)[] = [];
 
   destroy() {
     this.disposers.forEach(x => {
       x();
     });
+  }
+
+  abstract saveData(): any;
+
+  save() {
+    this.gameStore!.saveStep(this.saveData());
   }
 
   setDisposers(disposers: (() => void)[]) {
@@ -45,14 +53,9 @@ export function wrapStore(
   step: number,
   store: StepStore
 ) {
-  store.setDisposers(
-    Object.values(store)
-      .filter(x => isObservable(x))
-      .map(x =>
-        observe(x, () => {
-          gameStore.progress.savedata[step] = store.saveData();
-        })
-      )
-  );
+  if (gameStore.progress.savedata[step.toString()]) {
+    store.loadData(gameStore.progress.savedata[step.toString()]);
+  }
+  store.gameStore = gameStore;
   return store;
 }

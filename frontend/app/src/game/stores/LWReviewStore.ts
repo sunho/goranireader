@@ -5,7 +5,7 @@ import {
   LastWord,
   LWReviewStep
 } from "../models/Game";
-import { observable } from "mobx";
+import { observable, toJS, action } from "mobx";
 import RootStore from "../../core/stores/RootStore";
 import { Text } from "../models/Game";
 import { BaseStepStore } from "./StepStore";
@@ -23,6 +23,7 @@ class LWReviewStore extends BaseStepStore {
 
   @observable previousWords: string[] = [];
   @observable completedWords: number = 0;
+
   timer: ReturnType<typeof setInterval> = -1;
   logStore: LogStore;
 
@@ -49,7 +50,7 @@ class LWReviewStore extends BaseStepStore {
       this.stopTimer();
     }
     this.timer = window.setInterval(this.timerHandler, 100);
-   }
+  }
 
   stopTimer() {
     window.clearInterval(this.timer);
@@ -61,10 +62,11 @@ class LWReviewStore extends BaseStepStore {
       .filter(x => !this.previousWords.includes(x.word))
   }
 
-  finalize(words: string[], selectedWords: string[]) {
+  @action finalize(words: string[], selectedWords: string[]) {
     this.logNext(words, selectedWords);
     this.previousWords = this.previousWords.concat(words);
     this.completedWords += words.length;
+    this.save();
     const out = this.shouldComplete();
     if (out) {
       this.logComplete();
@@ -73,10 +75,16 @@ class LWReviewStore extends BaseStepStore {
   }
 
   saveData(): object {
-    return {};
+    return {
+      previousWords: toJS(this.previousWords),
+      completedWords: toJS(this.completedWords),
+    };
   }
 
-  loadData(data: object) {}
+  loadData(data: any) {
+    this.previousWords = data.previousWords || [];
+    this.completedWords = data.completedWords || 0;
+  }
 
   shouldComplete() {
     return this.previousWords.length === this.reviewWords.length;

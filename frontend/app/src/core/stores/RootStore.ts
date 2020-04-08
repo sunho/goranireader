@@ -5,6 +5,7 @@ import AlertStore from './AlertStore';
 import BookStore from './BookStore';
 import DictService from './DictService';
 import LogStore from './LogStore';
+import SaveStore from './SaveStore';
 
 @autobind
 class RootStore {
@@ -14,6 +15,8 @@ class RootStore {
   bookStore: BookStore;
   dictService: DictService;
   logStore: LogStore;
+  saveStore: SaveStore;
+
   constructor() {
     this.firebaseService = new FireBaseService();
     this.dictService = new DictService();
@@ -21,6 +24,7 @@ class RootStore {
     this.alertStore = new AlertStore(this);
     this.bookStore = new BookStore(this);
     this.logStore = new LogStore(this);
+    this.saveStore = new SaveStore();
   }
 };
 

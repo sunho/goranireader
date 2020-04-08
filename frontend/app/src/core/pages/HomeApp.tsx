@@ -22,6 +22,7 @@ import { isPlatform } from "@ionic/react";
 import ReaderPage from "../../reader/pages/ReaderPage";
 import TabsPage from "./TabsPage";
 import GamePage from "../../game/pages/GamePage";
+import { AlertContainer } from "../components/AlertContainer";
 
 const HomeApp = props => {
   const items = (

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef, useEffect } from "react";
+import React, { useContext, useState, useRef, useEffect, useCallback } from "react";
 import RootStore from "../../core/stores/RootStore";
 import { storeContext } from "../../core/stores/Context";
 import { Step } from "../models/Game";
@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { GameContext } from "../stores/GameRootStore";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import { useWindowSize } from '../../core/utils/hooks';
+import { request } from "http";
 
 const Word = motion.custom(styled.div`
   display: absolute;
@@ -40,6 +41,7 @@ const WordsContainer = motion.custom(styled.div`
 interface Props {
   words: string[];
   onSelect: (word: string, rect: ClientRect) => void;
+  onDeselect: (word: string) => void;
   getVisibleWord: (words: string[]) => void;
 }
 
@@ -48,8 +50,10 @@ const WordsCloud: React.FC<Props> = (props: Props) => {
     open: (i: number) => ({
       opacity: 1,
       y: 0,
+      background: "gray",
+      scale: 1,
       transition: {
-        delay: i * 0.05
+        delay: !animated ? i * 0.05 : 0
       }
     }),
     selected: {
@@ -62,17 +66,22 @@ const WordsCloud: React.FC<Props> = (props: Props) => {
   };
 
 
+  const [ loaded, setLoaded ] = useState(false);
   const [ cutted, setCutted ] = useState(false);
   const [ divide, setDivide ] = useState<number | undefined>(undefined);
   const [ animated, setAnimated ] = useState(false);
-  const { words, onSelect } = props;
+  const { words, onSelect, onDeselect } = props;
   const [selectedWords, setSelectedWords] = useState<number[]>([]);
   const wordsRef = useRef<Element[]>([]);
   const lastDivide = (!cutted ? words.length : divide);
 
   useEffect(() => {
+    if (!loaded) {
+      return;
+    }
     if (cutted) {
       props.getVisibleWord(words.slice(0,divide));
+      setAnimated(true);
       return;
     }
     const parentBounds = wordsRef.current[0].parentElement!.getBoundingClientRect();
@@ -94,15 +103,22 @@ const WordsCloud: React.FC<Props> = (props: Props) => {
     }
     setDivide(wordsRef.current.length);
     setCutted(true);
-  },[cutted]);
+  },[loaded, cutted]);
+
+  useEffect(() => {
+    const parent = wordsRef.current[0].parentElement;
+    if (parent!.getBoundingClientRect().height === 0) {
+      window.requestAnimationFrame(() => {
+        setLoaded(true);
+      });
+    } else {
+      setLoaded(true);
+    }
+  },[]);
 
   useWindowSize(() => {
     setCutted(false);
   });
-
-  useEffect(() => {
-    setAnimated(true);
-  }, []);
 
   return (
     <div style={{ position: "relative", height: "100%", opacity: cutted ? 1:0 }}>
@@ -113,13 +129,18 @@ const WordsCloud: React.FC<Props> = (props: Props) => {
               key={i}
               ref={(node) => {wordsRef.current[i] = node!}}
               onClick={e => {
-                onSelect(word, (e.target as HTMLElement).getBoundingClientRect());
-                setSelectedWords(selectedWords.concat(i));
+                if (selectedWords.includes(i)) {
+                  onDeselect(word);
+                  setSelectedWords(selectedWords.filter(x => (x !== i)));
+                } else {
+                  onSelect(word, (e.target as HTMLElement).getBoundingClientRect());
+                  setSelectedWords(selectedWords.concat(i));
+                }
               }}
               custom={i}
 
               initial={!animated ? "closed" : "open" }
-              animate={selectedWords.findIndex(x => x === i) === -1 ? "open": "selected"}
+              animate={selectedWords.includes(i) ? "selected":"open"}
               variants={variants}
             >
               {word}

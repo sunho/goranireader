@@ -19,10 +19,11 @@ import { IonApp, IonContent, IonLoading, IonSpinner } from '@ionic/react';
 
 const App: React.FC = () => {
   const [inited, setInited] = useState(false);
-  const { firebaseService, userStore } = React.useContext(storeContext);
+  const { saveStore, firebaseService, userStore } = React.useContext(storeContext);
   useEffect(() => {
     (async () => {
       await firebaseService.init();
+      await saveStore.init();
       try {
         await userStore.loadUser();
       } catch { }

@@ -50,7 +50,7 @@ const PickWords: React.FC<{store?: UWReviewStore}> = props => {
   }, []);
 
   return (
-    <WordsCloud getVisibleWord={() => {}} words={words} onSelect={(word, rect) => {
+    <WordsCloud onDeselect={(word) => { selectedWords.current.delete(word); }}  getVisibleWord={() => {}} words={words} onSelect={(word, rect) => {
       addWord(word);
     }}/>
   );
