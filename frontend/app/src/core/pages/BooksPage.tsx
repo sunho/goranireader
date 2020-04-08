@@ -47,21 +47,19 @@ const BooksPage = ({ history }) => {
   };
 
   let gotoGame: any = undefined;
-  if (userStore.user.review) {
-    if (userStore.user.review.end > (userStore.user.lastReviewEnd || 0)) {
-      gotoGame = (
-        <>
-          <IonRow>
-            <Text>
-              <h3>Review Game Available</h3>
-            </Text>
-          </IonRow>
-          <IonRow>
-            <IonButton href="/game">GO</IonButton>
-          </IonRow>
-        </>
-      );
-    }
+  if (userStore.hasReview) {
+    gotoGame = (
+      <>
+        <IonRow>
+          <Text>
+            <h3>Review Game Available</h3>
+          </Text>
+        </IonRow>
+        <IonRow>
+          <IonButton href="/game">GO</IonButton>
+        </IonRow>
+      </>
+    );
   }
   return useObserver(() => (
     <Layout>

@@ -1,9 +1,10 @@
-import { observable, action } from "mobx";
+import { observable, action, computed } from "mobx";
 import RootStore from "./RootStore";
 import { User } from "../models";
 import FirebaseService from "./FirebaseService";
 import { autobind } from "core-decorators";
 import { Location } from "../../reader/stores/BookReaderStore";
+import migrator from '../models/migrations/user';
 
 @autobind
 class UserStore {
@@ -22,6 +23,16 @@ class UserStore {
 
   @observable user: User | null = null;
 
+  @computed get hasReview() {
+    if (!this.user) {
+      return false;
+    }
+    if (!this.user.review) {
+      return false;
+    }
+    return this.user.review.end > (this.user.lastReviewEnd || 0);
+  }
+
   @action async loadUser() {
     try {
       if (!this.fireId()) throw new Error("no current user");
@@ -31,7 +42,6 @@ class UserStore {
       }
       const user2 = await this.firebaseService.userDoc(this.userId!).get();
       const data = user2.data()!;
-      console.log(data["review"]);
       if (data["review"] && typeof data["review"] === "string") {
         const review = await fetch(data["review"]).then(x => x.json());
         data["review"] = review;
@@ -40,6 +50,7 @@ class UserStore {
       await this.firebaseService
         .userDoc(this.userId!)
         .update({ fireId: this.fireId()! });
+      this.user = migrator.migrate(this.user);
     } catch (e) {
       this.userId = null;
       this.user = null;

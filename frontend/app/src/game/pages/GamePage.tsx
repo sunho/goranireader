@@ -53,7 +53,7 @@ const GamePage: React.FC = props => {
     const { gameStore } = gameRootStore.current;
     return (
       <>
-        {(review && !gameStore.ended) ? (
+        {(!gameStore.ended && userStore.hasReview ) ? (
           <GameContext.Provider value={gameRootStore.current}>
             <LastWordDetailContainer />
             <Container>

@@ -8,7 +8,8 @@ export interface EventLog {
 export type EventLogPayload = LogPaginatePayload |
   LogReviewStartPayload | LogReviewPaginatePayload |
   LogLWReviewNextPayload | LogLWReviewGiveupPayload |
-  LogLWReviewCompletePayload | LogReviewEndPayload;
+  LogLWReviewCompletePayload | LogReviewEndPayload |
+  LogActivePayload | LogActivePayload | LogDeactivePayload;
 
 export interface LogPaginatePayload {
   type: 'paginate';
@@ -30,6 +31,16 @@ export interface PaginateWordUnknown {
 export interface PaginateSentenceUnknown {
   sentenceId: string;
   time: number;
+}
+
+export interface LogActivePayload {
+  type: 'active';
+  page: string;
+}
+
+export interface LogDeactivePayload {
+  type: 'deactive';
+  page: string;
 }
 
 export interface LogReviewStartPayload {

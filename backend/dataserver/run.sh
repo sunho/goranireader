@@ -1,0 +1,1 @@
+python $1 --environment=conda --no-pylint run || { python ./notification.py $1; exit 1; }
