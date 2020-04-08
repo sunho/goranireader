@@ -2,8 +2,6 @@ import { Router, Route, Switch, Redirect } from "react-router";
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import StudentPage from "../StudentPage";
-import MissionPage from "../MissionPage";
-import ProgressPage from "../ProgressPage";
 import ReportPage from "../ReportPage";
 import LoginPage from "../LoginPage";
 import SignUpPage from "../SignUpPage";
@@ -14,21 +12,15 @@ import withAuthorization from "../Auth/withAuthorization";
 import NotFound from "../NotFound";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core";
 import PerformancePage from "../PerformancePage";
-import FindBookPage from "../FindBookPage";
 import PerformanceDetailPage from "../PerformanceDetailPage";
-import ReaderPage from "../ReaderPage";
 
 const Dashboard: React.FC<any> = ({ match }) => (
   <Layout>
     <Switch>
       <Route exact path={`${match.url}/`} component={StudentPage} />
-      <Route path={`${match.url}/mission`} component={MissionPage} />
-      <Route path={`${match.url}/progress`} component={ProgressPage} />
       <Route path={`${match.url}/performance`} component={PerformancePage} />
       <Route path={`${match.url}/performanceDetail/:userId`} component={PerformanceDetailPage} />
       <Route path={`${match.url}/report`} component={ReportPage} />
-      <Route path={`${match.url}/reader`} component={ReaderPage} />
-      <Route path={`${match.url}/findBook`} component={FindBookPage} />
       <Route component={NotFound} />
     </Switch>
   </Layout>

@@ -57,28 +57,6 @@ const MainListItems: React.FC = props => {
       </ListItem>
       <ListItem
         button
-        {...{ to: `/dashboard/mission${window.location.search}` }}
-        component={Link}
-        selected={window.location.pathname === "/dashboard/mission"}
-      >
-        <ListItemIcon>
-          <DashboardIcon />
-        </ListItemIcon>
-        <ListItemText primary="Mission" />
-      </ListItem>
-      <ListItem
-        button
-        {...{ to: `/dashboard/progress${window.location.search}` }}
-        component={Link}
-        selected={window.location.pathname === "/dashboard/progress"}
-      >
-        <ListItemIcon>
-          <ProgressIcon />
-        </ListItemIcon>
-        <ListItemText primary="Progress" />
-      </ListItem>
-      <ListItem
-        button
         {...{ to: `/dashboard/report${window.location.search}` }}
         component={Link}
         selected={window.location.pathname === "/dashboard/report"}
