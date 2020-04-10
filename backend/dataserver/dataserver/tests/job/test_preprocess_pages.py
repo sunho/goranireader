@@ -1,9 +1,12 @@
 import pytest
-from dataserver.job.preprocess_pages import parse_word_unknowns, parse_paginate_logs, merge_pages_df, annotate_pages_df, extract_signals_df, clean_pages_df
+from dataserver.job.preprocess_pages import parse_word_unknowns, parse_paginate_logs, merge_pages_df, annotate_pages_df, \
+    extract_signals_df, clean_pages_df, preprocess_paginate_logs, clean_signals_df
 from dataserver.booky import Book, Metadata, Sentence, Chapter
+from dataserver.models.config import Config
 from dataserver.service import BookService
 from dataserver.tests.mocks.nlp_service import MockNLPService
 import pandas as pd
+
 
 def test_parse_word_unknowns_simple():
     nlp_service = MockNLPService()
@@ -38,6 +41,7 @@ def test_parse_word_unknowns_simple():
     assert result['unknownWords'] == ['hello', 'believe']
     assert result['words'] == ['hello', 'world', "don't", 'believe']
 
+
 def test_parse_word_unknowns_invalid():
     nlp_service = MockNLPService()
     content = "hello world don't\"believe\""
@@ -67,6 +71,7 @@ def test_parse_word_unknowns_invalid():
     ])
     with pytest.raises(Exception):
         parse_word_unknowns(nlp_service, book, ["test"], word_unknowns)
+
 
 def test_parse_paginate_logs():
     nlp_service = MockNLPService()
@@ -112,6 +117,7 @@ def test_parse_paginate_logs():
     assert df.iloc[0]['words'][3] == "believe"
     assert df.iloc[0]['words'][4] == "hello"
 
+
 def test_merge_pages_df_same():
     df = pd.DataFrame([
         {
@@ -142,6 +148,7 @@ def test_merge_pages_df_same():
         },
     ])
     pd.testing.assert_frame_equal(df.sort_index(axis=1), out.sort_index(axis=1))
+
 
 def test_merge_pages_df():
     df = pd.DataFrame([
@@ -245,7 +252,7 @@ def test_merge_pages_df_multiple():
             "pos": ["NN", "NN", "NN", "NN", "NN", "NN", "NN", "NN"],
             "words": ["hello", "world", "don't", "believe", "hello", "world", "don't", "believe"],
             "unknownWords": ["believe", "hello", "believe", "hello"],
-            "unknownIndices": [3, 4, 3, 4,]
+            "unknownIndices": [3, 4, 3, 4, ]
         },
         {
             "time": 80,
@@ -261,6 +268,7 @@ def test_merge_pages_df_multiple():
     ])
     pd.testing.assert_frame_equal(df.sort_index(axis=1), out.sort_index(axis=1))
 
+
 def test_annotate_pages_df():
     df = pd.DataFrame([
         {
@@ -275,7 +283,7 @@ def test_annotate_pages_df():
             "unknownIndices": [3, 4]
         },
         {
-            "time":  3631,
+            "time": 3631,
             "userId": "test",
             "eltime": 20,
             "bookId": "test",
@@ -321,6 +329,7 @@ def test_annotate_pages_df():
     ])
     pd.testing.assert_frame_equal(df.sort_index(axis=1), df2.sort_index(axis=1))
 
+
 def test_extract_signals_df():
     df = pd.DataFrame([
         {
@@ -328,15 +337,13 @@ def test_extract_signals_df():
             "time": 30,
             "userId": "test",
             "session": 0,
-            "eltime": 20.0,
             "cheat": True,
-            'wpm': 30.0,
             "bookId": "test",
             "sids": ["test"],
             "pos": ["NN", "NN", "NN", "NN"],
             "words": ["hello", "world", "hello", "believe"],
             "unknownWords": ["hello", "believe"],
-            "unknownIndices": [0,3]
+            "unknownIndices": [0, 3]
         }
     ])
 
@@ -348,8 +355,6 @@ def test_extract_signals_df():
             "time": 30,
             "userId": "test",
             "session": 0,
-            "eltime": 20.0,
-            'wpm': 30.0,
             "cheat": True,
             "pos": "NN",
             "word": "hello",
@@ -360,8 +365,6 @@ def test_extract_signals_df():
             "time": 30,
             "userId": "test",
             "session": 0,
-            "eltime": 20.0,
-            'wpm': 30.0,
             "cheat": True,
             "pos": "NN",
             "word": "world",
@@ -372,8 +375,6 @@ def test_extract_signals_df():
             "time": 30,
             "userId": "test",
             "session": 0,
-            "eltime": 20.0,
-            'wpm': 30.0,
             "cheat": True,
             "pos": "NN",
             "word": "hello",
@@ -384,8 +385,6 @@ def test_extract_signals_df():
             "time": 30,
             "userId": "test",
             "session": 0,
-            "eltime": 20.0,
-            'wpm': 30.0,
             "cheat": True,
             "pos": "NN",
             "word": "believe",
@@ -394,7 +393,22 @@ def test_extract_signals_df():
     ])
     pd.testing.assert_frame_equal(df.sort_index(axis=1), df2.sort_index(axis=1))
 
+
 def test_clean_pages_df():
+    content = "hello world don't\"believe\""
+    book = Book(Metadata("test", "test", "", "test", ""), [
+        Chapter(
+            "test",
+            "test",
+            "test",
+            [
+                Sentence("test", False, content),
+                Sentence("test2", False, content),
+            ]
+        )
+    ])
+    service = BookService([book])
+
     df = pd.DataFrame([
         {
             "time": 10,
@@ -409,5 +423,161 @@ def test_clean_pages_df():
         }
     ])
 
-    df = clean_signals_df(df)
+    df = clean_pages_df(df, service)
+    items = [
+        {"id": "test",
+         "start": False,
+         "content": content,
+         "kind": "sentence"
+         },
+        {"id": "test2",
+         "start": False,
+         "content": content,
+         "kind": "sentence"
+         }
+    ]
+    import json
+    itemsJson = json.dumps(items)
 
+    df2 = pd.DataFrame([
+        {
+            "time": 10,
+            "userId": "test",
+            "eltime": 10,
+            "bookId": "test",
+            "words": ["hello", "world", "don't", "believe"],
+            "knownWords": ["world", "don't"],
+            "unknownWords": ["believe", "hello"],
+            "itemsJson": itemsJson
+        }
+    ])
+    pd.testing.assert_frame_equal(df.sort_index(axis=1), df2.sort_index(axis=1))
+
+
+def test_preprocess_paginate_logs():
+    config = Config(cluster_threshold=1, max_session_hours=12, cheat_eltime_threshold=12, filter_wpm_threshold=1000,
+                    notify_topic_arn="", firebase_cert=dict(), client_event_logs_s3_bucket="",
+                    generated_review_s3_bucket="", firebase_project_id="")
+    nlp_service = MockNLPService()
+    content = "hello world don't\"believe\""
+    book = Book(Metadata("test", "test", "", "test", ""), [
+        Chapter(
+            "test",
+            "test",
+            "test",
+            [
+                Sentence("test", False, content),
+                Sentence("test2", False, content),
+            ]
+        )
+    ])
+    service = BookService([book])
+    df = pd.DataFrame([
+        {
+            "userId": "test",
+            "fireId": "8VeJWtPHdmZ4apbb3bY3ThBBFZs1",
+            "classId": "test2",
+            "serverTime": "2020-03-20T15:34:52Z",
+            "time": "2020-03-20T15:34:52Z",
+            "type": "paginate",
+            "payload": "{\"type\":\"paginate\",\"sids\":[\"test\",\"test2\"],\"time\":64300,\"wordUnknowns\":[{\"word\":\"believe\",\"wordIndex\":3,\"sentenceId\":\"test\",\"time\":18500},{\"word\":\"hello\",\"wordIndex\":0,\"sentenceId\":\"test2\",\"time\":26000}],\"sentenceUnknowns\":[],\"bookId\":\"test\",\"chapterId\":\"test\"}"
+        },
+        {
+            "userId": "test",
+            "fireId": "8VeJWtPHdmZ4apbb3bY3ThBBFZs1",
+            "classId": "test2",
+            "serverTime": "2020-03-20T15:34:52Z",
+            "time": "2020-03-20T15:35:01Z",
+            "type": "paginate",
+            "payload": "{\"type\":\"paginate\",\"sids\":[\"test\",\"test2\"],\"time\":64300,\"wordUnknowns\":[{\"word\":\"believe\",\"wordIndex\":3,\"sentenceId\":\"test\",\"time\":18500},{\"word\":\"hello\",\"wordIndex\":0,\"sentenceId\":\"test2\",\"time\":26000}],\"sentenceUnknowns\":[],\"bookId\":\"test\",\"chapterId\":\"test\"}"
+        }
+    ])
+    df = preprocess_paginate_logs(df, nlp_service, service, config)
+    df2 = pd.DataFrame([
+        {
+            "pageId": 0,
+            "time": 1584718492,
+            "userId": "test",
+            "session": 0,
+            "eltime": 128.6,
+            "cheat": True,
+            "wpm": 3.7325,
+            "bookId": "test",
+            "sids": ["test", "test2"],
+            "pos": ["NN", "NN", "NN", "NN", "NN", "NN", "NN", "NN"],
+            "words": ["hello", "world", "don't", "believe", "hello", "world", "don't", "believe"],
+            "unknownWords": ["believe", "hello", "believe", "hello"],
+            "unknownIndices": [3, 4, 3, 4]
+        }
+    ])
+    pd.testing.assert_frame_equal(df.sort_index(axis=1), df2.sort_index(axis=1))
+
+def test_clean_signals_df():
+    nlp_service = MockNLPService()
+    df = pd.DataFrame([
+        {
+            "pageId": 0,
+            "time": 30,
+            "userId": "test",
+            "session": 0,
+            "cheat": True,
+            "pos": "NN",
+            "word": "hello",
+            "signal": 1.0,
+        },
+        {
+            "pageId": 0,
+            "time": 30,
+            "userId": "test",
+            "session": 0,
+            "cheat": True,
+            "pos": "NN",
+            "word": "world2",
+            "signal": 1.0,
+        },
+        {
+            "pageId": 0,
+            "time": 30,
+            "userId": "test",
+            "session": 0,
+            "cheat": True,
+            "pos": "NN",
+            "word": "world2",
+            "signal": 0.0,
+        },
+        {
+            "pageId": 0,
+            "time": 30,
+            "userId": "test",
+            "session": 0,
+            "cheat": True,
+            "pos": "NN",
+            "word": "world3",
+            "signal": 1.0,
+        }
+    ])
+    df = clean_signals_df(df, nlp_service)
+
+    df2 = pd.DataFrame([
+        {
+            "pageId": 0,
+            "time": 30,
+            "userId": "test",
+            "session": 0,
+            "cheat": True,
+            "pos": "NN",
+            "word": "world2",
+            "signal": 1.0,
+        },
+        {
+            "pageId": 0,
+            "time": 30,
+            "userId": "test",
+            "session": 0,
+            "cheat": True,
+            "pos": "NN",
+            "word": "world2",
+            "signal": 0.0,
+        },
+    ])
+    pd.testing.assert_frame_equal(df.sort_index(axis=1).reset_index(drop=True), df2.sort_index(axis=1))

@@ -6,9 +6,13 @@ import numpy as np
 from dataserver.booky.book import split_sentence, Book
 from dataserver.job.utils import unnesting
 from dataserver.models.config import Config
-from dataserver.models.dataframe import ParsedPagesDataFrame, SignalDataFrame
+from dataserver.models.dataframe import ParsedPagesDataFrame, SignalDataFrame, LastSessionDataFrame
 from dataserver.service import BookService
 from dataserver.service.nlp import NLPService
+
+import time
+
+from dataserver.service.user import UserService
 
 
 def preprocess_paginate_logs(df, nlp_service: NLPService, book_service: BookService, config: Config):
@@ -23,6 +27,7 @@ def preprocess_paginate_logs(df, nlp_service: NLPService, book_service: BookServ
 
     df = annotate_pages_df(df, config.max_session_hours, config.cheat_eltime_threshold)
     return df
+
 
 def parse_paginate_logs(df, nlp_service: NLPService, book_service: BookService):
     schema = pa.DataFrameSchema({
@@ -40,8 +45,8 @@ def parse_paginate_logs(df, nlp_service: NLPService, book_service: BookService):
         df['bookId'] = df['payload'].map(lambda x: x['bookId'])
         df = df.loc[df['bookId'].isin(book_service.get_book_ids())]
         return df
-    pages_df = _flatten_payload(logs_df)
 
+    pages_df = _flatten_payload(logs_df)
 
     def _get_text(row):
         book_id = row['bookId']
@@ -55,7 +60,6 @@ def parse_paginate_logs(df, nlp_service: NLPService, book_service: BookService):
     pages_df['text'] = pages_df.apply(_get_text, axis=1).map(lambda x: x[0])
     pages_df = pages_df[['time', 'userId', 'eltime', 'bookId', 'text']]
 
-
     def _flatten_text(df):
         df['words'] = df['text'].map(lambda x: x['words'])
         df['pos'] = df['text'].map(lambda x: x['pos'])
@@ -67,15 +71,15 @@ def parse_paginate_logs(df, nlp_service: NLPService, book_service: BookService):
 
     pages_df = _flatten_text(pages_df)
 
-
-    from .utils import parse_ts
-    pages_df['time'] = pages_df['time'].map(lambda x: parse_ts(x))
+    from .utils import parse_ts_from_iso
+    pages_df['time'] = pages_df['time'].map(lambda x: parse_ts_from_iso(x))
     pages_df['eltime'] /= 1000.0
 
-
-    pages_df = pages_df[['time', 'userId', 'eltime', 'bookId', 'sids', 'pos', 'words', 'unknownWords', 'unknownIndices']]
+    pages_df = pages_df[
+        ['time', 'userId', 'eltime', 'bookId', 'sids', 'pos', 'words', 'unknownWords', 'unknownIndices']]
 
     return ParsedPagesDataFrame.validate(pages_df)
+
 
 def parse_word_unknowns(nlp_service: NLPService, book: Book, sids, word_unknowns):
     words = []
@@ -98,7 +102,7 @@ def parse_word_unknowns(nlp_service: NLPService, book: Book, sids, word_unknowns
                 unknown_words.append(tmp[wi])
         i += len(tmp)
     return {'words': words, 'pos': poss, 'unknownIndices': unknown_indices, 'unknownWords': unknown_words,
-      'sids': sids}
+            'sids': sids}
 
 
 def merge_pages_df(df, cluster_threshold: float):
@@ -130,7 +134,8 @@ def merge_pages_df(df, cluster_threshold: float):
 
             if last_time != 0 and time - last_time > cluster_threshold * 60:
                 out.append(
-                    {'time': time_, 'pos': pos_, 'eltime': eltime_, 'bookId': bookId_, 'unknownIndices': uis_, 'sids': sids_,
+                    {'time': time_, 'pos': pos_, 'eltime': eltime_, 'bookId': bookId_, 'unknownIndices': uis_,
+                     'sids': sids_,
                      'unknownWords': uwords_, 'words': words_, })
                 last_time = 0
 
@@ -154,15 +159,16 @@ def merge_pages_df(df, cluster_threshold: float):
                         'unknownWords': uwords_, 'words': words_, 'sids': sids_})
         return pd.DataFrame(out).reset_index(drop=True)
 
-    pages_df = pages_df\
-        .sort_values(['time'])\
-        .groupby(['userId', 'id'])\
-        .apply(merge)\
+    pages_df = pages_df \
+        .sort_values(['time']) \
+        .groupby(['userId', 'id']) \
+        .apply(merge) \
         .reset_index()
     del pages_df['level_2']
     del pages_df['id']
 
     return pages_df
+
 
 def annotate_pages_df(df, max_session_hours: float, cheat_eltime_threshold: float):
     pages_df = df
@@ -179,6 +185,7 @@ def annotate_pages_df(df, max_session_hours: float, cheat_eltime_threshold: floa
                 last = x
             out.append(i)
         return out
+
     pages_df['session'] = pages_df['time'].groupby(pages_df['userId']).transform(_extract_session)
 
     def _assign_cheat(df):
@@ -188,10 +195,12 @@ def annotate_pages_df(df, max_session_hours: float, cheat_eltime_threshold: floa
         eltimes = eltimes[['eltime', 'count']]
         eltimes['cheat'] = eltimes['eltime'].map(lambda x: x <= cheat_eltime_threshold * 60)
         return df.set_index('userId').join(eltimes[['cheat']]).reset_index()
+
     pages_df = _assign_cheat(pages_df)
 
     pages_df['pageId'] = np.arange(len(pages_df))
     return pages_df
+
 
 def extract_signals_df(pages_df):
     def _to_word(x):
@@ -221,22 +230,23 @@ def extract_signals_df(pages_df):
     pages_df['signal'] = pages_df.apply(_to_signal, axis=1)
     pages_df['pos'] = pages_df.apply(_to_pos, axis=1)
     pages_df = unnesting(
-        pages_df[['userId', 'cheat', 'session', 'pos', 'time', 'eltime', 'wpm', 'pageId', 'word', 'signal']],
-        ['word', 'pos', 'signal'], axis=1)
+        pages_df[['userId', 'cheat', 'session', 'pos', 'time', 'pageId', 'word', 'signal']],
+        ['word', 'pos', 'signal'])
     pages_df = pages_df.reset_index(drop=True)
 
     return SignalDataFrame.validate(pages_df)
 
+
 def clean_signals_df(signals_df, nlp_service: NLPService):
     df = signals_df
     df = df.loc[(df['signal'] == 0).groupby([df['userId'], df['word']]).transform('any')]
-    from nltk.corpus import stopwords
-    words = list(stopwords.words('english'))
+    words = nlp_service.get_stop_words()
     clean_signals_df = df.loc[~df['word'].isin(words)]
 
     return SignalDataFrame.validate(clean_signals_df)
 
-def clean_pages_df(pages_df, book_service):
+
+def clean_pages_df(pages_df, book_service: BookService):
     import json
     def _get_items_json(sids):
         out = []

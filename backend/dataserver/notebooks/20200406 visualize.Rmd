@@ -136,6 +136,8 @@ AAABBB
 p + p2  + plot_layout(design = layout)
 ```
 
+Although the POS distribution of the original text wasn't skewed towards NN (noun). We can see that significantly many nouns are present among the words that students looked up.
+
 
 ```{r warning=FALSE}
 
@@ -195,6 +197,11 @@ BBBBB
 p3 + p + p2 + plot_layout(design = layout)
 ```
 
+We can see that the more 0 present in the transition sequence, the slower its CDF grow across time. Especially, the purple transition (1->1->0) of forgetting was present at the later days than other transition types.
+
+This plot matches with the previous theories of memory: the longer the interval between the reviews, the more likely the student will forget it.
+
+
 ```{r warning=FALSE}
 
 signals <- signals %>%
@@ -253,6 +260,7 @@ BBBBB
 p3 + p + p2 + plot_layout(design = layout)
 ```
 
+The # of encounters 
 
 ```{r}
 diff_df <- signal_with_id %>%
@@ -485,22 +493,22 @@ p2 <- plot(freq_tree,
 
 ```{r}
 library(GGally)
+library(mice)
 
 diff_df <- signal_with_id %>%
     group_by(userId, word) %>%
     arrange(count) %>%
-    mutate(time = time - min(time)) %>%
-    mutate(csignal = cumsum(signal)/count) %>%
-    filter(time == max(time)) %>%
-    ungroup()
-    
+    mutate(diff = time - lag(time)) %>%
+    mutate(diff = diff/(60*60*24)) %>%
+    filter(!(diff == 0 | diff <= 0.1 | is.na(diff))) %>%
+    mutate(count = sequence(n())) %>%
+    mutate(csignal = cumsum(signal) / count, cdiff = cumsum(diff) / count) %>%
+    mutate(csignal = lag(csignal), cdiff = lag(cdiff)) %>%
+    filter(!(is.na(csignal))) %>%
+    mutate(ccount = max(count), time = time-min(time)) %>%
+    filter(ccount <= 15) %>% ungroup() %>% select(count, signal, csignal)
 
-df <- diff_df %>%
-  filter(count < 20) %>%
-  select(csignal, signal, time, count)
-  
-ggpairs(df)
+ggpairs(diff_df)
 ```
-
 
 

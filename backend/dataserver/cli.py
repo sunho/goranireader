@@ -1,6 +1,9 @@
 import click
 from dataserver.booky.book import read_epub, Book
 import json
+import subprocess
+import sys
+
 @click.group()
 def cli():
     pass
@@ -27,6 +30,7 @@ def xml2book(path):
     with open(path + ".book", "w") as f:
         f.write(json.dumps(buf))
 
-
-if __name__ == '__main__':
-    cli()
+@cli.command()
+@click.argument('flow')
+def run(flow):
+    subprocess.run([sys.executable, flow, "--environment=conda", "--no-pylint", "run"])

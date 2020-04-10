@@ -21,8 +21,6 @@ SignalDataFrame = pa.DataFrameSchema({
     "cheat": pa.Column(pa.Bool),
     "pos": pa.Column(pa.String),
     "time": pa.Column(pa.Int),
-    "eltime": pa.Column(pa.Float),
-    "wpm": pa.Column(pa.Float)
 }, strict=True)
 
 CleanPagesDataFrame = pa.DataFrameSchema({
@@ -49,4 +47,26 @@ SessionInfoDataFrame = pa.DataFrameSchema({
     "readWords": pa.Column(pa.Int),
     "unknownWords": pa.Column(pa.Int),
     "hours": pa.Column(pa.Float),
+}, strict=True)
+
+LastSessionDataFrame = pa.DataFrameSchema({
+    "userId": pa.Column(pa.String),
+    "session": pa.Column(pa.Int),
+}, strict=True)
+
+LastWordsDataFrame = pa.DataFrameSchema({
+    "userId": pa.Column(pa.String),
+    "session": pa.Column(pa.Int),
+    "lastWords": pa.Column(pa.String),
+    "targetLastWords": pa.Column(pa.Int)
+}, strict=True)
+
+StatsDataFrame = pa.DataFrameSchema({
+    "userId": pa.Column(pa.String),
+    "stats": pa.Column(pa.String)
+}, strict=True)
+
+ReviewDataFrame = pa.DataFrameSchema({
+    "userId": pa.Column(pa.String),
+    "review": pa.Column(pa.String)
 }, strict=True)

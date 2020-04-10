@@ -1,0 +1,83 @@
+---
+title: "20200409 feature generation"
+output: html_document
+---
+
+```{r message=FALSE, warning=FALSE}
+# general visualisation
+library('ggplot2') # visualisation
+library('scales') # visualisation
+library('patchwork') # visualisation
+library('RColorBrewer') # visualisation
+library('corrplot') # visualisation
+
+# general data manipulation
+library('dplyr') # data manipulation
+library('readr') # input/output
+library('vroom') # input/output
+library('skimr') # overview
+library('tibble') # data wrangling
+library('tidyr') # data wrangling
+library('purrr') # data wrangling
+library('stringr') # string manipulation
+library('forcats') # factor manipulation
+
+# specific visualisation
+library('alluvial') # visualisation
+library('ggrepel') # visualisation
+library('ggforce') # visualisation
+library('ggridges') # visualisation
+library('gganimate') # animations
+library('GGally') # visualisation
+library('ggthemes') # visualisation
+library('wesanderson') # visualisation
+library('kableExtra') # display
+
+# Date + forecast
+library('lubridate') # date and time
+library('forecast') # time series analysis
+library('prophet') # time series analysis
+library('timetk') # time series analysis
+
+# Interactivity
+library('crosstalk')
+library('plotly')
+
+# parallel
+library('foreach')
+library('doParallel')
+library('SnowballC')
+```
+
+```{r}
+library(mgcv)
+clean_pages <- vroom(str_c('clean_pages.csv'), delim = ",", col_types = cols())
+session_info <- vroom(str_c('sess.csv'), delim = ",", col_types = cols())
+signals <- vroom(str_c('signals.csv'), delim = ",", col_types = cols())
+clean_signals <- vroom(str_c('csignals.csv'), delim = ",", col_types = cols())
+
+signals <- signals %>%
+  mutate(word = wordStem(word, language = "porter"))
+
+signal_with_id <- signals %>% 
+  group_by(userId, word) %>% 
+  mutate(count = sequence(n()))
+```
+
+```{r}
+
+diff_df <- signal_with_id %>%
+    group_by(userId, word) %>%
+    arrange(count) %>%
+    mutate(diff = time - lag(time)) %>%
+    mutate(diff = diff/(60*60*24)) %>%
+    filter(!(diff == 0 | diff <= 0.1 | is.na(diff))) %>%
+    mutate(count = sequence(n())) %>%
+    mutate(csignal = cumsum(signal) / count, cdiff = cumsum(diff) / count) %>%
+    mutate(csignal = lag(csignal), cdiff = lag(cdiff)) %>%
+    filter(!(is.na(csignal))) %>%
+    mutate(ccount = max(count), time = time-min(time)) %>%
+    filter(ccount <= 15) %>% ungroup() %>% select(userId, word, count, signal, csignal, diff)
+write.csv(diff_df, 'word_csignal_tred.csv', row.names = FALSE, quote = FALSE)
+```
+

@@ -1,6 +1,5 @@
 import boto3
 from botocore.exceptions import ClientError
-from dataserver.utils import split_sentence, unnesting
 from metaflow import FlowSpec, step, Flow, IncludeFile, conda_base
 import pandas as pd
 import json
@@ -13,7 +12,7 @@ import time
 from datetime import datetime, timedelta
 from pytz import timezone, utc
 import pandera as pa
-from dataserver.utils import pip
+from dag.decorators import pip
 
 LastSessionDataFrame = pa.DataFrameSchema({
     "userId": pa.Column(pa.String),
