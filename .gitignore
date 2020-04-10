@@ -5,6 +5,7 @@
 *.swp
 *.bak
 /backend/dataserver/dataserver/bookcli/books
+/backend/dataserver/runs
 ._*
 .metaflow
 /backend/dataserver/books

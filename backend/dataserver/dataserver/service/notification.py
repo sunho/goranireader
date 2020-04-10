@@ -2,10 +2,6 @@ import boto3
 import json
 from datetime import datetime
 
-import sys
-
-# topic_arn = 'arn:aws:sns:ap-northeast-2:926877676119:notify-discord'
-
 class NotificationService:
     def __init__(self, config):
         self.topic_arn = config.notify_topic_arn
@@ -42,7 +38,3 @@ class NotificationService:
             }),
         )
         print(response)
-
-#
-# if __name__ == '__main__':
-#     log_msg(sys.argv[1], 'ERROR', True)
