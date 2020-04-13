@@ -21,7 +21,7 @@ class LoadMetadata(FlowSpec):
         import yaml
         self.config = Config(**yaml.load(self.config_file))
 
-        self.next(self.download_firebase)
+        self.next(self.download_vocab_skills)
 
     @step
     def download_vocab_skills(self):
@@ -32,7 +32,7 @@ class LoadMetadata(FlowSpec):
         self.vocab_skills = [VocabSkill(**json.load(buf))
                              for buf in service.fetch_all_files(self.config.vocab_skills_s3_bucket)]
 
-        self.next(self.download_logs)
+        self.next(self.end)
 
     @step
     def end(self):
