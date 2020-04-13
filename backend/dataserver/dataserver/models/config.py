@@ -10,3 +10,4 @@ class Config(NamedTuple):
     firebase_cert: dict
     client_event_logs_s3_bucket: str
     generated_review_s3_bucket: str
+    vocab_skills_s3_bucket: str

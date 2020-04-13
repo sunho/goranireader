@@ -1,8 +1,11 @@
 import click
 from dataserver.booky.book import read_epub, Book
+from dataserver.service.notification import NotificationService
+from dataserver.models.config import Config
 import json
 import subprocess
 import sys
+import yaml
 
 @click.group()
 def cli():
@@ -30,7 +33,25 @@ def xml2book(path):
     with open(path + ".book", "w") as f:
         f.write(json.dumps(buf))
 
+def execute(cmd):
+    popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
+    for stdout_line in iter(popen.stdout.readline, ""):
+        yield stdout_line
+    popen.stdout.close()
+    return_code = popen.wait()
+    if return_code:
+        raise subprocess.CalledProcessError(return_code, cmd)
+
 @cli.command()
 @click.argument('flow')
 def run(flow):
-    subprocess.run([sys.executable, flow, "--environment=conda", "--no-pylint", "run"])
+    try:
+        for path in execute([sys.executable, 'dag/' + flow + '.py', "--environment=conda", "--no-pylint", "run"]):
+            print(path, end="")
+    except subprocess.CalledProcessError as e:
+        with open('config.yaml') as f:
+            service = NotificationService(config=Config(**yaml.load(f)))
+            service.complete_flow(flow, "ERROR", True)
+
+if __name__ == '__main__':
+    cli()
