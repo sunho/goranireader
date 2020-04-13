@@ -19,6 +19,7 @@ SignalDataFrame = pa.DataFrameSchema({
     "userId": pa.Column(pa.String),
     "session": pa.Column(pa.Int),
     "cheat": pa.Column(pa.Bool),
+    'wpm':  pa.Column(pa.Float),
     "pos": pa.Column(pa.String),
     "time": pa.Column(pa.Int),
 }, strict=True)

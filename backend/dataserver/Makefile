@@ -3,15 +3,27 @@ all: end
 
 
 download:
-	./run.sh ./download_log.py
+	PYTHONPATH=$PWD python ./cli.py run download_log
 
-pre-process: download
-	./run.sh ./preprocess_paginate.py
+load_metadata:
+	PYTHONPATH=$PWD python ./cli.py run load_metadata
 
-generate-review: pre-process
-	./run.sh ./generate_review.py
+preprocess: download load_metadata
+	PYTHONPATH=$PWD python ./cli.py run preprocess_paginate
 
-daily: generate-review
+prepare_features: preprocess
+	PYTHONPATH=$PWD python ./cli.py run prepare_features
+
+predict_vocab: prepare_features
+	PYTHONPATH=$PWD python ./cli.py run predict_vocab
+
+generate_stats: predict_vocab
+	PYTHONPATH=$PWD python ./cli.py run generate_stats
+
+generate_review: generate_stats
+	PYTHONPATH=$PWD python ./cli.py run preprocess_paginate
+
+daily: generate_review
 	echo "complete"
 
 login: 
