@@ -6,6 +6,8 @@ notify_topic_arn: "arn:aws:sns:ap-northeast-2:926877676119:notify-discord"
 firebase_project_id: gorani-reader-249509
 client_event_logs_s3_bucket: gorani-reader-client-event-logs
 generated_review_s3_bucket: gorani-reader-generated-reviews
+word2vec_k: 5
+vocab_skills_s3_bucket: gorani-reader-vocab-skills
 firebase_cert:
   type: "service_account"
   project_id: "gorani-reader-249509"

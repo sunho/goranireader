@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 from dataserver.job.prepare_features import prepare_simple_features, prepare_series_features
-from dataserver.job.prepare_features import annotate_simple_features
+from dataserver.job.prepare_features import annotate_simple_features, extract_recent_features
 from dataserver.tests.mocks.nlp_service import MockNLPService
 
 
@@ -267,8 +267,8 @@ def test_annotate_simple_features():
             'userId': 'test'
         },
         {
-            'oword': 'hey',
-            'word': 'hey',
+            'oword': 'hey2',
+            'word': 'hey2',
             'signal': 1.0,
             'otime': 800030,
             'diff': (400000.0 / (60 * 60 * 24)),
@@ -294,4 +294,89 @@ def test_annotate_simple_features():
     vec_model = MockVecModel()
     import pyphen
     dic = pyphen.Pyphen(lang='en_US')
-    annotate_simple_features(df, vec_model, dic, 2)
+    df = annotate_simple_features(df, vec_model, dic, 2)
+    df2 = pd.DataFrame([
+        {
+            'oword': 'hey',
+            'word': 'hey',
+            'otime': 400030,
+            'signal': 0.0,
+            'diff': (400000.0 / (60 * 60 * 24)),
+            'csignal': 1.0,
+            'count': 1,
+            "wpm": 10.0,
+            'pos': "NN",
+            'time': 400000,
+            'userId': 'test',
+            0: 1,
+            1: 0,
+            'len': 3,
+            'syl': 1
+        },
+        {
+            'oword': 'hey2',
+            'word': 'hey2',
+            'otime': 800030,
+            'signal': 1.0,
+            'diff': (400000.0 / (60 * 60 * 24)),
+            'csignal': 0.5,
+            'count': 2,
+            "wpm": 10.0,
+            'pos': "NN",
+            'time': 800000,
+            'userId': 'test',
+            0: 0,
+            1: 1,
+            'len': 4,
+            'syl': 1
+        }
+    ])
+    pd.testing.assert_frame_equal(df, df2, check_dtype=False)
+
+def test_extract_recent_features():
+    df = pd.DataFrame([
+        {
+            'oword': 'hey',
+            'word': 'hey',
+            'otime': 400030,
+            'signal': 0.0,
+            'diff': (400000.0 / (60 * 60 * 24)),
+            'csignal': 1.0,
+            'count': 1,
+            "wpm": 10.0,
+            'pos': "NN",
+            'time': 400000,
+            'userId': 'test'
+        },
+        {
+            'oword': 'hey',
+            'word': 'hey',
+            'signal': 1.0,
+            'otime': 800030,
+            'diff': (400000.0 / (60 * 60 * 24)),
+            'csignal': 0.5,
+            'count': 2,
+            "wpm": 10.0,
+            'pos': "NN",
+            'time': 800000,
+            'userId': 'test'
+        }
+    ])
+
+    df = extract_recent_features(df)
+    df2 = pd.DataFrame([
+        {
+            'oword': 'hey',
+            'word': 'hey',
+            'otime': 800030,
+            'signal': 1.0,
+            'diff': (400000.0 / (60 * 60 * 24)),
+            'csignal': (2/3),
+            'count': 3,
+            "wpm": 10.0,
+            'pos': "NN",
+            'time': 800000,
+            'userId': 'test'
+        }
+    ])
+    pd.testing.assert_frame_equal(df, df2, check_dtype=False)

@@ -52,6 +52,6 @@ def run(flow):
         with open('config.yaml') as f:
             service = NotificationService(config=Config(**yaml.load(f)))
             service.complete_flow(flow, "ERROR", True)
-
+        raise
 if __name__ == '__main__':
     cli()
