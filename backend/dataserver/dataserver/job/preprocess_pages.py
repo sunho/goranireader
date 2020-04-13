@@ -92,14 +92,14 @@ def parse_word_unknowns(nlp_service: NLPService, book: Book, sids, word_unknowns
         tmp = split_sentence(sentence)
         pos = [x[1] for x in nlp_service.pos_tag(tmp)]
         poss.extend(pos)
-        words.extend(tmp)
+        words.extend([str(word).lower() for word in tmp])
         for wu in word_unknowns:
             if wu['sentenceId'] == sid:
                 wi = wu['wordIndex']
                 if tmp[wi] != wu['word']:
                     raise Exception(sentence + ' ' + sid + ' word mismatch: ' + tmp[wi] + ',' + wu['word'])
                 unknown_indices.append(wi + i)
-                unknown_words.append(tmp[wi])
+                unknown_words.append(str(tmp[wi]).lower())
         i += len(tmp)
     return {'words': words, 'pos': poss, 'unknownIndices': unknown_indices, 'unknownWords': unknown_words,
             'sids': sids}
@@ -230,8 +230,9 @@ def extract_signals_df(pages_df):
     pages_df['signal'] = pages_df.apply(_to_signal, axis=1)
     pages_df['pos'] = pages_df.apply(_to_pos, axis=1)
     pages_df = unnesting(
-        pages_df[['userId', 'cheat', 'session', 'pos', 'time', 'pageId', 'word', 'signal']],
+        pages_df[['userId', 'cheat', 'session', 'wpm', 'pos', 'time', 'pageId', 'word', 'signal']],
         ['word', 'pos', 'signal'])
+    pages_df = pages_df.loc[~pd.isna(pages_df['pos'])]
     pages_df = pages_df.reset_index(drop=True)
 
     return SignalDataFrame.validate(pages_df)

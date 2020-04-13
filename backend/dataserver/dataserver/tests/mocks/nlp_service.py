@@ -6,3 +6,6 @@ class MockNLPService:
 
     def get_stop_words(self):
         return ["hello"]
+
+    def stem(self, word):
+        return word

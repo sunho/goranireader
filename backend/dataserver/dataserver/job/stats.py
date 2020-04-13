@@ -1,12 +1,15 @@
 import json
 import time
 import pandas as pd
+import typing
 
 from pytz import timezone, utc
 from datetime import datetime
 
 from dataserver.models.dataframe import SessionInfoDataFrame, LastSessionDataFrame
+from dataserver.models.vocab_skill import VocabSkill
 from dataserver.service.user import UserService
+from dataserver.service.nlp import NLPService
 
 def extract_session_info_df(signals_df, clean_pages_df):
     df = signals_df.groupby(['userId', 'session']) \
@@ -53,6 +56,13 @@ def extract_last_session_df(session_info_df, user_service: UserService, last_wor
         last_session_df['session'] = last_session_df['session'].astype('int64')
 
     return LastSessionDataFrame.validate(last_session_df)
+
+def calculate_vocab_skills(df, vocabs: typing.List[VocabSkill], nlp_service: NLPService):
+
+    for vocab in vocabs:
+        vocab.name
+        pd.DataFrame(vocab.words)
+
 
 # start = time.time() - self.last_stats_days * 24 * 60 * 60
 #    .loc[(start < stats_df['start']) & (stats_df['end'] < end)]
