@@ -8,6 +8,7 @@ class Config(NamedTuple):
     notify_topic_arn: str
     firebase_project_id: str
     firebase_cert: dict
+    word2vec_k: int
     client_event_logs_s3_bucket: str
     generated_review_s3_bucket: str
     vocab_skills_s3_bucket: str
