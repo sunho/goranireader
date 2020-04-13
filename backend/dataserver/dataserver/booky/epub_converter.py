@@ -41,10 +41,22 @@ def convert_epub(book):
                 cover = base64.b64encode(cover_image.get_content()).decode('utf-8')
             else:
                 cover = ''
+    items = _book_to_chapters(book)
+    for chap in items:
+        for item in chap.items:
+            if item.kind == 'image':
+                image = item
+                break
+
+    if cover == '':
+        if image is not None:
+            cover = image.image
+            coverType = image.imageType
+
     title = book.get_metadata('DC', 'title')[0][0]
     author = book.get_metadata('DC', 'creator')[0][0]
-    meta = Metadata(0, title, cover, author, coverType)
-    return meta, _book_to_chapters(book)
+    meta = Metadata(str(uuid.uuid4())[:8], title, cover, author, coverType)
+    return meta, items
 
 def _get_item_by_href(book, href:str):
     for item in book.get_items():
