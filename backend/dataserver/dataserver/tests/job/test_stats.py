@@ -163,7 +163,8 @@ def test_extract_last_session_df_simple(monkeypatch):
     df2 = pd.DataFrame([
         {
             "userId": "test",
-            "session": 0
+            "session": 0,
+            'end': 30
         }
     ])
     pd.testing.assert_frame_equal(df.sort_index(axis=1).reset_index(drop=True), df2.sort_index(axis=1))
@@ -178,7 +179,8 @@ def test_extract_last_session_df_simple(monkeypatch):
     df2 = pd.DataFrame([
         {
             "userId": "test",
-            "session": 1
+            "session": 1,
+            'end': 50
         }
     ])
     pd.testing.assert_frame_equal(df.sort_index(axis=1).reset_index(drop=True), df2.sort_index(axis=1))
@@ -195,7 +197,8 @@ def test_extract_last_session_df_simple(monkeypatch):
     df2 = pd.DataFrame([
         {
             "userId": "test",
-            "session": -1
+            "session": -1,
+            'end': 0
         }
     ])
     pd.testing.assert_frame_equal(df.sort_index(axis=1).reset_index(drop=True), df2.sort_index(axis=1))
@@ -238,7 +241,8 @@ def test_extract_last_session_df_skip(monkeypatch):
     df2 = pd.DataFrame([
         {
             "userId": "test",
-            "session": 0
+            "session": 0,
+            'end': 40
         }
     ])
     pd.testing.assert_frame_equal(df.sort_index(axis=1).reset_index(drop=True), df2.sort_index(axis=1))
@@ -281,7 +285,8 @@ def test_extract_last_session_df_no_user(monkeypatch):
     df2 = pd.DataFrame([
         {
             "userId": "test",
-            "session": -1
+            "session": -1,
+            'end': 0
         }
     ])
     pd.testing.assert_frame_equal(df.sort_index(axis=1).reset_index(drop=True), df2.sort_index(axis=1))
@@ -314,7 +319,8 @@ def test_extract_last_session_df_no_available(monkeypatch):
     df2 = pd.DataFrame([
         {
             "userId": "test",
-            "session": -1
+            "session": -1,
+            'end': 0
         }
     ])
     pd.testing.assert_frame_equal(df.sort_index(axis=1).reset_index(drop=True), df2.sort_index(axis=1))
