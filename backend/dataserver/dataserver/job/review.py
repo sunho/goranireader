@@ -32,20 +32,33 @@ def decide_review_words(unknown_words_df, vocab_skills, last_session_df, conside
     df = df.sort_values(['userId', 'priority'], ascending=False)
     return df.reset_index(drop=True)
 
+def decide_target_words(words_df):
+    user_ids = words_df['userId'].unique()
+    return pd.DataFrame(
+        [
+            {
+                'userId': user_id,
+                'targetReviewWords': int(len(words_df.loc[words_df['userId'] == user_id]) / 2)
+            }
+            for user_id in user_ids
+        ]
+    )
+
 def serialize_review_words_df(words_df, clean_pages_df, target_df):
     words_df = words_df[['userId', 'word', 'pageId', 'priority']]
     words_df = words_df.set_index(['userId', 'pageId'])
 
-    items_df = clean_pages_df.set_index(['userId', 'pageId'])[['itemsJson']]
+    items_df = clean_pages_df.set_index(['userId', 'pageId'])[['itemsJson', 'time']]
 
     combined_df = words_df.join(items_df, how='inner')
-    combined_df = combined_df.reset_index()[['userId', 'word', 'priority', 'itemsJson']]
+    combined_df = combined_df.reset_index()[['userId', 'word', 'time', 'priority', 'itemsJson']]
 
     def serialize(df):
         out = []
         for _, row in df.iterrows():
             item = {
                 'word': row['word'],
+                'time': row['time'],
                 'items': json.loads(row['itemsJson'])
             }
             out.append(item)
@@ -95,7 +108,7 @@ def serialize_stats_df(session_info_df):
         .reset_index()
 
 def combine_serialized_dfs(stats_df, review_words_df, last_session_df, session_info_df):
-    last_session_df = last_session_df.set_index(['userId', 'session'])
+    last_session_df = last_session_df.set_index(['userId', 'session'])[[]]
     time_df = session_info_df.set_index(['userId', 'session'])[['start', 'end']]
     combined_df = last_session_df.join(time_df, how='inner').reset_index()
     del combined_df['session']

@@ -27,11 +27,13 @@ def test_serialize_review_words_df():
         {
             "userId": "test",
             "pageId": 0,
+            "time": 1,
             "itemsJson": '"page 0"'
         },
         {
             "userId": "test",
             "pageId": 1,
+            "time": 1,
             "itemsJson": '"page 1"'
         }
     ])
@@ -44,10 +46,12 @@ def test_serialize_review_words_df():
     words = [
         {
             "word": "1",
+            "time": 1,
             "items": "page 0"
         },
         {
             "word": "2",
+            "time": 1,
             "items": "page 1"
         }
     ]
