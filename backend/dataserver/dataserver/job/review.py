@@ -11,6 +11,7 @@ def decide_review_words(unknown_words_df, vocab_skills, last_session_df, conside
     last_session_df = last_session_df.copy()
     unknown_words_df = unknown_words_df.copy()
     user_ids = last_session_df.loc[last_session_df['session'] != -1]['userId']
+    last_session_df = last_session_df.loc[last_session_df['session'] != -1]
     last_session_df['start'] = last_session_df['end'] - (consider_hours*60*60)
     unknown_words_df = unknown_words_df.loc[unknown_words_df['userId'].isin(user_ids)]
     unknown_words_df = unknown_words_df.set_index('userId')
@@ -38,7 +39,7 @@ def decide_target_words(words_df):
         [
             {
                 'userId': user_id,
-                'targetReviewWords': int(len(words_df.loc[words_df['userId'] == user_id]) / 2)
+                'targetReviewWords': min(100, int(len(words_df.loc[words_df['userId'] == user_id]) / 2))
             }
             for user_id in user_ids
         ]
@@ -135,9 +136,8 @@ def combine_serialized_dfs(stats_df, review_words_df, last_session_df, session_i
         return pd.Series({'review': json.dumps(out)})
 
     combined_df = combined_df \
-        .reset_index() \
         .set_index('userId') \
         .apply(combine, axis=1) \
-        .reset_index()
+        .reset_index()[['userId', 'review']]
 
     return ReviewDataFrame.validate(combined_df)

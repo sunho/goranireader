@@ -171,7 +171,8 @@ def merge_pages_df(df, cluster_threshold: float):
 
 
 def annotate_pages_df(df, max_session_hours: float, cheat_eltime_threshold: float):
-    pages_df = df
+    pages_df = df.copy()
+    pages_df = pages_df.sort_values('time')
 
     def _extract_session(time):
         i = 0
