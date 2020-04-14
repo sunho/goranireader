@@ -26,7 +26,7 @@ generate_stats: predict_vocab
 	PYTHONPATH=${PWD} python ./cli.py run generate_stats
 
 generate_review: generate_stats
-	PYTHONPATH=${PWD} python ./cli.py run preprocess_paginate
+	PYTHONPATH=${PWD} python ./cli.py run generate_review
 
 daily: generate_review
 	echo "complete"
