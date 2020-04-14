@@ -1,11 +1,18 @@
 import click
 from dataserver.booky.book import read_epub, Book
+from dataserver.service.nlp import NLPService
 from dataserver.service.notification import NotificationService
 from dataserver.models.config import Config
+import pandas as pd
 import json
 import subprocess
+
 import sys
 import yaml
+
+import sys, os
+sys.path.append(os.getcwd())
+
 
 @click.group()
 def cli():
@@ -32,6 +39,22 @@ def xml2book(path):
     buf = book.to_dict()
     with open(path + ".book", "w") as f:
         f.write(json.dumps(buf))
+
+@cli.command()
+@click.argument('name')
+@click.argument('importance')
+@click.argument('path')
+def csv2yaml(name, importance, path):
+    nlp_service = NLPService()
+    df = pd.read_csv(path)
+    words = df['word'].map(nlp_service.stem).unique().tolist()
+    out = {
+        'name': name,
+        'importance': float(importance),
+        'words': words
+    }
+    with open(path+'.yaml', 'w') as f:
+        yaml.dump(out, f)
 
 def execute(cmd):
     popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)

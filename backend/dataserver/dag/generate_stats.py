@@ -1,74 +1,70 @@
-import boto3
-from botocore.exceptions import ClientError
-from metaflow import FlowSpec, step, Flow, IncludeFile, conda_base
-import pandas as pd
-import json
-import uuid
-import typing
-import numpy as np
-from dataserver.booky import Book
-from pandas import DataFrame
-import time
-from datetime import datetime, timedelta
-from pytz import timezone, utc
-import pandera as pa
+from metaflow import FlowSpec, step, IncludeFile, conda_base, Flow
+
+from dataserver.models.vocab_skill import VocabSkill
+from dataserver.job.stats import extract_session_info_df, extract_last_session_df, calculate_vocab_skills
+from dataserver.service.notification import NotificationService
 from dag.decorators import pip
+from dag.deps import deps
 
-LastSessionDataFrame = pa.DataFrameSchema({
-    "userId": pa.Column(pa.String),
-    "session": pa.Column(pa.Int),
-}, strict=True)
+from dataserver.models.config import Config
+from dataserver.service.s3 import S3Service
+from dataserver.service.user import UserService
 
-LastWordsDataFrame = pa.DataFrameSchema({
-    "userId": pa.Column(pa.String),
-    "session": pa.Column(pa.Int),
-    "lastWords": pa.Column(pa.String),
-    "targetLastWords": pa.Column(pa.Int)
-}, strict=True)
 
-StatsDataFrame = pa.DataFrameSchema({
-    "userId": pa.Column(pa.String),
-    "stats": pa.Column(pa.String)
-}, strict=True)
-
-ReviewDataFrame = pa.DataFrameSchema({
-    "userId": pa.Column(pa.String),
-    "review": pa.Column(pa.String)
-}, strict=True)
-
-@conda_base(libraries= {
-    'boto3': '1.12',
-    'booky': '1.0.5',
-    'pandera': '0.3.2',
-    'rsa': '4.0'
-})
-class GenerateReview(FlowSpec):
-    firebase_key = IncludeFile(
-        'firebase-key',
+@conda_base(libraries= deps)
+class GenerateStats(FlowSpec):
+    config_file = IncludeFile(
+        'config',
         is_text=False,
-        help='Firebase Key File',
-        default='./firebase-key.json')
+        help='Config Key File',
+        default='./config.yaml')
 
     @step
     def start(self):
         flow = Flow('DownloadLog').latest_successful_run
-        print('using data from flow: %s' % flow.id)
+        print('using users data from flow: %s' % flow.id)
+
         self.users = flow.data.users
 
-        flow = Flow('PreprocessPaginate').latest_successful_run
-        print('using data from flow: %s' % flow.id)
-        self.session_info_df = flow.data.session_info_df
-        self.clean_pages_df = flow.data.clean_pages_df
-        self.signals_df = flow.data.signals_df
-        self.last_words_after_hours = 12
-        self.skip_session_hours = 0.1
-        self.last_stats_days = 14
 
-        self.next(self.preprocess)
+        flow = Flow('LoadMetadata').latest_successful_run
+        print('using vocab skills data from flow: %s' % flow.id)
+
+        self.vocab_skills = flow.data.vocab_skills
+
+        flow = Flow('PredictVocab').latest_successful_run
+        print('using vocab data from flow: %s' % flow.id)
+
+        self.known_words_df = flow.data.known_words_df
+
+        flow = Flow('PreprocessPaginate').latest_successful_run
+        print('using signals data from flow: %s' % flow.id)
+
+        self.signals_df = flow.data.signals_df
+        self.clean_pages_df = flow.data.clean_pages_df
+
+        import yaml
+        self.config = Config(**yaml.load(self.config_file))
+
+        self.next(self.generate_stats)
+
+    @step
+    def generate_stats(self):
+        user_service = UserService(self.users)
+        self.vocab_skill_df = calculate_vocab_skills(self.known_words_df, self.vocab_skills)
+        self.session_info_df = extract_session_info_df(self.signals_df, self.clean_pages_df)
+        self.last_session_df = extract_last_session_df(self.session_info_df,
+                                                       user_service,
+                                                       self.config.last_session_after_hours,
+                                                       self.config.skip_session_hours)
+
+        self.next(self.end)
 
     @step
     def end(self):
-        print(self.review_df[['userId']])
+        service = NotificationService(self.config)
+        service.complete_flow("Generate Stats", "", False)
+
 
 if __name__ == '__main__':
-    GenerateReview()
+    GenerateStats()
