@@ -53,6 +53,7 @@ SessionInfoDataFrame = pa.DataFrameSchema({
 LastSessionDataFrame = pa.DataFrameSchema({
     "userId": pa.Column(pa.String),
     "session": pa.Column(pa.Int),
+    "end": pa.Column(pa.Int)
 }, strict=True)
 
 LastWordsDataFrame = pa.DataFrameSchema({

@@ -45,6 +45,7 @@ def test_prepare_numeric_features():
 
     df2 = pd.DataFrame([
         {
+            "pageId": 0,
             'oword': 'hey',
             'word': 'hey',
             'otime': 400030,
@@ -58,6 +59,7 @@ def test_prepare_numeric_features():
             'userId': 'test'
         },
         {
+            "pageId": 0,
             'oword': 'hey',
             'word': 'hey',
             'signal': 1.0,
@@ -135,6 +137,7 @@ def test_prepare_numeric_features2():
 
     df2 = pd.DataFrame([
         {
+            "pageId": 0,
             'oword': 'hey',
             'word': 'hey',
             'otime': 400030,
@@ -148,6 +151,7 @@ def test_prepare_numeric_features2():
             'userId': 'test'
         },
         {
+            "pageId": 0,
             'oword': 'hey',
             'word': 'hey',
             'otime': 800030,
@@ -161,6 +165,7 @@ def test_prepare_numeric_features2():
             'userId': 'test'
         },
         {
+            "pageId": 0,
             'oword': 'hey2',
             'word': 'hey2',
             'signal': 0.0,

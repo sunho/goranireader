@@ -19,7 +19,7 @@ def prepare_simple_features(signals_df, nlp_service):
         .cumcount().add(1)
     df['ccount'] = df.groupby(['userId', 'word'])['count'].transform(max)
     df = df.loc[df['ccount'] <= 15]
-    return df[['otime', 'userId', 'oword', 'word',  'time', 'count', 'signal', 'wpm', 'csignal', 'diff', 'pos']]\
+    return df[['otime', 'pageId', 'userId', 'oword', 'word',  'time', 'count', 'signal', 'wpm', 'csignal', 'diff', 'pos']]\
         .reset_index(drop=True)
 
 
@@ -73,9 +73,9 @@ def annotate_simple_features(raw_df, vec_model, dic, k):
 
 def split_simple_features(df):
     meta_df = df.iloc[:, (df.columns == 'userId') | (df.columns == 'otime') | (df.columns == 'oword')
-                              | (df.columns == 'word') | (df.columns == 'pos')]
+                              | (df.columns == 'word') | (df.columns == 'pos') | (df.columns == 'pageId')]
     data_df = df.iloc[:, (df.columns != 'userId') & (df.columns != 'otime') & (df.columns != 'oword')
-                              & (df.columns != 'word') & (df.columns != 'pos')]
+                              & (df.columns != 'word') & (df.columns != 'pos') & (df.columns != 'pageId')]
     y = 1 - data_df['signal']
     x = data_df.iloc[:, data_df.columns != 'signal']
     return x.to_numpy(), y.to_numpy(), meta_df

@@ -2,22 +2,35 @@ import json
 
 import pandas as pd
 
-from pytz import timezone, utc
-from datetime import datetime
 import uuid
 import time
 
-#
-# last_session_df = last_session_df.set_index(['userId', 'session'])
-# words_df = signals_df.set_index(['userId', 'session']).join(last_session_df, how='inner')
-# # words_df = words_df.query('signal == 0')
-# # filter last session and unknown
-# count_df = signals_df.reset_index().drop_duplicates(['word', 'i']).groupby(['userId', 'session', 'word']).agg(
-#     count=('i', 'count'))
-# .drop_duplicates(['word'])
-# .reset_index().
-
 from dataserver.models.dataframe import ReviewDataFrame
+
+def decide_review_words(unknown_words_df, vocab_skills, last_session_df, consider_hours):
+    last_session_df = last_session_df.copy()
+    unknown_words_df = unknown_words_df.copy()
+    user_ids = last_session_df.loc[last_session_df['session'] != -1]['userId']
+    last_session_df['start'] = last_session_df['end'] - (consider_hours*60*60)
+    unknown_words_df = unknown_words_df.loc[unknown_words_df['userId'].isin(user_ids)]
+    unknown_words_df = unknown_words_df.set_index('userId')
+    last_session_df = last_session_df.set_index('userId')
+
+    df = unknown_words_df.join(last_session_df, how='inner')
+    df = df.loc[(df['start'] < df['time']) & (df['time'] < df['end'])]
+    def _calculate_priority(row):
+        out = (row['time'] - row['start']) / (consider_hours*60*60)
+        for vocab_skill in vocab_skills:
+            if row['word'] in vocab_skill.words:
+                out += vocab_skill.importance
+        out /= sum([vc.importance for vc in vocab_skills])
+        return out
+    df['priority'] = df.apply(_calculate_priority, axis=1)
+    df['word'] = df['oword']
+    df = df.reset_index()
+    df = df[['userId', 'pageId', 'word', 'priority']]
+    df = df.sort_values(['userId', 'priority'], ascending=False)
+    return df.reset_index(drop=True)
 
 def serialize_review_words_df(words_df, clean_pages_df, target_df):
     words_df = words_df[['userId', 'word', 'pageId', 'priority']]
