@@ -272,7 +272,7 @@ def test_merge_pages_df_multiple():
 def test_annotate_pages_df():
     df = pd.DataFrame([
         {
-            "time": 30,
+            "time": 3631,
             "userId": "test",
             "eltime": 20,
             "bookId": "test",
@@ -283,7 +283,7 @@ def test_annotate_pages_df():
             "unknownIndices": [3, 4]
         },
         {
-            "time": 3631,
+            "time": 30,
             "userId": "test",
             "eltime": 20,
             "bookId": "test",
