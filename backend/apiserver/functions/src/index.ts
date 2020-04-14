@@ -1,2 +1,6 @@
-export { default as addLog } from './functions/addLog';
-export { default as addBook } from './functions/addBook';
+import express from 'express';
+
+export const app = express();
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
