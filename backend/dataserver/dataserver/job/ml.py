@@ -20,7 +20,7 @@ def predict_vocab( features, signals_df, model, nlp_service):
 
     x, z, meta_df = split_simple_features(features)
     y = classifier.predict(x)
-    df = meta_df[['otime', 'userId', 'word', 'oword']]
+    df = meta_df[['otime', 'userId', 'word', 'oword', 'pageId']]
     unknown_words_df = df.iloc[y == 1]
 
     signals = signals_df.copy()
@@ -37,8 +37,9 @@ def predict_vocab( features, signals_df, model, nlp_service):
 
     known_words_df = outer_join[~(outer_join._merge == 'both')].drop('_merge', axis=1)
     known_words_df['oword'] = known_words_df['oword_x']
+    known_words_df['pageId'] = known_words_df['pageId_x']
     unknown_words_df['time'] = unknown_words_df['otime']
 
-    unknown_words_df = unknown_words_df.reset_index()[['word', 'oword', 'userId', 'time']]
-    known_words_df = known_words_df.reset_index()[['word', 'oword', 'userId', 'time']]
+    unknown_words_df = unknown_words_df.reset_index()[['word', 'oword', 'pageId', 'userId', 'time']]
+    known_words_df = known_words_df.reset_index()[['word', 'oword', 'pageId', 'userId', 'time']]
     return known_words_df, unknown_words_df

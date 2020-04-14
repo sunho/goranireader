@@ -45,6 +45,7 @@ def test_predict_vocab():
 
     features = pd.DataFrame([
         {
+            "pageId": 0,
             'oword': 'world',
             'word': 'world',
             'otime': 40,
@@ -71,6 +72,7 @@ def test_predict_vocab():
 
     ndf2 = pd.DataFrame([
         {
+            "pageId": 0,
             'userId': 'test',
             'word': 'hello',
             'oword': 'hello',
@@ -79,6 +81,7 @@ def test_predict_vocab():
     ])
     udf2 = pd.DataFrame([
         {
+            "pageId": 0,
             'userId': 'test',
             'word': 'world',
             'oword': 'world',
