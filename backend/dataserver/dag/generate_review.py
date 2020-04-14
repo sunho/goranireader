@@ -57,14 +57,40 @@ class GenerateReview(FlowSpec):
 
     @step
     def generate_review(self):
-        words_df = decide_review_words(self.unknown_words_df, self.vocab_skills, self.last_session_df, 24*4)
+        words_df = decide_review_words(self.unknown_words_df, self.vocab_skills, self.last_session_df, 24*5)
         target_df = decide_target_words(words_df)
 
         review_words_df = serialize_review_words_df(words_df, self.clean_pages_df, target_df)
         session_info_df = self.session_info_df
-        session_info_df = session_info_df.loc[(time.time() - 14*24*60*60) <= session_info_df['start']]
+        session_info_df = session_info_df.loc[(time.time() - session_info_df['start']) <= (14*24*60*60)]
         stats_df = serialize_stats_df(session_info_df)
         self.review_df = combine_serialized_dfs(stats_df, review_words_df, self.last_session_df, session_info_df)
+
+        self.next(self.upload)
+
+    @pip(libraries={
+        'firebase-admin': '4.0.1'
+    })
+    @step
+    def upload(self):
+        import json
+        from dataserver.service.firebase import FirebaseService
+        self.updated = []
+        user_service = UserService(self.users)
+        firebase = FirebaseService(self.config)
+        s3 = S3Service(self.config)
+        for _, row in self.review_df.iterrows():
+            review = json.loads(row['review'])
+            filename = row['userId'] + '-' + str(review['end']) + '.json'
+            user = user_service.get_user(row['userId'])
+            if user is None:
+                continue
+            if not s3.exists(self.config.generated_review_s3_bucket, filename):
+                url = s3.upload(self.config.generated_review_s3_bucket, filename, row['review'])
+                firebase.update_user(row['userId'], {
+                    'review': url
+                })
+                self.updated.append(row['userId'])
 
         self.next(self.end)
 
@@ -72,6 +98,7 @@ class GenerateReview(FlowSpec):
     def end(self):
         service = NotificationService(self.config)
         service.complete_flow("Generate Review", "", False)
+        print(self.updated)
 
 
 if __name__ == '__main__':
