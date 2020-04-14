@@ -57,12 +57,26 @@ def extract_last_session_df(session_info_df, user_service: UserService, last_wor
 
     return LastSessionDataFrame.validate(last_session_df)
 
-def calculate_vocab_skills(df, vocabs: typing.List[VocabSkill], nlp_service: NLPService):
-
+def calculate_vocab_skills(known_words_df, vocabs: typing.List[VocabSkill]):
+    out = []
+    userIds = known_words_df['userId'].unique()
     for vocab in vocabs:
-        vocab.name
-        pd.DataFrame(vocab.words)
+        raw_words_df = pd.DataFrame([{'word': word} for word in vocab.words])
+        for userId in userIds:
+            words_df = raw_words_df.copy()
+            df = known_words_df.copy()
+            df = df.loc[df['userId'] == userId]
 
+            words_df = words_df.set_index('word')
+            df = df.set_index('word')
+            words_df = words_df.join(df, how='left')
+            perc = ((~words_df.isnull()).sum() / len(words_df))[0]
+            out.append({
+                'userId': userId,
+                'name': vocab.name,
+                'perc': perc
+            })
+    return pd.DataFrame(out)
 
 # start = time.time() - self.last_stats_days * 24 * 60 * 60
 #    .loc[(start < stats_df['start']) & (stats_df['end'] < end)]

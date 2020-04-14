@@ -25,11 +25,11 @@ class LoadMetadata(FlowSpec):
 
     @step
     def download_vocab_skills(self):
-        import json
+        import yaml
         from dataserver.service.s3 import S3Service
         service = S3Service(self.config)
 
-        self.vocab_skills = [VocabSkill(**json.load(buf))
+        self.vocab_skills = [VocabSkill(**yaml.load(buf))
                              for buf in service.fetch_all_files(self.config.vocab_skills_s3_bucket)]
 
         self.next(self.end)

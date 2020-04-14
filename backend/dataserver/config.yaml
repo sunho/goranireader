@@ -8,6 +8,8 @@ client_event_logs_s3_bucket: gorani-reader-client-event-logs
 generated_review_s3_bucket: gorani-reader-generated-reviews
 word2vec_k: 5
 vocab_skills_s3_bucket: gorani-reader-vocab-skills
+last_session_after_hours: 12
+skip_session_hours: 0.1
 firebase_cert:
   type: "service_account"
   project_id: "gorani-reader-249509"

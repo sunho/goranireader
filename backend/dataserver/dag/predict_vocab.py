@@ -10,6 +10,7 @@ from dag.deps import deps
 
 import yaml
 
+from dataserver.job.stats import calculate_vocab_skills
 from dataserver.models.config import Config
 from dataserver.service import BookService
 from dataserver.service.nlp import NLPService
