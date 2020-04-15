@@ -1,4 +1,4 @@
-import { app } from './index';
+import {app} from './index';
 
 const port = 8080;
 app.listen(port, () => console.log(`apiserver listening on ${port}`));
