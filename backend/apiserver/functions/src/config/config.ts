@@ -4,7 +4,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const config = {
-    SESSION_SECRET: process.env.SESSION_SECRET || 'gorani-reader12345'
+    SESSION_SECRET: process.env.SESSION_SECRET || 'gorani-reader12345',
+    DATABASE: process.env.DATABASE || 'gorani',
+    DB_USERNAME: process.env.DB_USERNAME || 'username',
+    DB_PASSWORD: process.env.DB_PASSWORD || 'password',
+    DB_HOST: process.env.DB_HOST || '127.0.0.1',
+    DB_PORT: parseInt(process.env.DB_PORT || '3306', 10)
 };
 
 export default config;
