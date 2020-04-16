@@ -11,12 +11,17 @@ from dataserver.service import BookService
 from dataserver.service.nlp import NLPService
 
 import time
+import json
 
 from dataserver.service.user import UserService
 
 
 def preprocess_paginate_logs(df, nlp_service: NLPService, book_service: BookService, config: Config):
-    df = parse_paginate_logs(df, nlp_service, book_service)
+    rdf = parse_review_paginate_logs(df, nlp_service)
+    odf = parse_ordinary_paginate_logs(df, nlp_service, book_service)
+    df = pd.concat([rdf, odf], axis=0)
+
+    df = parse_paginate_logs(df)
     df = merge_pages_df(df, config.cluster_threshold)
 
     def _calculate_wpm(x):
@@ -28,38 +33,60 @@ def preprocess_paginate_logs(df, nlp_service: NLPService, book_service: BookServ
     df = annotate_pages_df(df, config.max_session_hours, config.cheat_eltime_threshold)
     return df
 
+def parse_review_paginate_logs(logs_df, nlp_service: NLPService):
+    logs_df = logs_df.loc[logs_df['type'] == 'review-paginate']
+    if len(logs_df) == 0:
+        return pd.DataFrame(columns=['time', 'from', 'rcId', 'userId', 'eltime', 'text'])
 
-def parse_paginate_logs(df, nlp_service: NLPService, book_service: BookService):
-    schema = pa.DataFrameSchema({
-        "userId": pa.Column(pa.String),
-        "time": pa.Column(pa.String),
-        "type": pa.Column(pa.String),
-        "serverTime": pa.Column(pa.String),
-    })
-    logs_df = schema.validate(df)
+    def _parse_payload(df):
+        df['payload'] = df['payload'].map(json.loads)
+        df['eltime'] = df['payload'].map(lambda x: x['time'])
+        df['content'] = df['payload'].map(lambda x: x['content'])
+        df['rcId'] = df['payload'].map(lambda x: x['reviewId'])
+        return df
+    pages_df = _parse_payload(logs_df)
+
+    def _get_text(row):
+        sids = row['payload']['sids']
+        word_unknowns = row['payload']['wordUnknowns']
+
+        return [parse_word_unknowns(nlp_service, sids, row['content'], word_unknowns)]
+
+    pages_df['text'] = pages_df.apply(_get_text, axis=1).map(lambda x: x[0])
+    pages_df['from'] = 'review'
+    return pages_df[['time', 'from', 'rcId', 'userId', 'eltime', 'text']]
+
+def parse_ordinary_paginate_logs(logs_df, nlp_service: NLPService, book_service: BookService):
+    logs_df = logs_df.loc[logs_df['type'] == 'paginate']
+    if len(logs_df) == 0:
+        return pd.DataFrame(columns=['time', 'from', 'rcId', 'userId', 'eltime', 'text'])
 
     import json
     def _flatten_payload(df):
         df['payload'] = df['payload'].map(json.loads)
         df['eltime'] = df['payload'].map(lambda x: x['time'])
-        df['bookId'] = df['payload'].map(lambda x: x['bookId'])
-        df = df.loc[df['bookId'].isin(book_service.get_book_ids())]
+        df['rcId'] = df['payload'].map(lambda x: x['bookId'])
+        df = df.loc[df['rcId'].isin(book_service.get_book_ids())]
         return df
 
     pages_df = _flatten_payload(logs_df)
 
     def _get_text(row):
-        book_id = row['bookId']
+        book_id = row['rcId']
         sids = row['payload']['sids']
         word_unknowns = row['payload']['wordUnknowns']
         book = book_service.get_book(book_id)
         if book is None:
             return []
-        return [parse_word_unknowns(nlp_service, book, sids, word_unknowns)]
+        sentences = [book.get_sentence(sid) or "" for sid in sids]
+
+        return [parse_word_unknowns(nlp_service, sids, sentences, word_unknowns)]
 
     pages_df['text'] = pages_df.apply(_get_text, axis=1).map(lambda x: x[0])
-    pages_df = pages_df[['time', 'userId', 'eltime', 'bookId', 'text']]
+    pages_df['from'] = 'reader'
+    return pages_df[['time', 'from', 'rcId', 'userId', 'eltime', 'text']]
 
+def parse_paginate_logs(pages_df):
     def _flatten_text(df):
         df['words'] = df['text'].map(lambda x: x['words'])
         df['pos'] = df['text'].map(lambda x: x['pos'])
@@ -76,19 +103,18 @@ def parse_paginate_logs(df, nlp_service: NLPService, book_service: BookService):
     pages_df['eltime'] /= 1000.0
 
     pages_df = pages_df[
-        ['time', 'userId', 'eltime', 'bookId', 'sids', 'pos', 'words', 'unknownWords', 'unknownIndices']]
+        ['time', 'userId', 'from', 'rcId', 'eltime', 'sids', 'pos', 'words', 'unknownWords', 'unknownIndices']]
 
     return ParsedPagesDataFrame.validate(pages_df)
 
 
-def parse_word_unknowns(nlp_service: NLPService, book: Book, sids, word_unknowns):
+def parse_word_unknowns(nlp_service: NLPService, sids, sentences, word_unknowns):
     words = []
     unknown_indices = []
     unknown_words = []
     poss = []
     i = 0
-    for sid in sids:
-        sentence = book.get_sentence(sid) or ""
+    for sentence, sid in zip(sentences, sids):
         tmp = split_sentence(sentence)
         pos = [x[1] for x in nlp_service.pos_tag(tmp)]
         poss.extend(pos)
@@ -128,15 +154,16 @@ def merge_pages_df(df, cluster_threshold: float):
             words = rows['words'].iloc[i]
             uis = rows['unknownIndices'].iloc[i]
             uwords = rows['unknownWords'].iloc[i]
-            bookId = rows['bookId'].iloc[i]
+            fromCol = rows['from'].iloc[i]
+            rcId = rows['rcId'].iloc[i]
             sids = rows['sids'].iloc[i]
             pos = rows['pos'].iloc[i]
 
             if last_time != 0 and time - last_time > cluster_threshold * 60:
                 out.append(
-                    {'time': time_, 'pos': pos_, 'eltime': eltime_, 'bookId': bookId_, 'unknownIndices': uis_,
+                    {'time': time_, 'pos': pos_, 'eltime': eltime_, 'rcId': rcId_, 'unknownIndices': uis_,
                      'sids': sids_,
-                     'unknownWords': uwords_, 'words': words_, })
+                     'unknownWords': uwords_, 'words': words_, 'from': fromCol_ })
                 last_time = 0
 
             if last_time == 0:
@@ -148,14 +175,15 @@ def merge_pages_df(df, cluster_threshold: float):
                 sids_ = sids
                 pos_ = pos
                 uwords_ = uwords
-                bookId_ = bookId
+                rcId_ = rcId
+                fromCol_ = fromCol
             else:
                 uwords_.extend(uwords)
                 uis_.extend(uis)
                 eltime_ += eltime
 
         if last_time != 0:
-            out.append({'time': time_, 'pos': pos_, 'eltime': eltime_, 'bookId': bookId_, 'unknownIndices': uis_,
+            out.append({'time': time_, 'pos': pos_, 'eltime': eltime_, 'rcId': rcId_, 'from': fromCol_, 'unknownIndices': uis_,
                         'unknownWords': uwords_, 'words': words_, 'sids': sids_})
         return pd.DataFrame(out).reset_index(drop=True)
 
