@@ -25,16 +25,16 @@ import { Redirect } from "react-router";
 register();
 
 const Container = styled.div`
-  display: flex;
+  display: grid;
   height: 100%;
   width: 100vw;
-  flex-direction: column;
+  grid-template-rows: 1fr auto auto
 `;
 
 const NextContainer = styled.div`
-  flex: 0 0 30px;
-  display: flex;
-  justify-content: flex-end;
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: end;
   padding-right: 10px;
   padding-top: 10px;
   padding-bottom: 10px;
