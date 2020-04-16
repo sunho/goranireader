@@ -7,11 +7,10 @@ import { StepStore } from '../../stores/StepStore';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  display: flex;
+  display: grid;
   justify-content: center;
   align-items: center;
   height: 100%;
-
 `;
 
 const Initial: React.SFC = () => {

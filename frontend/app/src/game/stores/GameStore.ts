@@ -66,11 +66,12 @@ class GameStore {
       this.progress = generateProgress(review);
       this.saveStore.current!.progress = this.progress;
       this.saveStore.save();
-    } else if (review.end > progress.review.end) {
+    } else {//if (review.end > progress.review.end) {
       this.progress = generateProgress(review);
-    } else {
-      this.progress = progress;
     }
+    // else {
+    //   this.progress = progress;
+    // }
     this.step = this.progress.step;
     this.currentLastWord = null;
     this.clickedRectangle = null;
@@ -183,13 +184,6 @@ class GameStore {
         type: "review-start",
         reviewId: this.progress.review.id,
         step: "last-words"
-      };
-      this.logStore.sendSync(payload);
-    } else if (kind === StepKind.UWReview) {
-      const payload: LogReviewStartPayload = {
-        type: "review-start",
-        reviewId: this.progress.review.id,
-        step: "unfamiliar-words"
       };
       this.logStore.sendSync(payload);
     }

@@ -1,13 +1,10 @@
 import {
-  UnfamiliarWord,
-  UWReviewStep,
   Review,
   LastWord,
   LWReviewStep
 } from "../models/Game";
 import { observable, toJS, action } from "mobx";
 import RootStore from "../../core/stores/RootStore";
-import { Text } from "../models/Game";
 import { BaseStepStore } from "./StepStore";
 import { autobind } from "core-decorators";
 import { LogLWReviewCompletePayload, LogLWReviewGiveupPayload, LogLWReviewNextPayload, LogReviewStartPayload } from "../../core/models/Log";
@@ -35,8 +32,8 @@ class LWReviewStore extends BaseStepStore {
     super();
     this.review = review;
     this.logStore = rootStore.logStore;
-    this.reviewWords = review.lastWords;
-    this.targetLastWords = review.targetLastWords;
+    this.reviewWords = review.reviewWords;
+    this.targetLastWords = review.targetReviewWords ;
     window.addEventListener('focus', this.startTimer.bind(this));
     window.addEventListener('blur', this.stopTimer.bind(this));
   }
