@@ -1,0 +1,24 @@
+{
+  "appenders": {
+    "console": {
+      "type": "console"
+    },
+    "default": {
+      "type": "file",
+      "filename": "logs/apiserver.log",
+      "pattern": "-yyyy-MM-dd",
+      "maxLogSize": 1000000,
+      "backups": 100,
+      "compress": true
+    }
+  },
+  "categories": {
+    "default": {
+      "appenders": [
+        "default",
+        "console"
+      ],
+      "level": "INFO"
+    }
+  }
+}
