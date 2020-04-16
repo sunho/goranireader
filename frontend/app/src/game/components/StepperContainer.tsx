@@ -10,7 +10,6 @@ import styled from 'styled-components';
 import { StepComponent } from '../stores/StepStore';
 
 const Container = styled.div`
-  flex: 1;
   width: 100%;
 `;
 

@@ -42,6 +42,8 @@ class UserStore {
       }
       const user2 = await this.firebaseService.userDoc(this.userId!).get();
       const data = user2.data()!;
+      data['review'] = "https://gorani-reader-generated-reviews.s3.ap-northeast-2.amazonaws.com/8ACCQYz8NMc4Lc9Nze3R-1586678078.json";
+      data['lastReviewEnd'] = 0;
       if (data["review"] && typeof data["review"] === "string") {
         const review = await fetch(data["review"]).then(x => x.json());
         data["review"] = review;

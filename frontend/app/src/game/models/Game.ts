@@ -4,11 +4,8 @@ export interface Review {
   start: number;
   end: number;
   stats?: Stats;
-  lastWords: LastWord[];
-  targetLastWords: number;
-  unfamiliarWords: UnfamiliarWord[];
-  targetCompletedTexts: number;
-  texts: Text[];
+  reviewWords: LastWord[];
+  targetReviewWords : number;
 }
 
 export interface Progress {
@@ -25,14 +22,9 @@ export function generateProgress(review: Review): Progress {
       kind: StepKind.StatsReview
     });
   }
-  if (review.lastWords.length !== 0) {
+  if (review.reviewWords.length !== 0) {
     steps.push({
       kind: StepKind.LWReview
-    });
-  }
-  if (review.unfamiliarWords.length !== 0) {
-    steps.push({
-      kind: StepKind.UWReview
     });
   }
   return {
@@ -43,7 +35,7 @@ export function generateProgress(review: Review): Progress {
   };
 }
 
-export type Step = StatsReviewStep | LWReviewStep | UWReviewStep;
+export type Step = StatsReviewStep | LWReviewStep;
 
 export interface GameStep {
   completed: number;
@@ -58,14 +50,9 @@ export interface LWReviewStep {
   kind: StepKind.LWReview;
 }
 
-export interface UWReviewStep {
-  kind: StepKind.UWReview;
-}
-
 export enum StepKind {
   StatsReview = 1,
   LWReview = 2,
-  UWReview = 3,
   Finalize = 4
 }
 
@@ -86,12 +73,3 @@ export interface LastWord {
   items: Item[];
 }
 
-export interface Text {
-  unfamiliarWords: string[];
-  content: Item[];
-}
-
-export interface UnfamiliarWord {
-  word: string;
-  texts: number[];
-}
