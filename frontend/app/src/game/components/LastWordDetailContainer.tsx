@@ -46,9 +46,9 @@ const LastWordDetailContainer = () => {
   const [_, rerender] = useState(false);
   const conRef = useRef<HTMLElement | null | undefined>(undefined);
   const { currentLastWord, clickedRectangle } = gameStore;
-  const [ currentWord, setCurrentWord ] = useState('');
+  const [ currentWord, setCurrentWord ] = useState({word: '', sentences: []});
   const [ dictResults, setDictResults ] = useState([]);
-  const [ sentences, setSentences ] = useState([]);
+
 
   useOutsideClickObserver(conRef, () => {
     if (gameStore.currentLastWord) {
@@ -95,14 +95,12 @@ const LastWordDetailContainer = () => {
         await controls.start(variants.closed, {duration: 0.001});
         await controls.start(variants.open);
         setDictResults(dictService.find(currentLastWord.word));
-        setSentences(currentLastWord.items);
-        setCurrentWord(currentLastWord.word);
+        setCurrentWord({ word: currentLastWord.word, sentences: currentLastWord.items });
       })();
     } else {
       (async () => {
         controls.stop();
-        setSentences([]);
-        setCurrentWord('');
+        setCurrentWord({word: '', sentences: []});
         setDictResults([]);
         controls.start(variants.closed, {type: 'tween', ease: 'circOut', duration: 0.4});
       })();
@@ -120,7 +118,7 @@ const LastWordDetailContainer = () => {
         >
           <Content animate={contentControls}>
             <div style={{height: "50%"}}>
-              {sentences.length !== 0 && <SmallReader targetWords={[currentWord]} key={currentLastWord ? '1':'0'} sentences={sentences}/>}
+              {currentWord.sentences.length !== 0 && <SmallReader targetWords={[currentWord.word]} key={currentLastWord ? '1':'0'} sentences={currentWord.sentences}/>}
             </div>
             <div style={{height: "50%"}}>
               {dictResults.length !== 0 && <DictResultList key={currentLastWord ? '1':'0'} res={dictResults}/>}
