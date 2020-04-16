@@ -1,6 +1,7 @@
 import pytest
 from dataserver.job.preprocess_pages import parse_word_unknowns, parse_paginate_logs, merge_pages_df, annotate_pages_df, \
-    extract_signals_df, clean_pages_df, preprocess_paginate_logs, clean_signals_df
+    extract_signals_df, clean_pages_df, preprocess_paginate_logs, clean_signals_df, parse_ordinary_paginate_logs, \
+    parse_review_paginate_logs
 from dataserver.booky import Book, Metadata, Sentence, Chapter
 from dataserver.models.config import Config
 from dataserver.service import BookService
@@ -10,7 +11,6 @@ import pandas as pd
 
 def test_parse_word_unknowns_simple():
     nlp_service = MockNLPService()
-    content = "hello world don't\"believe\""
     word_unknowns = [
         {
             'sentenceId': 'test',
@@ -25,18 +25,8 @@ def test_parse_word_unknowns_simple():
             'time': 10
         }
     ]
-    book = Book(Metadata("test", "test", "", "test", ""), [
-        Chapter(
-            "test",
-            "test",
-            "test",
-            [
-                Sentence("test", False, content)
-            ]
-        )
-    ])
 
-    result = parse_word_unknowns(nlp_service, book, ["test"], word_unknowns)
+    result = parse_word_unknowns(nlp_service, ["test"], ["hello world don't\"believe\""],  word_unknowns)
     assert result['unknownIndices'] == [0, 3]
     assert result['unknownWords'] == ['hello', 'believe']
     assert result['words'] == ['hello', 'world', "don't", 'believe']
@@ -73,7 +63,7 @@ def test_parse_word_unknowns_invalid():
         parse_word_unknowns(nlp_service, book, ["test"], word_unknowns)
 
 
-def test_parse_paginate_logs():
+def test_parse_ordinary_paginate_logs():
     nlp_service = MockNLPService()
     content = "hello world don't\"believe\""
     book = Book(Metadata("test", "test", "", "test", ""), [
@@ -99,13 +89,15 @@ def test_parse_paginate_logs():
             "payload": "{\"type\":\"paginate\",\"sids\":[\"test\",\"test2\"],\"time\":64300,\"wordUnknowns\":[{\"word\":\"believe\",\"wordIndex\":3,\"sentenceId\":\"test\",\"time\":18500},{\"word\":\"hello\",\"wordIndex\":0,\"sentenceId\":\"test2\",\"time\":26000}],\"sentenceUnknowns\":[],\"bookId\":\"test\",\"chapterId\":\"test\"}"
         }
     ])
-    df = parse_paginate_logs(df, nlp_service, service)
+    df = parse_ordinary_paginate_logs(df, nlp_service, service)
+    df = parse_paginate_logs(df)
     out = pd.DataFrame([
         {
             "time": 1584718492,
             "userId": "test",
+            "from": "reader",
+            "rcId": "test",
             "eltime": 64.3,
-            "bookId": "test",
             "sids": ["test", "test2"],
             "pos": ["NN", "NN", "NN", "NN", "NN", "NN", "NN", "NN"],
             "words": ["hello", "world", "don't", "believe", "hello", "world", "don't", "believe"],
@@ -124,7 +116,8 @@ def test_merge_pages_df_same():
             "time": 10,
             "userId": "test",
             "eltime": 10,
-            "bookId": "test",
+            "from": "reader",
+            "rcId": "test",
             "sids": ["test", "test2"],
             "pos": ["NN", "NN", "NN", "NN", "NN", "NN", "NN", "NN"],
             "words": ["hello", "world", "don't", "believe", "hello", "world", "don't", "believe"],
@@ -139,7 +132,8 @@ def test_merge_pages_df_same():
             "time": 10,
             "userId": "test",
             "eltime": 10,
-            "bookId": "test",
+            "from": "reader",
+            "rcId": "test",
             "sids": ["test", "test2"],
             "pos": ["NN", "NN", "NN", "NN", "NN", "NN", "NN", "NN"],
             "words": ["hello", "world", "don't", "believe", "hello", "world", "don't", "believe"],
@@ -156,7 +150,8 @@ def test_merge_pages_df():
             "time": 30,
             "userId": "test",
             "eltime": 20,
-            "bookId": "test",
+            "from": "reader",
+            "rcId": "test",
             "sids": ["test", "test2"],
             "pos": ["NN", "NN", "NN", "NN", "NN", "NN", "NN", "NN"],
             "words": ["hello", "world", "don't", "believe", "hello", "world", "don't", "believe"],
@@ -167,7 +162,8 @@ def test_merge_pages_df():
             "time": 10,
             "userId": "test",
             "eltime": 10,
-            "bookId": "test",
+            "from": "reader",
+            "rcId": "test",
             "sids": ["test", "test2"],
             "pos": ["NN", "NN", "NN", "NN", "NN", "NN", "NN", "NN"],
             "words": ["hello", "world", "don't", "believe", "hello", "world", "don't", "believe"],
@@ -178,7 +174,8 @@ def test_merge_pages_df():
             "time": 70,
             "userId": "test",
             "eltime": 20,
-            "bookId": "test",
+            "from": "reader",
+            "rcId": "test",
             "sids": ["test", "test2"],
             "pos": ["NN", "NN", "NN", "NN", "NN", "NN", "NN", "NN"],
             "words": ["hello", "world", "don't", "believe", "hello", "world", "don't", "believe"],
@@ -193,7 +190,8 @@ def test_merge_pages_df():
             "time": 10,
             "userId": "test",
             "eltime": 50,
-            "bookId": "test",
+            "from": "reader",
+            "rcId": "test",
             "sids": ["test", "test2"],
             "pos": ["NN", "NN", "NN", "NN", "NN", "NN", "NN", "NN"],
             "words": ["hello", "world", "don't", "believe", "hello", "world", "don't", "believe"],
@@ -210,7 +208,8 @@ def test_merge_pages_df_multiple():
             "time": 30,
             "userId": "test",
             "eltime": 20,
-            "bookId": "test",
+            "from": "reader",
+            "rcId": "test",
             "sids": ["test", "test2"],
             "pos": ["NN", "NN", "NN", "NN", "NN", "NN", "NN", "NN"],
             "words": ["hello", "world", "don't", "believe", "hello", "world", "don't", "believe"],
@@ -221,7 +220,8 @@ def test_merge_pages_df_multiple():
             "time": 10,
             "userId": "test",
             "eltime": 10,
-            "bookId": "test",
+            "from": "reader",
+            "rcId": "test",
             "sids": ["test", "test2"],
             "pos": ["NN", "NN", "NN", "NN", "NN", "NN", "NN", "NN"],
             "words": ["hello", "world", "don't", "believe", "hello", "world", "don't", "believe"],
@@ -232,7 +232,8 @@ def test_merge_pages_df_multiple():
             "time": 80,
             "userId": "test",
             "eltime": 20,
-            "bookId": "test",
+            "from": "reader",
+            "rcId": "test",
             "sids": ["test", "test2"],
             "pos": ["NN", "NN", "NN", "NN", "NN", "NN", "NN", "NN"],
             "words": ["hello", "world", "don't", "believe", "hello", "world", "don't", "believe"],
@@ -247,7 +248,8 @@ def test_merge_pages_df_multiple():
             "time": 10,
             "userId": "test",
             "eltime": 30,
-            "bookId": "test",
+            "from": "reader",
+            "rcId": "test",
             "sids": ["test", "test2"],
             "pos": ["NN", "NN", "NN", "NN", "NN", "NN", "NN", "NN"],
             "words": ["hello", "world", "don't", "believe", "hello", "world", "don't", "believe"],
@@ -258,7 +260,8 @@ def test_merge_pages_df_multiple():
             "time": 80,
             "userId": "test",
             "eltime": 20,
-            "bookId": "test",
+            "from": "reader",
+            "rcId": "test",
             "sids": ["test", "test2"],
             "pos": ["NN", "NN", "NN", "NN", "NN", "NN", "NN", "NN"],
             "words": ["hello", "world", "don't", "believe", "hello", "world", "don't", "believe"],
@@ -508,7 +511,8 @@ def test_preprocess_paginate_logs():
             "eltime": 128.6,
             "cheat": True,
             "wpm": 3.7325,
-            "bookId": "test",
+            "from": "reader",
+            "rcId": "test",
             "sids": ["test", "test2"],
             "pos": ["NN", "NN", "NN", "NN", "NN", "NN", "NN", "NN"],
             "words": ["hello", "world", "don't", "believe", "hello", "world", "don't", "believe"],
@@ -593,3 +597,36 @@ def test_clean_signals_df():
         },
     ])
     pd.testing.assert_frame_equal(df.sort_index(axis=1).reset_index(drop=True), df2.sort_index(axis=1))
+
+def test_parse_review_paginate_logs():
+    nlp_service = MockNLPService()
+
+    df = pd.DataFrame([
+        {
+            "userId": "test",
+            "fireId": "8VeJWtPHdmZ4apbb3bY3ThBBFZs1",
+            "classId": "test2",
+            "serverTime": "2020-03-20T15:34:52Z",
+            "time": "2020-03-20T15:34:52Z",
+            "type": "review-paginate",
+            "payload": "{\"type\":\"review-paginate\",\"reviewId\":\"test-review\",\"content\":[\"hello\",\"world\"],\"sids\":[\"first\",\"second\"],\"time\":64300,\"step\":\"last-words\",\"wordUnknowns\":[],\"targetWords\":[\"\"]}"
+        }
+    ])
+
+    df = parse_review_paginate_logs(df, nlp_service)
+    df = parse_paginate_logs(df)
+    out = pd.DataFrame([
+        {
+            "time": 1584718492,
+            "userId": "test",
+            "from": "review",
+            "rcId": "test-review",
+            "eltime": 64.3,
+            "sids": ["first", "second"],
+            "pos": ["NN", "NN"],
+            "words": ["hello", "world"],
+            "unknownWords": [],
+            "unknownIndices": []
+        }
+    ])
+    pd.testing.assert_frame_equal(df, out)
