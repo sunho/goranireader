@@ -42,6 +42,11 @@ class DownloadLog(FlowSpec):
         self.next(self.end)
 
     @step
+    def download_reviews(self):
+        service = S3Service(self.config)
+        self.reviews = service.fetch_reviews()
+
+    @step
     def end(self):
         service = NotificationService(self.config)
         service.complete_flow("Download Logs", 'downloaded: %d' % len(self.logs), False)

@@ -7,6 +7,9 @@ from dataserver.models.config import Config
 
 import json
 
+from dataserver.models.review import Review
+
+
 class S3Service:
     def __init__(self, config: Config):
         self.s3 = boto3.client("s3")
@@ -17,6 +20,11 @@ class S3Service:
         bucket_name = self.config.client_event_logs_s3_bucket
         bufs = self.fetch_all_files(bucket_name)
         return [json.load(buf) for buf in bufs]
+
+    def fetch_reviews(self):
+        bucket_name = self.config.generated_review_s3_bucket
+        bufs = self.fetch_all_files(bucket_name)
+        return [Review.from_json(buf) for buf in bufs]
 
     def fetch_all_files(self, bucket_name: str, worker: int = 5):
         s3_result = self.s3.list_objects_v2(Bucket=bucket_name)
