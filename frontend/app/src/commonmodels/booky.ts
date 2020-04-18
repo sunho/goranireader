@@ -13,8 +13,8 @@
 // match the expected interface, even if the JSON is valid.
 
 /**
- * 북키: 고라니 리더 독자 책 파일 포맷
- * 북키(고라니 리더 책 파일 포맷) 파일 하나를 표현하는 구조체입니다.
+ * 북키: 고라니 리더 책 파일 포맷
+ * 북키 파일 하나를 표현하는 구조체입니다.
  */
 export interface BookyBook {
     chapters: Chapter[];
