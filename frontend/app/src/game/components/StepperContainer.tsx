@@ -1,10 +1,7 @@
 import React, { useContext, useState, useRef } from 'react';
-import RootStore from '../../core/stores/RootStore';
-import { storeContext } from '../../core/stores/Context';
 import Stepper from './Stepper';
 import { StepKind } from '../models/Game';
 import { GameContext } from '../stores/GameRootStore';
-import { SwitchTransition, CSSTransition } from "react-transition-group";
 import { useObserver } from 'mobx-react';
 import styled from 'styled-components';
 import { StepComponent } from '../stores/StepStore';

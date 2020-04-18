@@ -21,7 +21,7 @@ class LogStore {
       time: ISODateString(new Date()),
       payload: JSON.stringify(payload)
     };
-    // console.log(payload);
+    console.log(payload);
     const token = await this.rootStore.firebaseService.auth.currentUser!.getIdToken(
       false
     );

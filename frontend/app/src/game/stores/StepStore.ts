@@ -4,8 +4,6 @@ import RootStore from "../../core/stores/RootStore";
 
 import GameStore from "./GameStore";
 
-import { isObservable, observe, isObservableProp } from "mobx";
-
 export interface StepStore {
   gameStore?: GameStore;
   saveData(): object;

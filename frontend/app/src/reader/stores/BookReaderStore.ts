@@ -1,9 +1,7 @@
 import { observable, action, computed, reaction } from "mobx";
 import RootStore from "../../core/stores/RootStore";
-import { User, BookyBook, Book } from "../../core/models";
-import FirebaseService from "../../core/stores/FirebaseService";
+import { BookyBook } from "../../core/models";
 import { autobind } from "core-decorators";
-import { LiteEvent } from "../../core/utils/event";
 import ReaderRootStore, { ReaderStore } from "./ReaderRootStore";
 import { LogPaginatePayload, PaginateWordUnknown } from "../../core/models/Log";
 

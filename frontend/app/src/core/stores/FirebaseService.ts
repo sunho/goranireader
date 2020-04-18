@@ -4,8 +4,6 @@ import "firebase/auth";
 import "firebase/database";
 import "firebase/firestore";
 import { autobind } from "core-decorators";
-import { action, observable, autorun } from "mobx";
-import { User } from "../models";
 
 const config = {
   apiKey: "AIzaSyDPdHYw3Q5_3oZz-vW6Km57JevsMO9AKyw",

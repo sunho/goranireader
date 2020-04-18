@@ -1,18 +1,8 @@
 import React, { useContext, useRef } from "react";
 import {
-  IonTabs,
-  IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonIcon,
-  IonLabel,
-  IonToolbar,
-  IonTitle,
-  IonList,
   IonButton
 } from "@ionic/react";
 import { storeContext } from "../../core/stores/Context";
-import { Review } from "../models/Game";
 import GameRootStore, { GameContext } from "../stores/GameRootStore";
 import StepperContainer from "../components/StepperContainer";
 import { register } from "../components/steps";

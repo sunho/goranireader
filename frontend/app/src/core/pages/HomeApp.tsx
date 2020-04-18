@@ -1,28 +1,14 @@
 import React from "react";
 import {
   IonApp,
-  IonTabs,
   IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonIcon,
-  IonLabel,
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonTab
 } from "@ionic/react";
 import { IonReactRouter, IonReactHashRouter } from "@ionic/react-router";
 import { Route, Redirect } from "react-router";
-import { triangle, ellipse, square } from "ionicons/icons";
-import BooksPage from "./BooksPage";
 import { isPlatform } from "@ionic/react";
 import ReaderPage from "../../reader/pages/ReaderPage";
 import TabsPage from "./TabsPage";
 import GamePage from "../../game/pages/GamePage";
-import { AlertContainer } from "../components/AlertContainer";
 
 const HomeApp = props => {
   const items = (

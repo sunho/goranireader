@@ -1,19 +1,12 @@
 import React, { useState, useContext } from "react";
 import {
   IonApp,
-  IonTabs,
-  IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonIcon,
-  IonLabel,
   IonPage,
   IonHeader,
   IonToolbar,
   IonTitle,
   IonContent,
   IonList,
-  IonItemDivider,
   IonItem,
   IonInput,
   IonGrid,
@@ -21,7 +14,6 @@ import {
   IonCol,
   IonCard,
   IonCardHeader,
-  IonCardSubtitle,
   IonCardTitle,
   IonCardContent,
   IonButton
