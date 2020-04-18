@@ -11,7 +11,6 @@ import {
 } from "@ionic/react";
 import { caretBackOutline, caretForwardOutline } from "ionicons/icons";
 import { useState } from "react";
-import ErrorBoundary from "../../core/components/ErrorBoundary";
 
 const Content = styled(IonCardContent)`
   display: flex;

@@ -6,8 +6,6 @@ import {
   IonTabButton,
   IonIcon,
   IonLabel,
-  IonToolbar,
-  IonTitle
 } from "@ionic/react";
 import { Route, Redirect } from "react-router";
 import BooksPage from "./BooksPage";

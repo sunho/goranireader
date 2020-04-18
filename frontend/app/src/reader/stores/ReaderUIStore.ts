@@ -1,11 +1,9 @@
 import { observable, action, computed, reaction } from "mobx";
 import RootStore from "../../core/stores/RootStore";
-import { User, BookyBook, Book, SelectedWord } from "../../core/models";
-import FirebaseService from "../../core/stores/FirebaseService";
+import { SelectedWord } from "../../core/models";
 import { LiteEvent } from "../../core/utils/event";
 import ReaderRootStore, { ReaderStore } from "./ReaderRootStore";
 import { PaginateWordUnknown } from "../../core/models/Log";
-import React from "react";
 import { autobind } from "core-decorators";
 
 export interface LookUp {

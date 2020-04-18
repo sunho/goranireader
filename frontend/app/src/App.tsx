@@ -15,7 +15,7 @@ import { storeContext } from './core/stores/Context';
 import { useObserver } from 'mobx-react';
 import HomeApp from './core/pages/HomeApp';
 import LoginApp from './core/pages/LoginApp';
-import { IonApp, IonContent, IonLoading, IonSpinner } from '@ionic/react';
+import { IonApp, IonContent, IonSpinner } from '@ionic/react';
 
 const App: React.FC = () => {
   const [inited, setInited] = useState(false);

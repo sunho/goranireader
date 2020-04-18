@@ -1,7 +1,5 @@
 import { observable, action } from "mobx";
 import RootStore from "./RootStore";
-import { User } from "../models";
-import FirebaseService from "./FirebaseService";
 import { autobind } from "core-decorators";
 
 export interface AlertMessage {

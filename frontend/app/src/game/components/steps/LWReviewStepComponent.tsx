@@ -1,14 +1,5 @@
 import React, { useEffect, useContext, useRef, useMemo } from "react";
 import { GameContext } from "../../stores/GameRootStore";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend
-} from "recharts";
 import WordsCloud from "../WordsCloud";
 import LWReviewStore from "../../stores/LWReviewStore";
 import { LWReviewStep } from "../../models/Game";

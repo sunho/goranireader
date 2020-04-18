@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState, useMemo } from 'react';
-import { Sentence, Item } from '../../core/models';
+import React, { useContext, useEffect, useMemo } from 'react';
+import { Item } from '../../core/models';
 import ReaderRootStore, { ReaderContext } from '../../reader/stores/ReaderRootStore';
 import { storeContext } from '../../core/stores/Context';
 import GameReaderStore from '../stores/GameReaderStore';
 import Reader from '../../reader/components/Reader';
-import Dict from '../../reader/components/Dict';
 import { GameContext } from '../stores/GameRootStore';
 
 interface Props {

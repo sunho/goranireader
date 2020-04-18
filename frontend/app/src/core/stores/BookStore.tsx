@@ -1,16 +1,12 @@
 import { observable, action, observe, autorun } from "mobx";
 import RootStore from "./RootStore";
-import { User, Book, BookyBook } from "../models";
-import FirebaseService from "./FirebaseService";
+import { Book, BookyBook } from "../models";
 import { autobind } from "core-decorators";
 import {
   FileTransfer,
-  FileUploadOptions,
-  FileTransferObject
 } from "@ionic-native/file-transfer";
 import { File } from "@ionic-native/file";
 import { isPlatform } from "@ionic/react";
-import { resolve } from "url";
 
 @autobind
 class BookStore {

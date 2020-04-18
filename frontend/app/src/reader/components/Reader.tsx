@@ -1,5 +1,4 @@
 import React, {
-  useState,
   useEffect,
   useRef,
   MutableRefObject,
@@ -10,8 +9,6 @@ import styled, { css } from "styled-components";
 import "./Reader.css";
 import {
   isPlatform,
-  IonProgressBar,
-  IonContent,
   IonSpinner
 } from "@ionic/react";
 import { reaction, untracked } from "mobx";
