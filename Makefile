@@ -1,11 +1,8 @@
-deploy-dataserver:
-	cd backend/dataserver/pipeline && make build && AIRFLOW_BUCKET=gs://gorani-reader-airflow make deploy
+setup:
+	npm install --prefix common/types
+	npm install --prefix frontend/app
+	npm install --prefix backend/apiserver/functions
+	conda create -f backend/dataserver/env.yaml
 
-deploy-admin:
-	cd frontend/admin && npm run build && firebase deploy --only=hosting
-
-deploy-reader:
-	cd frontend/reader && npm run build && npm run deploy
-
-deploy-apiserver:
-	cd backend/apiserver 
+types:
+	cd common/types && ./types.sh
