@@ -1,9 +1,8 @@
 import React, { useEffect, useContext } from 'react';
 import { GameContext } from '../../stores/GameRootStore';
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+  LineChart, Line, XAxis, YAxis, CartesianGrid,
 } from 'recharts';
-import { StepStore } from '../../stores/StepStore';
 import styled from 'styled-components';
 
 const Container = styled.div`

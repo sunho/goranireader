@@ -1,4 +1,4 @@
-import { Review, StepKind } from "../../models/Game";
+import { StepKind } from "../../models/Game";
 import { registerStepComponent } from "../StepperContainer";
 import StatsReviewStepComponent from "./StatsReviewStepComponent";
 import LWReviewStepComponent from "./LWReviewStepComponent";

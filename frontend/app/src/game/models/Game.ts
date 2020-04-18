@@ -1,4 +1,4 @@
-import { Sentence, Item } from "../../core/models";
+import { Item } from "../../core/models";
 export interface Review {
   id: string;
   start: number;

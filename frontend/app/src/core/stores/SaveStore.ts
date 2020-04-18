@@ -1,6 +1,5 @@
 import { autobind } from "core-decorators";
 import { Save } from "../models/Save";
-import { observable, autorun } from "mobx"
 import migrator from '../models/migrations/save';
 import { Plugins } from '@capacitor/core';
 
