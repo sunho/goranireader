@@ -12,8 +12,20 @@ from dataserver.models.review import Review
 
 class S3Service:
     def __init__(self, config: Config):
-        self.s3 = boto3.client("s3")
-        self.s3_rc = boto3.resource("s3")
+        self.s3 = boto3.client("s3",
+            endpoint_url=config.s3_endpoint,
+            aws_access_key_id=config.s3_key,
+            aws_secret_access_key=config.s3_secret,
+            config=Config(signature_version='s3v4'),
+            region_name=config.s3_region
+        )
+        self.s3_rc = boto3.resource("s3",
+            endpoint_url=config.s3_endpoint,
+            aws_access_key_id=config.s3_key,
+            aws_secret_access_key=config.s3_secret,
+            config=Config(signature_version='s3v4'),
+            region_name=config.s3_region
+        )
         self.config = config
 
     def fetch_client_event_logs(self):

@@ -1,7 +1,6 @@
 import click
 from dataserver.booky.book import read_epub, Book
 from dataserver.service.nlp import NLPService
-from dataserver.service.notification import NotificationService
 from dataserver.models.config import Config
 import pandas as pd
 import json
@@ -69,12 +68,9 @@ def execute(cmd):
 @click.argument('flow')
 def run(flow):
     try:
-        for path in execute([sys.executable, 'dag/' + flow + '.py', "--environment=conda", "--no-pylint", "run"]):
+        for path in execute([sys.executable, 'dataserver/dag/' + flow + '.py', "--environment=conda", "--no-pylint", "run"]):
             print(path, end="")
     except subprocess.CalledProcessError as e:
-        with open('config.yaml') as f:
-            service = NotificationService(config=Config(**yaml.load(f)))
-            service.complete_flow(flow, "ERROR", True)
         raise
 if __name__ == '__main__':
     cli()
