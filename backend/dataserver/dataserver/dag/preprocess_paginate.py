@@ -4,27 +4,27 @@ import pandas as pd
 from dataserver.job.preprocess_pages import preprocess_paginate_logs, \
     extract_signals_df, clean_signals_df, clean_pages_df
 
-from dataserver.dag import deps
+from dataserver.dag import GoraniFlowSpec
 
 import yaml
 
 from dataserver.models.config import Config
 from dataserver.service import BookService
 from dataserver.service.nlp import NLPService
-from dataserver.service.notification import NotificationService
 
+class PreprocessPaginate(GoraniFlowSpec):
+    """
+    이벤트 로그를 제외한 사용자 데이터와 책 데이터 그리고 단어 셋 데이터를 다운로드 합니다.
 
-@conda_base(libraries=deps)
-class PreprocessPaginate(FlowSpec):
-    config_file = IncludeFile(
-        'config',
-        is_text=False,
-        help='Config Key File',
-        default='./config.yaml')
+    Attributes:
+        pages_df (PagesDataFrame): 단어 셋 데이터입니다.
+        signals_df (SignalDataFrame): 유저 데이터입니다.
+        books (dict[str, Book]): 책 데이터 입니다.
+    """
 
     @step
     def start(self):
-        flow = Flow('DownloadLog').latest_successful_run
+        flow = Flow('Download').latest_successful_run
         print('using data from flow: %s' % flow.id)
 
         self.books = flow.data.books
@@ -40,7 +40,7 @@ class PreprocessPaginate(FlowSpec):
 
         nlp_service = NLPService()
         nlp_service.download_data()
-        book_service = BookService(self.books.values())
+        book_service = BookService(self.books)
         self.pages_df = preprocess_paginate_logs(logs_df, nlp_service, book_service, self.config)
 
         self.next(self.extract_signals_df)
@@ -65,8 +65,7 @@ class PreprocessPaginate(FlowSpec):
 
     @step
     def end(self):
-        service = NotificationService(self.config)
-        service.complete_flow("Preprocess Paginate", 'processed: %d' % self.signals_df.size, False)
+        pass
 
 if __name__ == '__main__':
     PreprocessPaginate()

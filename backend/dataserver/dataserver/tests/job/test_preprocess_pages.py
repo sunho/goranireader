@@ -463,9 +463,8 @@ def test_clean_pages_df():
 
 
 def test_preprocess_paginate_logs():
-    config = Config(cluster_threshold=1, max_session_hours=12, cheat_eltime_threshold=12, filter_wpm_threshold=1000,
-                    notify_topic_arn="", firebase_cert=dict(), client_event_logs_s3_bucket="",
-                    generated_review_s3_bucket="", firebase_project_id="", vocab_skills_s3_bucket="", word2vec_k=0,
+    config = Config(cluster_threshold=1, max_session_hours=12, cheat_eltime_threshold=12,
+                    filter_wpm_threshold=1000, word2vec_k=0,
                     last_session_after_hours=0, skip_session_hours=0)
     nlp_service = MockNLPService()
     content = "hello world don't\"believe\""
