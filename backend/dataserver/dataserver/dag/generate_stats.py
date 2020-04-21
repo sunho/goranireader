@@ -1,32 +1,19 @@
 from metaflow import FlowSpec, step, IncludeFile, conda_base, Flow
 
 from dataserver.job.stats import extract_session_info_df, extract_last_session_df, calculate_vocab_skills
-from dataserver.service.notification import NotificationService
-from dataserver.dag import deps
+from dataserver.dag import deps, GoraniFlowSpec
 
 from dataserver.models.config import Config
 from dataserver.service.user import UserService
 
 
-@conda_base(libraries= deps)
-class GenerateStats(FlowSpec):
-    config_file = IncludeFile(
-        'config',
-        is_text=False,
-        help='Config Key File',
-        default='./config.yaml')
-
+class GenerateStats(GoraniFlowSpec):
     @step
     def start(self):
-        flow = Flow('DownloadLog').latest_successful_run
+        flow = Flow('Download').latest_successful_run
         print('using users data from flow: %s' % flow.id)
 
         self.users = flow.data.users
-
-
-        flow = Flow('LoadMetadata').latest_successful_run
-        print('using vocab skills data from flow: %s' % flow.id)
-
         self.vocab_skills = flow.data.vocab_skills
 
         flow = Flow('PredictVocab').latest_successful_run
@@ -59,8 +46,7 @@ class GenerateStats(FlowSpec):
 
     @step
     def end(self):
-        service = NotificationService(self.config)
-        service.complete_flow("Generate Stats", "", False)
+        pass
 
 
 if __name__ == '__main__':

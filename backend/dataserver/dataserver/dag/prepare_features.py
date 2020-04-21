@@ -2,23 +2,14 @@ from metaflow import FlowSpec, step, Flow, IncludeFile, conda_base
 
 from dataserver.job.prepare_features import prepare_simple_features, annotate_simple_features, extract_recent_features
 
-from dataserver.dag import deps
+from dataserver.dag import deps, GoraniFlowSpec
 
 import yaml
 
 from dataserver.models.config import Config
 from dataserver.service.nlp import NLPService
-from dataserver.service.notification import NotificationService
 
-
-@conda_base(libraries=deps)
-class PrepareFeatures(FlowSpec):
-    config_file = IncludeFile(
-        'config',
-        is_text=False,
-        help='Config Key File',
-        default='./config.yaml')
-
+class PrepareFeatures(GoraniFlowSpec):
     @step
     def start(self):
         flow = Flow('PreprocessPaginate').latest_successful_run
@@ -56,8 +47,7 @@ class PrepareFeatures(FlowSpec):
 
     @step
     def end(self):
-        service = NotificationService(self.config)
-        service.complete_flow("Prepare Features", 'yeah', False)
+        pass
 
 if __name__ == '__main__':
     PrepareFeatures()

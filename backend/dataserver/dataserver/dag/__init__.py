@@ -14,7 +14,8 @@ deps = {
     "joblib": "0.13.2",
     "scipy": "1.4.1",
     "pyphen": "0.9.5",
-    'rsa': '4.0'
+    'rsa': '4.0',
+    'msgpack-python': '1.0.0'
 }
 
 @conda_base(libraries=deps)

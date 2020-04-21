@@ -6,7 +6,7 @@ import numpy as np
 from dataserver.booky.book import split_sentence, Book
 from dataserver.job.utils import unnesting
 from dataserver.models.config import Config
-from dataserver.models.dataframe import ParsedPagesDataFrame, SignalDataFrame, LastSessionDataFrame
+from dataserver.models.dataframe import PagesDataFrame, SignalDataFrame, LastSessionDataFrame, EventLogDataFrame
 from dataserver.service import BookService
 from dataserver.service.nlp import NLPService
 
@@ -15,8 +15,21 @@ import json
 
 from dataserver.service.user import UserService
 
-
 def preprocess_paginate_logs(df, nlp_service: NLPService, book_service: BookService, config: Config):
+    """
+      페이지 넘김 로그를 전처리합니다.
+    Parameters
+    ----------
+    df : EventLogDataFrame
+    nlp_service
+    book_service
+    config
+
+    Returns
+    -------
+    PagesDataFrame
+    """
+    df = EventLogDataFrame.validate(df)
     rdf = parse_review_paginate_logs(df, nlp_service)
     odf = parse_ordinary_paginate_logs(df, nlp_service, book_service)
     df = pd.concat([rdf, odf], axis=0)
@@ -31,9 +44,12 @@ def preprocess_paginate_logs(df, nlp_service: NLPService, book_service: BookServ
     df = df.loc[df['wpm'] < config.filter_wpm_threshold]
 
     df = annotate_pages_df(df, config.max_session_hours, config.cheat_eltime_threshold)
-    return df
+    return PagesDataFrame.validate(df)
 
 def parse_review_paginate_logs(logs_df, nlp_service: NLPService):
+    """
+    페이지 넘김 로그를 전처리합니다.
+    """
     logs_df = logs_df.loc[logs_df['type'] == 'review-paginate']
     if len(logs_df) == 0:
         return pd.DataFrame(columns=['time', 'from', 'rcId', 'userId', 'eltime', 'text'])
@@ -105,7 +121,7 @@ def parse_paginate_logs(pages_df):
     pages_df = pages_df[
         ['time', 'userId', 'from', 'rcId', 'eltime', 'sids', 'pos', 'words', 'unknownWords', 'unknownIndices']]
 
-    return ParsedPagesDataFrame.validate(pages_df)
+    return pages_df
 
 
 def parse_word_unknowns(nlp_service: NLPService, sids, sentences, word_unknowns):
@@ -202,17 +218,17 @@ def annotate_pages_df(df, max_session_hours: float, cheat_eltime_threshold: floa
     pages_df = df.copy()
     pages_df = pages_df.sort_values('time')
 
-    def _extract_session(time):
-        i = 0
-        last = 0
+    def _extract_session(times):
+        sess = 0
+        last_t = 0
         out = []
-        for x in time:
-            if last == 0:
-                last = x
-            if x - last > max_session_hours * 60 * 60:
-                i += 1
-                last = x
-            out.append(i)
+        for t in times:
+            if last_t == 0:
+                last_t = t
+            if t - last_t > max_session_hours * 60 * 60:
+                sess += 1
+                last_t = t
+            out.append(sess)
         return out
 
     pages_df['session'] = pages_df['time'].groupby(pages_df['userId']).transform(_extract_session)
