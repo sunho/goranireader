@@ -1,0 +1,12 @@
+**/node_modules
+**/.metaflow
+.git
+/backend/dataserver/books
+/backend/dataserver/data.msgpack
+/backend/dataserver/notebooks
+/backend/dataserver/docs/build
+/common/types/docs
+/frontend/app/public
+**/build
+**/.pytest_cache
+*Dockerfile*
