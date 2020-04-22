@@ -1,0 +1,10 @@
+on:
+  push:
+    branches:
+      - master
+
+name: docs
+jobs:
+  docs:
+    name: Generate documentations and push to github
+    runs-on: goranireader/

@@ -25,6 +25,7 @@ glove.6B.100d.txt
 /backend/dataserver/miner/libs
 key.json
 /backend/dataserver/dist
+/backend/dataserver/data.msgpack
 /backend/dataserver/in
 /backend/dataserver/logs
 /backend/dataserver/ks_app/lib
@@ -170,3 +171,7 @@ backend/dataserver/cli/books/outbreak.epub.xml
 backend/dataserver/cli/books/outbreak.epub.xml.book
 backend/dataserver/cli/books/rezero9.epub.xml
 backend/dataserver/cli/books/rezero9.epub.xml.book
+
+# docs
+/backend/dataserver/docs/build
+/common/types/docs
