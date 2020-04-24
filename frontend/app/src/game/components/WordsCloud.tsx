@@ -1,14 +1,7 @@
-import React, { useContext, useState, useRef, useEffect, useCallback } from "react";
-import RootStore from "../../core/stores/RootStore";
-import { storeContext } from "../../core/stores/Context";
-import { Step } from "../models/Game";
-import { SwitchTransition, CSSTransition } from "react-transition-group";
-import { useObserver } from "mobx-react-lite";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import { GameContext } from "../stores/GameRootStore";
-import { motion, AnimatePresence, useAnimation } from "framer-motion";
+import { motion } from "framer-motion";
 import { useWindowSize } from '../../core/utils/hooks';
-import { request } from "http";
 
 const Word = motion.custom(styled.div`
   display: absolute;

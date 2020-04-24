@@ -1,14 +1,10 @@
-import React, { useContext, useState, useRef, useEffect } from "react";
-import RootStore from "../../core/stores/RootStore";
+import React, { useContext, useState, useEffect } from "react";
 import { storeContext } from "../../core/stores/Context";
-import { Step, Review } from "../models/Game";
-import { SwitchTransition, CSSTransition } from "react-transition-group";
+import { Step } from "../models/Game";
 import { useObserver } from "mobx-react";
 import styled from "styled-components";
 import { GameContext } from "../stores/GameRootStore";
 import { motion, AnimatePresence } from "framer-motion";
-import { isObservable, observe } from "mobx";
-import GameStore from "../stores/GameStore";
 import {
   StepStoreGenerator,
   SubStep,

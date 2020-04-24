@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react';
+import React, { useContext } from 'react';
 import Stepper from './Stepper';
 import { StepKind } from '../models/Game';
 import { GameContext } from '../stores/GameRootStore';
