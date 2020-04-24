@@ -11,7 +11,7 @@ types:
 	cd common/types && ./types.sh
 
 docs:
-	cd backend/dataserver && source ./activate.sh && make build-docs
+	cd backend/dataserver && . ./activate.sh && make build-docs
 	cd common/types && ./types.sh
 	rm -rf /tmp/gorani-docs || true
 	mkdir /tmp/gorani-docs
