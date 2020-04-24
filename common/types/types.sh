@@ -1,3 +1,4 @@
+#!/bin/bash
 set -o pipefail
 set -e
 
@@ -23,4 +24,4 @@ for i in ./src/*.ts; do
   npx quicktype $i -o "$DARASERVER_SRC/commonmodels/$name.py"
 done
 
-npx typedoc ./src
+npx typedoc ./src --out build

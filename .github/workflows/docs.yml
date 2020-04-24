@@ -7,4 +7,21 @@ name: docs
 jobs:
   docs:
     name: Generate documentations and push to github
-    runs-on: goranireader/
+    runs-on: ubuntu-latest
+    container: goranireader/build-env
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build
+      run: |
+        make docs
+    - name: Push
+      run: |
+        git config --global user.name 'Bot'
+        git config --global user.email 'bot@users.noreply.github.com'
+        cd /tmp/gorani-docs
+        git init
+        git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$REPO
+        git add .
+        git commit -m "Page built at ${GITHUB_REF:11}"
+        git push origin master
+      
