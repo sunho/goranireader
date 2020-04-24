@@ -12,10 +12,10 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build
-      runs: |
+      run: |
         make docs
     - name: Push
-      runs: |
+      run: |
         git config --global user.name 'Bot'
         git config --global user.email 'bot@users.noreply.github.com'
         cd /tmp/gorani-docs
