@@ -28,15 +28,14 @@ generate_stats: predict_vocab
 generate_review: generate_stats
 	PYTHONPATH=${PWD} python ./cli.py run generate_review
 
-
-# TODO automate this
-export-env:
-	echo "name: dataserver" > env.yaml
-	conda env export --no-builds | grep -v "prefix" | \
-		grep -v "libgfortran" | \
-	 	grep -v "appnope" | \
-	 	grep -v "libcxxabi" | \
-	 	sed 1d >> env.yaml
+activate:
+	conda activate gorani
 
 update-env:
 	conda env update -f env.yaml --prune
+
+create-env:
+	conda env create -f env.yaml
+
+build-docs:
+	cd docs && make html
