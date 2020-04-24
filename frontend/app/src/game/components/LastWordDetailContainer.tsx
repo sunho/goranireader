@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef, useEffect, useMemo } from "react";
 import styled, { css } from "styled-components";
 import { GameContext } from "../stores/GameRootStore";
-import { motion, AnimatePresence, useAnimation } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import { useObserver } from "mobx-react";
 import { useOutsideClickObserver } from "../../core/utils/hooks";
 import { storeContext } from "../../core/stores/Context";

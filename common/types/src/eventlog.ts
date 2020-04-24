@@ -1,6 +1,8 @@
 
 /** 이벤트 로그를 나타냅니다. */
 interface EventLog {
+  /** 정수입니다. */
+  id: number;
   /** uuid형태 입니다. */
   userId: string;
   /** 로그가 작성된 시각입니다. rfc3339형태 입니다. */
