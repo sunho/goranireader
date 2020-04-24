@@ -24,3 +24,4 @@ docs:
 	mkdir /tmp/gorani-docs
 	cp -R backend/dataserver/docs/build/html /tmp/gorani-docs/dataserver
 	cp -R common/types/build /tmp/gorani-docs/common
+	cp docs-index.html /tmp/gorani-docs/index.html
