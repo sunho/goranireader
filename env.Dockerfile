@@ -11,6 +11,8 @@ WORKDIR /home
 ADD Makefile .
 RUN mkdir -p ./backend/dataserver
 ADD backend/dataserver/env.yaml ./backend/dataserver
+ADD backend/dataserver/Makefile ./backend/dataserver
+ADD backend/dataserver/activate.sh ./backend/dataserver
 
 RUN mkdir -p ./frontend/app
 ADD common/types/package.json ./common/types/package.json
@@ -22,3 +24,5 @@ RUN mkdir -p ./backend/apiserver/functions
 ADD backend/apiserver/functions/package.json ./backend/apiserver/functions/packages.json
 
 RUN make setup
+
+RUN npm install -g typescript
