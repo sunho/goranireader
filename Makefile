@@ -1,3 +1,4 @@
+SHELL=/bin/bash
 DOCS_GIT="https://github.com/gorani-zoa/gorani-reader-api-docs.git"
 REV=$(git rev-parse HEAD | git name-rev --stdin)
 
