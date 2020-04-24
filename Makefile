@@ -2,11 +2,17 @@ SHELL=/bin/bash
 DOCS_GIT="https://github.com/gorani-zoa/gorani-reader-api-docs.git"
 REV=$(git rev-parse HEAD | git name-rev --stdin)
 
-setup:
-	cd backend/dataserver && make create-env
+setup-common:
 	npm install --prefix common/types
+
+setup-python:
+	cd backend/dataserver && make create-env
+
+setup-node: setup-common
 	npm install --prefix frontend/app
 	npm install --prefix backend/apiserver/functions
+
+setup: setup-python setup-node
 
 types:
 	cd common/types && ./types.sh
