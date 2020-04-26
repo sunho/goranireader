@@ -13,13 +13,23 @@ from dataserver.service import BookService
 from dataserver.service.nlp import NLPService
 
 class PreprocessPaginate(GoraniFlowSpec):
-    """
-    이벤트 로그를 제외한 사용자 데이터와 책 데이터 그리고 단어 셋 데이터를 다운로드 합니다.
+    """페이지 넘김 로그를 전처리합니다.
 
-    Attributes:
-        pages_df (PagesDataFrame): 단어 셋 데이터입니다.
-        signals_df (SignalDataFrame): 유저 데이터입니다.
-        books (dict[str, Book]): 책 데이터 입니다.
+    Attributes
+    ------------
+    pages_df
+        :obj:`dataserver.models.dataframe.PagesDataFrame`
+
+        전처리가 완료된 페이지 넘김 데이터프레임입니다.
+    clean_pages_df
+        :obj:`dataserver.models.dataframe.CleanPagesDataFrame`
+    signals_df
+        :obj:`dataserver.models.dataframe.SignalDataFrame`
+
+        각 단어별 통계를 내기 좋은 형태로 변형되어 있는 pages_df입니다.
+    clean_signals_df
+        :obj:`dataserver.models.dataframe.SignalDataFrame`
+
     """
 
     @step

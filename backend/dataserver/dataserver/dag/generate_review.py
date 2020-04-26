@@ -10,18 +10,33 @@ from dataserver.models.config import Config
 
 class GenerateReview(GoraniFlowSpec):
     """
-    이벤트 로그 데이터를 다운로드 합니다.
+    리뷰 게임을 만듭니다.
 
-    Attributes:
-        logs (list[EventLog]): 로그 데이터 입니다. EventLog는 공통타입입니다.
+    의존: Download, PreprocessPaginate, GenerateStats, PredictVocab
+
+    start -> generate_review -> end 순으로 실행됩니다.
+
+    Attributes
+    ------------
+    review_df : 만들어진 리뷰 게임입니다.
     """
 
     @step
     def start(self):
+        """
+        초기화
+        """
         flow = Flow('Download').latest_successful_run
         print('using users data from flow: %s' % flow.id)
 
         self.users = flow.data.users
+        self.vocab_skills = flow.data.vocab_skills
+
+
+        flow = Flow('PreprocessPaginate').latest_successful_run
+        print('using signals data from flow: %s' % flow.id)
+
+        self.clean_pages_df = flow.data.clean_pages_df
 
         flow = Flow('GenerateStats').latest_successful_run
         print('using users data from flow: %s' % flow.id)
@@ -29,20 +44,10 @@ class GenerateReview(GoraniFlowSpec):
         self.last_session_df = flow.data.last_session_df
         self.session_info_df = flow.data.session_info_df
 
-        flow = Flow('LoadMetadata').latest_successful_run
-        print('using vocab skills data from flow: %s' % flow.id)
-
-        self.vocab_skills = flow.data.vocab_skills
-
         flow = Flow('PredictVocab').latest_successful_run
         print('using vocab data from flow: %s' % flow.id)
 
         self.unknown_words_df = flow.data.unknown_words_df
-
-        flow = Flow('PreprocessPaginate').latest_successful_run
-        print('using signals data from flow: %s' % flow.id)
-
-        self.clean_pages_df = flow.data.clean_pages_df
 
         import yaml
         self.config = Config(**yaml.load(self.config_file))
@@ -51,6 +56,9 @@ class GenerateReview(GoraniFlowSpec):
 
     @step
     def generate_review(self):
+        """
+        PredictVocab에서 예측한 유저의 어휘로 리뷰게임을 만듭니다.
+        """
         words_df = decide_review_words(self.unknown_words_df, self.vocab_skills, self.last_session_df, 24*5)
         target_df = decide_target_words(words_df)
 
@@ -64,6 +72,9 @@ class GenerateReview(GoraniFlowSpec):
 
     @step
     def end(self):
+        """
+        마무리
+        """
         pass
 
 
