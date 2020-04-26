@@ -35,7 +35,6 @@ class GenerateStats(GoraniFlowSpec):
     @step
     def generate_stats(self):
         user_service = UserService(self.users)
-        self.vocab_skill_df = calculate_vocab_skills(self.known_words_df, self.vocab_skills)
         self.session_info_df = extract_session_info_df(self.signals_df, self.clean_pages_df)
         self.last_session_df = extract_last_session_df(self.session_info_df,
                                                        user_service,

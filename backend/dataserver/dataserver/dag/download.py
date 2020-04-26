@@ -14,11 +14,16 @@ class Download(GoraniFlowSpec):
     """
     데이터를 다운로드 합니다.
 
-    Attributes:
-        logs (list[EventLog]): 로그 데이터 입니다. EventLog는 공통타입입니다.
-        users (Dict[str, dict]): 유저
-        books (List[Book]): 책
-        vocab_skills (List[VocabSkill]): 단어 셋 정보
+    Attributes
+    ----------------------
+    logs: list[EventLog]
+        로그 데이터 입니다. EventLog는 공통타입입니다.
+    users: Dict[str, dict]
+        유저
+    books: List[Book]
+        책
+    vocab_skills: List[VocabSkill]
+        단어 셋 정보
     """
 
     data_file = IncludeFile(

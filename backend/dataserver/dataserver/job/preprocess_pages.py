@@ -17,7 +17,7 @@ from dataserver.service.user import UserService
 
 def preprocess_paginate_logs(df, nlp_service: NLPService, book_service: BookService, config: Config):
     """
-      페이지 넘김 로그를 전처리합니다.
+    페이지 넘김 로그를 전처리합니다.
     Parameters
     ----------
     df : EventLogDataFrame
@@ -231,7 +231,7 @@ def annotate_pages_df(df, max_session_hours: float, cheat_eltime_threshold: floa
             out.append(sess)
         return out
 
-    pages_df['session'] = pages_df['time'].groupby(pages_df['userId']).transform(_extract_session)
+    pages_df['session'] = pages_df.groupby(pages_df['userId'])['time'].apply(_extract_session)
 
     def _assign_cheat(df):
         eltimes = df.copy()
