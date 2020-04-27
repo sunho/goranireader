@@ -8,6 +8,18 @@ from dataserver.service.user import UserService
 
 
 class GenerateStats(GoraniFlowSpec):
+    """
+    간단한 통계를 구합니다.
+
+    의존: Download, PreprocessPaginate, GenerateStats, PredictVocab
+
+    start -> generate_review -> end 순으로 실행됩니다.
+
+    Attributes
+    ------------
+    review_df : 만들어진 리뷰 게임입니다.
+    """
+
     @step
     def start(self):
         flow = Flow('Download').latest_successful_run

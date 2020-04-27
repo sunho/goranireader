@@ -231,7 +231,7 @@ def annotate_pages_df(df, max_session_hours: float, cheat_eltime_threshold: floa
             out.append(sess)
         return out
 
-    pages_df['session'] = pages_df.groupby(pages_df['userId'])['time'].apply(_extract_session)
+    pages_df['session'] = pages_df.groupby(['userId'])['time'].transform(_extract_session)
 
     def _assign_cheat(df):
         eltimes = df.copy()

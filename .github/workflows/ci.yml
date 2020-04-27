@@ -3,20 +3,20 @@ on:
     branches:
       - master
 
-name: docs
+name: ci
 jobs:
-  docs:
-    name: Generate documentations and push to github
+  ci:
+    name: Continuous Integration
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Build
+    - name: Setup
       run: |
         make setup-python
         make setup-common
-        make docs
-    - name: Push
+    -name: Generate Documentation
       run: |
+        make docs
         git config --global user.name 'Bot'
         git config --global user.email 'bot@users.noreply.github.com'
         cd /tmp/gorani-docs
@@ -26,4 +26,15 @@ jobs:
         git add .
         git commit -m "Page built at ${{ github.sha }}"
         git push -f origin docs
+    - name: Test dataserver
+      run: |
+        make test-dataserver
+        
+    - uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./backend/dataserver/coverage.xml # optional
+        flags: unittests # optional
+        name: codecov-umbrella # optional
+        fail_ci_if_error: true # optional (default = false)
       

@@ -1,9 +1,8 @@
 import pytest
 import json
 from dataserver.models.review import Review, ReviewWord
-import pytest_diff
+from deepdiff import DeepDiff
 
-@pytest_diff.registry.register(Review, ReviewWord)
 def test_review_model():
     model = {
         'id': 'test',
@@ -36,4 +35,4 @@ def test_review_model():
         start=12,
         end=123
     )
-    assert review == solution
+    assert not DeepDiff(solution,review)
