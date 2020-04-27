@@ -35,7 +35,7 @@ payload: str
 PagesDataFrame = pa.DataFrameSchema({
     "pageId": pa.Column(pa.Int),
     "time": pa.Column(pa.Int),
-    "session": pa.Column(),
+    "session": pa.Column(pa.Int),
     "userId": pa.Column(pa.String),
     "cheat": pa.Column(pa.Bool),
     "eltime": pa.Column(),

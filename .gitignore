@@ -170,6 +170,7 @@ yarn-error.log
 backend/dataserver/cli/books/outbreak.epub.xml
 backend/dataserver/cli/books/outbreak.epub.xml.book
 backend/dataserver/cli/books/rezero9.epub.xml
+backend/dataserver/coverage.xml
 backend/dataserver/cli/books/rezero9.epub.xml.book
 
 # docs

@@ -39,3 +39,6 @@ create-env:
 
 build-docs:
 	cd docs && make html
+
+test:
+	pytest --cov-report=xml --cov=dataserver
