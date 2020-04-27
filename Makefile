@@ -26,5 +26,5 @@ docs:
 	cp -R common/types/build /tmp/gorani-docs/common
 	cp docs-index.html /tmp/gorani-docs/index.html
 
-test:
+test-dataserver:
 	cd backend/dataserver && . ./activate.sh && make test
