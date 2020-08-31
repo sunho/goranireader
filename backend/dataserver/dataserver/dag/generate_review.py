@@ -2,23 +2,16 @@ from metaflow import FlowSpec, step, IncludeFile, conda_base, Flow
 
 from dataserver.job.review import decide_review_words, decide_target_words, serialize_review_words_df, \
     serialize_stats_df, combine_serialized_dfs
-from dataserver.dag import pip
+from dataserver.dag.decorators import pip
 from dataserver.dag import deps
 import time
 
 from dataserver.models.config import Config
 from dataserver.service.s3 import S3Service
 from dataserver.service.user import UserService
+from dataserver.dag import GoraniFlowSpec
 
-
-@conda_base(libraries=deps)
-class GenerateReview(FlowSpec):
-    config_file = IncludeFile(
-        'config',
-        is_text=False,
-        help='Config Key File',
-        default='./config.yaml')
-
+class GenerateReview(GoraniFlowSpec):
     @step
     def start(self):
         flow = Flow('DownloadLog').latest_successful_run
@@ -59,7 +52,7 @@ class GenerateReview(FlowSpec):
 
         review_words_df = serialize_review_words_df(words_df, self.clean_pages_df, target_df)
         session_info_df = self.session_info_df
-        session_info_df = session_info_df.loc[(time.time() - session_info_df['start']) <= (14*24*60*60)]
+        # session_info_df = session_info_df.loc[(time.time() - session_info_df['start']) <= (14*24*60*60)]
         stats_df = serialize_stats_df(session_info_df)
         self.review_df = combine_serialized_dfs(stats_df, review_words_df, self.last_session_df, session_info_df)
 
@@ -82,21 +75,18 @@ class GenerateReview(FlowSpec):
             user = user_service.get_user(row['userId'])
             if user is None:
                 continue
-            if not s3.exists(self.config.generated_review_s3_bucket, filename):
-                url = s3.upload(self.config.generated_review_s3_bucket, filename, row['review'])
-                firebase.update_user(row['userId'], {
-                    'review': url
-                })
-                self.updated.append(row['userId'])
+            #if not s3.exists(self.config.generated_review_s3_bucket, filename):
+            url = s3.upload(self.config.generated_review_s3_bucket, filename, row['review'])
+            firebase.update_user(row['userId'], {
+                'review': url
+            })
+            self.updated.append(row['userId'])
 
         self.next(self.end)
 
     @step
     def end(self):
-        service = NotificationService(self.config)
-        service.complete_flow("Generate Review", "", False)
-        print(self.updated)
-
+        pass
 
 if __name__ == '__main__':
     GenerateReview()

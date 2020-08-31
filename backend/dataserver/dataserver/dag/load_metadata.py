@@ -1,20 +1,12 @@
 from metaflow import FlowSpec, step, IncludeFile, conda_base
 
+from dataserver.dag import GoraniFlowSpec
 from dataserver.models.vocab_skill import VocabSkill
-from dataserver.service.notification import NotificationService
 from dataserver.dag import deps
 
 from dataserver.models.config import Config
 
-
-@conda_base(libraries= deps)
-class LoadMetadata(FlowSpec):
-    config_file = IncludeFile(
-        'config',
-        is_text=False,
-        help='Config Key File',
-        default='./config.yaml')
-
+class LoadMetadata(GoraniFlowSpec):
     @step
     def start(self):
         import yaml
@@ -35,8 +27,7 @@ class LoadMetadata(FlowSpec):
 
     @step
     def end(self):
-        service = NotificationService(self.config)
-        service.complete_flow("Load Metadata", "", False)
+        pass
 
 
 if __name__ == '__main__':

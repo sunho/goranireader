@@ -7,18 +7,10 @@ from dataserver.dag import deps
 import yaml
 
 from dataserver.models.config import Config
-from dataserver.service.notification import NotificationService
 from dataserver.job.prepare_features import split_simple_features, get_last_input_time
+from dataserver.dag import GoraniFlowSpec
 
-
-@conda_base(libraries=deps)
-class TrainModels(FlowSpec):
-    config_file = IncludeFile(
-        'config',
-        is_text=False,
-        help='Config Key File',
-        default='./config.yaml')
-
+class TrainModels(GoraniFlowSpec):
     @step
     def start(self):
         flow = Flow('PrepareFeatures').latest_successful_run
@@ -41,8 +33,7 @@ class TrainModels(FlowSpec):
 
     @step
     def end(self):
-        service = NotificationService(self.config)
-        service.complete_flow("Train Models", 'Yay', False)
+        pass
 
 if __name__ == '__main__':
     TrainModels()

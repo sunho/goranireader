@@ -10,10 +10,11 @@ class Config(NamedTuple):
     last_session_after_hours: float
     skip_session_hours: float
 
+    firebase_project_id: str
+
     word2vec_k: int
 
     # s3
-    s3_endpoint: str
     s3_key: str
     s3_secret: str
     s3_region: str
@@ -22,3 +23,4 @@ class Config(NamedTuple):
     generated_review_s3_bucket: str
     vocab_skills_s3_bucket: str
 
+    firebase_cert: dict

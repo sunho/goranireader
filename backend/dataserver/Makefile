@@ -38,3 +38,4 @@ deploy:
 	docker build -t gorani .
 	docker tag gorani:latest 926877676119.dkr.ecr.ap-northeast-2.amazonaws.com/gorani-reader:latest
 	docker push 926877676119.dkr.ecr.ap-northeast-2.amazonaws.com/gorani-reader:latest
+	
