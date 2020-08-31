@@ -11,17 +11,9 @@ import yaml
 from dataserver.models.config import Config
 from dataserver.service import BookService
 from dataserver.service.nlp import NLPService
-from dataserver.service.notification import NotificationService
+from dataserver.dag import GoraniFlowSpec
 
-
-@conda_base(libraries=deps)
-class PreprocessPaginate(FlowSpec):
-    config_file = IncludeFile(
-        'config',
-        is_text=False,
-        help='Config Key File',
-        default='./config.yaml')
-
+class PreprocessPaginate(GoraniFlowSpec):
     @step
     def start(self):
         flow = Flow('DownloadLog').latest_successful_run
@@ -65,8 +57,7 @@ class PreprocessPaginate(FlowSpec):
 
     @step
     def end(self):
-        service = NotificationService(self.config)
-        service.complete_flow("Preprocess Paginate", 'processed: %d' % self.signals_df.size, False)
+        pass
 
 if __name__ == '__main__':
     PreprocessPaginate()

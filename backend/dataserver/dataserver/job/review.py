@@ -18,9 +18,11 @@ def decide_review_words(unknown_words_df, vocab_skills, last_session_df, conside
     last_session_df = last_session_df.set_index('userId')
 
     df = unknown_words_df.join(last_session_df, how='inner')
-    df = df.loc[(df['start'] < df['time']) & (df['time'] < df['end'])]
+    # df = df.loc[(df['start'] < df['time']) & (df['time'] < df['end'])]
+    df = df.loc[(df['time'] < df['end'])]
     def _calculate_priority(row):
-        out = (row['time'] - row['start']) / (consider_hours*60*60)
+        # out = (row['time'] - row['start']) / (consider_hours*60*60)
+        out = 0
         for vocab_skill in vocab_skills:
             if row['word'] in vocab_skill.words:
                 out += vocab_skill.importance

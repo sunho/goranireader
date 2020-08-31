@@ -8,17 +8,9 @@ import yaml
 
 from dataserver.models.config import Config
 from dataserver.service.nlp import NLPService
-from dataserver.service.notification import NotificationService
+from dataserver.dag import GoraniFlowSpec
 
-
-@conda_base(libraries=deps)
-class PredictVocab(FlowSpec):
-    config_file = IncludeFile(
-        'config',
-        is_text=False,
-        help='Config Key File',
-        default='./config.yaml')
-
+class PredictVocab(GoraniFlowSpec):
     @step
     def start(self):
         flow = Flow('PreprocessPaginate').latest_successful_run
@@ -51,8 +43,7 @@ class PredictVocab(FlowSpec):
 
     @step
     def end(self):
-        service = NotificationService(self.config)
-        service.complete_flow("Predict Vocab", 'yeah', False)
+        pass
 
 if __name__ == '__main__':
     PredictVocab()
