@@ -1,0 +1,895 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="kr" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="kr" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Welcome to Gorani Reader&#39;s documentation! &mdash; Gorani Reader  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> Gorani Reader
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Welcome to Gorani Reader's documentation!</a></li>
+<li><a class="reference internal" href="#data-processing">Data processing</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#dag-pipeline">DAG Pipeline</a><ul>
+<li><a class="reference internal" href="#stage-1">Stage 1 (전처리)</a></li>
+<li><a class="reference internal" href="#stage-2">Stage 2 (계산)</a></li>
+<li><a class="reference internal" href="#stage-3">Stage 3 (배포)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-dataserver.dag">DAG</a></li>
+<li><a class="reference internal" href="#dataframes">DataFrames</a></li>
+<li><a class="reference internal" href="#module-dataserver.job">Job</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Gorani Reader</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Welcome to Gorani Reader's documentation!</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="welcome-to-gorani-reader-s-documentation">
+<h1>Welcome to Gorani Reader's documentation!<a class="headerlink" href="#welcome-to-gorani-reader-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="data-processing">
+<h1>Data processing<a class="headerlink" href="#data-processing" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>DAG 모듈은 주기적으로 돌아가는 전처리나 머신러닝 모델 훈련 및 검증 작업을 담고 있습니다.</p>
+<p>DAG 작업을 실행한 이후 나오는 결과물이 Attributes에 기술되어 있습니다.</p>
+<p>이 결과물들은 주피터 노트북이나 파이썬 코드를 통해 바로 가져오실 수 있습니다.
+예를 들어 <a class="reference internal" href="#dataserver.dag.PreprocessPaginate" title="dataserver.dag.PreprocessPaginate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataserver.dag.PreprocessPaginate</span></code></a> 를 실행시킨 뒤 전처리된 페이지 데이터 프레임을 아래와 같이 가져올 수 있습니다:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">metaflow</span> <span class="kn">import</span> <span class="n">Flow</span>
+<span class="n">flow</span> <span class="o">=</span> <span class="n">Flow</span><span class="p">(</span><span class="s1">&#39;PreprocessPaginate&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">latest_successful_run</span>
+<span class="n">pages_df</span> <span class="o">=</span> <span class="n">flow</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pages_df</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pages_df</span><span class="p">[</span><span class="s1">&#39;userId&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="c1"># 페이지를 넘긴 유저의 아이디</span>
+</pre></div>
+</div>
+<p>Job 모듈은 실질적인 데이터 처리를 담당하는 함수들을 담고 있습니다.</p>
+<p>DAG 모듈은 Job색션의 함수를 사용해서 데이터 처리를 합니다.</p>
+<p>DataFrames 모듈은 DAG작업의 결과물 스키마를 담고있습니다.</p>
+</div>
+<div class="section" id="dag-pipeline">
+<h2>DAG Pipeline<a class="headerlink" href="#dag-pipeline" title="Permalink to this headline">¶</a></h2>
+<p>작업 앞에 붙은 숫자는 우선순위 입니다. Stage1 -&gt; Stage 2 -&gt; Stage 3 순으로 실행됩니다.</p>
+<div class="section" id="stage-1">
+<h3>Stage 1 (전처리)<a class="headerlink" href="#stage-1" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#dataserver.dag.Download" title="dataserver.dag.Download"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Download</span></code></a> (데이터를 불러옵니다.)</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">PreprocessPaginates</span></code> (페이지 전처리)</p></li>
+<li><p><a class="reference internal" href="#dataserver.dag.PrepareFeatures" title="dataserver.dag.PrepareFeatures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PrepareFeatures</span></code></a> (데이터를 머신러닝 모델이 읽을 수 있는 형태로 변환)</p></li>
+</ol>
+</div>
+<div class="section" id="stage-2">
+<h3>Stage 2 (계산)<a class="headerlink" href="#stage-2" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#dataserver.dag.PredictVocab" title="dataserver.dag.PredictVocab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PredictVocab</span></code></a> (머신러닝 모델로 유저가 모를만한 단어와 알만한 단어를 예측)</p></li>
+</ol>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#dataserver.dag.GenerateStats" title="dataserver.dag.GenerateStats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GenerateStats</span></code></a> (통계 생성)</p></li>
+</ol>
+</div>
+<div class="section" id="stage-3">
+<h3>Stage 3 (배포)<a class="headerlink" href="#stage-3" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#dataserver.dag.GenerateReview" title="dataserver.dag.GenerateReview"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GenerateReview</span></code></a> (리뷰 게임 생성)</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="module-dataserver.dag">
+<span id="dag"></span><h2>DAG<a class="headerlink" href="#module-dataserver.dag" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="dataserver.dag.GenerateReview">
+<em class="property">class </em><code class="sig-prename descclassname">dataserver.dag.</code><code class="sig-name descname">GenerateReview</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">use_cli</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dataserver.dag.GenerateReview" title="Permalink to this definition">¶</a></dt>
+<dd><p>리뷰 게임을 만듭니다.</p>
+<p>의존: Download, PreprocessPaginate, GenerateStats, PredictVocab</p>
+<p>start -&gt; generate_review -&gt; end 순으로 실행됩니다.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>review_df</strong><span class="classifier">만들어진 리뷰 게임입니다.</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dataserver.dag.GenerateReview.end" title="dataserver.dag.GenerateReview.end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">end</span></code></a>(self)</p></td>
+<td><p>마무리</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">foreach_stack</span></code>(self)</p></td>
+<td><p>Returns the current stack of foreach steps for the current step</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dataserver.dag.GenerateReview.generate_review" title="dataserver.dag.GenerateReview.generate_review"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_review</span></code></a>(self)</p></td>
+<td><p>PredictVocab에서 예측한 유저의 어휘로 리뷰게임을 만듭니다.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_artifacts</span></code>(self, inputs[, exclude])</p></td>
+<td><p>Merge the artifacts coming from each merge branch (from inputs)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">next</span></code>(self, \*dsts, \*\*kwargs)</p></td>
+<td><p>Indicates the next step to execute at the end of this step</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#dataserver.dag.GenerateReview.start" title="dataserver.dag.GenerateReview.start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start</span></code></a>(self)</p></td>
+<td><p>초기화</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 59%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>cmd</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="dataserver.dag.GenerateReview.end">
+<code class="sig-name descname">end</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dataserver.dag.GenerateReview.end" title="Permalink to this definition">¶</a></dt>
+<dd><p>마무리</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dataserver.dag.GenerateReview.generate_review">
+<code class="sig-name descname">generate_review</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dataserver.dag.GenerateReview.generate_review" title="Permalink to this definition">¶</a></dt>
+<dd><p>PredictVocab에서 예측한 유저의 어휘로 리뷰게임을 만듭니다.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dataserver.dag.GenerateReview.start">
+<code class="sig-name descname">start</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dataserver.dag.GenerateReview.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>초기화</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="dataserver.dag.Download">
+<em class="property">class </em><code class="sig-prename descclassname">dataserver.dag.</code><code class="sig-name descname">Download</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">use_cli</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dataserver.dag.Download" title="Permalink to this definition">¶</a></dt>
+<dd><p>데이터를 다운로드 합니다.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>logs: list[EventLog]</strong></dt><dd><p>로그 데이터 입니다. EventLog는 공통타입입니다.</p>
+</dd>
+<dt><strong>users: Dict[str, dict]</strong></dt><dd><p>유저</p>
+</dd>
+<dt><strong>books: List[Book]</strong></dt><dd><p>책</p>
+</dd>
+<dt><strong>vocab_skills: List[VocabSkill]</strong></dt><dd><p>단어 셋 정보</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">foreach_stack</span></code>(self)</p></td>
+<td><p>Returns the current stack of foreach steps for the current step</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_artifacts</span></code>(self, inputs[, exclude])</p></td>
+<td><p>Merge the artifacts coming from each merge branch (from inputs)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">next</span></code>(self, \*dsts, \*\*kwargs)</p></td>
+<td><p>Indicates the next step to execute at the end of this step</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 53%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>cmd</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>end</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>start</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py class">
+<dt id="dataserver.dag.GenerateStats">
+<em class="property">class </em><code class="sig-prename descclassname">dataserver.dag.</code><code class="sig-name descname">GenerateStats</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">use_cli</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dataserver.dag.GenerateStats" title="Permalink to this definition">¶</a></dt>
+<dd><p>간단한 통계를 구합니다.</p>
+<p>의존: Download, PreprocessPaginate, GenerateStats, PredictVocab</p>
+<p>start -&gt; generate_review -&gt; end 순으로 실행됩니다.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>review_df</strong><span class="classifier">만들어진 리뷰 게임입니다.</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">foreach_stack</span></code>(self)</p></td>
+<td><p>Returns the current stack of foreach steps for the current step</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_artifacts</span></code>(self, inputs[, exclude])</p></td>
+<td><p>Merge the artifacts coming from each merge branch (from inputs)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">next</span></code>(self, \*dsts, \*\*kwargs)</p></td>
+<td><p>Indicates the next step to execute at the end of this step</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 64%" />
+<col style="width: 36%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>cmd</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>end</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>generate_stats</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>start</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py class">
+<dt id="dataserver.dag.PrepareFeatures">
+<em class="property">class </em><code class="sig-prename descclassname">dataserver.dag.</code><code class="sig-name descname">PrepareFeatures</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">use_cli</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dataserver.dag.PrepareFeatures" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></dt><dd><p>Index of the task in a foreach step</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">input</span></code></dt><dd><p>Value passed to the task in a foreach step</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">script_name</span></code></dt><dd><p>Returns the name of the script containing the flow</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">foreach_stack</span></code>(self)</p></td>
+<td><p>Returns the current stack of foreach steps for the current step</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_artifacts</span></code>(self, inputs[, exclude])</p></td>
+<td><p>Merge the artifacts coming from each merge branch (from inputs)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">next</span></code>(self, \*dsts, \*\*kwargs)</p></td>
+<td><p>Indicates the next step to execute at the end of this step</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 73%" />
+<col style="width: 27%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>cmd</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>end</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>prepare_simple_features</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>start</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py class">
+<dt id="dataserver.dag.PredictVocab">
+<em class="property">class </em><code class="sig-prename descclassname">dataserver.dag.</code><code class="sig-name descname">PredictVocab</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">use_cli</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dataserver.dag.PredictVocab" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></dt><dd><p>Index of the task in a foreach step</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">input</span></code></dt><dd><p>Value passed to the task in a foreach step</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">script_name</span></code></dt><dd><p>Returns the name of the script containing the flow</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">foreach_stack</span></code>(self)</p></td>
+<td><p>Returns the current stack of foreach steps for the current step</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_artifacts</span></code>(self, inputs[, exclude])</p></td>
+<td><p>Merge the artifacts coming from each merge branch (from inputs)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">next</span></code>(self, \*dsts, \*\*kwargs)</p></td>
+<td><p>Indicates the next step to execute at the end of this step</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 63%" />
+<col style="width: 37%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>cmd</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>end</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>predict_vocab</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>start</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py class">
+<dt id="dataserver.dag.PreprocessPaginate">
+<em class="property">class </em><code class="sig-prename descclassname">dataserver.dag.</code><code class="sig-name descname">PreprocessPaginate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">use_cli</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dataserver.dag.PreprocessPaginate" title="Permalink to this definition">¶</a></dt>
+<dd><p>페이지 넘김 로그를 전처리합니다.</p>
+<dl class="field-list">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl>
+<dt><strong>pages_df</strong></dt><dd><p><a class="reference internal" href="#dataserver.models.dataframe.PagesDataFrame" title="dataserver.models.dataframe.PagesDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataserver.models.dataframe.PagesDataFrame</span></code></a></p>
+<p>전처리가 완료된 페이지 넘김 데이터프레임입니다.</p>
+</dd>
+<dt><strong>clean_pages_df</strong></dt><dd><p><a class="reference internal" href="#dataserver.models.dataframe.CleanPagesDataFrame" title="dataserver.models.dataframe.CleanPagesDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataserver.models.dataframe.CleanPagesDataFrame</span></code></a></p>
+</dd>
+<dt><strong>signals_df</strong></dt><dd><p><a class="reference internal" href="#dataserver.models.dataframe.SignalDataFrame" title="dataserver.models.dataframe.SignalDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataserver.models.dataframe.SignalDataFrame</span></code></a></p>
+<p>각 단어별 통계를 내기 좋은 형태로 변형되어 있는 pages_df입니다.</p>
+</dd>
+<dt><strong>clean_signals_df</strong></dt><dd><p><a class="reference internal" href="#dataserver.models.dataframe.SignalDataFrame" title="dataserver.models.dataframe.SignalDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataserver.models.dataframe.SignalDataFrame</span></code></a></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">foreach_stack</span></code>(self)</p></td>
+<td><p>Returns the current stack of foreach steps for the current step</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_artifacts</span></code>(self, inputs[, exclude])</p></td>
+<td><p>Merge the artifacts coming from each merge branch (from inputs)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">next</span></code>(self, \*dsts, \*\*kwargs)</p></td>
+<td><p>Indicates the next step to execute at the end of this step</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 70%" />
+<col style="width: 30%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>clean_dfs</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>cmd</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>end</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>extract_signals_df</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>preprocess_pages_df</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>start</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="dataframes">
+<h2>DataFrames<a class="headerlink" href="#dataframes" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-dataserver.models.dataframe"></span><p>Job모듈에서 <a class="reference internal" href="#dataserver.models.dataframe.EventLogDataFrame" title="dataserver.models.dataframe.EventLogDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventLogDataFrame</span></code></a> 을 변형해 생성하는 데이터 프레임의 스키마입니다.</p>
+<dl class="py data">
+<dt id="dataserver.models.dataframe.CleanPagesDataFrame">
+<code class="sig-prename descclassname">dataserver.models.dataframe.</code><code class="sig-name descname">CleanPagesDataFrame</code><a class="headerlink" href="#dataserver.models.dataframe.CleanPagesDataFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#dataserver.models.dataframe.PagesDataFrame" title="dataserver.models.dataframe.PagesDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PagesDataFrame</span></code></a> 에서 각 페이지의 단어 리스트와 itemsJson을 추가한 것입니다. 유저가 접해봤으면서 특정 단어가 포함된 본문을 찾을때 유용합니다.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>pageId: int</strong></dt><dd><p><a class="reference internal" href="#dataserver.models.dataframe.PagesDataFrame" title="dataserver.models.dataframe.PagesDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PagesDataFrame</span></code></a> 의 pageId 참조</p>
+</dd>
+<dt><strong>time: int</strong></dt><dd><p>unix timestamp</p>
+</dd>
+<dt><strong>session: int</strong></dt><dd><p><a class="reference internal" href="#dataserver.models.dataframe.PagesDataFrame" title="dataserver.models.dataframe.PagesDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PagesDataFrame</span></code></a> 의 session 참조</p>
+</dd>
+<dt><strong>userId: str</strong></dt><dd></dd>
+<dt><strong>cheat: bool</strong></dt><dd><p><a class="reference internal" href="#dataserver.models.dataframe.PagesDataFrame" title="dataserver.models.dataframe.PagesDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PagesDataFrame</span></code></a> 의 cheat 참조</p>
+</dd>
+<dt><strong>eltime: float</strong></dt><dd><p>페이지를 넘기기 까지 걸린 시간 (초)</p>
+</dd>
+<dt><strong>wpm: float</strong></dt><dd><p>words per minute</p>
+</dd>
+<dt><strong>from: str</strong></dt><dd><p><a class="reference internal" href="#dataserver.models.dataframe.PagesDataFrame" title="dataserver.models.dataframe.PagesDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PagesDataFrame</span></code></a> 의 from 참조</p>
+</dd>
+<dt><strong>rcId: str</strong></dt><dd><p><a class="reference internal" href="#dataserver.models.dataframe.PagesDataFrame" title="dataserver.models.dataframe.PagesDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PagesDataFrame</span></code></a> 의 rcId 참조</p>
+</dd>
+<dt><strong>words: List[str]</strong></dt><dd><p>해당 페이지에 있던 단어 리스트 (distinct)</p>
+</dd>
+<dt><strong>knownWords: List[str]</strong></dt><dd><p>해당 페이지에서 찾아보지 않았던 단어 리스트 (distinct)</p>
+</dd>
+<dt><strong>unknownWords: List[str]</strong></dt><dd><p>해당 페이지에서 찾아봤던 단어 리스트 (distinct)</p>
+</dd>
+<dt><strong>itemsJson: str</strong></dt><dd><p>해당 페이지에 나왔던 문장을 앱에서 읽을 수 있는 형태로 바꿔둔 것입니다.
+더 자세히 설명하면, list[Item(공통타입의 booky 참조)]를 json으로 인코딩해둔 것입니다.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt id="dataserver.models.dataframe.EventLogDataFrame">
+<code class="sig-prename descclassname">dataserver.models.dataframe.</code><code class="sig-name descname">EventLogDataFrame</code><a class="headerlink" href="#dataserver.models.dataframe.EventLogDataFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p>raw 이벤트 로그를 나타냅니다.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>time: str</strong></dt><dd><p>rfc3339 포맷입니다.</p>
+</dd>
+<dt><strong>serverTime: str</strong></dt><dd><p>rfc3339 포맷입니다.</p>
+</dd>
+<dt><strong>userId: str</strong></dt><dd></dd>
+<dt><strong>classId: str</strong></dt><dd></dd>
+<dt><strong>fireId: str</strong></dt><dd></dd>
+<dt><strong>type: str</strong></dt><dd><p>이벤트 로그의 종류 
+더 자세한 내용은 공통타입 문서를 참조해주세요.</p>
+</dd>
+<dt><strong>payload: str</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt id="dataserver.models.dataframe.LastSessionDataFrame">
+<code class="sig-prename descclassname">dataserver.models.dataframe.</code><code class="sig-name descname">LastSessionDataFrame</code><a class="headerlink" href="#dataserver.models.dataframe.LastSessionDataFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p>유저별로 12시간이 지나면서 리뷰게임을 진행하지 않은 세션중 마지막 세션을 담고 있습니다.</p>
+<p>리뷰게임을 생성할 시점을 결정하기 위해 임시로 사용하고 있습니다. 리뷰 출제 시점 세분화가 된 후에는 없어져야 합니다.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>userId: str</strong></dt><dd></dd>
+<dt><strong>session: int</strong></dt><dd><p><a class="reference internal" href="#dataserver.models.dataframe.PagesDataFrame" title="dataserver.models.dataframe.PagesDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PagesDataFrame</span></code></a> 의 session 참조</p>
+</dd>
+<dt><strong>end: int</strong></dt><dd><p>마지막 세션의 끝 시
+unix timestamp</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt id="dataserver.models.dataframe.PagesDataFrame">
+<code class="sig-prename descclassname">dataserver.models.dataframe.</code><code class="sig-name descname">PagesDataFrame</code><a class="headerlink" href="#dataserver.models.dataframe.PagesDataFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p>기본적인 전처리가 완료된 페이지 넘긴 로그입니다.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>pageId: int</strong></dt><dd><p>이 데이터 프레임 내에서 auto_increment 아이디입니다.
+<a class="reference internal" href="#dataserver.models.dataframe.SignalDataFrame" title="dataserver.models.dataframe.SignalDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SignalDataFrame</span></code></a> 으로 계산한 내용을 조인시킬 때 유용하게 쓸 수 있습니다.</p>
+</dd>
+<dt><strong>time: int</strong></dt><dd><p>unix timestamp</p>
+</dd>
+<dt><strong>session: int</strong></dt><dd><p>학습 세션 아이디입니다. 각 유저마다 0부터 시작해서 오래될수록 1씩 늘어납니다.
+학습 세션의 최대 길이는 Config의 max_session_hours로 결정됩니다.</p>
+</dd>
+<dt><strong>userId: int</strong></dt><dd></dd>
+<dt><strong>cheat: bool</strong></dt><dd><p>제대로된 유저인지 여부. 이벤트 로그를 분석해서 얻은 것이므로 ground truth는 아닙니다.</p>
+</dd>
+<dt><strong>eltime: float</strong></dt><dd><p>페이지를 넘기기 까지 걸린 시간입니다. 단위는 초 입니다.</p>
+</dd>
+<dt><strong>wpm: float</strong></dt><dd><p>words per minute</p>
+</dd>
+<dt><strong>from: str</strong></dt><dd><p>페이지 출처의 종류입니다.
+book 또는 review 입니다.</p>
+</dd>
+<dt><strong>rcId: str</strong></dt><dd><p>페이지 출처의 아이디입니다.
+책의 아이디 또는 리뷰의 아이디 입니다. from필드를 보고 둘 중 어느것인지 알 수 있습니다.</p>
+</dd>
+<dt><strong>sids: List[str]</strong></dt><dd><p>페이지에 포함되어 있는 문장 아이디입니다.</p>
+</dd>
+<dt><strong>words: List[str]</strong></dt><dd><p>페이지에 있던 단어들 입니다.</p>
+</dd>
+<dt><strong>pos: List[str]</strong></dt><dd><p>페이지에 있던 단어들의 품사 입니다.</p>
+</dd>
+<dt><strong>unknownWords: List[str]</strong></dt><dd><p>유저가 찾아본 단어입니다.</p>
+</dd>
+<dt><strong>unknownIndices: List[int]</strong></dt><dd><p>유저가 찾아본 단어의 words내 인덱스입니다.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt id="dataserver.models.dataframe.ReviewDataFrame">
+<code class="sig-prename descclassname">dataserver.models.dataframe.</code><code class="sig-name descname">ReviewDataFrame</code><a class="headerlink" href="#dataserver.models.dataframe.ReviewDataFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#dataserver.models.dataframe.StatsDataFrame" title="dataserver.models.dataframe.StatsDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StatsDataFrame</span></code></a> 와 <a class="reference internal" href="#dataserver.models.dataframe.ReviewWordsDataFrame" title="dataserver.models.dataframe.ReviewWordsDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReviewWordsDataFrame</span></code></a> 를 합쳐서 완성된 리뷰게임입니다.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>userId: str</strong></dt><dd></dd>
+<dt><strong>review: str</strong></dt><dd><p>json으로 인코딩된 Review입니다. (공통타입 참조)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt id="dataserver.models.dataframe.ReviewWordsDataFrame">
+<code class="sig-prename descclassname">dataserver.models.dataframe.</code><code class="sig-name descname">ReviewWordsDataFrame</code><a class="headerlink" href="#dataserver.models.dataframe.ReviewWordsDataFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p>리뷰해야할 단어입니다.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>userId: str</strong></dt><dd></dd>
+<dt><strong>session: int</strong></dt><dd><p><a class="reference internal" href="#dataserver.models.dataframe.PagesDataFrame" title="dataserver.models.dataframe.PagesDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PagesDataFrame</span></code></a> 의 session 참조</p>
+</dd>
+<dt><strong>reviewWords: str</strong></dt><dd><p>json으로 인코딩된 ReviewWord 배열입니다. (공통 타입 참조)</p>
+</dd>
+<dt><strong>targetReviewWords: int</strong></dt><dd><p>목표 습득 단어 수입니다.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt id="dataserver.models.dataframe.SessionInfoDataFrame">
+<code class="sig-prename descclassname">dataserver.models.dataframe.</code><code class="sig-name descname">SessionInfoDataFrame</code><a class="headerlink" href="#dataserver.models.dataframe.SessionInfoDataFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p>각 학습 세션의 통계를 담고 있습니다.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>userId: str</strong></dt><dd></dd>
+<dt><strong>session: int</strong></dt><dd><p><a class="reference internal" href="#dataserver.models.dataframe.PagesDataFrame" title="dataserver.models.dataframe.PagesDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PagesDataFrame</span></code></a> 의 session 참조</p>
+</dd>
+<dt><strong>start: int</strong></dt><dd><p>세션 시작 시간
+unix timestamp</p>
+</dd>
+<dt><strong>end: int</strong></dt><dd><p>세션 끝 시간
+unix timestamp</p>
+</dd>
+<dt><strong>wpm: float</strong></dt><dd><p>평균 words per minute</p>
+</dd>
+<dt><strong>readWords: int</strong></dt><dd><p>읽은 단어 수</p>
+</dd>
+<dt><strong>unknownWords: int</strong></dt><dd><p>찾아본 단어 수</p>
+</dd>
+<dt><strong>hours: float</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt id="dataserver.models.dataframe.SignalDataFrame">
+<code class="sig-prename descclassname">dataserver.models.dataframe.</code><code class="sig-name descname">SignalDataFrame</code><a class="headerlink" href="#dataserver.models.dataframe.SignalDataFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#dataserver.models.dataframe.PagesDataFrame" title="dataserver.models.dataframe.PagesDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PagesDataFrame</span></code></a> 을 좀더 분석하기 쉽게 하기 위해 배열 형태였던 words와 관련 컬럼(pos, signal)을 explode한 것입니다.</p>
+<p>예를 들어 <a class="reference internal" href="#dataserver.models.dataframe.PagesDataFrame" title="dataserver.models.dataframe.PagesDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PagesDataFrame</span></code></a> 이 아래와 같이 되어 있다면 (일부 칼럼은 편의를 위해 생략)</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>pageId</p></th>
+<th class="head"><p>words</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>[ hello, world ]</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>[ gorani, reader ]</p></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="#dataserver.models.dataframe.SignalDataFrame" title="dataserver.models.dataframe.SignalDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SignalDataFrame</span></code></a> 은 아래와 같을 것 입니다.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>pageId</p></th>
+<th class="head"><p>word</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>hello</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>world</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>gorani</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>reader</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>pageId: int</strong></dt><dd><p>PagesDataFrame의 pageId 참조</p>
+</dd>
+<dt><strong>word: str</strong></dt><dd><p>단어</p>
+</dd>
+<dt><strong>signal: int</strong></dt><dd><p>1 = 안 찾아봄
+0 = 찾아봄</p>
+</dd>
+<dt><strong>userId: str</strong></dt><dd></dd>
+<dt><strong>session: int</strong></dt><dd><p>PagesDataFrame의 session 참조</p>
+</dd>
+<dt><strong>cheat: bool</strong></dt><dd><p>PagesDataFrame의 cheat 참조</p>
+</dd>
+<dt><strong>wpm: float</strong></dt><dd><p>words per minute</p>
+</dd>
+<dt><strong>pos: str</strong></dt><dd><p>품사</p>
+</dd>
+<dt><strong>time: int</strong></dt><dd><p>unix timestramp</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt id="dataserver.models.dataframe.StatsDataFrame">
+<code class="sig-prename descclassname">dataserver.models.dataframe.</code><code class="sig-name descname">StatsDataFrame</code><a class="headerlink" href="#dataserver.models.dataframe.StatsDataFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p>리뷰 게임에 들어가는 통계 정보입니다.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>userId: int</strong></dt><dd><p><a class="reference internal" href="#dataserver.models.dataframe.PagesDataFrame" title="dataserver.models.dataframe.PagesDataFrame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PagesDataFrame</span></code></a> 의 pageId 참조</p>
+</dd>
+<dt><strong>stats: int</strong></dt><dd><p>json으로 인코딩된 지난 2주간의 유저의 학습 통계입니다.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-dataserver.job">
+<span id="job"></span><h2>Job<a class="headerlink" href="#module-dataserver.job" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, /
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
