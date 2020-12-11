@@ -4,6 +4,11 @@
 *.log*
 *.swp
 *.bak
+config.yaml
+1gramsbyfreq.txt
+unigram_freq.csv
+words.txt
+*.csv
 
 # dataserver data
 
