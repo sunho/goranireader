@@ -10,6 +10,8 @@ unigram_freq.csv
 words.txt
 *.csv
 
+exp1
+
 # dataserver data
 
 /backend/dataserver/dataserver/bookcli/books
