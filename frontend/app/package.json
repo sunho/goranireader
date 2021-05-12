@@ -50,7 +50,7 @@
     "recharts": "^1.8.5",
     "sql.js": "^1.2.1",
     "styled-components": "^5.0.1",
-    "swiper": "^5.3.6",
+    "swiper": "^6.5.1",
     "tailwindcss": "^1.2.0",
     "typescript": "3.7.4",
     "uuid": "^7.0.2"
